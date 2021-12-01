@@ -65,10 +65,23 @@ jobs:
       - name: Deploy framework to Org
         run: sfdx force:source:deploy -p framework --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
 
+      # Prepare a test-results directory
+
+      - name: Prepare test-results directory
+        run: mkdir test-results
+
       # Run All Unit Tests
 
       - name: Run All Unit Tests
-        run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --wait 20 --codecoverage | grep -v ' Pass   '
+        run: sfdx force:apex:test:run -r junit -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --wait 20 > test-results/framework-apex-tests.xml
+
+      # Publish the Unit Test results
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: test-results/*.xml
 
       # Delete Scratch Org
 
