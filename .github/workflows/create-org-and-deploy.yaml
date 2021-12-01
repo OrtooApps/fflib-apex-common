@@ -62,8 +62,8 @@ jobs:
 
       # Push code to org
 
-      - name: Deploy force-app to Org
-        run: sfdx force:source:deploy -p force-app --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+      - name: Deploy to Org
+        run: sfdx force:source:deploy --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
 
       # Run All Unit Tests
 
