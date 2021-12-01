@@ -47,7 +47,7 @@ public inherited sharing class PackageUtils
 			// is actually the name of the containing class, and there is no namespace.
 			// If that's the case, the potentialNamespace actually contains the name of a class
 			Type potentialClassType = Type.forName( potentialNamespace );
-			if ( potentialClassType != null )
+			if ( potentialClassType == null )
 			{
 				namespacePrefix = potentialNamespace;
 			}
