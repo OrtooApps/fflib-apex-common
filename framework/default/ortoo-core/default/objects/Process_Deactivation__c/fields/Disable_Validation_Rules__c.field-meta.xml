@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disable_Validation_Rules__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Disable all Validation Rules.  Assumes that validation rules look at this property to determine if they should be enabled.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Disable all Validation Rules.  Assumes that validation rules look at this property to determine if they should be enabled.</inlineHelpText>
+    <label>Disable Validation Rules</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

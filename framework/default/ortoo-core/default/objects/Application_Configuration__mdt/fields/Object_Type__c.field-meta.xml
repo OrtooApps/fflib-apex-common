@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Object_Type__c</fullName>
+    <description>The type that this implementation is defined for.  This could be an Apex Interface or SObject, depending on the configuration type.  E.g. Domains require the SObject to be defined, Services require the Interface.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>The type that this implementation is defined for.  This could be an Apex Interface or SObject, depending on the configuration type.  E.g. Domains require the SObject to be defined, Services require the Interface.</inlineHelpText>
+    <label>Object Type</label>
+    <length>255</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

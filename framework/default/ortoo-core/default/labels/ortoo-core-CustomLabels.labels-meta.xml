@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ortoo_core_validation_errors_occurred</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message when validation errors caught by the SObject Validator structures occur.</shortDescription>
+        <value>Validation Errors Occurred</value>
+    </labels>
+</CustomLabels>
