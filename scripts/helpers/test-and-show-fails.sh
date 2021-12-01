@@ -1,0 +1,3 @@
+#!/bin/bash
+echo This may take a while...
+sfdx force:apex:test:run -r human | grep -v ' Pass   '
