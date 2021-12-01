@@ -30,7 +30,7 @@ echo "Using $ORG_ALIAS for Org alias"
 echo
 
 echo "1. create"
-sfdx force:org:create -f config/project-scratch-def.json --setalias "$ORG_ALIAS" --durationdays 30 --setdefaultusername --loglevel fatal
+sfdx force:org:create -f config/project-scratch-def.json --setalias "$ORG_ALIAS" --durationdays 3 --setdefaultusername --loglevel fatal
 if [ $? = 0 ]; then
     echo "Created Scratch Org with alias $ORG_ALIAS"
 else

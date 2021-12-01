@@ -86,4 +86,5 @@ jobs:
       # Delete Scratch Org
 
       - name: Delete Scratch Org
+        if: ${{ always() }}
         run: sfdx force:org:delete --noprompt --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
