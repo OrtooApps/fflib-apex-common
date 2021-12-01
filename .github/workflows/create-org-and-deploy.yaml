@@ -2,12 +2,14 @@ name: Deploy and Run all Unit Tests
 on:
   push:
     branches:
-      - '*'
+      - 'feature/*'
+      - 'releases/*'
       - main
   pull_request:
     types: [ opened ]
     branches:
-      - '*'
+      - 'feature/*'
+      - 'releases/*'
       - main
 jobs:
   create-org-and-deploy:
