@@ -68,7 +68,7 @@ jobs:
       # Run All Unit Tests
 
       - name: Run All Unit Tests
-        run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --wait 20
+        run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --wait 20 | grep -v ' Pass   '; test ${PIPESTATUS[0]} -eq 0
 
       # Delete Scratch Org
 
