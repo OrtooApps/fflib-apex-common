@@ -280,7 +280,7 @@ private without sharing class StringUtilsTest
 	private static void convertListToDelimitedString_whenGivenAListOfObjectsAndADelimiter_willJoinThemWithTheDelimiter() // NOPMD: Test method name format
 	{
 		List<Object> originalList = new List<Object>{ new StringableThing( 'one' ), new StringableThing( 'two' ), new StringableThing( 'three' ) };
-		String expectedString = 'one,two,three,purposefulfail';
+		String expectedString = 'one,two,three';
 
 		Test.startTest();
 			String returnedString = StringUtils.convertListToDelimitedString( originalList, ',' );
