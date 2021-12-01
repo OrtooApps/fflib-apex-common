@@ -36,11 +36,18 @@ public inherited sharing class PackageUtils
 		String potentialNamespace = String.valueOf( classType ).substringBefore( '.' );
 		String remainingName      = String.valueOf( classType ).substringAfter( '.' );
 
+		if ( potentialNamespace == 'System' )
+		{
+			return 'System';
+		}
+
 		if ( ! String.isEmpty( remainingName ) )
 		{
 			// We test this in case we were passed an inner class and the potentialNamespace
-			// is actually the name of the containing class, and there is no namespace
-			if ( classType == Type.forName( potentialNamespace, remainingName ) )
+			// is actually the name of the containing class, and there is no namespace.
+			// If that's the case, the potentialNamespace actually contains the name of a class
+			Type potentialClassType = Type.forName( potentialNamespace );
+			if ( potentialClassType != null )
 			{
 				namespacePrefix = potentialNamespace;
 			}

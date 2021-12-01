@@ -9,6 +9,7 @@
       "default": true
     }
   ],
+  "namespace": "ortoo_qra",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "52.0"
 }

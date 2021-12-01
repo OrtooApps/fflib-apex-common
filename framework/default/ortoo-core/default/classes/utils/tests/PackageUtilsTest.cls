@@ -2,11 +2,19 @@
 private without sharing class PackageUtilsTest
 {
 	@isTest
-	private static void getNamespace_whenCalledWithASystemClass_willReturnSystem() // NOPMD: Test method name format
+	private static void getNamespace_whenCalledWithASystemClassFullyDescribed_willReturnSystem() // NOPMD: Test method name format
 	{
 		String packageUtilsNamespace = PackageUtils.getNamespace( System.Test.class );
 
-		System.assertEquals( 'System', packageUtilsNamespace, 'getNamespace, when called with a class, will the namespace it is defined in' );
+		System.assertEquals( 'System', packageUtilsNamespace, 'getNamespace, when called with a System class, will return System' );
+	}
+
+	@isTest
+	private static void getNamespace_whenCalledWithASystemClass_willReturnSystem() // NOPMD: Test method name format
+	{
+		String packageUtilsNamespace = PackageUtils.getNamespace( Test.class );
+
+		System.assertEquals( 'System', packageUtilsNamespace, 'getNamespace, when called with a System class, will return System' );
 	}
 
 	@isTest
@@ -14,7 +22,7 @@ private without sharing class PackageUtilsTest
 	{
 		String packageUtilsNamespace = PackageUtils.getNamespace( PackageUtils.class );
 		// we can't test more than this because we don't know what namespace we will be installed in
-		System.assertNotEquals( null, packageUtilsNamespace, 'getNamespace, when called with a custom class, will return a String' );
+		System.assertNotEquals( null, packageUtilsNamespace, 'getNamespace, when called with a custom class, will return the namespace it is in - cal only test it is a string though' );
 	}
 
 	@isTest
