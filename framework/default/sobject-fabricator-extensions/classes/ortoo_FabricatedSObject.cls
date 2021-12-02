@@ -18,4 +18,9 @@ public virtual class ortoo_FabricatedSObject extends sfab_FabricatedSObject
         }
         return parentNodes;
     }
+
+    public SobjectType getSobjectType()
+    {
+        return SobjectUtils.getSobjectType( getSobjectName() );
+    }
 }

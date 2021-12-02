@@ -1,15 +1,18 @@
 public class ortoo_FabricatedSObjectRegister {
 
     private static List<sfab_FabricatedSObject> objectRegister = new List<sfab_FabricatedSObject>();
-
+    private static List<Relationship> relationships = new List<Relationship>();
     private static Map<sfab_FabricatedSObject,Sobject> sobjectsByFabricated;
 
-    private static List<Relationship> relationships = new List<Relationship>();
-
+    private static DirectedGraph graph = new DirectedGraph();
 
     public static void registerObject( sfab_FabricatedSObject objectToRegister )
     {
         objectRegister.add( objectToRegister );
+        if ( objectToRegister instanceof ortoo_FabricatedSobject )
+        {
+            graph.addNode( ((ortoo_FabricatedSobject)objectToRegister).getSobjectType() );
+        }
     }
 
     public static void registerChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
@@ -45,15 +48,16 @@ public class ortoo_FabricatedSObjectRegister {
         system.debug( sobjectsByFabricated.values() );
 
         // work out the order to do things in, using the directed graph
-        // TODO: work out the order
-        List<SobjectType> sobjectTypes = new List<SobjectType>
+        List<Object> childToParentTypes = graph.generateSorted();
+
+        List<SobjectType> parentToChildTypes = new List<SobjectType>();
+        for( Integer i = childToParentTypes.size() - 1; i >= 0; i-- )
         {
-            Account.sobjectType,
-            Contact.sobjectType
-        };
+            parentToChildTypes.add( (SobjectType)childToParentTypes[i] );
+        }
 
         // register all the inserts
-        ortoo_SobjectUnitOfWork uow = new ortoo_SobjectUnitOfWork( sobjectTypes );
+        ortoo_SobjectUnitOfWork uow = new ortoo_SobjectUnitOfWork( parentToChildTypes );
         for ( sfab_FabricatedSObject thisFabricatedObject : objectRegister )
         {
             uow.registerNew( sobjectsByFabricated.get( thisFabricatedObject ) );
@@ -68,6 +72,13 @@ public class ortoo_FabricatedSObjectRegister {
         uow.commitWork();
     }
 
+    private void clearRegister()
+    {
+        objectRegister = new List<sfab_FabricatedSObject>();
+        relationships = new List<Relationship>();
+        sobjectsByFabricated = null;
+    }
+
     private inherited sharing class Relationship
     {
         sfab_FabricatedSObject child;
@@ -79,6 +90,11 @@ public class ortoo_FabricatedSObjectRegister {
             this.parent = parent;
             this.relationship = relationship;
             this.child = child;
+
+            if ( child instanceOf ortoo_FabricatedSobject && parent instanceOf ortoo_FabricatedSobject )
+            {
+                graph.addRelationship( ((ortoo_FabricatedSobject)child).getSobjectType(), ((ortoo_FabricatedSobject)parent).getSobjectType() );
+            }
         }
 
         public void register( ortoo_SobjectUnitOfWork uow )
