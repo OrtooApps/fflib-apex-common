@@ -5,3 +5,5 @@ public interface IMessageRenderer
 {
 	Boolean render( IRenderableMessageHeader message );
 }
+
+// a change
