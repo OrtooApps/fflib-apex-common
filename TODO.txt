@@ -6,6 +6,13 @@ Licenses that are needed with the source code and binary:
 
 TODO:
 
+SObject Fabricator:
+    * Look at subclasses for specific objects
+        * Setting default values
+    * Setting default parents
+        * Object register
+    * Persisting the result
+
 Look at the use of 'MockDatabase' in fflib
 
 * To finalise the core architecture:

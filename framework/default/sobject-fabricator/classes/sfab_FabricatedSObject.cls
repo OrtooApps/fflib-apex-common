@@ -1,7 +1,7 @@
 public virtual class sfab_FabricatedSObject {
 
     private Type sType;
-    @testVisible private Map<String,sfab_FabricatedSObjectNode> nodes = new Map<String,sfab_FabricatedSObjectNode>();
+    @testVisible protected Map<String,sfab_FabricatedSObjectNode> nodes = new Map<String,sfab_FabricatedSObjectNode>();
 
     sfab_ObjectDescriber objectDescriber = new sfab_ObjectDescriber();
 
@@ -278,6 +278,9 @@ public virtual class sfab_FabricatedSObject {
                 setNode( relationshipName, new sfab_ChildRelationshipNode( relationshipName ) );
             }
             getChildRelationshipNode( relationshipName ).addChild( fabricatedChild );
+
+            ortoo_FabricatedSobjectRegister.registerParentOfRelationship( this, relationshipName, fabricatedChild );
+
         }
         return this;
     }
@@ -388,6 +391,7 @@ public virtual class sfab_FabricatedSObject {
     private sfab_FabricatedSObject setDirectParent( String relationshipName, sfab_FabricatedSObject fabricatedParent ) {
         checkFieldIsParentRelationship( relationshipName );
         checkTypeIsValidForParentRelationship( relationshipName, fabricatedParent );
+        ortoo_FabricatedSobjectRegister.registerChildOfRelationship( this, relationshipName, fabricatedParent );
         return setNode( relationshipName, new sfab_ParentRelationshipNode(relationshipName, fabricatedParent));
     }
 
@@ -402,6 +406,11 @@ public virtual class sfab_FabricatedSObject {
     private sfab_FabricatedSObject setDirectChildren( String relationshipName, List<sfab_FabricatedSObject> fabricatedChildren ) {
         childFieldIsChildRelationship( relationshipName );
         checkTypeIsValidForChildRelationship( relationshipName, fabricatedChildren );
+
+        for ( sfab_FabricatedSObject thisChild : fabricatedChildren )
+        {
+            ortoo_FabricatedSobjectRegister.registerParentOfRelationship( this, relationshipName, thisChild );
+        }
         return setNode( relationshipName, new sfab_ChildRelationshipNode( relationshipName, fabricatedChildren ) );
     }
 
@@ -422,6 +431,7 @@ public virtual class sfab_FabricatedSObject {
     private sfab_FabricatedSObject addParentChild( String fieldName, sfab_FabricatedSObject fabricatedChild ) {
         sfab_FieldNameSplitter fields = defaultParentField( fieldName );
         getParentRelationshipNode( fields.getParentFieldName() ).add( fields.getChildFieldName(), fabricatedChild );
+        // TODO: add the relatioship here too
         return this;
     }
 
