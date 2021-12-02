@@ -164,7 +164,10 @@ public virtual class ortoo_Exception extends Exception implements IRenderableMes
 		Set<Sobject> objectContexts = new Set<Sobject>();
 		for ( MessageDetail thisMessageDetail : messageDetails )
 		{
-			objectContexts.add( thisMessageDetail.getObjectContext() );
+			if ( thisMessageDetail.getObjectContext() != null )
+			{
+				objectContexts.add( thisMessageDetail.getObjectContext() );
+			}
 		}
 
 		List<Sobject> returnList = new List<Sobject>( objectContexts );

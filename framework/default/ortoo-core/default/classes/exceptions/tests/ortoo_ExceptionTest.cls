@@ -12,17 +12,29 @@ public with sharing class ortoo_ExceptionTest {
 		Test.stopTest();
 
 		System.assertEquals( 'ErrorCode', e.getErrorCode(), 'setErrorCode, will set the error code that is returned by getErrorCode' );
+		System.assertEquals( 'ErrorCode', e.getCode(), 'setErrorCode, will set the error code that is returned by getCode' );
 	}
 
 	@isTest
-	private static void getStackTrace_whenCalled_willReturnAStackTraceObjectBasedOnWhenTheExceptionWasConstructed() // NOPMD: Test method name format
+	private static void getSeverity_willReturnError() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			ortoo_Exception e = new ortoo_Exception();
+            MessageRendererEngine.Severity severity = e.getSeverity();
+		Test.stopTest();
+
+		System.assertEquals( MessageRendererEngine.Severity.Error, severity, 'getSeverity, will return error' );
+	}
+
+	@isTest
+	private static void getStackTrace_whenCalled_willReturnAStackBasedOnConstruct() // NOPMD: Test method name format
 	{
 		Test.startTest();
 			ortoo_Exception e = new ortoo_Exception();
 			StackTrace trace = e.getStackTrace();
 		Test.stopTest();
 
-		System.assertEquals( 'getStackTrace_whenCalled_willReturnAStackTraceObjectBasedOnWhenTheExceptionWasConstructed', trace.getInnermostMethodName(), 'getStackTrace, when called, will return a stack trace based on when the exception was constructed (method name)' );
+		System.assertEquals( 'getStackTrace_whenCalled_willReturnAStackBasedOnConstruct', trace.getInnermostMethodName(), 'getStackTrace, when called, will return a stack trace based on when the exception was constructed (method name)' );
 		Amoss_Asserts.assertEndsWith( 'ortoo_ExceptionTest', trace.getInnermostClassName(), 'getStackTrace, when called, will return a stack trace based on when the exception was constructed (class name)' );
 	}
 
@@ -65,7 +77,7 @@ public with sharing class ortoo_ExceptionTest {
     }
 
     @isTest
-    private static void getStackTraceString_whenConstructionIsInsideMultipleLayers_willReturnTheStackTrace()
+    private static void getStackTraceString_whenBuiltInsideLayers_willReturnTheStackTrace()
 	{
         String stackTrace;
         Test.startTest();
@@ -82,7 +94,7 @@ public with sharing class ortoo_ExceptionTest {
         Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (not the exception constructor)' );
         Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwAnOrtooExceptionInnerMethodCall', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 1)' );
         Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwAnOrtooException', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 2)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenConstructionIsInsideMultipleLayers_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 3)' );
+        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenBuiltInsideLayers_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 3)' );
     }
 
     @isTest
@@ -131,7 +143,7 @@ public with sharing class ortoo_ExceptionTest {
     }
 
     @isTest
-    private static void addContext_whenCalledInAnInnerClass_willAddItToTheExceptionWithStackInfo() // NOPMD: Test method name format
+    private static void addContext_whenCalledInInnerClass_willAddIncludeInStack() // NOPMD: Test method name format
     {
         ortoo_Exception e = new ortoo_Exception( 'message' );
 
@@ -247,6 +259,82 @@ public with sharing class ortoo_ExceptionTest {
         }
 
         System.assertEquals( true, exceptionCaught, 'next, when there are no entries in the list, will throw a NoSuchElementException exception' );
+    }
+
+    @isTest
+    private static void getObjectContext_whenMessageDetailsAdded_willReturnTheSobjects() // NOPMD: Test method name format
+    {
+        ortoo_Exception exceptionUnderTest = new ortoo_Exception( 'message' );
+
+        List<Sobject> objectContexts = new List<Sobject>
+        {
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) )
+        };
+
+        Test.startTest();
+            exceptionUnderTest.setMessageDetails(
+                new List<MessageDetail>
+                {
+                    new MessageDetail( objectContexts[0], 'message1' ),
+                    new MessageDetail( objectContexts[1], 'message2' ),
+                    new MessageDetail( objectContexts[1], 'message3' ),
+                    new MessageDetail( objectContexts[0], 'message4' )
+                }
+            );
+            List<Sobject> returnedObjectContexts = exceptionUnderTest.getObjectContexts();
+
+        Test.stopTest();
+
+        List<Sobject> expectedObjectContexts = new List<Sobject>{ objectContexts[0], objectContexts[1] };
+
+        System.assertEquals( expectedObjectContexts, returnedObjectContexts, 'getObjectContext, when some message details have been added, will return those objects' );
+    }
+
+    @isTest
+    private static void getObjectContext_whenNoMessageDetails_willReturnEmptySet() // NOPMD: Test method name format
+    {
+        ortoo_Exception exceptionUnderTest = new ortoo_Exception( 'message' );
+
+        Test.startTest();
+        List<Sobject> returnedObjectContexts = exceptionUnderTest.getObjectContexts();
+        Test.stopTest();
+
+        List<Sobject> expectedObjectContexts = new List<Sobject>();
+
+        System.assertEquals( expectedObjectContexts, returnedObjectContexts, 'getObjectContext, when no message details have been added, will return an empty set' );
+    }
+
+    @isTest
+    private static void getObjectContext_whenSomeDetailsHaveNull_willNotReturnTheNulls() // NOPMD: Test method name format
+    {
+        ortoo_Exception exceptionUnderTest = new ortoo_Exception( 'message' );
+
+        List<Sobject> objectContexts = new List<Sobject>
+        {
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) )
+        };
+
+        Test.startTest();
+            exceptionUnderTest.setMessageDetails(
+                new List<MessageDetail>
+                {
+                    new MessageDetail( objectContexts[0], 'message1' ),
+                    new MessageDetail( objectContexts[2], 'message2' ),
+                    new MessageDetail( 'message3' ),
+                    new MessageDetail( objectContexts[0], 'message4' )
+                }
+            );
+            List<Sobject> returnedObjectContexts = exceptionUnderTest.getObjectContexts();
+
+        Test.stopTest();
+
+        List<Sobject> expectedObjectContexts = new List<Sobject>{ objectContexts[0], objectContexts[2] };
+
+        System.assertEquals( expectedObjectContexts, returnedObjectContexts, 'getObjectContext, when some message details have been added with null objects, will not return the nulls' );
     }
 
     private class ContextAdder

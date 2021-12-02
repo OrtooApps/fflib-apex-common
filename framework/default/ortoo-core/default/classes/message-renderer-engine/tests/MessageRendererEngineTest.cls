@@ -46,6 +46,16 @@ private without sharing class MessageRendererEngineTest
 	}
 
 	@isTest
+	private static void getRenderer_whenTheRendererHasBeenSet_willReturnTheRenderer() // NOPMD: Test method name format
+	{
+		IMessageRenderer renderer = (IMessageRenderer)new Amoss_Instance( IMessageRenderer.class ).generateDouble();
+		MessageRendererEngine engine = new MessageRendererEngine().setRenderer( renderer );
+
+		IMessageRenderer returnedRenderer = engine.getRenderer();
+		System.assertEquals( renderer, returnedRenderer, 'getRenderer, when the renderer has been set, will return the renderer' );
+	}
+
+	@isTest
 	private static void render_whenCalledAgainstAConfiguredEngine_willCallRenderAgainstTheRenderer() // NOPMD: Test method name format
 	{
 		Amoss_Instance messageController = new Amoss_Instance( IRenderableMessageHeader.class );
@@ -283,58 +293,6 @@ private without sharing class MessageRendererEngineTest
 	}
 
 	@isTest
-	private static void SobjectMessageAdder_whenRenderIsCalled_willNotAddInfoOrWarnAsErrors() // NOPMD: Test method name format
-	{
-		Amoss_Instance messageController = new Amoss_Instance( IRenderableMessageHeader.class );
-		IRenderableMessageHeader message = (IRenderableMessageHeader)messageController.generateDouble();
-
-		Amoss_Instance fieldDetailController = new Amoss_Instance( IRenderableMessageDetail.class );
-		IRenderableMessageDetail fieldDetail = (IRenderableMessageDetail)fieldDetailController.generateDouble();
-
-		List<Sobject> objectContexts = new List<Sobject> {
-			new Contact()
-		};
-
-		messageController
-			.when( 'getSeverity' )
-			.returns( MessageRendererEngine.Severity.Info )
-		.also()
-			.when( 'getObjectContexts' )
-			.returns( objectContexts )
-		.also()
-			.when( 'getMessage' )
-			.returns( 'The header message' )
-		.also()
-			.when( 'getMessageDetails' )
-			.returns( new List<IRenderableMessageDetail>{ fieldDetail } );
-
-		fieldDetailController
-			.when( 'getContent' )
-			.returns( 'Field detail content' )
-		.also()
-			.when( 'getObjectContext' )
-			.returns( objectContexts[0] )
-		.also()
-			.when( 'getFieldContext' )
-			.returns( Contact.FirstName )
-		.also()
-			.when( 'getSeverity' )
-			.returns( MessageRendererEngine.Severity.Error );
-
-		MessageRendererEngine.SobjectMessageAdder renderer = new MessageRendererEngine.SobjectMessageAdder();
-
-		Test.startTest();
-			Boolean messageRendered = renderer.render( message );
-		Test.stopTest();
-
-		System.assert( ! messageRendered, 'SobjectMessageAdder, when render is called with an info or warning header message, will return false' );
-
-		List<Database.Error> errors;
-		errors = objectContexts[0].getErrors();
-		System.assertEquals( 0, errors.size(), 'SobjectMessageAdder, when render is called with an info or warning header message, will not add any messages to the sobjects' );
-	}
-
-	@isTest
 	private static void SobjectMessageAdder_whenRenderIsCalled_willNotAddInfoOrWarnDetailsAsErrors() // NOPMD: Test method name format
 	{
 		Amoss_Instance messageController = new Amoss_Instance( IRenderableMessageHeader.class );
@@ -402,5 +360,60 @@ private without sharing class MessageRendererEngineTest
 		System.assertEquals( 1, errors.size(), 'SobjectMessageAdder, when render is called with an error message that has no error details, will add the header message to the sobjects' );
 
 		System.assertEquals( 'The header message', errors[0].getMessage(), 'SobjectMessageAdder, when render is called with an error message that has no error details, will add the header message to the sobjects - checking the content' );
+	}
+
+	@isTest
+	private static void SobjectMessageAdder_whenRenderIsCalled_willNotAddInfoOrWarnAsErrors() // NOPMD: Test method name format
+	{
+		Amoss_Instance messageController = new Amoss_Instance( IRenderableMessageHeader.class );
+		IRenderableMessageHeader message = (IRenderableMessageHeader)messageController.generateDouble();
+
+		List<Sobject> objectContexts = new List<Sobject> {
+			new Contact()
+		};
+
+		messageController
+			.when( 'getSeverity' )
+			.returns( MessageRendererEngine.Severity.Info )
+		.also()
+			.when( 'getObjectContexts' )
+			.returns( objectContexts );
+
+		MessageRendererEngine.SobjectMessageAdder renderer = new MessageRendererEngine.SobjectMessageAdder();
+
+		Test.startTest();
+			Boolean messageRendered = renderer.render( message );
+		Test.stopTest();
+
+		System.assert( ! messageRendered, 'SobjectMessageAdder, when render is called with an info or warning header message, will return false' );
+
+		List<Database.Error> errors;
+		errors = objectContexts[0].getErrors();
+		System.assertEquals( 0, errors.size(), 'SobjectMessageAdder, when render is called with an info or warning header message, will not add any messages to the sobjects' );
+	}
+
+	@isTest
+	private static void SobjectMessageAdder_whenRenderIsCalledAndThereAreNoObjectContexts_willNotAddErrors() // NOPMD: Test method name format
+	{
+		Amoss_Instance messageController = new Amoss_Instance( IRenderableMessageHeader.class );
+		IRenderableMessageHeader message = (IRenderableMessageHeader)messageController.generateDouble();
+
+		Amoss_Instance detailController = new Amoss_Instance( IRenderableMessageDetail.class );
+		IRenderableMessageDetail detail = (IRenderableMessageDetail)detailController.generateDouble();
+
+		messageController
+			.when( 'getSeverity' )
+			.returns( MessageRendererEngine.Severity.Error )
+		.also()
+			.when( 'getObjectContexts' )
+			.returns( new List<Sobject>() );
+
+		MessageRendererEngine.SobjectMessageAdder renderer = new MessageRendererEngine.SobjectMessageAdder();
+
+		Test.startTest();
+			Boolean messageRendered = renderer.render( message );
+		Test.stopTest();
+
+		System.assert( ! messageRendered, 'SobjectMessageAdder, when render is called with an error message that has no object contexts, will return false' );
 	}
 }

@@ -45,4 +45,35 @@ private without sharing class ExceptionsTest
 
 		System.assertEquals( 'CONF-123', e.getErrorCode(), 'ConfigurationException.setErrorCode, when called, will add a prefix to the code' );
 	}
+
+	@isTest
+	private static void validationExceptionSetErrorCode_whenCalled_willNotAddAPrefixToTheCode() // NOPMD: Test method name format
+	{
+		Exceptions.ValidationException e = new Exceptions.ValidationException( new List<MessageDetail>() );
+		e.setErrorCode( '123' );
+
+		System.assertEquals( '123', e.getErrorCode(), 'ValidationException.setErrorCode, when called, will NOT add a prefix to the code' );
+	}
+
+	@isTest
+	private static void validationException_whenConstructed_willSetTheMessage() // NOPMD: Test method name format
+	{
+		Exceptions.ValidationException e = new Exceptions.ValidationException( new List<MessageDetail>() );
+
+		System.assertEquals( Label.ortoo_core_validation_errors_occurred, e.getMessage(), 'ValidationException, when constructed, will set the message' );
+	}
+
+	@isTest
+	private static void validationException_whenConstructed_willSetTheMessageDetails() // NOPMD: Test method name format
+	{
+		List<MessageDetail> messageDetails = new List<MessageDetail>
+		{
+			new MessageDetail( 'content1' ),
+			new MessageDetail( 'content2' )
+		};
+
+		Exceptions.ValidationException e = new Exceptions.ValidationException( messageDetails );
+
+		System.assertEquals( messageDetails, e.getMessageDetails(), 'ValidationException, when constructed, will set the message' );
+	}
 }
