@@ -45,7 +45,6 @@ public class ortoo_FabricatedSObjectRegister {
 
             sobjectsByFabricated.put( thisFabricatedObject, objectToStore );
         }
-        system.debug( sobjectsByFabricated.values() );
 
         // work out the order to do things in, using the directed graph
         List<Object> childToParentTypes = graph.generateSorted();
@@ -102,21 +101,19 @@ public class ortoo_FabricatedSObjectRegister {
             Sobject parentSobject = sobjectsByFabricated.get( parent );
             Sobject childSobject  = sobjectsByFabricated.get( child );
 
-            system.debug( 'registering the relationship: ' + childSobject + ' : ' + relationship + ' : ' + parentSobject );
-
             uow.registerRelationship( childSobject, relationship, parentSobject );
         }
     }
 
     public static Relationship buildChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
     {
-        // TODO: resolve the passed in relationship
-        return new Relationship( child, Contact.AccountId, parent );
+        SobjectField relationshipField = new sfab_ObjectDescriber().getFieldForParentRelationship( child.getSobjectName(), relationship );
+        return new Relationship( child, relationshipField, parent );
     }
 
     public static Relationship buildParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
     {
-        // TODO: resolve the passed in relationship
-        return new Relationship( child, Contact.AccountId, parent );
+        SobjectField relationshipField = new sfab_ObjectDescriber().getFieldForChildRelationship( parent.getSobjectName(), relationship );
+        return new Relationship( child, relationshipField, parent );
     }
 }

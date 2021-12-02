@@ -10,6 +10,16 @@ public with sharing class sfab_ObjectDescriber {
         return getObjectDescriber( objectName )?.getField( fieldName );
     }
 
+    public SObjectField getFieldForChildRelationship( String objectName, String relationshipName ) {
+        ensureSingleObjectDescriberIsInitialised( objectName );
+        return getObjectDescriber( objectName )?.getChildRelationshipNamed( relationshipName )?.getField();
+    }
+
+    public SObjectField getFieldForParentRelationship( String objectName, String relationshipName ) {
+        ensureSingleObjectDescriberIsInitialised( objectName );
+        return getObjectDescriber( objectName )?.getParentRelationshipNamed( relationshipName )?.getField();
+    }
+
     public Boolean objectHasSimpleFieldNamed( String objectName, String fieldName ) {
         ensureSingleObjectDescriberIsInitialised( objectName );
         return getObjectDescriber( objectName )?.hasSimpleFieldNamed( fieldName );
@@ -235,6 +245,10 @@ public with sharing class sfab_ObjectDescriber {
             return fieldDescribe.getName();
         }
 
+        public SobjectField getField() {
+            return fieldDescribe.getSobjectField();
+        }
+
         public List<String> getTargetObjectTypes() {
 
             if ( !isValid() ) {
@@ -295,6 +309,9 @@ public with sharing class sfab_ObjectDescriber {
             return String.valueOf( schemaRelationship.getChildSObject() );
         }
 
+        public SobjectField getField() {
+            return schemaRelationship.getField();
+        }
         // Some don't have names - and if they don't have names they can't possibly be
         // set by the fabricator, so must be invalid.
         public Boolean isValid() {
