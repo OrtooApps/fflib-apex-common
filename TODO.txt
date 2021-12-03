@@ -5,8 +5,14 @@ Licenses that are needed with the source code and binary:
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
 TODO:
+* Watch recording of the UI for notifications
+
 
 SObject Fabricator:
+    * Test opportunity, opportunity line item, product, pricebook, pricebook entry?
+
+
+
     * Look at subclasses for specific objects
         * Setting default values
     * Setting default parents

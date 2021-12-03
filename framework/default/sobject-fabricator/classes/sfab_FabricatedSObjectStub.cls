@@ -12,7 +12,7 @@ public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
         this.serializedMap = serializedMap;
     }
 
-    public override Map<String, Object> serialize() {
+    public override Map<String, Object> serialize( Boolean persistable ) {
         serializeInvoked = true;
         return serializedMap;
     }

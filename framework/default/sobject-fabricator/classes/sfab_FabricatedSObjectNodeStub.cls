@@ -16,7 +16,7 @@ public class sfab_FabricatedSObjectNodeStub implements sfab_FabricatedSObjectNod
         this.serializedNode = serializedNode;
     }
 
-    public Map<String, Object> serialize() {
+    public Map<String, Object> serialize( Boolean persistable ) {
         serializeInvoked = true;
         return serializedNode;
     }

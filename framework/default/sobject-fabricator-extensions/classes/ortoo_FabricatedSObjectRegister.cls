@@ -35,14 +35,7 @@ public class ortoo_FabricatedSObjectRegister {
         sobjectsByFabricated = new Map<sfab_FabricatedSObject,Sobject>();
         for ( sfab_FabricatedSObject thisFabricatedObject : objectRegister )
         {
-
-            Sobject objectToStore = thisFabricatedObject.toSObject();
-            // TODO: strip any lookups or similar
-            if (objectToStore instanceOf Contact )
-            {
-                ((Contact)objectToStore).Account = null;
-            }
-
+            Sobject objectToStore = thisFabricatedObject.toPersistableSobject();
             sobjectsByFabricated.put( thisFabricatedObject, objectToStore );
         }
 

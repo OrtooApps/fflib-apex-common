@@ -23,8 +23,15 @@ public class sfab_ParentRelationshipNode implements sfab_FabricatedSObjectNode {
         return parent.add( fieldName, fabricatedChild );
     }
 
-    public Map<String, Object> serialize() {
-        return new Map<String, Object> { fieldName => parent.serialize() };
+    public Map<String, Object> serialize( Boolean persistable  ) {
+
+        Object serializedParent = parent.serialize( persistable );
+        Map<String,Object> fields = new Map<String,Object>();
+        if ( ! persistable )
+        {
+            fields.put( fieldName, serializedParent );
+        }
+        return fields;
     }
 
     public void postBuildProcess( Object objectToProcess ) {

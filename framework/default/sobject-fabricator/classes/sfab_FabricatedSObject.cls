@@ -296,6 +296,13 @@ public virtual class sfab_FabricatedSObject {
         return newObject;
     }
 
+    public SObject toPersistableSobject()
+    {
+        SObject newObject = (SObject)JSON.deserialize(JSON.serialize(serialize(true)), sType);
+        postBuildProcess( newObject );
+        return newObject;
+    }
+
     /**
     * An internal method that should not be called directly.
     * Is public because of the requirement to call it from other outer classes within the library
@@ -310,9 +317,16 @@ public virtual class sfab_FabricatedSObject {
     * Internal method that should not be called directly.
     */
     public virtual Map<String, Object> serialize() {
+        return serialize( false );
+    }
+
+    /**
+    * Internal method that should not be called directly.
+    */
+    public virtual Map<String, Object> serialize( Boolean persistable ) {
         Map<String, Object> fields = new Map<String, Object>();
         for (sfab_FabricatedSObjectNode node : nodes.values()) {
-            fields.putAll(node.serialize());
+            fields.putAll(node.serialize( persistable ));
         }
         return fields;
     }

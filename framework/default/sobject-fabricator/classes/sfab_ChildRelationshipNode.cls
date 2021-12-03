@@ -29,11 +29,11 @@ public class sfab_ChildRelationshipNode implements sfab_FabricatedSObjectNode {
         return children;
     }
 
-    public Map<String, Object> serialize() {
+    public Map<String, Object> serialize( Boolean persistable ) {
         List<Map<String, Object>> serializedChildren = new List<Map<String, Object>>();
 
         for (sfab_FabricatedSObject child : children) {
-            serializedChildren.add(child.serialize());
+            serializedChildren.add(child.serialize( persistable ));
         }
 
         return new Map<String, Object> {
