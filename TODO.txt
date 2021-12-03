@@ -19,8 +19,9 @@ SObject Fabricator:
         * sfab_FabricatedSObject
     * Do an end to end test for the fabricator committing stuff
         * Set unsettable fields, and a parent and child
-    * Make ortoo_FabricatedSObjectRegister a hidden singleton and remove the static nature from most of the methods
+
     * Add defaulting mechanism
+    * Make all the classes @isTest
 
     * Standards:
         * Always use when creating objects for storing in the database

@@ -1,23 +1,58 @@
+/**
+ * Provides the ability for the FabricatedSobject class to register objects so that they then can be persisted.
+ */
 public class ortoo_FabricatedSObjectRegister {
 
+	/**
+	 * Fabricate and persist all Sobjects that have been registered.
+	 */
+	public static void persist()
+	{
+		instance.persist();
+	}
+
+	/**
+	 * Register the given fabricated SObject so it is eligible to be persisted.
+	 *
+	 * Note, this method is internal to the fabricator library and should not be called directly.
+	 *
+	 * @param	sfab_FabricatedSObject	The object to register
+	 */
 	public static void registerObject( sfab_FabricatedSObject objectToRegister )
 	{
 		instance.registerObject( objectToRegister );
 	}
 
+	/**
+	 * Register a relationship between a child and a parent fabricated SObject by stating the relationship
+	 * from the child's perspective.
+	 * E.g.	contact, 'Account', account
+	 *
+	 * Note, this method is internal to the fabricator library and should not be called directly.
+	 *
+	 * @param	sfab_FabricatedSObject	The child object
+	 * @param	String					The name of the relationship from the child's perspective
+	 * @param	sfab_FabricatedSObject	The parent object
+	 */
 	public static void registerChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
 	{
 		instance.registerChildOfRelationship( child, relationship, parent );
 	}
 
+	/**
+	 * Register a relationship between a child and a parent fabricated SObject by stating the relationship
+	 * from the parent's perspective.
+	 * E.g.	account, 'Contacts', contact
+	 *
+	 * Note, this method is internal to the fabricator library and should not be called directly.
+	 *
+	 * @param	sfab_FabricatedSObject	The parent object
+	 * @param	String					The name of the relationship from the parent's perspective
+	 * @param	sfab_FabricatedSObject	The child object
+	 */
 	public static void registerParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
 	{
 		instance.registerParentOfRelationship( parent, relationship, child );
-	}
-
-	public static void persist()
-	{
-		instance.persist();
 	}
 
 	@testVisible
