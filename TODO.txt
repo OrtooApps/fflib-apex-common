@@ -9,12 +9,31 @@ TODO:
 
 
 SObject Fabricator:
-    * Test opportunity, opportunity line item, product, pricebook, pricebook entry?
+    * Test opportunity, opportunity line item, product, pricebook, pricebook entry
 
+    * Remove ortoo_FabricatedSObject
+    * Review changes to sfab_FabricatedSObject
+        * Ensure the registration is complete - there are probably gaps
 
+    * Unit Test
+        * DirectedGraph
+        * ortoo_FabricatedSObjectRegister
+        * sfab_ObjectDescriber.getFieldForParentRelationship
+        * sfab_ObjectDescriber.getFieldForChildRelationship
+        * ortoo_FabricatedSObject
+        * sfab_FabricatedSObject
 
+    * Standards:
+        * Always use when creating objects for storing in the database
+        * Create a class for each Sobject
+            * Default all mandatory fields that do not have an actual default set - other than parent relationships
+        * Implement a 'defaultXxxx' for every mandatory lookup / master detail relationship
+            * Use the ObjectRegister to get one
+            * Every one constructed in this way should also have a parent class defined.
+        *
     * Look at subclasses for specific objects
         * Setting default values
+
     * Setting default parents
         * Object register
     * Persisting the result
