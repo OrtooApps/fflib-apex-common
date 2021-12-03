@@ -664,6 +664,185 @@ public virtual class sfab_FabricatedSObject {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // sfab_FabricatedSObjectNode implementations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public class sfab_FieldValuePairNode implements sfab_FabricatedSObjectNode {
+
+        @testVisible protected Schema.SObjectField field;
+        @testVisible protected Object value;
+
+        public sfab_FieldValuePairNode(Schema.SObjectField field, Object value) {
+            this.field = field;
+            this.value = value;
+        }
+
+        public String getName() {
+            return field?.getDescribe().getName();
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public Map<String,Object> serialize( Boolean persistable ) {
+            if ( fieldIsBlob() ) {
+                return new Map<String,Object>(); // is handled by the post process instead as deserializing a blob field does not work (API 50)
+            } else {
+                return new Map<String,Object> { getName() => value };
+            }
+        }
+
+        public void postBuildProcess( Object objectToProcess ) {
+            if ( fieldIsBlob() ) {
+                Blob valueToSet;
+                if ( value instanceOf Blob ) {
+                    valueToSet = (Blob)value;
+                } else if ( value instanceOf String ) {
+                    valueToSet = Blob.valueOf( (String)value );
+                }
+                ((Sobject)objectToProcess).put( field, valueToSet );
+            }
+        }
+
+        private Boolean fieldIsBlob() {
+            return field.getDescribe().getType() == Schema.DisplayType.BASE64;
+        }
+    }
+
+    public class sfab_ChildRelationshipNode implements sfab_FabricatedSObjectNode {
+
+        @testVisible private String fieldName;
+        @testVisible private List<sfab_FabricatedSObject> children;
+
+        public sfab_ChildRelationshipNode( String fieldName ) {
+            this.fieldName = fieldName;
+            this.children = new List<sfab_FabricatedSObject>();
+        }
+
+        public sfab_ChildRelationshipNode(String fieldName, List<sfab_FabricatedSObject> children) {
+            this.fieldName = fieldName;
+            this.children = children;
+        }
+
+        public sfab_ChildRelationshipNode addChild( sfab_FabricatedSObject child ) {
+            this.children.add( child );
+            return this;
+        }
+
+        public String getName() {
+            return fieldName;
+        }
+
+        public Integer getNumberOfChildren() {
+            return children.size();
+        }
+
+        public List<sfab_FabricatedSObject> getChildren() {
+            return children;
+        }
+
+        public Map<String, Object> serialize( Boolean persistable ) {
+            List<Map<String, Object>> serializedChildren = new List<Map<String, Object>>();
+
+            for (sfab_FabricatedSObject child : children) {
+                serializedChildren.add(child.serialize( persistable ));
+            }
+
+            return new Map<String, Object> {
+                    fieldName => new Map<String, Object> {
+                            'totalSize' => children.size(),
+                            'done' => true,
+                            'records' => serializedChildren
+                    }
+            };
+        }
+
+        public void postBuildProcess( Object objectToProcess ) {
+            // Note: this relies on the deserialization of the Fabricated SObject returning the
+            // child objects in same order as the input map, otherwise the Blob field values
+            // will be applied to the wrong objects.  As far as we can tell, this is reliable
+            // at the time of writing.  If it becomes not the case, this will need re-writing
+            List<Sobject> childSobjects = ((Sobject)objectToProcess).getSObjects( fieldName );
+            for ( Integer i=0; i<childSobjects.size(); i++ ) {
+                children[i].postBuildProcess( childSobjects[i] );
+            }
+        }
+    }
+
+    public class sfab_ParentRelationshipNode implements sfab_FabricatedSObjectNode {
+
+        @testVisible private String fieldName;
+        @testVisible private sfab_FabricatedSObject parent;
+
+        public sfab_ParentRelationshipNode(String fieldName, sfab_FabricatedSObject parent) {
+            this.fieldName = fieldName;
+            this.parent = parent;
+        }
+
+        public String getName() {
+            return fieldName;
+        }
+
+        public sfab_FabricatedSObject getParent() {
+            return parent;
+        }
+
+        public sfab_FabricatedSObject set( String fieldName, Object value ) {
+            return parent.set( fieldName, value );
+        }
+
+        public sfab_FabricatedSObject add( String fieldName, sfab_FabricatedSObject fabricatedChild ) {
+            return parent.add( fieldName, fabricatedChild );
+        }
+
+        public Map<String, Object> serialize( Boolean persistable  ) {
+
+            Object serializedParent = parent.serialize( persistable );
+            Map<String,Object> fields = new Map<String,Object>();
+            if ( ! persistable )
+            {
+                fields.put( fieldName, serializedParent );
+            }
+            return fields;
+        }
+
+        public void postBuildProcess( Object objectToProcess ) {
+            parent.postBuildProcess( ((Sobject)objectToProcess).getSobject( fieldName ) );
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Stub implementations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
+        private Map<String, Object> serializedMap;
+        @testVisible private Boolean serializeInvoked = false;
+        @testVisible private Boolean serializeInvokedWith = null;
+
+        public sfab_FabricatedSObjectStub(Type sType) {
+            super(sType);
+            this.serializedMap = new Map<String, Object>();
+        }
+
+        public sfab_FabricatedSObjectStub(Type sType, Map<String, Object> serializedMap) {
+            super(sType);
+            this.serializedMap = serializedMap;
+        }
+
+        public override Map<String, Object> serialize( Boolean persistable ) {
+            serializeInvoked = true;
+            serializeInvokedWith = persistable;
+            return serializedMap;
+        }
+    }
+
     public class sfab_FabricatedSObjectNodeStub implements sfab_FabricatedSObjectNode  {
         public Boolean serializeInvoked = false;
         public Map<String, Object> serializedNode;
@@ -688,28 +867,6 @@ public virtual class sfab_FabricatedSObject {
         }
 
         public void postBuildProcess( Object objectToProcess ) {
-        }
-    }
-
-    public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
-        private Map<String, Object> serializedMap;
-        @testVisible private Boolean serializeInvoked = false;
-        @testVisible private Boolean serializeInvokedWith = null;
-
-        public sfab_FabricatedSObjectStub(Type sType) {
-            super(sType);
-            this.serializedMap = new Map<String, Object>();
-        }
-
-        public sfab_FabricatedSObjectStub(Type sType, Map<String, Object> serializedMap) {
-            super(sType);
-            this.serializedMap = serializedMap;
-        }
-
-        public override Map<String, Object> serialize( Boolean persistable ) {
-            serializeInvoked = true;
-            serializeInvokedWith = persistable;
-            return serializedMap;
         }
     }
 }
