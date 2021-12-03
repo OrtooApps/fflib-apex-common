@@ -11,16 +11,11 @@ TODO:
 SObject Fabricator:
     * Test opportunity, opportunity line item, product, pricebook, pricebook entry
 
-    * Remove ortoo_FabricatedSObject
     * Review changes to sfab_FabricatedSObject
         * Ensure the registration is complete - there are probably gaps
 
     * Unit Test
-        * DirectedGraph
         * ortoo_FabricatedSObjectRegister
-        * sfab_ObjectDescriber.getFieldForParentRelationship
-        * sfab_ObjectDescriber.getFieldForChildRelationship
-        * ortoo_FabricatedSObject
         * sfab_FabricatedSObject
 
     * Standards:
