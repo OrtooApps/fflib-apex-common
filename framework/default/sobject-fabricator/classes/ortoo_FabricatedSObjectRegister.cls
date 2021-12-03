@@ -1,105 +1,152 @@
 public class ortoo_FabricatedSObjectRegister {
 
-    private static List<sfab_FabricatedSObject> objectRegister = new List<sfab_FabricatedSObject>();
-    private static List<Relationship> relationships = new List<Relationship>();
-    private static Map<sfab_FabricatedSObject,Sobject> sobjectsByFabricated;
+	public static void registerObject( sfab_FabricatedSObject objectToRegister )
+	{
+		instance.registerObject( objectToRegister );
+	}
 
-    private static DirectedGraph graph = new DirectedGraph();
+	public static void registerChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
+	{
+		instance.registerChildOfRelationship( child, relationship, parent );
+	}
 
-    public static void registerObject( sfab_FabricatedSObject objectToRegister )
-    {
-        objectRegister.add( objectToRegister );
-        graph.addNode( objectToRegister.getSobjectType() );
-    }
+	public static void registerParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
+	{
+		instance.registerParentOfRelationship( parent, relationship, child );
+	}
 
-    public static void registerChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
-    {
-        relationships.add(
-            buildChildOfRelationship( child, relationship, parent )
-        );
-    }
+	public static void persist()
+	{
+		instance.persist();
+	}
 
-    public static void registerParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
-    {
-        relationships.add(
-            buildParentOfRelationship( parent, relationship, child )
-        );
-    }
+	@testVisible
+	private static RegisterInstance instance
+	{
+		get
+		{
+			if ( instance == null )
+			{
+				instance = new RegisterInstance();
+			}
+			return instance;
+		}
+		set;
+	}
 
-    public static void persist()
-    {
-        // build all the sobjects, and key them on the fabricated version
-        sobjectsByFabricated = new Map<sfab_FabricatedSObject,Sobject>();
-        for ( sfab_FabricatedSObject thisFabricatedObject : objectRegister )
-        {
-            Sobject objectToStore = thisFabricatedObject.toPersistableSobject();
-            sobjectsByFabricated.put( thisFabricatedObject, objectToStore );
-        }
+	@testVisible
+	private inherited sharing class RegisterInstance
+	{
+		private List<sfab_FabricatedSObject> objectRegister = new List<sfab_FabricatedSObject>();
+		private List<Relationship> relationships = new List<Relationship>();
+		private Map<sfab_FabricatedSObject,Sobject> sobjectsByFabricated;
+		private DirectedGraph graph = new DirectedGraph();
 
-        // work out the order to do things in, using the directed graph
-        List<Object> childToParentTypes = graph.generateSorted();
+		public void registerObject( sfab_FabricatedSObject objectToRegister )
+		{
+			objectRegister.add( objectToRegister );
+			graph.addNode( objectToRegister.getSobjectType() );
+		}
 
-        List<SobjectType> parentToChildTypes = new List<SobjectType>();
-        for( Integer i = childToParentTypes.size() - 1; i >= 0; i-- )
-        {
-            parentToChildTypes.add( (SobjectType)childToParentTypes[i] );
-        }
+		public void registerChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
+		{
+			relationships.add(
+				buildChildOfRelationship( child, relationship, parent )
+			);
+			graph.addRelationship( child.getSobjectType(), parent.getSobjectType() );
+		}
 
-        // register all the inserts
-        ortoo_SobjectUnitOfWork uow = new ortoo_SobjectUnitOfWork( parentToChildTypes );
-        for ( sfab_FabricatedSObject thisFabricatedObject : objectRegister )
-        {
-            uow.registerNew( sobjectsByFabricated.get( thisFabricatedObject ) );
-        }
+		public void registerParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
+		{
+			relationships.add(
+				buildParentOfRelationship( parent, relationship, child )
+			);
+			graph.addRelationship( child.getSobjectType(), parent.getSobjectType() );
+		}
 
-        // register all the relationships
-        for ( Relationship thisRelationship : relationships )
-        {
-            thisRelationship.register( uow );
-        }
+		public void persist()
+		{
+			ortoo_SObjectUnitOfWork uow = (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts() );
 
-        uow.commitWork();
-    }
+			buildObjectsByFabricated();
+			registerInserts( uow );
+			registerRelationships( uow );
+			uow.commitWork();
+		}
 
-    private void clearRegister()
-    {
-        objectRegister = new List<sfab_FabricatedSObject>();
-        relationships = new List<Relationship>();
-        sobjectsByFabricated = null;
-    }
+		@testVisible
+		private List<SobjectType> getOrderOfInserts()
+		{
+			List<Object> childToParentTypes = graph.generateSorted();
 
-    private inherited sharing class Relationship
-    {
-        sfab_FabricatedSObject child;
-        sfab_FabricatedSObject parent;
-        SobjectField relationship;
+			List<SobjectType> parentToChildTypes = new List<SobjectType>();
+			for( Integer i = childToParentTypes.size() - 1; i >= 0; i-- )
+			{
+				parentToChildTypes.add( (SobjectType)childToParentTypes[i] );
+			}
+			return parentToChildTypes;
+		}
 
-        public Relationship( sfab_FabricatedSObject child, SobjectField relationship, sfab_FabricatedSObject parent )
-        {
-            this.parent = parent;
-            this.relationship = relationship;
-            this.child = child;
-            graph.addRelationship( child.getSobjectType(), parent.getSobjectType() );
-        }
+		private void buildObjectsByFabricated()
+		{
+			sobjectsByFabricated = new Map<sfab_FabricatedSObject,Sobject>();
+			for ( sfab_FabricatedSObject thisFabricatedObject : objectRegister )
+			{
+				Sobject objectToStore = thisFabricatedObject.toPersistableSobject();
+				sobjectsByFabricated.put( thisFabricatedObject, objectToStore );
+			}
+		}
 
-        public void register( ortoo_SobjectUnitOfWork uow )
-        {
-            Sobject parentSobject = sobjectsByFabricated.get( parent );
-            Sobject childSobject  = sobjectsByFabricated.get( child );
+		private void registerInserts( ortoo_SobjectUnitOfWork uow )
+		{
+			for ( sfab_FabricatedSObject thisFabricatedObject : objectRegister )
+			{
+				uow.registerNew( sobjectsByFabricated.get( thisFabricatedObject ) );
+			}
+		}
 
-            uow.registerRelationship( childSobject, relationship, parentSobject );
-        }
-    }
+		private void registerRelationships( ortoo_SobjectUnitOfWork uow )
+		{
+			for ( Relationship thisRelationship : relationships )
+			{
+				thisRelationship.register( uow, sobjectsByFabricated );
+			}
+		}
+	}
 
-    public static Relationship buildChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
-    {
-        SobjectField relationshipField = new sfab_ObjectDescriber().getFieldForParentRelationship( child.getSobjectName(), relationship );
-        return new Relationship( child, relationshipField, parent );
-    }
+	private inherited sharing class Relationship
+	{
+		sfab_FabricatedSObject child;
+		sfab_FabricatedSObject parent;
+		SobjectField relationship;
 
-    public static Relationship buildParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
-    {
-        SobjectField relationshipField = new sfab_ObjectDescriber().getFieldForChildRelationship( parent.getSobjectName(), relationship );
-        return new Relationship( child, relationshipField, parent );
-    }
+		public Relationship( sfab_FabricatedSObject child, SobjectField relationship, sfab_FabricatedSObject parent )
+		{
+			this.parent = parent;
+			this.relationship = relationship;
+			this.child = child;
+		}
+
+		public void register( ortoo_SobjectUnitOfWork uow, Map<sfab_FabricatedSObject,Sobject> sobjectsByFabricated )
+		{
+			Sobject parentSobject = sobjectsByFabricated.get( parent );
+			Sobject childSobject  = sobjectsByFabricated.get( child );
+
+			uow.registerRelationship( childSobject, relationship, parentSobject );
+		}
+	}
+
+	// Would be on Relationship if inner classes were allowed to have static methods
+	private static Relationship buildChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
+	{
+		SobjectField relationshipField = new sfab_ObjectDescriber().getFieldForParentRelationship( child.getSobjectName(), relationship );
+		return new Relationship( child, relationshipField, parent );
+	}
+
+	// Would be on Relationship if inner classes were allowed to have static methods
+	private static Relationship buildParentOfRelationship( sfab_FabricatedSObject parent, String relationship, sfab_FabricatedSObject child )
+	{
+		SobjectField relationshipField = new sfab_ObjectDescriber().getFieldForChildRelationship( parent.getSobjectName(), relationship );
+		return new Relationship( child, relationshipField, parent );
+	}
 }

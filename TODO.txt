@@ -17,6 +17,10 @@ SObject Fabricator:
     * Unit Test
         * ortoo_FabricatedSObjectRegister
         * sfab_FabricatedSObject
+    * Do an end to end test for the fabricator committing stuff
+        * Set unsettable fields, and a parent and child
+    * Make ortoo_FabricatedSObjectRegister a hidden singleton and remove the static nature from most of the methods
+    * Add defaulting mechanism
 
     * Standards:
         * Always use when creating objects for storing in the database
@@ -25,7 +29,7 @@ SObject Fabricator:
         * Implement a 'defaultXxxx' for every mandatory lookup / master detail relationship
             * Use the ObjectRegister to get one
             * Every one constructed in this way should also have a parent class defined.
-        *
+
     * Look at subclasses for specific objects
         * Setting default values
 
