@@ -1,4 +1,5 @@
-public class sfab_ParentRelationshipNode implements sfab_FabricatedSObjectNode {
+public class sfab_ParentRelationshipNode implements sfab_FabricatedSObject.sfab_FabricatedSObjectNode {
+
     @testVisible private String fieldName;
     @testVisible private sfab_FabricatedSObject parent;
 

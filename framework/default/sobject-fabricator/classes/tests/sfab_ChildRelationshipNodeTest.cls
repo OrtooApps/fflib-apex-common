@@ -2,8 +2,8 @@
 private class sfab_ChildRelationshipNodeTest {
     @isTest
     private static void serialize_whenPassedTrue_expectSerializeInvokedOnChildren() {
-        sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObjectStub(Account.class);
-        sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObjectStub(Account.class);
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class);
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class);
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject> { child1, child2 });
 
         node.serialize( true );
@@ -15,8 +15,8 @@ private class sfab_ChildRelationshipNodeTest {
     }
     @isTest
     private static void serialize_whenPassedFalse_expectSerializeInvokedOnChildren() {
-        sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObjectStub(Account.class);
-        sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObjectStub(Account.class);
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class);
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class);
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject> { child1, child2 });
 
         node.serialize( false );
@@ -39,9 +39,9 @@ private class sfab_ChildRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedTrue_expectTotalSizeMapKey() {
-        sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObjectStub> {
-                new sfab_FabricatedSObjectStub(Account.class),
-                new sfab_FabricatedSObjectStub(Account.class)
+        sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject.sfab_FabricatedSObjectStub> {
+                new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class),
+                new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class)
         });
 
         Map<String, Object> builtNode = node.serialize( true );
@@ -52,8 +52,8 @@ private class sfab_ChildRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedTrue_expectSerializedChildrenMap() {
-        sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
-        sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject> { child1, child2 });
 
         List<Map<String, Object>> serializedChildren = new List<Map<String, Object>>();
@@ -77,9 +77,9 @@ private class sfab_ChildRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedFalse_expectTotalSizeMapKey() {
-        sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObjectStub> {
-                new sfab_FabricatedSObjectStub(Account.class),
-                new sfab_FabricatedSObjectStub(Account.class)
+        sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject.sfab_FabricatedSObjectStub> {
+                new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class),
+                new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class)
         });
 
         Map<String, Object> builtNode = node.serialize( false );
@@ -90,8 +90,8 @@ private class sfab_ChildRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedFalse_expectSerializedChildrenMap() {
-        sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
-        sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject> { child1, child2 });
 
         List<Map<String, Object>> serializedChildren = new List<Map<String, Object>>();
@@ -106,8 +106,8 @@ private class sfab_ChildRelationshipNodeTest {
     @isTest
     private static void getNumberOfChildren_expectNumberOfChildrenAdded() {
 
-        sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
-        sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', new List<sfab_FabricatedSObject> { child1, child2 });
 
         System.assertEquals(2, node.getNumberOfChildren());
@@ -116,9 +116,9 @@ private class sfab_ChildRelationshipNodeTest {
     @isTest
     private static void getChildren_expectTheChildren() {
 
-        sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
-        sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
-        List<sfab_FabricatedSObjectStub> children = new List<sfab_FabricatedSObjectStub> { child1, child2 };
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub child2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' });
+        List<sfab_FabricatedSObject.sfab_FabricatedSObjectStub> children = new List<sfab_FabricatedSObject.sfab_FabricatedSObjectStub> { child1, child2 };
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r', children);
 
         System.assertEquals(children, node.getChildren());
@@ -140,8 +140,8 @@ private class sfab_ChildRelationshipNodeTest {
     private static void addChild_expectAddsAChildNode() {
 
         sfab_ChildRelationshipNode node = new sfab_ChildRelationshipNode('Accounts__r' );
-        node.addChild( new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' } ) );
-        node.addChild( new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' } ) );
+        node.addChild( new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-1' } ) );
+        node.addChild( new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo-2' } ) );
 
         System.assertEquals(2, node.getNumberOfChildren());
     }

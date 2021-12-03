@@ -1,5 +1,11 @@
 public virtual class sfab_FabricatedSObject {
 
+    public interface sfab_FabricatedSObjectNode {
+        Map<String, Object> serialize( Boolean persistable );
+        void postBuildProcess( Object objectToProcess );
+        String getName();
+    }
+
     private Type sType;
     @testVisible protected Map<String,sfab_FabricatedSObjectNode> nodes = new Map<String,sfab_FabricatedSObjectNode>();
 
@@ -655,6 +661,55 @@ public virtual class sfab_FabricatedSObject {
         */
         public Boolean isAParentNavigation() {
             return fullFieldName.contains( '.' );
+        }
+    }
+
+    public class sfab_FabricatedSObjectNodeStub implements sfab_FabricatedSObjectNode  {
+        public Boolean serializeInvoked = false;
+        public Map<String, Object> serializedNode;
+        private String name;
+
+        public sfab_FabricatedSObjectNodeStub( String name ) {
+            serializedNode = new Map<String, Object>();
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public sfab_FabricatedSObjectNodeStub(Map<String, Object> serializedNode) {
+            this.serializedNode = serializedNode;
+        }
+
+        public Map<String, Object> serialize( Boolean persistable ) {
+            serializeInvoked = true;
+            return serializedNode;
+        }
+
+        public void postBuildProcess( Object objectToProcess ) {
+        }
+    }
+
+    public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
+        private Map<String, Object> serializedMap;
+        @testVisible private Boolean serializeInvoked = false;
+        @testVisible private Boolean serializeInvokedWith = null;
+
+        public sfab_FabricatedSObjectStub(Type sType) {
+            super(sType);
+            this.serializedMap = new Map<String, Object>();
+        }
+
+        public sfab_FabricatedSObjectStub(Type sType, Map<String, Object> serializedMap) {
+            super(sType);
+            this.serializedMap = serializedMap;
+        }
+
+        public override Map<String, Object> serialize( Boolean persistable ) {
+            serializeInvoked = true;
+            serializeInvokedWith = persistable;
+            return serializedMap;
         }
     }
 }

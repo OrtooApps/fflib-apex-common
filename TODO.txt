@@ -13,9 +13,9 @@ SObject Fabricator:
 
     * Review changes to sfab_FabricatedSObject
         * Ensure the registration is complete - there are probably gaps
+        * see sfab_FabricatedSObject.addParentChild
 
     * Unit Test
-        * ortoo_FabricatedSObjectRegister
         * sfab_FabricatedSObject
     * Do an end to end test for the fabricator committing stuff
         * Set unsettable fields, and a parent and child

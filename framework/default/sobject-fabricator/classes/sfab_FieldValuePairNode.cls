@@ -1,4 +1,4 @@
-public class sfab_FieldValuePairNode implements sfab_FabricatedSObjectNode {
+public class sfab_FieldValuePairNode implements sfab_FabricatedSObject.sfab_FabricatedSObjectNode {
     @testVisible protected Schema.SObjectField field;
     @testVisible protected Object value;
 

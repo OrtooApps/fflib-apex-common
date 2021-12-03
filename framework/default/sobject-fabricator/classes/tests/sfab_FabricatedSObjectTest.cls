@@ -30,9 +30,9 @@ private class sfab_FabricatedSObjectTest {
 
     @isTest
     private static void toSObject_expectSerializeInvokedOnNodes() {
-        sfab_FabricatedSObjectNodeStub node1 = new sfab_FabricatedSObjectNodeStub( 'node1' );
-        sfab_FabricatedSObjectNodeStub node2 = new sfab_FabricatedSObjectNodeStub( 'node2' );
-        SObject sObj = new sfab_FabricatedSObject(Account.class, new List<sfab_FabricatedSObjectNode> { node1, node2 }).toSObject();
+        sfab_FabricatedSObject.sfab_FabricatedSObjectNodeStub node1 = new sfab_FabricatedSObject.sfab_FabricatedSObjectNodeStub( 'node1' );
+        sfab_FabricatedSObject.sfab_FabricatedSObjectNodeStub node2 = new sfab_FabricatedSObject.sfab_FabricatedSObjectNodeStub( 'node2' );
+        SObject sObj = new sfab_FabricatedSObject(Account.class, new List<sfab_FabricatedSObject.sfab_FabricatedSObjectNode> { node1, node2 }).toSObject();
         System.assert(node1.serializeInvoked);
         System.assert(node2.serializeInvoked);
     }
@@ -40,8 +40,8 @@ private class sfab_FabricatedSObjectTest {
     @isTest
     private static void toSObject_expectProperties() {
         Map<String, Object> fields = new Map<String, Object> { 'Id' => 'id-1', 'Name' => 'Foo' };
-        sfab_FabricatedSObjectNodeStub node = new sfab_FabricatedSObjectNodeStub(fields);
-        SObject sObj = new sfab_FabricatedSObject(Account.class, new List<sfab_FabricatedSObjectNode> { node }).toSObject();
+        sfab_FabricatedSObject.sfab_FabricatedSObjectNodeStub node = new sfab_FabricatedSObject.sfab_FabricatedSObjectNodeStub(fields);
+        SObject sObj = new sfab_FabricatedSObject(Account.class, new List<sfab_FabricatedSObject.sfab_FabricatedSObjectNode> { node }).toSObject();
         System.assertEquals(fields.get('Id'), sObj.Id);
         System.assertEquals(fields.get('Name'), sObj.get('Name'));
     }

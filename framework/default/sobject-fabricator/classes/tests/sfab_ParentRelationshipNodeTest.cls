@@ -2,7 +2,7 @@
 private class sfab_ParentRelationshipNodeTest {
     @isTest
     private static void serialize_whenPassedTrue_expectSerializeInvokedOnParent() {
-        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class);
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class);
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
         node.serialize( true );
@@ -13,7 +13,7 @@ private class sfab_ParentRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedFalse_expectSerializeInvokedOnParent() {
-        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class);
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class);
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
         node.serialize( false );
@@ -24,7 +24,7 @@ private class sfab_ParentRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedFalse_expectSerializedParentMap() {
-        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
         Map<String, Object> builtNode = node.serialize( false );
@@ -34,7 +34,7 @@ private class sfab_ParentRelationshipNodeTest {
 
     @isTest
     private static void serialize_whenPassedTrue_expectSerializedParentMap() {
-        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
         Map<String, Object> builtNode = node.serialize( true );
@@ -44,7 +44,7 @@ private class sfab_ParentRelationshipNodeTest {
 
     @isTest
     private static void getName_expectParentReturned() {
-        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
         System.assertEquals( 'Account__r', node.getName() );
@@ -52,7 +52,7 @@ private class sfab_ParentRelationshipNodeTest {
 
     @isTest
     private static void getParent_expectParentReturned() {
-        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
+        sfab_FabricatedSObject.sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObject.sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
         System.assertEquals( fabricatedParent, node.getParent() );
