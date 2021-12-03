@@ -271,4 +271,53 @@ public with sharing class sfab_ObjectDescriberTest {
                                                 .getObjectTypeForChildRelationship( 'Invalid', 'Account' );
         System.assertEquals( null, targetObjectType );
     }
+
+    @isTest
+    private static void getFieldForChildRelationship_whenGivenValidNames_expectTheField() // NOPMD: Test method name format
+    {
+        SObjectField field = new sfab_ObjectDescriber()
+                                                .getFieldForChildRelationship( 'Account', 'Contacts' );
+        System.assertEquals( Contact.AccountId, field );
+    }
+
+    @isTest
+    private static void getFieldForChildRelationship_whenGivenAnInvalidRelationship_expectNull() // NOPMD: Test method name format
+    {
+        SObjectField field = new sfab_ObjectDescriber()
+                                                .getFieldForChildRelationship( 'Account', 'ContactLike' );
+        System.assertEquals( null, field );
+    }
+
+    @isTest
+    private static void getFieldForChildRelationship_whenGivenAnInvalidObject_expectNull() // NOPMD: Test method name format
+    {
+        SObjectField field = new sfab_ObjectDescriber()
+                                                .getFieldForChildRelationship( 'Accountant', 'Contacts' );
+        System.assertEquals( null, field );
+    }
+
+
+    @isTest
+    private static void getFieldForParentRelationship_whenGivenValidNames_expectTheField() // NOPMD: Test method name format
+    {
+        SObjectField field = new sfab_ObjectDescriber()
+                                                .getFieldForParentRelationship( 'Contact', 'Account' );
+        System.assertEquals( Contact.AccountId, field );
+    }
+
+    @isTest
+    private static void getFieldForParentRelationship_whenGivenAnInvalidRelationship_expectNull() // NOPMD: Test method name format
+    {
+        SObjectField field = new sfab_ObjectDescriber()
+                                                .getFieldForParentRelationship( 'Contact', 'Accooooooo' );
+        System.assertEquals( null, field );
+    }
+
+    @isTest
+    private static void getFieldForParentRelationship_whenGivenAnInvalidObject_expectNull() // NOPMD: Test method name format
+    {
+        SObjectField field = new sfab_ObjectDescriber()
+                                                .getFieldForParentRelationship( 'Accountant', 'Account' );
+        System.assertEquals( null, field );
+    }
 }

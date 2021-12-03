@@ -9,10 +9,7 @@ public class ortoo_FabricatedSObjectRegister {
     public static void registerObject( sfab_FabricatedSObject objectToRegister )
     {
         objectRegister.add( objectToRegister );
-        if ( objectToRegister instanceof ortoo_FabricatedSobject )
-        {
-            graph.addNode( ((ortoo_FabricatedSobject)objectToRegister).getSobjectType() );
-        }
+        graph.addNode( objectToRegister.getSobjectType() );
     }
 
     public static void registerChildOfRelationship( sfab_FabricatedSObject child, String relationship, sfab_FabricatedSObject parent )
@@ -82,11 +79,7 @@ public class ortoo_FabricatedSObjectRegister {
             this.parent = parent;
             this.relationship = relationship;
             this.child = child;
-
-            if ( child instanceOf ortoo_FabricatedSobject && parent instanceOf ortoo_FabricatedSobject )
-            {
-                graph.addRelationship( ((ortoo_FabricatedSobject)child).getSobjectType(), ((ortoo_FabricatedSobject)parent).getSobjectType() );
-            }
+            graph.addRelationship( child.getSobjectType(), parent.getSobjectType() );
         }
 
         public void register( ortoo_SobjectUnitOfWork uow )

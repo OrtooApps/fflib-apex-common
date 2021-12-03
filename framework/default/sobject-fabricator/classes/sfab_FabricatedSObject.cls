@@ -26,6 +26,7 @@ public virtual class sfab_FabricatedSObject {
     */
     public sfab_FabricatedSObject( Type sType ) {
         this.sType = sType;
+        ortoo_FabricatedSObjectRegister.registerObject( this );
     }
 
     /**
@@ -340,12 +341,19 @@ public virtual class sfab_FabricatedSObject {
         return String.valueOf( sType );
     }
 
+    // TODO: document
+    // TODO: test
+    public SobjectType getSobjectType()
+    {
+        return SobjectUtils.getSobjectType( getSobjectName() );
+    }
+
     /**
     * Given a field name, will split it into its parent and child references, checking that the parent relatioonship
     * exists and defaulting the field to an empty version of the appropriate object.
     *
-    * @param String - The name of the field to split and defaul
-    * @return Map<String,String> - The
+    * @param String - The name of the field to split and default
+    * @return sfab_FieldNameSplitter
     */
     private sfab_FieldNameSplitter defaultParentField( String fieldName ) {
 

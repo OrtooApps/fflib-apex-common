@@ -31,6 +31,8 @@ public inherited sharing class DirectedGraph
 	 */
 	public DirectedGraph addRelationship( Object child, Object parent )
 	{
+		Contract.requires( parentsByChildren.containsKey( child ), 'addRelationship called with a child that has not been added as a node (' + child + ')' );
+		Contract.requires( parentsByChildren.containsKey( parent ), 'addRelationship called with a parent that has not been added as a node (' + parent + ')' );
 		parentsByChildren.get( child ).add( parent );
 		return this;
 	}
