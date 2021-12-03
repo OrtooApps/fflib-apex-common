@@ -1,6 +1,7 @@
 public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
     private Map<String, Object> serializedMap;
     @testVisible private Boolean serializeInvoked = false;
+    @testVisible private Boolean serializeInvokedWith = null;
 
     public sfab_FabricatedSObjectStub(Type sType) {
         super(sType);
@@ -14,6 +15,7 @@ public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
 
     public override Map<String, Object> serialize( Boolean persistable ) {
         serializeInvoked = true;
+        serializeInvokedWith = persistable;
         return serializedMap;
     }
 }

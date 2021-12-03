@@ -1,9 +1,16 @@
 @isTest
 private class sfab_FieldValuePairNodeTest {
     @isTest
-    private static void serialize_expectMap() {
+    private static void serialize_whenPassedTrue_expectMap() {
         sfab_FieldValuePairNode node = new sfab_FieldValuePairNode(Account.Name, 'Foo');
-        Map<String, Object> builtNode = node.serialize();
+        Map<String, Object> builtNode = node.serialize( true );
+
+        System.assertEquals(new Map<String, Object> { 'Name' => 'Foo' }, builtNode);
+    }
+    @isTest
+    private static void serialize_whenPassedFalse_expectMap() {
+        sfab_FieldValuePairNode node = new sfab_FieldValuePairNode(Account.Name, 'Foo');
+        Map<String, Object> builtNode = node.serialize( false );
 
         System.assertEquals(new Map<String, Object> { 'Name' => 'Foo' }, builtNode);
     }

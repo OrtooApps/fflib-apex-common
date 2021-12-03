@@ -1,23 +1,45 @@
 @isTest
 private class sfab_ParentRelationshipNodeTest {
     @isTest
-    private static void serialize_expectSerializeInvokedOnParent() {
+    private static void serialize_whenPassedTrue_expectSerializeInvokedOnParent() {
         sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class);
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
-        node.serialize();
+        node.serialize( true );
 
         System.assert(fabricatedParent.serializeInvoked);
+        System.assert(fabricatedParent.serializeInvokedWith);
     }
 
     @isTest
-    private static void serialize_expectSerializedParentMap() {
+    private static void serialize_whenPassedFalse_expectSerializeInvokedOnParent() {
+        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class);
+        sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
+
+        node.serialize( false );
+
+        System.assert(fabricatedParent.serializeInvoked);
+        System.assert(!fabricatedParent.serializeInvokedWith);
+    }
+
+    @isTest
+    private static void serialize_whenPassedFalse_expectSerializedParentMap() {
         sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
         sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
 
-        Map<String, Object> builtNode = node.serialize();
+        Map<String, Object> builtNode = node.serialize( false );
 
         System.assertEquals(new Map<String, Object> { 'Account__r' => fabricatedParent.serialize() }, builtNode);
+    }
+
+    @isTest
+    private static void serialize_whenPassedTrue_expectSerializedParentMap() {
+        sfab_FabricatedSObjectStub fabricatedParent = new sfab_FabricatedSObjectStub(Account.class, new Map<String, Object> { 'Name' => 'Foo' });
+        sfab_ParentRelationshipNode node = new sfab_ParentRelationshipNode('Account__r', fabricatedParent);
+
+        Map<String, Object> builtNode = node.serialize( true );
+
+        System.assertEquals(new Map<String, Object>(), builtNode);
     }
 
     @isTest
