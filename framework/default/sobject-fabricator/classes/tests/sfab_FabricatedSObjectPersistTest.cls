@@ -169,5 +169,4 @@ private class sfab_FabricatedSObjectPersistTest {
 	{
 		return[ SELECT ParentId, Title FROM Note ORDER BY Title];
 	}
-
 }

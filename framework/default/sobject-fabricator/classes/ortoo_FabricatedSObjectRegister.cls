@@ -1,5 +1,8 @@
 /**
  * Provides the ability for the FabricatedSobject class to register objects so that they then can be persisted.
+ *
+ * Is an extension to sfab_FabricatedSobject, which does not provide persistence.
+ *
  */
 public class ortoo_FabricatedSObjectRegister {
 
