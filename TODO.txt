@@ -4,10 +4,6 @@ Licenses that are needed with the source code and binary:
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
-TODO:
-* Watch recording of the UI for notifications
-
-
 SObject Fabricator:
     * Test opportunity, opportunity line item, product, pricebook, pricebook entry
 
@@ -15,10 +11,12 @@ SObject Fabricator:
         * Ensure the registration is complete - there are probably gaps
         * see sfab_FabricatedSObject.addParentChild
 
+    * Why do we need the null check in the post-process?
+
     * Unit Test
         * sfab_FabricatedSObject
-    * Do an end to end test for the fabricator committing stuff
-        * Set unsettable fields, and a parent and child
+    * Add docs to objectdescriber and sfab_FabricatedSObject
+        * Particularly a reference to the original framework
 
     * Add defaulting mechanism
     * Make all the classes @isTest

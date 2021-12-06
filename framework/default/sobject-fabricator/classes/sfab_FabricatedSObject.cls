@@ -298,14 +298,22 @@ public virtual class sfab_FabricatedSObject {
     * @return SObject - The built SObject
     */
     public SObject toSObject() {
-        SObject newObject = (SObject)JSON.deserialize(JSON.serialize(serialize()), sType);
-        postBuildProcess( newObject );
-        return newObject;
+        return internalToSobject( false );
     }
 
+    /**
+    * Builds the SObject that this sfab_FabricatedSObject represents, in a form that means it can be persisted
+    *
+    * @return SObject - The built SObject
+    */
     public SObject toPersistableSobject()
     {
-        SObject newObject = (SObject)JSON.deserialize(JSON.serialize(serialize(true)), sType);
+        return internalToSobject( true );
+    }
+
+    private Sobject internalToSobject( Boolean persistable )
+    {
+        SObject newObject = (SObject)JSON.deserialize( JSON.serialize( serialize( persistable ) ), sType );
         postBuildProcess( newObject );
         return newObject;
     }
@@ -316,7 +324,7 @@ public virtual class sfab_FabricatedSObject {
     */
     public void postBuildProcess( SObject objectToProcess ) {
         for ( String nodeName : nodes.keySet() ) {
-            nodes.get( nodeName ).postBuildProcess( objectToProcess );
+            nodes.get( nodeName )?.postBuildProcess( objectToProcess );
         }
     }
 
@@ -689,8 +697,15 @@ public virtual class sfab_FabricatedSObject {
         }
 
         public Map<String,Object> serialize( Boolean persistable ) {
+
+            Map<String,Object> noNodes = new Map<String,Object>();
+
+            if ( persistable && getName().equals( 'Id' ) ) {
+                System.debug( 'Id with the value "' + value + '" stripped from object' );
+                return noNodes; // Ids cannot be set when persisting an object - everything is an insert
+            }
             if ( fieldIsBlob() ) {
-                return new Map<String,Object>(); // is handled by the post process instead as deserializing a blob field does not work (API 50)
+                return noNodes; // is handled by the post process instead as deserializing a blob field does not work (API 50)
             } else {
                 return new Map<String,Object> { getName() => value };
             }
@@ -766,9 +781,14 @@ public virtual class sfab_FabricatedSObject {
             // child objects in same order as the input map, otherwise the Blob field values
             // will be applied to the wrong objects.  As far as we can tell, this is reliable
             // at the time of writing.  If it becomes not the case, this will need re-writing
+            if ( objectToProcess == null )
+            {
+                return; // TODO: why is this needed - why is this sometimes null?
+            }
+
             List<Sobject> childSobjects = ((Sobject)objectToProcess).getSObjects( fieldName );
             for ( Integer i=0; i<childSobjects.size(); i++ ) {
-                children[i].postBuildProcess( childSobjects[i] );
+                children[i]?.postBuildProcess( childSobjects[i] );
             }
         }
     }
