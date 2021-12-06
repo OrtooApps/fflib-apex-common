@@ -1166,4 +1166,16 @@ private class sfab_FabricatedSObjectTest {
 
         System.assertEquals( fabricatedParent, node.getParent() );
     }
+
+    @isTest
+    private static void getSobjectType_whenTypeIsSet_willReturnTheTypeAsAnSObjectType() {
+        sfab_FabricatedSObject obj = new sfab_FabricatedSObject( Contact.class );
+        System.assertEquals( Contact.sobjectType, obj.getSobjectType(), 'getSobjectType, when type is set, will return the type as an SObjectType' );
+    }
+
+    @isTest
+    private static void getSobjectName_whenTypeIsSet_willReturnTheTypeAsAString() {
+        sfab_FabricatedSObject obj = new sfab_FabricatedSObject( Contact.class );
+        System.assertEquals( 'Contact', obj.getSobjectName(), 'getSobjectName, when type is set, will return the type as a String' );
+    }
 }

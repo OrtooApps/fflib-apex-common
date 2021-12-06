@@ -355,8 +355,11 @@ public virtual class sfab_FabricatedSObject {
         return String.valueOf( sType );
     }
 
-    // TODO: document
-    // TODO: test
+    /**
+    * Returns the SObjectType representation of the SObject Type that this sfab_FabricatedSObject represents
+    *
+    * @return String - The name of the SObject Type
+    */
     public SobjectType getSobjectType()
     {
         return SobjectUtils.getSobjectType( getSobjectName() );
@@ -467,7 +470,6 @@ public virtual class sfab_FabricatedSObject {
     private sfab_FabricatedSObject addParentChild( String fieldName, sfab_FabricatedSObject fabricatedChild ) {
         sfab_FieldNameSplitter fields = defaultParentField( fieldName );
         getParentRelationshipNode( fields.getParentFieldName() ).add( fields.getChildFieldName(), fabricatedChild );
-        // TODO: add the relatioship here too
         return this;
     }
 

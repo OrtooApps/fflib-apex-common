@@ -7,19 +7,9 @@ Licenses that are needed with the source code and binary:
 SObject Fabricator:
     * Test opportunity, opportunity line item, product, pricebook, pricebook entry
 
-    * Review changes to sfab_FabricatedSObject
-        * Ensure the registration is complete - there are probably gaps
-        * see sfab_FabricatedSObject.addParentChild
-
     * Why do we need the null check in the post-process?
 
-    * Unit Test
-        * sfab_FabricatedSObject
-    * Add docs to objectdescriber and sfab_FabricatedSObject
-        * Particularly a reference to the original framework
-
     * Add defaulting mechanism
-    * Make all the classes @isTest
 
     * Standards:
         * Always use when creating objects for storing in the database
