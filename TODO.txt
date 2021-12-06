@@ -4,28 +4,6 @@ Licenses that are needed with the source code and binary:
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
-SObject Fabricator:
-    * Test opportunity, opportunity line item, product, pricebook, pricebook entry
-
-    * Why do we need the null check in the post-process?
-
-    * Add defaulting mechanism
-
-    * Standards:
-        * Always use when creating objects for storing in the database
-        * Create a class for each Sobject
-            * Default all mandatory fields that do not have an actual default set - other than parent relationships
-        * Implement a 'defaultXxxx' for every mandatory lookup / master detail relationship
-            * Use the ObjectRegister to get one
-            * Every one constructed in this way should also have a parent class defined.
-
-    * Look at subclasses for specific objects
-        * Setting default values
-
-    * Setting default parents
-        * Object register
-    * Persisting the result
-
 Look at the use of 'MockDatabase' in fflib
 
 * To finalise the core architecture:
