@@ -39,6 +39,7 @@ public inherited sharing class SobjectUtils
 		return ((SObject)Type.forName( sobjectName )?.newInstance())?.getSObjectType();
 	}
 
+	// TODO: use the describe on the object?
 	/**
 	 * Given an instance of an SObject, will return the developer / API name of the SObject (e.g. Contact)
 	 *
@@ -69,5 +70,12 @@ public inherited sharing class SobjectUtils
 
 		Contract.ensures( sobjectName != null, 'getSobjectName returned with a null sobjectName' );
 		return sobjectName;
+	}
+
+	// TODO: document
+	// TODO: test
+	public static DescribeSObjectResult getSObjectDescribeResult( Sobject record )
+	{
+		return record.getSObjectType().getDescribe();
 	}
 }

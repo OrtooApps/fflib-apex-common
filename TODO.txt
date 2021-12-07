@@ -13,9 +13,6 @@ Look at the use of 'MockDatabase' in fflib
 Add reference to disabling individual trigger events in tests:
     https://andyinthecloud.com/2016/04/13/disabling-trigger-events-in-apex-enterprise-patterns/
 
-Add to Framework plan
-    * Ability to configure different factory mappings per user / permission set / custom permission / whatever
-
 Add to documentation
     * Wrapping exceptions on the way out of services
     * Query builder - add it to the architectural diagram - after more investigation
@@ -86,7 +83,6 @@ Bad Smells - strung out calls to describe methods - put them into SobjectUtils
 
 * Question: Do you need Heap size management rules -
 
-
 * Produce test-case for lack of clickthrough and raise bug on VSCode
 
 * How do we handle constants?
@@ -101,7 +97,3 @@ Standards?
 
 Notes:
 * Services should always be designed by seniors - at least which services exist
-
-What's missing:
-* Custom metadata driven execution of trigger code (register multiple trigger handlers)
-* How does QueryHandler drop into this? - Maintenance of change of state
