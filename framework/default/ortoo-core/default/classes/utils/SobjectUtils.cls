@@ -39,6 +39,12 @@ public inherited sharing class SobjectUtils
 		return ((SObject)Type.forName( sobjectName )?.newInstance())?.getSObjectType();
 	}
 
+	public static Schema.SobjectType getSobjectType( Sobject record )
+	{
+		Contract.requires( record != null, 'Attempted to get the type for a null record' );
+		return record.getSObjectType();
+	}
+
 	// TODO: use the describe on the object?
 	/**
 	 * Given an instance of an SObject, will return the developer / API name of the SObject (e.g. Contact)
@@ -77,5 +83,20 @@ public inherited sharing class SobjectUtils
 	public static DescribeSObjectResult getSObjectDescribeResult( Sobject record )
 	{
 		return record.getSObjectType().getDescribe();
+	}
+
+	public static Boolean isCreateable(  Sobject record )
+	{
+		return getSObjectDescribeResult( record ).isCreateable();
+	}
+
+	public static Boolean isUpdateable(  Sobject record )
+	{
+		return getSObjectDescribeResult( record ).isUpdateable();
+	}
+
+	public static Boolean isDeletable(  Sobject record )
+	{
+		return getSObjectDescribeResult( record ).isDeletable();
 	}
 }
