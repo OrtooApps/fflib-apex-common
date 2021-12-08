@@ -1,6 +1,6 @@
 public inherited sharing class ortoo_UnitOfWorkFactory extends fflib_Application.UnitOfWorkFactory // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
-    private static fflib_SobjectUnitOfWork.Idml defaultIdml = new SecureDml( new SecureDml.ErrorOnInaccessibleFieldsHandler() );
+    private static fflib_SobjectUnitOfWork.Idml defaultIdml = new SecureDml();
     /*
     * Constructs a Unit Of Work factory with no default configuration
     *

@@ -1,22 +1,22 @@
 public with sharing class PerSobjectTypeDmlConfiguration implements fflib_SobjectUnitOfWork.Idml
 {
     fflib_SobjectUnitOfWork.Idml defaultIdml;
-    Map<SobjectType,fflib_SobjectUnitOfWork.Idml> idmlBySobjectType;
+    Map<SobjectType,fflib_SobjectUnitOfWork.Idml> IDmlBySobjectType;
 
     public PerSobjectTypeDmlConfiguration()
     {
-        idmlBySobjectType = new Map<SobjectType,fflib_SobjectUnitOfWork.Idml>();
+        IDmlBySobjectType = new Map<SobjectType,fflib_SobjectUnitOfWork.Idml>();
     }
 
-    public PerSobjectTypeDmlConfiguration setDefault( fflib_SobjectUnitOfWork.Idml idml )
+    public PerSobjectTypeDmlConfiguration setDefaultDml( fflib_SobjectUnitOfWork.Idml IDml )
     {
-        defaultIdml = idml;
+        defaultIdml = IDml;
         return this;
     }
 
-    public PerSobjectTypeDmlConfiguration addIdml( SobjectType sobjectType, fflib_SobjectUnitOfWork.Idml idml )
+    public PerSobjectTypeDmlConfiguration setDml( SobjectType sobjectType, fflib_SobjectUnitOfWork.Idml IDml )
     {
-        idmlBySobjectType.put( sobjectType, idml );
+        IDmlBySobjectType.put( sobjectType, IDml );
         return this;
     }
 
@@ -47,17 +47,17 @@ public with sharing class PerSobjectTypeDmlConfiguration implements fflib_Sobjec
 
     private fflib_SobjectUnitOfWork.Idml getIdmlForSobjectType( List<SObject> objList )
     {
-        fflib_SobjectUnitOfWork.Idml idml;
+        fflib_SobjectUnitOfWork.Idml IDml;
 
         if ( !objList.isEmpty() )
         {
-            idml = idmlBySobjectType.get( objList[0].getSObjectType() );
+            IDml = IDmlBySobjectType.get( objList[0].getSObjectType() );
         }
 
-        if ( idml == null )
+        if ( IDml == null )
         {
-            idml = defaultIdml;
+            IDml = defaultIdml;
         }
-        return idml;
+        return IDml;
     }
 }

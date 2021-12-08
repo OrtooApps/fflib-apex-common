@@ -3,25 +3,42 @@
 // TODO: ensure the default is constructed with one - potentially configure it
 // TODO: split field level checking and object level checking?
 
-public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleDML implements Idml
+public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleDML implements fflib_SobjectUnitOfWork.IDml
 {
     public inherited sharing class SecureDmlException extends ortoo_Exception {} // TODO: add error code prefix
 
-    public interface InaccessibleHandler
+    public interface UnableToDmlHandler
     {
         void handleUnableToInsertRecords( List<SObject> objList );
         void handleUnableToUpdateRecords( List<SObject> objList );
         void handleUnableToDeleteRecords( List<SObject> objList );
         void handleUnableToPublishEvents( List<SObject> objList );
+    }
 
+    public interface InaccessibleFieldsHandler
+    {
         void handleInaccessibleFields( String operation, SObjectAccessDecision securityDecision );
     }
 
-    InaccessibleHandler inaccessibleHandler;
+    InaccessibleFieldsHandler inaccessibleFieldsHandler;
+    UnableToDmlHandler unableToDmlHandler;
 
-    public SecureDml( InaccessibleHandler inaccessibleHandler )
+    public SecureDml()
     {
-        this.inaccessibleHandler = inaccessibleHandler;
+        setInaccessibleFieldsHandler( new ErrorOnInaccessibleFieldsHandler() );
+        setUnableToDmlHandler( new ErrorOnUnableToDmlHandler() );
+    }
+
+    public SecureDml setInaccessibleFieldsHandler( InaccessibleFieldsHandler inaccessibleFieldsHandler )
+    {
+        this.inaccessibleFieldsHandler = inaccessibleFieldsHandler;
+        return this;
+    }
+
+    public SecureDml setUnableToDmlHandler( UnableToDmlHandler unableToDmlHandler )
+    {
+        this.unableToDmlHandler = unableToDmlHandler;
+        return this;
     }
 
     public override void dmlInsert( List<SObject> objList )
@@ -32,14 +49,14 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
         }
         if ( ! SobjectUtils.getSobjectDescribeResult( objList[0] ).isCreateable() ) // TODO: probably don't need this
         {
-            inaccessibleHandler.handleUnableToInsertRecords( objList );
+            unableToDmlHandler.handleUnableToInsertRecords( objList );
             return;
         }
 
         SObjectAccessDecision securityDecision = Security.stripInaccessible( AccessType.CREATABLE, objList );
         if ( ! securityDecision.getRemovedFields().isEmpty() )
         {
-            inaccessibleHandler.handleInaccessibleFields( 'insert', securityDecision );
+            inaccessibleFieldsHandler.handleInaccessibleFields( 'insert', securityDecision );
             replaceList( objList, securityDecision.getRecords() );
         }
 
@@ -54,7 +71,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
         }
         if ( ! SobjectUtils.getSobjectDescribeResult( objList[0] ).isUpdateable() )
         {
-            inaccessibleHandler.handleUnableToUpdateRecords( objList );
+            unableToDmlHandler.handleUnableToUpdateRecords( objList );
             return;
         }
 
@@ -62,7 +79,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 
         if ( ! securityDecision.getRemovedFields().isEmpty() )
         {
-            inaccessibleHandler.handleInaccessibleFields( 'update', securityDecision );
+            inaccessibleFieldsHandler.handleInaccessibleFields( 'update', securityDecision );
             replaceList( objList, securityDecision.getRecords() );
         }
         update objList;
@@ -76,7 +93,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
         }
         if ( ! SobjectUtils.getSobjectDescribeResult( objList[0] ).isDeletable() )
         {
-            inaccessibleHandler.handleUnableToDeleteRecords( objList );
+            unableToDmlHandler.handleUnableToDeleteRecords( objList );
             return;
         }
         delete objList;
@@ -89,16 +106,16 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
         {
             return;
         }
-        if ( ! SobjectUtils.getSobjectDescribeResult( objList[0] ).isCreateable() )
+        if ( ! SobjectUtils.getSobjectDescribeResult( objList[0] ).isCreateable() ) // SobjectUtils.isCreateable( objList[0] )
         {
-            inaccessibleHandler.handleUnableToPublishEvents( objList );
+            unableToDmlHandler.handleUnableToPublishEvents( objList );
             return;
         }
         SObjectAccessDecision securityDecision = Security.stripInaccessible( AccessType.CREATABLE, objList );
 
         if ( ! securityDecision.getRemovedFields().isEmpty() )
         {
-            inaccessibleHandler.handleInaccessibleFields( 'publish', securityDecision );
+            inaccessibleFieldsHandler.handleInaccessibleFields( 'publish', securityDecision );
             replaceList( objList, securityDecision.getRecords() );
         }
         EventBus.publish( objList );
@@ -116,17 +133,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
         }
     }
 
-    public inherited sharing class SwallowErrorOnInaccessibleHandler implements InaccessibleHandler
-    {
-        public void handleUnableToInsertRecords( List<SObject> objList ) {} // NOPMD: intentional 'null object' that does nothing
-        public void handleUnableToUpdateRecords( List<SObject> objList ) {} // NOPMD: intentional 'null object' that does nothing
-        public void handleUnableToDeleteRecords( List<SObject> objList ) {} // NOPMD: intentional 'null object' that does nothing
-        public void handleUnableToPublishEvents( List<SObject> objList ) {} // NOPMD: intentional 'null object' that does nothing
-
-        public void handleInaccessibleFields( String operation, SObjectAccessDecision securityDecision ) {} // NOPMD: intentional 'null object' that does nothing
-    }
-
-    public inherited sharing virtual class ErrorOnUnableToCudHandler implements InaccessibleHandler
+    public inherited sharing virtual class ErrorOnUnableToDmlHandler implements UnableToDmlHandler
     {
         public void handleUnableToInsertRecords( List<SObject> objList )
         {
@@ -145,8 +152,6 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
             throwUnableException( '00004', 'Attempted to publish {0} events without the required permission', objList );
         }
 
-        public virtual void handleInaccessibleFields( String operation, SObjectAccessDecision securityDecision ) {} // NOPMD: intentionally left empty
-
         private void throwUnableException( String errorCode, String label, List<SObject> objList )
         {
             String sobjectName = SobjectUtils.getSobjectName( objList[0] );
@@ -157,9 +162,9 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
         }
     }
 
-    public inherited sharing virtual class ErrorOnInaccessibleFieldsHandler extends ErrorOnUnableToCudHandler
+    public inherited sharing virtual class ErrorOnInaccessibleFieldsHandler implements InaccessibleFieldsHandler
     {
-        public override void handleInaccessibleFields( String operation, SObjectAccessDecision securityDecision )
+        public void handleInaccessibleFields( String operation, SObjectAccessDecision securityDecision )
         {
             String label = 'Attempted to {0} with fields that are not accessible: {1}';
             Map<String,Set<String>> removedFields = securityDecision.getRemovedFields();

@@ -29,11 +29,11 @@ private without sharing class ortoo_UnitOfWorkFactoryTest // NOPMD: mini-namespa
         List<SobjectType> defaultOrder = new List<SobjectType>{ Account.sobjectType, Contact.sobjectType };
         ortoo_UnitOfWorkFactory factory = new ortoo_UnitOfWorkFactory( defaultOrder );
 
-        RegisterableIdml idml = new RegisterableIdml();
-        ortoo_SobjectUnitOfWork uow = (ortoo_SobjectUnitOfWork)factory.newInstance( idml );
+        RegisterableIdml IDml = new RegisterableIdml();
+        ortoo_SobjectUnitOfWork uow = (ortoo_SobjectUnitOfWork)factory.newInstance( IDml );
 
-        System.assertEquals( defaultOrder, uow.getSobjectOrder(), 'newInstance, when given no object order and an idml, will create an instance with the default order' );
-        System.assertEquals( idml, uow.getIdml(), 'newInstance, when given no object order and an idml, will create an instance with the idml' );
+        System.assertEquals( defaultOrder, uow.getSobjectOrder(), 'newInstance, when given no object order and an IDml, will create an instance with the default order' );
+        System.assertEquals( IDml, uow.getIdml(), 'newInstance, when given no object order and an IDml, will create an instance with the IDml' );
     }
 
     @isTest
@@ -43,11 +43,11 @@ private without sharing class ortoo_UnitOfWorkFactoryTest // NOPMD: mini-namespa
         List<SobjectType> passedOrder  = new List<SobjectType>{ Contact.sobjectType, Account.sobjectType };
         ortoo_UnitOfWorkFactory factory = new ortoo_UnitOfWorkFactory( defaultOrder );
 
-        RegisterableIdml idml = new RegisterableIdml();
-        ortoo_SobjectUnitOfWork uow = (ortoo_SobjectUnitOfWork)factory.newInstance( passedOrder, idml );
+        RegisterableIdml IDml = new RegisterableIdml();
+        ortoo_SobjectUnitOfWork uow = (ortoo_SobjectUnitOfWork)factory.newInstance( passedOrder, IDml );
 
-        System.assertEquals( passedOrder, uow.getSobjectOrder(), 'newInstance, when given an idml and object order, will create an instance with that order' );
-        System.assertEquals( idml, uow.getIdml(), 'newInstance, when given an idml and object order and an idml, will create an instance with the idml' );
+        System.assertEquals( passedOrder, uow.getSobjectOrder(), 'newInstance, when given an IDml and object order, will create an instance with that order' );
+        System.assertEquals( IDml, uow.getIdml(), 'newInstance, when given an IDml and object order and an IDml, will create an instance with the IDml' );
     }
 
     @isTest
@@ -55,8 +55,8 @@ private without sharing class ortoo_UnitOfWorkFactoryTest // NOPMD: mini-namespa
     {
         ortoo_UnitOfWorkFactory factory = new ortoo_UnitOfWorkFactory();
 
-        RegisterableIdml idml = new RegisterableIdml();
-        ortoo_SobjectUnitOfWork uow = (ortoo_SobjectUnitOfWork)factory.newInstance( idml );
+        RegisterableIdml IDml = new RegisterableIdml();
+        ortoo_SobjectUnitOfWork uow = (ortoo_SobjectUnitOfWork)factory.newInstance( IDml );
 
         System.assertEquals( 0, uow.getSobjectOrder().size(), 'newInstance, when given no parameters, will create a version with no object order' );
     }
@@ -97,8 +97,8 @@ private without sharing class ortoo_UnitOfWorkFactoryTest // NOPMD: mini-namespa
 
         Test.startTest();
             factory.setMock( mockUow );
-            RegisterableIdml idml = new RegisterableIdml();
-            ortoo_SobjectUnitOfWork returnedUow = (ortoo_SobjectUnitOfWork)factory.newInstance( idml );
+            RegisterableIdml IDml = new RegisterableIdml();
+            ortoo_SobjectUnitOfWork returnedUow = (ortoo_SobjectUnitOfWork)factory.newInstance( IDml );
         Test.stopTest();
 
         System.assertEquals( mockUow, returnedUow, 'setMock, when new instance is called without an order, will return the mock' );
@@ -112,8 +112,8 @@ private without sharing class ortoo_UnitOfWorkFactoryTest // NOPMD: mini-namespa
 
         Test.startTest();
             factory.setMock( mockUow );
-            RegisterableIdml idml = new RegisterableIdml();
-            ortoo_SobjectUnitOfWork returnedUow = (ortoo_SobjectUnitOfWork)factory.newInstance( new List<SobjectType>{ Contact.sobjectType }, idml );
+            RegisterableIdml IDml = new RegisterableIdml();
+            ortoo_SobjectUnitOfWork returnedUow = (ortoo_SobjectUnitOfWork)factory.newInstance( new List<SobjectType>{ Contact.sobjectType }, IDml );
         Test.stopTest();
 
         System.assertEquals( mockUow, returnedUow, 'setMock, when new instance is called without an order, will return the mock' );
