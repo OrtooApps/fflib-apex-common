@@ -104,7 +104,7 @@ public class ortoo_FabricatedSObjectRegister {
 
 		public void persist()
 		{
-			ortoo_SObjectUnitOfWork uow = (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts() );
+			ortoo_SObjectUnitOfWork uow = (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts(), new UnsecureDml() );
 
 			buildObjectsByFabricated();
 			registerInserts( uow );

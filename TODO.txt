@@ -6,6 +6,9 @@ Licenses that are needed with the source code and binary:
 
 Look at the use of 'MockDatabase' in fflib
 
+Introduce ortoo_Selector - make it secure by default
+Look at the interface required to make Unsecured DML calls
+
 * To finalise the core architecture:
     * Decide on FLS standards
     * Do we need to have a non all-or-nothing version of commitWork?
