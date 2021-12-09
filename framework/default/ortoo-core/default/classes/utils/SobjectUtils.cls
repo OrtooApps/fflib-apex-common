@@ -7,6 +7,7 @@
  * 		1 - Make the code in the app that performs these checks simpler and easier to read.
  * 		2 - Provide the ability to make performance improvements as and when the
  * 			relative performance of different methods change.
+ * 			This may include the ability to cache certain results.
  *
  * These methods should always be used to ask questions of SObjects.
  *
@@ -48,9 +49,16 @@ public inherited sharing class SobjectUtils
 		return ((SObject)Type.forName( sobjectName )?.newInstance())?.getSObjectType();
 	}
 
-	public static Schema.SobjectType getSobjectType( Sobject record )
+	/**
+	 * Given an instance of an SObject, will return its SobjectType
+	 *
+	 * @param	Sobject		The SObject for which to return the SobjectType
+	 * @return	SobjectType	The SobjectType of the SObject
+	 */
+	public static SobjectType getSobjectType( Sobject record )
 	{
-		Contract.requires( record != null, 'Attempted to get the type for a null record' );
+		Contract.requires( record != null, 'getSobjectType called with a null record' );
+
 		return record.getSObjectType();
 	}
 
