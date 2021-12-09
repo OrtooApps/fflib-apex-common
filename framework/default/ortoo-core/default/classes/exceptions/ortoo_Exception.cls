@@ -175,11 +175,19 @@ public virtual class ortoo_Exception extends Exception implements IRenderableMes
 		return returnList;
 	}
 
+	// TODO: document
+	// TODO: test
+	public ortoo_Exception regenerateStackTraceString( Integer levelsToSkip )
+	{
+		stackTraceString = createStackTraceString( levelsToSkip + 1 );
+		return this;
+	}
+
 	private String createStackTraceString( Integer levelsToSkip )
 	{
-		return new StackTrace( levelsToSkip+1 ).getFullStackTraceString();	// Since custom exceptions have some problems getting their stack trace strings set,
-																			// we need to get the Stack Trace string from the generic utility, stating that the top
-																			// level method (this one) should be ignored.
+		return new StackTrace( levelsToSkip + 1 ).getFullStackTraceString();	// Since custom exceptions have some problems getting their stack trace strings set,
+																				// we need to get the Stack Trace string from the generic utility, stating that the top
+																				// level method (this one) should be ignored.
 	}
 
 	/**
