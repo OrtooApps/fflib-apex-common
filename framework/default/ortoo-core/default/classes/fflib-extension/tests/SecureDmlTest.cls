@@ -1,8 +1,3 @@
-// If there is any risk that this test would stop working in a given App implementation, then it should be rewritten or removed.
-// It is written in a way that assumes that Accounts and Contacts are configured to allow for the most trivial records to be created
-
-// TODO: remove the actual inserts and such from here
-
 @isTest
 private without sharing class SecureDmlTest
 {
@@ -11,8 +6,8 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Test.startTest();
@@ -25,7 +20,7 @@ private without sharing class SecureDmlTest
         System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user can create the records, will insert the records, setting the Id on them (0)' );
         System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user can create the records, will insert the records, setting the Id on them (1)' );
 
-        List<Account> createdAccounts = getAccounts();
+        List<Account> createdAccounts = getAccountsInserted();
 
         System.assertEquals( 'Account1', createdAccounts[0].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (0)' );
         System.assertEquals( 'Account2', createdAccounts[1].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (1)' );
@@ -36,8 +31,8 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Test.startTest();
@@ -76,8 +71,8 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Test.startTest();
@@ -100,8 +95,8 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Test.startTest();
@@ -124,8 +119,8 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Test.startTest();
@@ -149,8 +144,8 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Test.startTest();
@@ -211,14 +206,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
@@ -261,14 +256,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
@@ -288,7 +283,7 @@ private without sharing class SecureDmlTest
 
         System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records, but fls switched off, will insert the records, setting the Id on them (0)' );
 
-        List<Account> createdAccounts = getAccounts();
+        List<Account> createdAccounts = getAccountsInserted();
 
         System.assertEquals( 1, createdAccounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off,  will insert the records, setting the fields on the records that are created (0)' );
     }
@@ -298,14 +293,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
@@ -326,7 +321,7 @@ private without sharing class SecureDmlTest
         System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records, but fls switched off for that sobject type, will insert the records, setting the Id on them (0)' );
         System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that sobject type,  will insert the records, leaving the field set on the original record' );
 
-        List<Account> createdAccounts = getAccounts();
+        List<Account> createdAccounts = getAccountsInserted();
 
         System.assertEquals( 1, createdAccounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that sobject type,  will insert the records, setting the fields on the records that are created (0)' );
     }
@@ -336,14 +331,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
@@ -364,7 +359,7 @@ private without sharing class SecureDmlTest
         System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records, but fls switched off for that field, will insert the records, setting the Id on them (0)' );
         System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that field,  will insert the records, leaving the field set on the original record' );
 
-        List<Account> createdAccounts = getAccounts();
+        List<Account> createdAccounts = getAccountsInserted();
 
         System.assertEquals( 1, createdAccounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that field,  will insert the records, setting the fields on the records that are created (0)' );
     }
@@ -374,14 +369,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
@@ -413,14 +408,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
@@ -452,14 +447,14 @@ private without sharing class SecureDmlTest
     {
         List<Account> accounts = new List<Account>
         {
-            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
-            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
         };
 
         List<Account> strippedAccounts = new List<Account>
         {
-            (Account)new FAccount().toPersistableSobject(),
-            (Account)new FAccount().toPersistableSobject()
+            new Account(),
+            new Account()
         };
 
         Set<String> accountFieldsBlockedByFls = new Set<String>{ 'Name', 'NumberOfEmployees' };
@@ -504,10 +499,15 @@ private without sharing class SecureDmlTest
         System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user cannot create records because of FLS, will ensure the supressed fields keep their values' );
 */
 
-    private static List<Account> getAccounts()
+    private static List<Account> getAccountsInserted()
     {
-        return [SELECT Name, NumberOfEmployees FROM Account ORDER BY Name];
+        return recordsInserted;
     }
+
+    private static List<Sobject> recordsInserted;
+    private static List<Sobject> recordsUpdated;
+    private static List<Sobject> recordsDeleted;
+    private static List<Sobject> recordsPublished;
 
     // version of SecureDml that allows us to override the checks on whether
     // the current user can create / update / delete
@@ -518,6 +518,38 @@ private without sharing class SecureDmlTest
         public Boolean canDelete = true;
 
         public SecureDml.SecurityDecision stripInaccessibleSecurityDecision;
+
+        private void assignIds( List<Sobject> records )
+        {
+            for ( Sobject thisRecord : records )
+            {
+                thisRecord.put( 'Id', TestIdUtils.generateId( thisRecord.getSObjectType() ) );
+            }
+        }
+
+        protected override void doInsert( List<Sobject> records )
+        {
+            assignIds( records );
+            recordsInserted = records;
+        }
+
+        protected override void doUpdate( List<Sobject> records )
+        {
+            assignIds( records );
+            recordsUpdated = records;
+        }
+
+        protected override void doDelete( List<Sobject> records )
+        {
+            assignIds( records );
+            recordsDeleted = records;
+        }
+
+        protected override void doPublish( List<Sobject> records )
+        {
+            assignIds( records );
+            recordsPublished = records;
+        }
 
         protected override Boolean userCanCreate( Sobject record )
         {

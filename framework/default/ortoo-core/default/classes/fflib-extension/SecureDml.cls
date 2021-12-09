@@ -177,6 +177,11 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 			checkFls( objList, AccessType.CREATABLE );
 		}
 
+		doInsert( objList );
+	}
+
+	protected virtual void doInsert( List<SObject> objList )
+	{
 		insert objList;
 	}
 
@@ -204,6 +209,11 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		{
 			checkFls( objList, AccessType.UPDATABLE );
 		}
+		doUpdate( objList );
+	}
+
+	protected virtual void doUpdate( List<SObject> objList )
+	{
 		update objList;
 	}
 
@@ -226,6 +236,11 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 			cudViolationHandler.handleUnableToDeleteRecords( objList );
 			return;
 		}
+		doDelete( objList );
+	}
+
+	protected virtual void doDelete( List<SObject> objList )
+	{
 		delete objList;
 	}
 
@@ -254,6 +269,11 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 			checkFls( objList, AccessType.CREATABLE );
 		}
 
+		doPublish( objList );
+	}
+
+	protected virtual void doPublish( List<SObject> objList )
+	{
 		EventBus.publish( objList );
 	}
 
