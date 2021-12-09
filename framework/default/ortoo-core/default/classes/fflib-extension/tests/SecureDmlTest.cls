@@ -216,6 +216,8 @@ private without sharing class SecureDmlTest
         public Boolean canUpdate = true;
         public Boolean canDelete = true;
 
+        public SecureDml.SecurityDecision stripInaccessibleSecurityDecision;
+
         protected override Boolean userCanCreate( Sobject record )
         {
             return canCreate;
@@ -229,6 +231,16 @@ private without sharing class SecureDmlTest
         protected override Boolean userCanDelete( Sobject record )
         {
             return canDelete;
+        }
+
+        protected override SecureDml.SecurityDecision stripInaccessible( AccessType mode, List<Sobject> objList )
+        {
+            if ( stripInaccessibleSecurityDecision != null )
+            {
+                return stripInaccessibleSecurityDecision;
+            }
+
+            return new SecureDml.SecurityDecision( new Map<String,Set<String>>(), objList.clone() );
         }
     }
 

@@ -267,12 +267,13 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	private void checkFls( List<Sobject> objList, AccessType mode )
 	{
 		String sobjectTypeName = SobjectUtils.getSobjectName( objList[0] );
-		SObjectAccessDecision securityDecision = Security.stripInaccessible( mode, objList, false );
-		Set<String> removedFields = securityDecision.getRemovedFields().get( sobjectTypeName );
+		SecurityDecision securityDecision = stripInaccessible( mode, objList );
 
-		if ( removedFields != null && !removedFields.isEmpty() )
+		if ( securityDecision.fieldsWereRemoved() )
 		{
+			Set<String>	  removedFields   = securityDecision.getRemovedFieldsFor( sobjectTypeName );
 			List<Sobject> strippedRecords = securityDecision.getRecords();
+
 			removedFields = unstripAccessible( removedFields, objList, strippedRecords );
 
 			if ( ! removedFields.isEmpty() )
@@ -419,22 +420,71 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 	}
 
+	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike.
+	// Is implemented as virtual so tests can override it and drive behaviour
+	protected virtual SecurityDecision stripInaccessible( AccessType mode, List<Sobject> objList )
+	{
+		return new SecurityDecision( Security.stripInaccessible( mode, objList, false ) );
+	}
+
 	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	// Is implemented as virtual so tests can override it and drive behaviour
 	protected virtual Boolean userCanCreate( Sobject record )
 	{
 		return SobjectUtils.isCreateable( record );
 	}
 
 	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	// Is implemented as virtual so tests can override it and drive behaviour
 	protected virtual Boolean userCanUpdate( Sobject record )
 	{
 		return SobjectUtils.isUpdateable( record );
 	}
 
 	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	// Is implemented as virtual so tests can override it and drive behaviour
 	protected virtual Boolean userCanDelete( Sobject record )
 	{
 		return SobjectUtils.isUpdateable( record );
+	}
+
+	// TODO: document
+	@testVisible
+	private inherited sharing class SecurityDecision
+	{
+		Map<String,Set<String>> removedFields;
+		List<Sobject> records;
+
+		public SecurityDecision( SObjectAccessDecision securityDecision )
+		{
+			this( securityDecision.getRemovedFields(), securityDecision.getRecords() );
+		}
+
+		@testVisible
+		private SecurityDecision( Map<String,Set<String>> removedFields, List<Sobject> records )
+		{
+			this.removedFields = removedFields;
+			this.records       = records;
+		}
+
+		public Boolean fieldsWereRemoved()
+		{
+			return !records.isEmpty();
+		}
+
+		public List<Sobject> getRecords()
+		{
+			return records;
+		}
+
+		public Set<String> getRemovedFieldsFor( String sobjectTypeName )
+		{
+			if ( removedFields.containsKey( sobjectTypeName ) )
+			{
+				return removedFields.get( sobjectTypeName );
+			}
+			return new Set<String>();
+		}
 	}
 
 	/**
