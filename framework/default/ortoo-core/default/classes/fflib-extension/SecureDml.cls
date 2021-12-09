@@ -1,4 +1,3 @@
-// TODO: test
 /**
  * Is an implementation of the IDml interface used to manage the DML operations in an SObject Unit of Work.
  *
@@ -268,7 +267,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	private void checkFls( List<Sobject> objList, AccessType mode )
 	{
 		String sobjectTypeName = SobjectUtils.getSobjectName( objList[0] );
-		SObjectAccessDecision securityDecision = Security.stripInaccessible( mode, objList );
+		SObjectAccessDecision securityDecision = Security.stripInaccessible( mode, objList, false );
 		Set<String> removedFields = securityDecision.getRemovedFields().get( sobjectTypeName );
 
 		if ( removedFields != null && !removedFields.isEmpty() )
@@ -420,17 +419,20 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 	}
 
-	private virtual Boolean userCanCreate( Sobject record )
+	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	protected virtual Boolean userCanCreate( Sobject record )
 	{
 		return SobjectUtils.isCreateable( record );
 	}
 
-	private virtual Boolean userCanUpdate( Sobject record )
+	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	protected virtual Boolean userCanUpdate( Sobject record )
 	{
 		return SobjectUtils.isUpdateable( record );
 	}
 
-	private virtual Boolean userCanDelete( Sobject record )
+	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	protected virtual Boolean userCanDelete( Sobject record )
 	{
 		return SobjectUtils.isUpdateable( record );
 	}

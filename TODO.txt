@@ -13,6 +13,7 @@ Test:
 
 Look at:
     SobjectUtils.getSobjectName
+    Do we need to add 'emptyRecycleBin' too?
 
 Test Manually:
     Implementation os SecureDml in general - does it actually work
