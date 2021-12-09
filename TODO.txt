@@ -9,8 +9,7 @@ Look at the use of 'MockDatabase' in fflib
 Introduce ortoo_Selector - make it secure by default
 
 Test:
-    ortoo_Exception.regenerateStackTraceString
-    UnsecureDml
+    SecureDml
 
 Look at:
     SobjectUtils.getSobjectName

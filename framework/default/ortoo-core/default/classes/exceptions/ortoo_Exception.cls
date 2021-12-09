@@ -175,8 +175,16 @@ public virtual class ortoo_Exception extends Exception implements IRenderableMes
 		return returnList;
 	}
 
-	// TODO: document
-	// TODO: test
+	/**
+	 * Will regenerate the stack trace string that is used for generating the StackTrace object.
+	 *
+	 * Is useful when you want to raise an exception in one method and have it report as being thrown by
+	 * a parent method - for example in a handler that has been delegated to throw exceptions.
+	 * See SecureDml.ErrorOnFlsViolationHandler.handleInaccessibleFields as an example.
+	 *
+	 * @param	Integer	The number of levels upwards in the stack trace to skip.
+	 * @return	ortoo_Exception	Itself, allowing for a fluent interface
+	 */
 	public ortoo_Exception regenerateStackTraceString( Integer levelsToSkip )
 	{
 		stackTraceString = createStackTraceString( levelsToSkip + 1 );
