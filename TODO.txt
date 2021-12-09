@@ -10,9 +10,6 @@ Introduce ortoo_Selector - make it secure by default
 
 Test:
     ortoo_Exception.regenerateStackTraceString
-    SobjectUtils.isCreateable
-    SobjectUtils.isUpdateable
-    SobjectUtils.isDeletable
     UnsecureDml
 
 Look at:
