@@ -7,7 +7,18 @@ Licenses that are needed with the source code and binary:
 Look at the use of 'MockDatabase' in fflib
 
 Introduce ortoo_Selector - make it secure by default
-Look at the interface required to make Unsecured DML calls
+
+Test:
+    ortoo_Exception.regenerateStackTraceString
+    SobjectUtils.getSObjectDescribeResult
+    SobjectUtils.isCreateable
+    SobjectUtils.isUpdateable
+    SobjectUtils.isDeletable
+    UnsecureDml
+
+Look at:
+    SobjectUtils.getSobjectName
+
 
 * To finalise the core architecture:
     * Decide on FLS standards
