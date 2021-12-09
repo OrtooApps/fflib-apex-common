@@ -156,7 +156,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		SObjectAccessDecision securityDecision = Security.stripInaccessible( mode, objList );
 		Set<String> removedFields = securityDecision.getRemovedFields().get( sobjectTypeName );
 
-		if ( ! removedFields.isEmpty() )
+		if ( removedFields != null && !removedFields.isEmpty() )
 		{
 			List<Sobject> strippedRecords = securityDecision.getRecords();
 			removedFields = unstripAccessible( removedFields, objList, strippedRecords );

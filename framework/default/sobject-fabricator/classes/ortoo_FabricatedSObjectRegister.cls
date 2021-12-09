@@ -120,7 +120,7 @@ public class ortoo_FabricatedSObjectRegister {
 
 		public void persist()
 		{
-			persist( (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts(), new SecureDml() ) );
+			persist( (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts(), new UnsecureDml() ) );
 		}
 
 		@testVisible
