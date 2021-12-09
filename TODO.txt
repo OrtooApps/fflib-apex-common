@@ -14,13 +14,15 @@ Test:
 Look at:
     SobjectUtils.getSobjectName
 
+Test Manually:
+    Implementation os SecureDml in general - does it actually work
+    Can I create a record that I can't update, even though I generally have rights - what happens?
+    Can I create a record that I can update, even though I generally don't have rights - what happens?
+
 
 * To finalise the core architecture:
     * Decide on FLS standards
     * Do we need to have a non all-or-nothing version of commitWork?
-
-Add reference to disabling individual trigger events in tests:
-    https://andyinthecloud.com/2016/04/13/disabling-trigger-events-in-apex-enterprise-patterns/
 
 Add to documentation
     * Wrapping exceptions on the way out of services
@@ -34,24 +36,23 @@ Add to documentation
         * Do not do domain logic in them
 
     * Using the Mock Registarar
-    * Describe the Application Factories
 
 From Utilities, things that may be useful:
-* getReferenceObjectAPIName
-* getObjName - get the object name from an Id
-* getLabel / getObjectLabel - get the label for an sobject
-* getFieldLabel
-* delimitedStringToSet and reverse
-    * escaping single quotes - in both directions?
-* unitsBetweenDateTime
-* emailAddressIsValid / emailAddressListIsValid
-* sObjectIsCustom / sObjectIsCustomfromAPIName
-* IsfieldFilterable
-* isFieldCustom
-* idIsValid
-* getCrossObjectAPIName
-* objectFieldExist
-* sortSelectOptions - complete re-write
+    * getReferenceObjectAPIName
+    * getObjName - get the object name from an Id
+    * getLabel / getObjectLabel - get the label for an sobject
+    * getFieldLabel
+    * delimitedStringToSet and reverse
+        * escaping single quotes - in both directions?
+    * unitsBetweenDateTime
+    * emailAddressIsValid / emailAddressListIsValid
+    * sObjectIsCustom / sObjectIsCustomfromAPIName
+    * IsfieldFilterable
+    * isFieldCustom
+    * idIsValid
+    * getCrossObjectAPIName
+    * objectFieldExist
+    * sortSelectOptions - complete re-write
 
 Write tests for the SOQL generation in the criteria library
 

@@ -11,7 +11,7 @@
  * 		CUD checking for a given SObject Type
  * 		CUD checking for all SObjects
  */
-public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleDML implements fflib_SobjectUnitOfWork.IDml
+public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork.SimpleDML implements fflib_SobjectUnitOfWork.IDml
 {
 	public inherited sharing class SecureDmlException extends ortoo_Exception
 	{
@@ -167,7 +167,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! SobjectUtils.isCreateable( objList[0] ) )
+		if ( shouldCheckCud( type ) && ! userCanCreate( objList[0] ) )
 		{
 			cudViolationHandler.handleUnableToInsertRecords( objList );
 			return;
@@ -195,7 +195,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! SobjectUtils.isUpdateable( objList[0] ) )
+		if ( shouldCheckCud( type ) && ! userCanUpdate( objList[0] ) )
 		{
 			cudViolationHandler.handleUnableToUpdateRecords( objList );
 			return;
@@ -222,7 +222,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! SobjectUtils.isDeletable( objList[0] ) )
+		if ( shouldCheckCud( type ) && ! userCanDelete( objList[0] ) )
 		{
 			cudViolationHandler.handleUnableToDeleteRecords( objList );
 			return;
@@ -244,7 +244,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! SobjectUtils.isCreateable( objList[0] ) )
+		if ( shouldCheckCud( type ) && ! userCanCreate( objList[0] ) )
 		{
 			cudViolationHandler.handleUnableToPublishEvents( objList );
 			return;
@@ -296,6 +296,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 	 * @param	List<SObject>	The new list of records, after the field values were stripped
 	 * @return	Set<String>		The new, potentially reduced list of 'removed fields
 	 */
+	@testVisible
 	private Set<String> unstripAccessible( Set<String> removedFields, List<Sobject> originalRecords, List<Sobject> strippedRecords )
 	{
 		SobjectType type = SobjectUtils.getSobjectType( originalRecords[0] );
@@ -417,6 +418,21 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		{
 			originalList[i] = newList[i];
 		}
+	}
+
+	private virtual Boolean userCanCreate( Sobject record )
+	{
+		return SobjectUtils.isCreateable( record );
+	}
+
+	private virtual Boolean userCanUpdate( Sobject record )
+	{
+		return SobjectUtils.isUpdateable( record );
+	}
+
+	private virtual Boolean userCanDelete( Sobject record )
+	{
+		return SobjectUtils.isUpdateable( record );
 	}
 
 	/**
