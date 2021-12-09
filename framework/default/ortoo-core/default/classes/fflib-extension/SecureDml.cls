@@ -420,13 +420,6 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 	}
 
-	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike.
-	// Is implemented as virtual so tests can override it and drive behaviour
-	protected virtual SecurityDecision stripInaccessible( AccessType mode, List<Sobject> objList )
-	{
-		return new SecurityDecision( Security.stripInaccessible( mode, objList, false ) );
-	}
-
 	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
 	// Is implemented as virtual so tests can override it and drive behaviour
 	protected virtual Boolean userCanCreate( Sobject record )
@@ -448,18 +441,41 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		return SobjectUtils.isUpdateable( record );
 	}
 
-	// TODO: document
+	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike.
+	// Is implemented as virtual so tests can override it and drive behaviour
+	protected virtual SecurityDecision stripInaccessible( AccessType mode, List<Sobject> objList )
+	{
+		return new SecurityDecision( Security.stripInaccessible( mode, objList, false ) );
+	}
+
+	/**
+	 * Wrapper for SObjectAccessDecision, the result of a Security.stripInaccessible call.
+	 * Allows tests to change the behaviour of the FLS call without requiring any FLS to be set up.
+	 * That is, SObjectAccessDecision cannot be created and configured, but the SecurityDecision
+	 * inner class can.
+	 */
 	@testVisible
 	private inherited sharing class SecurityDecision
 	{
 		Map<String,Set<String>> removedFields;
 		List<Sobject> records;
 
+		/**
+		 * Constructs the SecurityDecision with the result from a Security.stripInaccessible call.
+		 *
+		 * @param	SObjectAccessDecision	The decision to wrap
+		 */
 		public SecurityDecision( SObjectAccessDecision securityDecision )
 		{
 			this( securityDecision.getRemovedFields(), securityDecision.getRecords() );
 		}
 
+		/**
+		 * Constructs explicitly defined remove field lists and transformed records
+		 *
+		 * @param	Map<String,Set<String>>	The fields that were removed, indexed by the SObject Name
+		 * @param	List<Sobject>			The records with the specified fields removed
+		 */
 		@testVisible
 		private SecurityDecision( Map<String,Set<String>> removedFields, List<Sobject> records )
 		{
@@ -467,16 +483,32 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 			this.records       = records;
 		}
 
+		/**
+		 * States if fields were removed from the sobjects
+		 *
+		 * @return	Boolean	Where fields removed?
+		 */
 		public Boolean fieldsWereRemoved()
 		{
 			return !records.isEmpty();
 		}
 
+		/**
+		 * Returns the new version of the records with the inaccessible fields stripped
+		 *
+		 * @return	List<Sobject>	The new version of the records
+		 */
 		public List<Sobject> getRecords()
 		{
 			return records;
 		}
 
+		/**
+		 * Returns the fields that were removed from the Sobjects of the given type
+		 *
+		 * @param	String		The Sobject Type name to get the removed fields for
+		 * @return	Set<String>	The names of the removed fields
+		 */
 		public Set<String> getRemovedFieldsFor( String sobjectTypeName )
 		{
 			if ( removedFields.containsKey( sobjectTypeName ) )

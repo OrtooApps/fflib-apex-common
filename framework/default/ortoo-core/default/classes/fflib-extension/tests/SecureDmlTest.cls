@@ -1,5 +1,8 @@
 // If there is any risk that this test would stop working in a given App implementation, then it should be rewritten or removed.
 // It is written in a way that assumes that Accounts and Contacts are configured to allow for the most trivial records to be created
+
+// TODO: remove the actual inserts and such from here
+
 @isTest
 private without sharing class SecureDmlTest
 {
@@ -24,8 +27,8 @@ private without sharing class SecureDmlTest
 
         List<Account> createdAccounts = getAccounts();
 
-        System.assertEquals( 'Account1', accounts[0].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (0)' );
-        System.assertEquals( 'Account2', accounts[1].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (1)' );
+        System.assertEquals( 'Account1', createdAccounts[0].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (0)' );
+        System.assertEquals( 'Account2', createdAccounts[1].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (1)' );
     }
 
     @isTest
@@ -203,9 +206,307 @@ private without sharing class SecureDmlTest
         System.assertEquals( 0, Limits.getDmlStatements(), 'dmlInsert, when given an empty list of objects the user cannot create, will not issue any DML or throw an exception' );
     }
 
+    @isTest
+    private static void dmlInsert_whenTheUserCannotCreateRecordsDueToFls_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml();
+                ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+                dml.dmlInsert( accounts );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception' );
+
+        ortoo_Exception.Contexts contexts = thrownException.getContexts();
+        ortoo_Exception.Context context;
+
+        context = contexts.next();
+        System.assertEquals( 'sobjectTypeName', context.getName(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception with a context named sobjectTypeName' );
+        System.assertEquals( Account.getSObjectType().getDescribe().getName(), context.getValue(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception with a context named sobjectTypeName set to the name of the SObject' );
+
+        context = contexts.next();
+        System.assertEquals( 'fieldsInViolation', context.getName(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception with a context named fieldsInViolation' );
+        System.assertEquals( accountFieldsBlockedByFls, context.getValue(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception with a context named fieldsInViolation set to the fields that were in violation' );
+
+        System.assertEquals( 'dmlInsert', thrownException.getStackTrace().getInnermostMethodName(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception with the stack trace pointing to the insert method' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenTheUserCanNotCreateButFlsCheckOff_willInsertTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreFls();
+
+            ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+            dml.dmlInsert( accounts );
+
+        Test.stopTest();
+
+        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records, but fls switched off, will insert the records, setting the Id on them (0)' );
+
+        List<Account> createdAccounts = getAccounts();
+
+        System.assertEquals( 1, createdAccounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off,  will insert the records, setting the fields on the records that are created (0)' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenTheUserCanNotCreateButFlsCheckOffForSobject_willInsertTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreFlsFor( Account.sobjectType );
+
+            ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+            dml.dmlInsert( accounts );
+
+        Test.stopTest();
+
+        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records, but fls switched off for that sobject type, will insert the records, setting the Id on them (0)' );
+        System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that sobject type,  will insert the records, leaving the field set on the original record' );
+
+        List<Account> createdAccounts = getAccounts();
+
+        System.assertEquals( 1, createdAccounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that sobject type,  will insert the records, setting the fields on the records that are created (0)' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenTheUserCanNotCreateButFlsCheckOffForSobjectField_willInsertTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreFlsFor( Account.sobjectType, Account.NumberOfEmployees );
+
+            ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+            dml.dmlInsert( accounts );
+
+        Test.stopTest();
+
+        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records, but fls switched off for that field, will insert the records, setting the Id on them (0)' );
+        System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that field,  will insert the records, leaving the field set on the original record' );
+
+        List<Account> createdAccounts = getAccounts();
+
+        System.assertEquals( 1, createdAccounts[0].NumberOfEmployees, 'dmlInsert, when the user can create the records, but fls switched off for that field,  will insert the records, setting the fields on the records that are created (0)' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenTheUserCannotCreateRecordsDueToFlsAndOtherObjectSwitchedOff_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml()
+                                        .ignoreFlsFor( Contact.sobjectType );
+
+                ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+                dml.dmlInsert( accounts );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and FLS switched off for a different object, will throw an exception' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenTheUserCannotCreateRecordsDueToFlsAndOtherFieldSwitchedOff_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml()
+                                        .ignoreFlsFor( Account.sobjectType, Account.Name );
+
+                ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+                dml.dmlInsert( accounts );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and FLS switched off for a different field, will throw an exception' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenTheUserCannotCreateRecordsDueToFlsAndNotAllFieldsOff_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            (Account)new FAccount().name( 'Account1' ).numberOfEmployees( 1 ).toPersistableSobject(),
+            (Account)new FAccount().name( 'Account2' ).numberOfEmployees( 2 ).toPersistableSobject()
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            (Account)new FAccount().toPersistableSobject(),
+            (Account)new FAccount().toPersistableSobject()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'Name', 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml()
+                                        .ignoreFlsFor( Account.sobjectType, Account.NumberOfEmployees );
+
+                ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+                dml.dmlInsert( accounts );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        Amoss_Asserts.assertContains( 'Name', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception naming the fields in violation' );
+        Amoss_Asserts.assertDoesNotContain( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception, not naming the fields that are supressed' );
+
+        ortoo_Exception.Contexts contexts = thrownException.getContexts();
+        ortoo_Exception.Context context;
+
+        context = contexts.next();
+        System.assertEquals( 'sobjectTypeName', context.getName(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception with a context named sobjectTypeName' );
+        System.assertEquals( Account.getSObjectType().getDescribe().getName(), context.getValue(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception with a context named sobjectTypeName set to the name of the SObject' );
+
+        context = contexts.next();
+        System.assertEquals( 'fieldsInViolation', context.getName(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception with a context named fieldsInViolation' );
+        System.assertEquals( new Set<String>{ 'Name' }, context.getValue(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception with a context named fieldsInViolation set to the fields that were in violation minus those switched off' );
+    }
+
+// when exception is supressed, will strip the fields
+/*
+        System.assertEquals( null, accounts[0].Name, 'dmlInsert, when the user cannot create records because of FLS, will update the records to remove the fields in violation' );
+        System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user cannot create records because of FLS, will ensure the supressed fields keep their values' );
+*/
+
     private static List<Account> getAccounts()
     {
-        return [SELECT Name FROM Account ORDER BY Name];
+        return [SELECT Name, NumberOfEmployees FROM Account ORDER BY Name];
     }
 
     // version of SecureDml that allows us to override the checks on whether
@@ -239,7 +540,6 @@ private without sharing class SecureDmlTest
             {
                 return stripInaccessibleSecurityDecision;
             }
-
             return new SecureDml.SecurityDecision( new Map<String,Set<String>>(), objList.clone() );
         }
     }
@@ -255,6 +555,12 @@ private without sharing class SecureDmlTest
         public FAccount name( String name )
         {
             set( Account.Name, name );
+            return this;
+        }
+
+        public FAccount numberOfEmployees( Integer numberOfEmployees )
+        {
+            set( Account.NumberOfEmployees, numberOfEmployees );
             return this;
         }
     }
