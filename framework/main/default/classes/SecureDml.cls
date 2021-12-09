@@ -15,7 +15,13 @@
  */
 public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleDML implements fflib_SobjectUnitOfWork.IDml
 {
-	public inherited sharing class SecureDmlException extends ortoo_Exception {} // TODO: add error code prefix
+	public inherited sharing class SecureDmlException extends ortoo_Exception
+	{
+		protected virtual override String resolveErrorCode( String errorCode )
+		{
+			return 'DML-' + errorCode;
+		}
+	}
 
 	/**
 	 * Interface that defines a handler for if and when a CUD violation occurs.
@@ -240,7 +246,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! SobjectUtils.isCreateable( objList[0] ) ) // SobjectUtils.isCreateable( objList[0] )
+		if ( shouldCheckCud( type ) && ! SobjectUtils.isCreateable( objList[0] ) )
 		{
 			cudViolationHandler.handleUnableToPublishEvents( objList );
 			return;
@@ -427,7 +433,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToInsertRecords( List<SObject> objList )
 		{
-			throwUnableException( '00001', 'Attempted to insert {0} records without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_INSERT_NOT_ALLOWED, 'Attempted to insert {0} records without the required permission', objList ); // TODO: label
 		}
 
 		/**
@@ -437,7 +443,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToUpdateRecords( List<SObject> objList )
 		{
-			throwUnableException( '00002', 'Attempted to update {0} records without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_UPDATE_NOT_ALLOWED, 'Attempted to update {0} records without the required permission', objList ); // TODO: label
 		}
 
 		/**
@@ -447,7 +453,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToDeleteRecords( List<SObject> objList )
 		{
-			throwUnableException( '00003', 'Attempted to delete {0} records without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_DELETE_NOT_ALLOWED, 'Attempted to delete {0} records without the required permission', objList ); // TODO: label
 		}
 
 		/**
@@ -457,14 +463,14 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToPublishEvents( List<SObject> objList )
 		{
-			throwUnableException( '00004', 'Attempted to publish {0} events without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_PUBLISH_NOT_ALLOWED, 'Attempted to publish {0} events without the required permission', objList ); // TODO: label
 		}
 
 		private void throwUnableException( String errorCode, String label, List<SObject> objList )
 		{
 			String sobjectTypeName = SobjectUtils.getSobjectName( objList[0] );
 			throw new SecureDmlException( StringUtils.formatLabel( label, new List<String>{ sobjectTypeName } ) )
-						.setErrorCode( '0000' )
+						.setErrorCode( errorCode )
 						.addContext( 'sobjectTypeName', sobjectTypeName )
 						.addContext( 'records', objList )
 						.regenerateStackTraceString( 2 ); // push the stack trace string into the point that called the hander, rather than the handler itself
@@ -496,7 +502,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 			String sobjectTypeName = SobjectUtils.getSobjectName( sobjectType );
 
 			throw new SecureDmlException( StringUtils.formatLabel( label, new List<String>{ modeDescription, sobjectTypeName, fieldsInViolation.toString() } ) )
-						.setErrorCode( '0000' )
+						.setErrorCode( FrameworkErrorCodes.DML_ON_INACCESSIBLE_FIELDS )
 						.addContext( 'sobjectTypeName', sobjectTypeName )
 						.addContext( 'fieldsInViolation', fieldsInViolation )
 						.regenerateStackTraceString( 2 ); // push the stack trace string into the point that called the hander, rather than the handler itself

@@ -21,4 +21,10 @@ public inherited sharing class FrameworkErrorCodes {
 	public final static String CONFIGURATION_WITH_INVALID_TYPE            = 'APP-00001';
 	public final static String CONFIGURATION_WITH_INVALID_CLASS           = 'APP-00002';
 	public final static String CONFIGURATION_WITH_INVALID_SOBJECT_TYPE    = 'APP-00003';
+
+	public final static String DML_ON_INACCESSIBLE_FIELDS	= '00000';
+	public final static String DML_INSERT_NOT_ALLOWED		= '00001';
+	public final static String DML_UPDATE_NOT_ALLOWED		= '00002';
+	public final static String DML_DELETE_NOT_ALLOWED		= '00003';
+	public final static String DML_PUBLISH_NOT_ALLOWED		= '00004';
 }
