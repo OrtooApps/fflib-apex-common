@@ -15,14 +15,6 @@ public class ortoo_FabricatedSObjectRegister {
 	}
 
 	/**
-	 * Fabricate and persist all Sobjects that have been registered.
-	 */
-	public static void persist( ortoo_SobjectUnitOfWork uow )
-	{
-		instance.persist( uow );
-	}
-
-	/**
 	 * Register the given fabricated SObject so it is eligible to be persisted.
 	 *
 	 * Note, this method is internal to the fabricator library and should not be called directly.
@@ -110,17 +102,14 @@ public class ortoo_FabricatedSObjectRegister {
 			graph.addRelationship( child.getSobjectType(), parent.getSobjectType() );
 		}
 
-		public void persist( ortoo_SObjectUnitOfWork uow )
+		public void persist()
 		{
+			ortoo_SObjectUnitOfWork uow = (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts(), new UnsecureDml() );
+
 			buildObjectsByFabricated();
 			registerInserts( uow );
 			registerRelationships( uow );
 			uow.commitWork();
-		}
-
-		public void persist()
-		{
-			persist( (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( getOrderOfInserts(), new UnsecureDml() ) );
 		}
 
 		@testVisible
