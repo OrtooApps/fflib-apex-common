@@ -1,6 +1,4 @@
 // TODO: test
-// TODO: error codes
-// TODO: labels
 /**
  * Is an implementation of the IDml interface used to manage the DML operations in an SObject Unit of Work.
  *
@@ -433,7 +431,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToInsertRecords( List<SObject> objList )
 		{
-			throwUnableException( FrameworkErrorCodes.DML_INSERT_NOT_ALLOWED, 'Attempted to insert {0} records without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_INSERT_NOT_ALLOWED, Label.ortoo_core_crud_insert_violation, objList );
 		}
 
 		/**
@@ -443,7 +441,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToUpdateRecords( List<SObject> objList )
 		{
-			throwUnableException( FrameworkErrorCodes.DML_UPDATE_NOT_ALLOWED, 'Attempted to update {0} records without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_UPDATE_NOT_ALLOWED, Label.ortoo_core_crud_update_violation, objList );
 		}
 
 		/**
@@ -453,7 +451,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToDeleteRecords( List<SObject> objList )
 		{
-			throwUnableException( FrameworkErrorCodes.DML_DELETE_NOT_ALLOWED, 'Attempted to delete {0} records without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_DELETE_NOT_ALLOWED, Label.ortoo_core_crud_delete_violation, objList );
 		}
 
 		/**
@@ -463,7 +461,7 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		 */
 		public void handleUnableToPublishEvents( List<SObject> objList )
 		{
-			throwUnableException( FrameworkErrorCodes.DML_PUBLISH_NOT_ALLOWED, 'Attempted to publish {0} events without the required permission', objList ); // TODO: label
+			throwUnableException( FrameworkErrorCodes.DML_PUBLISH_NOT_ALLOWED, Label.ortoo_core_crud_publish_violation, objList );
 		}
 
 		private void throwUnableException( String errorCode, String label, List<SObject> objList )
@@ -492,12 +490,12 @@ public inherited sharing class SecureDml extends fflib_SobjectUnitOfWork.SimpleD
 		public void handleInaccessibleFields( AccessType mode, SobjectType sobjectType, Set<String> fieldsInViolation )
 		{
 			Map<AccessType,String> descriptionByMode = new Map<AccessType,String>{
-				AccessType.CREATABLE  => 'insert', // TODO: label
-				AccessType.UPDATABLE  => 'update', // TODO: label
-				AccessType.UPSERTABLE => 'upsert'  // TODO: label
+				AccessType.CREATABLE  => Label.ortoo_core_insert,
+				AccessType.UPDATABLE  => Label.ortoo_core_update,
+				AccessType.UPSERTABLE => Label.ortoo_core_upsert
 			};
 
-			String label = 'Attempted to {0} {1} with fields that are not accessible: {2}'; // TODO: label
+			String label = Label.ortoo_core_fls_violation;
 			String modeDescription = descriptionByMode.get( mode );
 			String sobjectTypeName = SobjectUtils.getSobjectName( sobjectType );
 
