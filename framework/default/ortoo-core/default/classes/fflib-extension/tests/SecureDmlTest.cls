@@ -1,6 +1,8 @@
 @isTest
 private without sharing class SecureDmlTest
 {
+    private static final Integer LOTS_OF_RECORDS = 10000;
+
     @isTest
     private static void dmlInsert_whenTheUserCanCreateTheRecords_willInsertTheRecords() // NOPMD: Test method name format
     {
@@ -24,6 +26,27 @@ private without sharing class SecureDmlTest
 
         System.assertEquals( 'Account1', createdAccounts[0].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (0)' );
         System.assertEquals( 'Account2', createdAccounts[1].Name, 'dmlInsert, when the user can create the records, will insert the records, setting the fields on the records that are created (1)' );
+    }
+
+    @isTest
+    private static void dmlInsert_whenAskedToCreateALotOfRecords_willInsertTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>();
+        for ( Integer i=0; i < LOTS_OF_RECORDS; i++ )
+        {
+            accounts.add( new Account( Name = 'Account' + i ) );
+        }
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.dmlInsert( accounts );
+
+        Test.stopTest();
+
+        List<Account> createdAccounts = getAccountsInserted();
+
+        System.assertEquals( LOTS_OF_RECORDS, createdAccounts.size(), 'dmlInsert, when the user can create the records, will insert the records without blowing CPU or Heap size limits' );
     }
 
     @isTest
@@ -493,11 +516,38 @@ private without sharing class SecureDmlTest
         System.assertEquals( new Set<String>{ 'Name' }, context.getValue(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception with a context named fieldsInViolation set to the fields that were in violation minus those switched off' );
     }
 
-// when exception is supressed, will strip the fields
-/*
-        System.assertEquals( null, accounts[0].Name, 'dmlInsert, when the user cannot create records because of FLS, will update the records to remove the fields in violation' );
-        System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user cannot create records because of FLS, will ensure the supressed fields keep their values' );
-*/
+    @isTest
+    private static void dmlInsert_whenTheUserCannotCreateRecordsDueToFlsAndNullHandler_willStripFields() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1', NumberOfEmployees = 1 ),
+            new Account( Name = 'Account2', NumberOfEmployees = 2 )
+        };
+
+        List<Account> strippedAccounts = new List<Account>
+        {
+            new Account(),
+            new Account()
+        };
+
+        Set<String> accountFieldsBlockedByFls = new Set<String>{ 'Name', 'NumberOfEmployees' };
+        Map<String,Set<String>> removedFields = new Map<String,Set<String>>{ 'Account' => accountFieldsBlockedByFls };
+        SecureDml.SecurityDecision stripsNumberOfEmployees = new SecureDml.SecurityDecision( removedFields, strippedAccounts );
+
+        Test.startTest();
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreFlsFor( Account.sobjectType, Account.NumberOfEmployees )
+                                    .setFlsViolationHandler( new SwallowOnFlsViolationHandler() );
+
+            ((TestableSecureDml)dml).stripInaccessibleSecurityDecision = stripsNumberOfEmployees;
+
+            dml.dmlInsert( accounts );
+        Test.stopTest();
+
+        System.assertEquals( null, accounts[0].Name, 'dmlInsert, when the user cannot create records because of FLS and handler does not throw exception, will update the records to remove the fields in violation' );
+        System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlInsert, when the user cannot create records because of FLS and handler does not throw exception, will ensure the supressed fields keep their values' );
+    }
 
     private static List<Account> getAccountsInserted()
     {
@@ -510,7 +560,8 @@ private without sharing class SecureDmlTest
     private static List<Sobject> recordsPublished;
 
     // version of SecureDml that allows us to override the checks on whether
-    // the current user can create / update / delete
+    // the current user can create / update / delete as well as the actual DML
+    // Overriding the DML allows the tests to run in any environment
     private inherited sharing class TestableSecureDml extends SecureDml
     {
         public Boolean canCreate = true;
@@ -576,24 +627,17 @@ private without sharing class SecureDmlTest
         }
     }
 
-    private inherited sharing class FAccount extends sfab_FabricatedSobject
+    private inherited sharing class SwallowOnFlsViolationHandler implements SecureDml.FlsViolationHandler
     {
-        public FAccount()
-        {
-            super( Account.class );
-            name( 'Default Name' );
-        }
-
-        public FAccount name( String name )
-        {
-            set( Account.Name, name );
-            return this;
-        }
-
-        public FAccount numberOfEmployees( Integer numberOfEmployees )
-        {
-            set( Account.NumberOfEmployees, numberOfEmployees );
-            return this;
-        }
+		public void handleInaccessibleFields( AccessType mode, SobjectType sobjectType, Set<String> fieldsInViolation ) {} // NOPMD: intentionally left blank
     }
+
+    private inherited sharing class SwallowOnCudViolationHandler implements SecureDml.CudViolationHandler
+    {
+		public void handleUnableToInsertRecords( List<SObject> objList ) {} // NOPMD: intentionally left blank
+		public void handleUnableToUpdateRecords( List<SObject> objList ) {} // NOPMD: intentionally left blank
+		public void handleUnableToDeleteRecords( List<SObject> objList ) {} // NOPMD: intentionally left blank
+		public void handleUnableToPublishEvents( List<SObject> objList ) {} // NOPMD: intentionally left blank
+    }
+
 }

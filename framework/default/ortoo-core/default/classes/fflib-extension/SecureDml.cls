@@ -289,7 +289,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		String sobjectTypeName = SobjectUtils.getSobjectName( objList[0] );
 		SecurityDecision securityDecision = stripInaccessible( mode, objList );
 
-		if ( securityDecision.fieldsWereRemoved() )
+		if ( securityDecision.fieldsWereRemoved( sobjectTypeName ) )
 		{
 			Set<String>	  removedFields   = securityDecision.getRemovedFieldsFor( sobjectTypeName );
 			List<Sobject> strippedRecords = securityDecision.getRecords();
@@ -340,8 +340,6 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 			return remainingRemovedFields;
 		}
 
-		// We need to put the ignored, but previously stripped, fields back
-		List<Sobject> unstrippedRecords = new List<Sobject>();
 		for ( Integer i=0; i < originalRecords.size(); i++ )
 		{
 			Sobject thisOriginalRecord = originalRecords[i];
@@ -356,10 +354,8 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 					thisStrippedRecord.put( thisFieldToUnstrip, thisOriginalRecord.get( thisFieldToUnstrip ) );
 				}
 			}
-			unstrippedRecords.add( thisStrippedRecord );
 		}
 
-		replaceList( strippedRecords, unstrippedRecords );
 		return remainingRemovedFields;
 	}
 
@@ -434,7 +430,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		Contract.requires( newList != null, 'replaceList called with a null newList' );
 		Contract.requires( originalList.size() == newList.size(), 'replaceList called with lists that are different sizes' );
 
-		for ( Integer i; i < originalList.size(); i++ )
+		for ( Integer i=0; i < originalList.size(); i++ )
 		{
 			originalList[i] = newList[i];
 		}
@@ -504,13 +500,14 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 
 		/**
-		 * States if fields were removed from the sobjects
+		 * States if fields were removed from the given Sobject Type
 		 *
-		 * @return	Boolean	Where fields removed?
+		 * @param	String	The Name of the Sobject Type to check
+		 * @return	Boolean	Were fields removed
 		 */
-		public Boolean fieldsWereRemoved()
+		public Boolean fieldsWereRemoved( String sobjectTypeName )
 		{
-			return !records.isEmpty();
+			return !removedFields.isEmpty() && removedFields.containsKey( sobjectTypeName );
 		}
 
 		/**
