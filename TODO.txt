@@ -16,7 +16,6 @@ Look at:
     Do we need to add 'emptyRecycleBin' too?
 
 Test Manually:
-    Implementation os SecureDml in general - does it actually work
     Can I create a record that I can't update, even though I generally have rights - what happens?
     Can I create a record that I can update, even though I generally don't have rights - what happens?
 

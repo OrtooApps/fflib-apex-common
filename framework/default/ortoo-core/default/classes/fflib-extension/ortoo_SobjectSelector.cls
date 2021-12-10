@@ -5,4 +5,15 @@
  */
 public abstract inherited sharing class ortoo_SobjectSelector extends fflib_SobjectSelector // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
+    public ortoo_SobjectSelector()
+    {
+        super();
+        enforceFLS();
+    }
+
+    public fflib_SObjectSelector ignoreFls()
+    {
+        m_enforceFLS = false;
+        return this;
+    }
 }
