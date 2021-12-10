@@ -258,15 +258,10 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! userCanCreate( objList[0] ) )
+		if ( shouldCheckCud( type ) && ! userCanPublish( objList[0] ) )
 		{
 			cudViolationHandler.handleUnableToPublishEvents( objList );
 			return;
-		}
-
-		if ( shouldCheckFls( type ) )
-		{
-			checkFls( objList, AccessType.CREATABLE );
 		}
 
 		doPublish( objList );
@@ -441,6 +436,13 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	protected virtual Boolean userCanCreate( Sobject record )
 	{
 		return SobjectUtils.isCreateable( record );
+	}
+
+	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike
+	// Is implemented as virtual so tests can override it and drive behaviour
+	protected virtual Boolean userCanPublish( Sobject event )
+	{
+		return SobjectUtils.isCreateable( event );
 	}
 
 	// This method cannot be reliably unit tested in a framework that does not inculde profiles and suchlike

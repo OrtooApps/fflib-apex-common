@@ -1096,7 +1096,6 @@ private without sharing class SecureDmlTest
         System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlUpdate, when the user cannot update records because of FLS and handler does not throw exception, will ensure the supressed fields keep their values' );
     }
 
-
     @isTest
     private static void dmlDelete_whenTheUserCanDeleteTheRecords_willDeleteTheRecords() // NOPMD: Test method name format
     {
@@ -1321,6 +1320,230 @@ private without sharing class SecureDmlTest
         System.assertEquals( null, getAccountsDeleted(), 'dmlDelete, when given an empty list of objects the user cannot delete, will not issue any DML or throw an exception' );
     }
 
+    @isTest
+    private static void eventPublish_whenTheUserCanPublishTheEvents_willPublishTheEvents() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        {
+            new Account( Name = 'Event1' ),
+            new Account( Name = 'Event2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.eventPublish( fakeEvents );
+
+        Test.stopTest();
+
+        List<Account> eventsPublished = getEventsPublished();
+
+        System.assertEquals( 'Event1', eventsPublished[0].Name, 'eventPublish, when the user can publish the events, will publish the events (0)' );
+        System.assertEquals( 'Event2', eventsPublished[1].Name, 'eventPublish, when the user can publish the events, will publish the events (1)' );
+    }
+
+    @isTest
+    private static void eventPublish_whenAskedToPublishALotOfEvents_willPublishTheEvents() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account>(); // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        for ( Integer i=0; i < LOTS_OF_RECORDS; i++ )
+        {
+            fakeEvents.add( new Account( Name = 'Event' + i ) );
+        }
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.eventPublish( fakeEvents );
+
+        Test.stopTest();
+
+        List<Account> eventsPublished = getEventsPublished();
+
+        System.assertEquals( LOTS_OF_RECORDS, eventsPublished.size(), 'eventPublish, when the user can publish the events, will publish the events without blowing CPU or Heap size limits' );
+    }
+
+    @isTest
+    private static void eventPublish_whenTheUserCannotPublishEvents_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        {
+            new Account( Name = 'Event1' ),
+            new Account( Name = 'Event2' )
+        };
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml();
+                ((TestableSecureDml)dml).canPublish = false;
+
+                dml.eventPublish( fakeEvents );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        System.assertNotEquals( null, thrownException, 'eventPublish, when the user cannot publish events, will throw an exception' );
+
+        ortoo_Exception.Contexts contexts = thrownException.getContexts();
+        ortoo_Exception.Context context;
+
+        context = contexts.next();
+        System.assertEquals( 'sobjectTypeName', context.getName(), 'eventPublish, when the user cannot publish events, will throw an exception with a context named sobjectTypeName' );
+        System.assertEquals( Account.getSObjectType().getDescribe().getName(), context.getValue(), 'eventPublish, when the user cannot publish events, will throw an exception with a context named sobjectTypeName set to the name of the SObject' );
+
+        context = contexts.next();
+        System.assertEquals( 'records', context.getName(), 'eventPublish, when the user cannot publish events, will throw an exception with a context named records' );
+        System.assertEquals( fakeEvents, context.getValue(), 'eventPublish, when the user cannot publish events, will throw an exception with a context named records set to the records that where sent' );
+
+        System.assertEquals( 'eventPublish', thrownException.getStackTrace().getInnermostMethodName(), 'eventPublish, when the user cannot publish events, will throw an exception with the stack trace pointing to the delete method' );
+    }
+
+    @isTest
+    private static void eventPublish_whenTheUserCanNotPublishButCudOff_willPublishTheEvents() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        {
+            new Account( Name = 'Event1' ),
+            new Account( Name = 'Event2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+
+            ((TestableSecureDml)dml).canPublish = false; // mimics not having publish access
+
+            dml.ignoreCudSettings();
+            dml.eventPublish( fakeEvents );
+
+        Test.stopTest();
+
+        List<Account> eventsPublished = getEventsPublished();
+
+        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but cud switched off, will publish the events - 0' );
+        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but cud switched off, will publish the events - 1' );
+    }
+
+    @isTest
+    private static void eventPublish_whenTheUserCanNotPublishButCudOffForThatObject_willPublishTheEvents() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        {
+            new Account( Name = 'Event1' ),
+            new Account( Name = 'Event2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreCudSettingsFor( Account.SobjectType );
+
+            ((TestableSecureDml)dml).canPublish = false; // mimics not having publish access
+
+            dml.eventPublish( fakeEvents );
+
+        Test.stopTest();
+
+        List<Account> eventsPublished = getEventsPublished();
+
+        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but cud switched off for that sobject type, will publish the events (0)' );
+        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but cud switched off for that sobject type, will publish the events (1)' );
+    }
+
+    @isTest
+    private static void eventPublish_whenTheUserCanNotPublishButCudOffForMultipleObjects_willPublishTheEvents() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        {
+            new Account( Name = 'Event1' ),
+            new Account( Name = 'Event2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreCudSettingsFor( Account.SobjectType )
+                                    .ignoreCudSettingsFor( Contact.SobjectType );
+
+            ((TestableSecureDml)dml).canPublish = false; // mimics not having publish access
+
+            dml.eventPublish( fakeEvents );
+
+        Test.stopTest();
+
+        List<Account> eventsPublished = getEventsPublished();
+
+        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but cud switched off for multiple sobject types, including that one, will publish the events (0)' );
+        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but cud switched off for multiple sobject types, including that one, will publish the events (1)' );
+    }
+
+    @isTest
+    private static void eventPublish_whenTheUserCannotPublishEventsAndCudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+        {
+            new Account( Name = 'Event1' ),
+            new Account( Name = 'Event2' )
+        };
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml()
+                                        .ignoreCudSettingsFor( Contact.sobjectType );
+
+                ((TestableSecureDml)dml).canPublish = false;
+
+                dml.eventPublish( fakeEvents );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        System.assertNotEquals( null, thrownException, 'eventPublish, when the user cannot publish events and cud is off for other objects, will still throw an exception' );
+    }
+
+    @isTest
+    private static void eventPublish_whenGivenAnEmptyList_willDoNothing() // NOPMD: Test method name format
+    {
+        List<Account> emptyList = new List<Account>(); // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.eventPublish( emptyList );
+
+        Test.stopTest();
+
+        System.assertEquals( null, getEventsPublished(), 'eventPublish, when given an empty list, will not issue any DML' );
+    }
+
+    @isTest
+    private static void eventPublish_whenGivenAnEmptyListAndPublishIsNotAllowed_willDoNothing() // NOPMD: Test method name format
+    {
+        List<Account> emptyList = new List<Account>(); // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+
+            ((TestableSecureDml)dml).canPublish = false;
+
+            dml.eventPublish( emptyList );
+
+        Test.stopTest();
+
+        System.assertEquals( null, getEventsPublished(), 'eventPublish, when given an empty list of objects the user cannot delete, will not issue any DML or throw an exception' );
+    }
+
 
     private static List<Account> getAccountsInserted()
     {
@@ -1352,9 +1575,10 @@ private without sharing class SecureDmlTest
     // Overriding the DML allows the tests to run in any environment
     private inherited sharing class TestableSecureDml extends SecureDml
     {
-        public Boolean canCreate = true;
-        public Boolean canUpdate = true;
-        public Boolean canDelete = true;
+        public Boolean canCreate  = true;
+        public Boolean canUpdate  = true;
+        public Boolean canDelete  = true;
+        public Boolean canPublish = true;
 
         public SecureDml.SecurityDecision stripInaccessibleSecurityDecision;
 
@@ -1395,6 +1619,11 @@ private without sharing class SecureDmlTest
             return canCreate;
         }
 
+        protected override Boolean userCanPublish( Sobject record )
+        {
+            return canPublish;
+        }
+
         protected override Boolean userCanUpdate( Sobject record )
         {
             return canUpdate;
@@ -1427,5 +1656,4 @@ private without sharing class SecureDmlTest
 		public void handleUnableToDeleteRecords( List<SObject> objList ) {} // NOPMD: intentionally left blank
 		public void handleUnableToPublishEvents( List<SObject> objList ) {} // NOPMD: intentionally left blank
     }
-
 }
