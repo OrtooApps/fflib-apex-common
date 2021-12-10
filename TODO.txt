@@ -6,14 +6,17 @@ Licenses that are needed with the source code and binary:
 
 Look at the use of 'MockDatabase' in fflib
 
-Introduce ortoo_Selector - make it secure by default
-
 Test:
-    SecureDml
 
 Look at:
     SobjectUtils.getSobjectName
     Do we need to add 'emptyRecycleBin' too?
+
+Document:
+    Record level write access
+    If System Admin cannot access field
+    Effect of 'View All Data'
+
 
 Test Manually:
     Can I create a record that I can't update, even though I generally have rights - what happens?
