@@ -90,7 +90,7 @@ private without sharing class SecureDmlTest
     }
 
     @isTest
-    private static void dmlInsert_whenTheUserCanNotCreateButCudOff_willInsertTheRecords() // NOPMD: Test method name format
+    private static void dmlInsert_whenTheUserCanNotCreateButCrudOff_willInsertTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -104,17 +104,17 @@ private without sharing class SecureDmlTest
 
             ((TestableSecureDml)dml).canCreate = false; // mimics not having write access
 
-            dml.ignoreCudSettings();
+            dml.ignoreCrud();
             dml.dmlInsert( accounts );
 
         Test.stopTest();
 
-        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records but cud switched off, will insert the records, setting the Id on them (0)' );
-        System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user cannot create the records but cud switched off, will insert the records, setting the Id on them (1)' );
+        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records but crud switched off, will insert the records, setting the Id on them (0)' );
+        System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user cannot create the records but crud switched off, will insert the records, setting the Id on them (1)' );
     }
 
     @isTest
-    private static void dmlInsert_whenTheUserCanNotCreateButCudOffForThatObject_willInsertTheRecords() // NOPMD: Test method name format
+    private static void dmlInsert_whenTheUserCanNotCreateButCrudOffForThatObject_willInsertTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -125,7 +125,7 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType );
 
             ((TestableSecureDml)dml).canCreate = false; // mimics not having write access
 
@@ -133,12 +133,12 @@ private without sharing class SecureDmlTest
 
         Test.stopTest();
 
-        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records but cud switched off for that sobject type, will insert the records, setting the Id on them (0)' );
-        System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user cannot create the records but cud switched off for that sobject type, will insert the records, setting the Id on them (1)' );
+        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records but crud switched off for that sobject type, will insert the records, setting the Id on them (0)' );
+        System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user cannot create the records but crud switched off for that sobject type, will insert the records, setting the Id on them (1)' );
     }
 
     @isTest
-    private static void dmlInsert_whenTheUserCanNotCreateButCudOffForMultipleObjects_willInsertTheRecords() // NOPMD: Test method name format
+    private static void dmlInsert_whenTheUserCanNotCreateButCrudOffForMultipleObjects_willInsertTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -149,8 +149,8 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType )
-                                    .ignoreCudSettingsFor( Contact.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType )
+                                    .ignoreCrudFor( Contact.SobjectType );
 
             ((TestableSecureDml)dml).canCreate = false; // mimics not having write access
 
@@ -158,12 +158,12 @@ private without sharing class SecureDmlTest
 
         Test.stopTest();
 
-        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records but cud switched off for multiple sobject types, including that one, will insert the records, setting the Id on them (0)' );
-        System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user cannot create the records but cud switched off for multiple sobject types, including that one, will insert the records, setting the Id on them (1)' );
+        System.assertNotEquals( null, accounts[0].Id, 'dmlInsert, when the user cannot create the records but crud switched off for multiple sobject types, including that one, will insert the records, setting the Id on them (0)' );
+        System.assertNotEquals( null, accounts[1].Id, 'dmlInsert, when the user cannot create the records but crud switched off for multiple sobject types, including that one, will insert the records, setting the Id on them (1)' );
     }
 
     @isTest
-    private static void dmlInsert_whenTheUserCannotCreateRecordsAndCudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
+    private static void dmlInsert_whenTheUserCannotCreateRecordsAndCrudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -176,7 +176,7 @@ private without sharing class SecureDmlTest
             try
             {
                 SecureDml dml = new TestableSecureDml()
-                                        .ignoreCudSettingsFor( Contact.sobjectType );
+                                        .ignoreCrudFor( Contact.sobjectType );
 
                 ((TestableSecureDml)dml).canCreate = false;
 
@@ -188,7 +188,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        System.assertNotEquals( null, thrownException, 'dmlInsert, when the user cannot create records and cud is off for other objects, will still throw an exception' );
+        System.assertNotEquals( null, thrownException, 'dmlInsert, when the user cannot create records and crud is off for other objects, will still throw an exception' );
     }
 
     @isTest
@@ -633,7 +633,7 @@ private without sharing class SecureDmlTest
     }
 
     @isTest
-    private static void dmlUpdate_whenTheUserCanNotUpdateButCudOff_willUpdateTheRecords() // NOPMD: Test method name format
+    private static void dmlUpdate_whenTheUserCanNotUpdateButCrudOff_willUpdateTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -647,19 +647,19 @@ private without sharing class SecureDmlTest
 
             ((TestableSecureDml)dml).canUpdate = false; // mimics not having write access
 
-            dml.ignoreCudSettings();
+            dml.ignoreCrud();
             dml.dmlUpdate( accounts );
 
         Test.stopTest();
 
         List<Account> updatedAccounts = getAccountsUpdated();
 
-        System.assertEquals( updatedAccounts[0].Id, accounts[0].Id, 'dmlUpdate, when the user cannot update the records but cud switched off, will update the records' );
-        System.assertEquals( updatedAccounts[1].Id, accounts[1].Id, 'dmlUpdate, when the user cannot update the records but cud switched off, will update the records' );
+        System.assertEquals( updatedAccounts[0].Id, accounts[0].Id, 'dmlUpdate, when the user cannot update the records but crud switched off, will update the records' );
+        System.assertEquals( updatedAccounts[1].Id, accounts[1].Id, 'dmlUpdate, when the user cannot update the records but crud switched off, will update the records' );
     }
 
     @isTest
-    private static void dmlUpdate_whenTheUserCanNotUpdateButCudOffForThatObject_willUpdateTheRecords() // NOPMD: Test method name format
+    private static void dmlUpdate_whenTheUserCanNotUpdateButCrudOffForThatObject_willUpdateTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -670,7 +670,7 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType );
 
             ((TestableSecureDml)dml).canUpdate = false; // mimics not having write access
 
@@ -680,12 +680,12 @@ private without sharing class SecureDmlTest
 
         List<Account> updatedAccounts = getAccountsUpdated();
 
-        System.assertEquals( accounts[0].Id, updatedAccounts[0].Id, 'dmlUpdate, when the user cannot update the records but cud switched off for that sobject type, will update the records (0)' );
-        System.assertEquals( accounts[1].Id, updatedAccounts[1].Id, 'dmlUpdate, when the user cannot update the records but cud switched off for that sobject type, will update the records (1)' );
+        System.assertEquals( accounts[0].Id, updatedAccounts[0].Id, 'dmlUpdate, when the user cannot update the records but crud switched off for that sobject type, will update the records (0)' );
+        System.assertEquals( accounts[1].Id, updatedAccounts[1].Id, 'dmlUpdate, when the user cannot update the records but crud switched off for that sobject type, will update the records (1)' );
     }
 
     @isTest
-    private static void dmlUpdate_whenTheUserCanNotUpdateButCudOffForMultipleObjects_willUpdateTheRecords() // NOPMD: Test method name format
+    private static void dmlUpdate_whenTheUserCanNotUpdateButCrudOffForMultipleObjects_willUpdateTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -696,8 +696,8 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType )
-                                    .ignoreCudSettingsFor( Contact.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType )
+                                    .ignoreCrudFor( Contact.SobjectType );
 
             ((TestableSecureDml)dml).canUpdate = false; // mimics not having write access
 
@@ -707,12 +707,12 @@ private without sharing class SecureDmlTest
 
         List<Account> updatedAccounts = getAccountsUpdated();
 
-        System.assertEquals( accounts[0].Id, updatedAccounts[0].Id, 'dmlUpdate, when the user cannot update the records but cud switched off for multiple sobject types, including that one, will update the records (0)' );
-        System.assertEquals( accounts[1].Id, updatedAccounts[1].Id, 'dmlUpdate, when the user cannot update the records but cud switched off for multiple sobject types, including that one, will update the records (1)' );
+        System.assertEquals( accounts[0].Id, updatedAccounts[0].Id, 'dmlUpdate, when the user cannot update the records but crud switched off for multiple sobject types, including that one, will update the records (0)' );
+        System.assertEquals( accounts[1].Id, updatedAccounts[1].Id, 'dmlUpdate, when the user cannot update the records but crud switched off for multiple sobject types, including that one, will update the records (1)' );
     }
 
     @isTest
-    private static void dmlUpdate_whenTheUserCannotUpdateRecordsAndCudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
+    private static void dmlUpdate_whenTheUserCannotUpdateRecordsAndCrudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -725,7 +725,7 @@ private without sharing class SecureDmlTest
             try
             {
                 SecureDml dml = new TestableSecureDml()
-                                        .ignoreCudSettingsFor( Contact.sobjectType );
+                                        .ignoreCrudFor( Contact.sobjectType );
 
                 ((TestableSecureDml)dml).canUpdate = false;
 
@@ -737,7 +737,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        System.assertNotEquals( null, thrownException, 'dmlUpdate, when the user cannot update records and cud is off for other objects, will still throw an exception' );
+        System.assertNotEquals( null, thrownException, 'dmlUpdate, when the user cannot update records and crud is off for other objects, will still throw an exception' );
     }
 
     @isTest
@@ -1180,7 +1180,7 @@ private without sharing class SecureDmlTest
     }
 
     @isTest
-    private static void dmlDelete_whenTheUserCanNotDeleteButCudOff_willDeleteTheRecords() // NOPMD: Test method name format
+    private static void dmlDelete_whenTheUserCanNotDeleteButCrudOff_willDeleteTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -1194,19 +1194,19 @@ private without sharing class SecureDmlTest
 
             ((TestableSecureDml)dml).canDelete = false; // mimics not having write access
 
-            dml.ignoreCudSettings();
+            dml.ignoreCrud();
             dml.dmlDelete( accounts );
 
         Test.stopTest();
 
         List<Account> deletedAccounts = getAccountsDeleted();
 
-        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but cud switched off, will delete the records - 0' );
-        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but cud switched off, will delete the records - 1' );
+        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but crud switched off, will delete the records - 0' );
+        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but crud switched off, will delete the records - 1' );
     }
 
     @isTest
-    private static void dmlDelete_whenTheUserCanNotDeleteButCudOffForThatObject_willDeleteTheRecords() // NOPMD: Test method name format
+    private static void dmlDelete_whenTheUserCanNotDeleteButCrudOffForThatObject_willDeleteTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -1217,7 +1217,7 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType );
 
             ((TestableSecureDml)dml).canDelete = false; // mimics not having write access
 
@@ -1227,12 +1227,12 @@ private without sharing class SecureDmlTest
 
         List<Account> deletedAccounts = getAccountsDeleted();
 
-        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but cud switched off for that sobject type, will delete the records (0)' );
-        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but cud switched off for that sobject type, will delete the records (1)' );
+        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but crud switched off for that sobject type, will delete the records (0)' );
+        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but crud switched off for that sobject type, will delete the records (1)' );
     }
 
     @isTest
-    private static void dmlDelete_whenTheUserCanNotDeleteButCudOffForMultipleObjects_willDeleteTheRecords() // NOPMD: Test method name format
+    private static void dmlDelete_whenTheUserCanNotDeleteButCrudOffForMultipleObjects_willDeleteTheRecords() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -1243,8 +1243,8 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType )
-                                    .ignoreCudSettingsFor( Contact.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType )
+                                    .ignoreCrudFor( Contact.SobjectType );
 
             ((TestableSecureDml)dml).canDelete = false; // mimics not having write access
 
@@ -1254,12 +1254,12 @@ private without sharing class SecureDmlTest
 
         List<Account> deletedAccounts = getAccountsDeleted();
 
-        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but cud switched off for multiple sobject types, including that one, will delete the records (0)' );
-        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but cud switched off for multiple sobject types, including that one, will delete the records (1)' );
+        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but crud switched off for multiple sobject types, including that one, will delete the records (0)' );
+        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but crud switched off for multiple sobject types, including that one, will delete the records (1)' );
     }
 
     @isTest
-    private static void dmlDelete_whenTheUserCannotDeleteRecordsAndCudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
+    private static void dmlDelete_whenTheUserCannotDeleteRecordsAndCrudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
     {
         List<Account> accounts = new List<Account>
         {
@@ -1272,7 +1272,7 @@ private without sharing class SecureDmlTest
             try
             {
                 SecureDml dml = new TestableSecureDml()
-                                        .ignoreCudSettingsFor( Contact.sobjectType );
+                                        .ignoreCrudFor( Contact.sobjectType );
 
                 ((TestableSecureDml)dml).canDelete = false;
 
@@ -1284,7 +1284,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        System.assertNotEquals( null, thrownException, 'dmlDelete, when the user cannot delete records and cud is off for other objects, will still throw an exception' );
+        System.assertNotEquals( null, thrownException, 'dmlDelete, when the user cannot delete records and crud is off for other objects, will still throw an exception' );
     }
 
     @isTest
@@ -1404,7 +1404,7 @@ private without sharing class SecureDmlTest
     }
 
     @isTest
-    private static void eventPublish_whenTheUserCanNotPublishButCudOff_willPublishTheEvents() // NOPMD: Test method name format
+    private static void eventPublish_whenTheUserCanNotPublishButCrudOff_willPublishTheEvents() // NOPMD: Test method name format
     {
         List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
         {
@@ -1418,19 +1418,19 @@ private without sharing class SecureDmlTest
 
             ((TestableSecureDml)dml).canPublish = false; // mimics not having publish access
 
-            dml.ignoreCudSettings();
+            dml.ignoreCrud();
             dml.eventPublish( fakeEvents );
 
         Test.stopTest();
 
         List<Account> eventsPublished = getEventsPublished();
 
-        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but cud switched off, will publish the events - 0' );
-        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but cud switched off, will publish the events - 1' );
+        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but crud switched off, will publish the events - 0' );
+        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but crud switched off, will publish the events - 1' );
     }
 
     @isTest
-    private static void eventPublish_whenTheUserCanNotPublishButCudOffForThatObject_willPublishTheEvents() // NOPMD: Test method name format
+    private static void eventPublish_whenTheUserCanNotPublishButCrudOffForThatObject_willPublishTheEvents() // NOPMD: Test method name format
     {
         List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
         {
@@ -1441,7 +1441,7 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType );
 
             ((TestableSecureDml)dml).canPublish = false; // mimics not having publish access
 
@@ -1451,12 +1451,12 @@ private without sharing class SecureDmlTest
 
         List<Account> eventsPublished = getEventsPublished();
 
-        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but cud switched off for that sobject type, will publish the events (0)' );
-        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but cud switched off for that sobject type, will publish the events (1)' );
+        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but crud switched off for that sobject type, will publish the events (0)' );
+        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but crud switched off for that sobject type, will publish the events (1)' );
     }
 
     @isTest
-    private static void eventPublish_whenTheUserCanNotPublishButCudOffForMultipleObjects_willPublishTheEvents() // NOPMD: Test method name format
+    private static void eventPublish_whenTheUserCanNotPublishButCrudOffForMultipleObjects_willPublishTheEvents() // NOPMD: Test method name format
     {
         List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
         {
@@ -1467,8 +1467,8 @@ private without sharing class SecureDmlTest
         Test.startTest();
 
             SecureDml dml = new TestableSecureDml()
-                                    .ignoreCudSettingsFor( Account.SobjectType )
-                                    .ignoreCudSettingsFor( Contact.SobjectType );
+                                    .ignoreCrudFor( Account.SobjectType )
+                                    .ignoreCrudFor( Contact.SobjectType );
 
             ((TestableSecureDml)dml).canPublish = false; // mimics not having publish access
 
@@ -1478,12 +1478,12 @@ private without sharing class SecureDmlTest
 
         List<Account> eventsPublished = getEventsPublished();
 
-        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but cud switched off for multiple sobject types, including that one, will publish the events (0)' );
-        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but cud switched off for multiple sobject types, including that one, will publish the events (1)' );
+        System.assertEquals( fakeEvents[0], eventsPublished[0], 'eventPublish, when the user cannot publish the events but crud switched off for multiple sobject types, including that one, will publish the events (0)' );
+        System.assertEquals( fakeEvents[1], eventsPublished[1], 'eventPublish, when the user cannot publish the events but crud switched off for multiple sobject types, including that one, will publish the events (1)' );
     }
 
     @isTest
-    private static void eventPublish_whenTheUserCannotPublishEventsAndCudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
+    private static void eventPublish_whenTheUserCannotPublishEventsAndCrudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
     {
         List<Account> fakeEvents = new List<Account> // Events are just SObjects, but no standard ones exist. So we use Accounts as fake events
         {
@@ -1496,7 +1496,7 @@ private without sharing class SecureDmlTest
             try
             {
                 SecureDml dml = new TestableSecureDml()
-                                        .ignoreCudSettingsFor( Contact.sobjectType );
+                                        .ignoreCrudFor( Contact.sobjectType );
 
                 ((TestableSecureDml)dml).canPublish = false;
 
@@ -1508,7 +1508,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        System.assertNotEquals( null, thrownException, 'eventPublish, when the user cannot publish events and cud is off for other objects, will still throw an exception' );
+        System.assertNotEquals( null, thrownException, 'eventPublish, when the user cannot publish events and crud is off for other objects, will still throw an exception' );
     }
 
     @isTest
@@ -1649,7 +1649,7 @@ private without sharing class SecureDmlTest
 		public void handleInaccessibleFields( AccessType mode, SobjectType sobjectType, Set<String> fieldsInViolation ) {} // NOPMD: intentionally left blank
     }
 
-    private inherited sharing class SwallowOnCudViolationHandler implements SecureDml.CudViolationHandler
+    private inherited sharing class SwallowOnCrudViolationHandler implements SecureDml.CrudViolationHandler
     {
 		public void handleUnableToInsertRecords( List<SObject> objList ) {} // NOPMD: intentionally left blank
 		public void handleUnableToUpdateRecords( List<SObject> objList ) {} // NOPMD: intentionally left blank

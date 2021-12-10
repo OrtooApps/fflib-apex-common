@@ -1,14 +1,14 @@
 /**
  * Is an implementation of the IDml interface used to manage the DML operations in an SObject Unit of Work.
  *
- * Implementation is secure by default, ensuring that FLS and CUD (CRUD without the Read) security is adhered to.
+ * Implementation is secure by default, ensuring that FLS and CRUD security is adhered to.
  *
  * Allows ther turning off of security at multiple levels:
  * 		FLS checking for a given field
  * 		FLS checking for a given SObject Type
  * 		FLS checking for all SObjects
- * 		CUD checking for a given SObject Type
- * 		CUD checking for all SObjects
+ * 		CRUD checking for a given SObject Type
+ * 		CRUD checking for all SObjects
  */
 public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork.SimpleDML implements fflib_SobjectUnitOfWork.IDml
 {
@@ -21,9 +21,9 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * Interface that defines a handler for if and when a CUD violation occurs.
+	 * Interface that defines a handler for if and when a CRUD violation occurs.
 	 */
-	public interface CudViolationHandler
+	public interface CrudViolationHandler
 	{
 		void handleUnableToInsertRecords( List<SObject> objList );
 		void handleUnableToUpdateRecords( List<SObject> objList );
@@ -40,10 +40,10 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	FlsViolationHandler flsViolationHandler;
-	CudViolationHandler cudViolationHandler;
+	CrudViolationHandler crudViolationHandler;
 
-	Boolean ignoreCud = false;
-	Set<SobjectType> ignoreCudForSobjectTypes = new Set<SobjectType>();
+	Boolean ignoreCrud = false;
+	Set<SobjectType> ignoreCrudForSobjectTypes = new Set<SobjectType>();
 
 	Boolean ignoreFls = false;
 	Set<SobjectType> ignoreFlsForSobjectTypes = new Set<SobjectType>();
@@ -55,7 +55,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	public SecureDml()
 	{
 		setFlsViolationHandler( new ErrorOnFlsViolationHandler() );
-		setCudViolationHandler( new ErrorOnCudViolationHandler() );
+		setCrudViolationHandler( new ErrorOnCrudViolationHandler() );
 	}
 
 	/**
@@ -71,14 +71,14 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * Set the Handler that should be used when an CUD violation occurs
+	 * Set the Handler that should be used when an CRUD violation occurs
 	 *
 	 * @param	FlsViolationHandler	The FLS violation handler to use
 	 * @return	SecureDml					Itself, allowing for a fluent interface
 	 */
-	public SecureDml setCudViolationHandler( CudViolationHandler cudViolationHandler )
+	public SecureDml setCrudViolationHandler( CrudViolationHandler crudViolationHandler )
 	{
-		this.cudViolationHandler = cudViolationHandler;
+		this.crudViolationHandler = crudViolationHandler;
 		return this;
 	}
 
@@ -128,32 +128,32 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * Disables CUD settings checking for this instance
+	 * Disables CRUD settings checking for this instance
 	 *
 	 * @return	SecureDml Itself, allowing for a fluent interface
 	 */
-	public SecureDml ignoreCudSettings()
+	public SecureDml ignoreCrud()
 	{
-		ignoreCud = true;
+		ignoreCrud = true;
 		return this;
 	}
 
 	/**
-	 * Disables CUD settings checking for all records of the given SObject Type
+	 * Disables CRUD settings checking for all records of the given SObject Type
 	 *
-	 * @param	SobjectType	The Sobject Type for which to disable CUD checking
+	 * @param	SobjectType	The Sobject Type for which to disable CRUD checking
 	 * @return	SecureDml	Itself, allowing for a fluent interface
 	 */
-	public SecureDml ignoreCudSettingsFor( SobjectType type )
+	public SecureDml ignoreCrudFor( SobjectType type )
 	{
-		Contract.requires( type != null, 'ignoreCudSettingsFor called with a null type' );
+		Contract.requires( type != null, 'ignoreCrudFor called with a null type' );
 
-		ignoreCudForSobjectTypes.add( type );
+		ignoreCrudForSobjectTypes.add( type );
 		return this;
 	}
 
 	/**
-	 * Performs the DML Insert, whilst also checking CUD and FLS rights, based on the configuration.
+	 * Performs the DML Insert, whilst also checking CRUD and FLS rights, based on the configuration.
 	 *
 	 * @param	List<SObject>	The list of records to insert
 	 */
@@ -166,9 +166,9 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! userCanCreate( objList[0] ) )
+		if ( shouldCheckCrud( type ) && ! userCanCreate( objList[0] ) )
 		{
-			cudViolationHandler.handleUnableToInsertRecords( objList );
+			crudViolationHandler.handleUnableToInsertRecords( objList );
 			return;
 		}
 
@@ -186,7 +186,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * Performs the DML Update, whilst also checking CUD and FLS rights, based on the configuration.
+	 * Performs the DML Update, whilst also checking CRUD and FLS rights, based on the configuration.
 	 *
 	 * @param	List<SObject>	The list of records to update
 	 */
@@ -199,9 +199,9 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! userCanUpdate( objList[0] ) )
+		if ( shouldCheckCrud( type ) && ! userCanUpdate( objList[0] ) )
 		{
-			cudViolationHandler.handleUnableToUpdateRecords( objList );
+			crudViolationHandler.handleUnableToUpdateRecords( objList );
 			return;
 		}
 
@@ -218,7 +218,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * Performs the DML Delete, whilst also checking CUD and FLS rights, based on the configuration.
+	 * Performs the DML Delete, whilst also checking CRUD and FLS rights, based on the configuration.
 	 *
 	 * @param	List<SObject>	The list of records to insert
 	 */
@@ -231,9 +231,9 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! userCanDelete( objList[0] ) )
+		if ( shouldCheckCrud( type ) && ! userCanDelete( objList[0] ) )
 		{
-			cudViolationHandler.handleUnableToDeleteRecords( objList );
+			crudViolationHandler.handleUnableToDeleteRecords( objList );
 			return;
 		}
 		doDelete( objList );
@@ -245,7 +245,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * Performs the DML Publish, whilst also checking CUD and FLS rights, based on the configuration.
+	 * Performs the DML Publish, whilst also checking CRUD and FLS rights, based on the configuration.
 	 *
 	 * @param	List<SObject>	The list of records to insert
 	 */
@@ -258,9 +258,9 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 
 		SobjectType type = SobjectUtils.getSobjectType( objList[0] );
 
-		if ( shouldCheckCud( type ) && ! userCanPublish( objList[0] ) )
+		if ( shouldCheckCrud( type ) && ! userCanPublish( objList[0] ) )
 		{
-			cudViolationHandler.handleUnableToPublishEvents( objList );
+			crudViolationHandler.handleUnableToPublishEvents( objList );
 			return;
 		}
 
@@ -355,22 +355,22 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * States if CUD settings should be checked for the given SObject type
+	 * States if CRUD settings should be checked for the given SObject type
 	 *
-	 * @param	SobjectType		The type for which to ascertain if CUD should be checked
-	 * @return	Boolean			Should CUD be checked
+	 * @param	SobjectType		The type for which to ascertain if CRUD should be checked
+	 * @return	Boolean			Should CRUD be checked
 	 */
-	private Boolean shouldCheckCud( SobjectType type )
+	private Boolean shouldCheckCrud( SobjectType type )
 	{
-		if ( ignoreCud )
+		if ( ignoreCrud )
 		{
 			return false;
 		}
-		if ( ignoreCudForSobjectTypes.isEmpty() )
+		if ( ignoreCrudForSobjectTypes.isEmpty() )
 		{
 			return true;
 		}
-		return ! ignoreCudForSobjectTypes.contains( type );
+		return ! ignoreCrudForSobjectTypes.contains( type );
 	}
 
 	/**
@@ -539,12 +539,12 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 	}
 
 	/**
-	 * CudViolationHandler that ensures that exceptions are thrown when CUD violations occur
+	 * CrudViolationHandler that ensures that exceptions are thrown when CRUD violations occur
 	 */
-	public inherited sharing virtual class ErrorOnCudViolationHandler implements CudViolationHandler
+	public inherited sharing virtual class ErrorOnCrudViolationHandler implements CrudViolationHandler
 	{
 		/**
-		 * Throws an exception describing the insert CUD violation
+		 * Throws an exception describing the insert CRUD violation
 		 *
 		 * @param	List<SObject>	The list of SObjects that caused the violation.
 		 */
@@ -554,7 +554,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 
 		/**
-		 * Throws an exception describing the update CUD violation
+		 * Throws an exception describing the update CRUD violation
 		 *
 		 * @param	List<SObject>	The list of SObjects that caused the violation.
 		 */
@@ -564,7 +564,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 
 		/**
-		 * Throws an exception describing the delete CUD violation
+		 * Throws an exception describing the delete CRUD violation
 		 *
 		 * @param	List<SObject>	The list of SObjects that caused the violation.
 		 */
@@ -574,7 +574,7 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 		}
 
 		/**
-		 * Throws an exception describing the publish CUD violation
+		 * Throws an exception describing the publish CRUD violation
 		 *
 		 * @param	List<SObject>	The list of SObjects that caused the violation.
 		 */
