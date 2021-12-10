@@ -1096,6 +1096,232 @@ private without sharing class SecureDmlTest
         System.assertEquals( 1, accounts[0].NumberOfEmployees, 'dmlUpdate, when the user cannot update records because of FLS and handler does not throw exception, will ensure the supressed fields keep their values' );
     }
 
+
+    @isTest
+    private static void dmlDelete_whenTheUserCanDeleteTheRecords_willDeleteTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.dmlDelete( accounts );
+
+        Test.stopTest();
+
+        List<Account> deletedAccounts = getAccountsDeleted();
+
+        System.assertEquals( 'Account1', deletedAccounts[0].Name, 'dmlDelete, when the user can delete the records, will delete the records (0)' );
+        System.assertEquals( 'Account2', deletedAccounts[1].Name, 'dmlDelete, when the user can delete the records, will delete the records (1)' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenAskedToDeleteALotOfRecords_willDeleteTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>();
+        for ( Integer i=0; i < LOTS_OF_RECORDS; i++ )
+        {
+            accounts.add( new Account( Name = 'Account' + i ) );
+        }
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.dmlDelete( accounts );
+
+        Test.stopTest();
+
+        List<Account> deletedAccounts = getAccountsDeleted();
+
+        System.assertEquals( LOTS_OF_RECORDS, deletedAccounts.size(), 'dmlDelete, when the user can delete the records, will delete the records without blowing CPU or Heap size limits' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenTheUserCannotDeleteRecords_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
+        };
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml();
+                ((TestableSecureDml)dml).canDelete = false;
+
+                dml.dmlDelete( accounts );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        System.assertNotEquals( null, thrownException, 'dmlDelete, when the user cannot delete records, will throw an exception' );
+
+        ortoo_Exception.Contexts contexts = thrownException.getContexts();
+        ortoo_Exception.Context context;
+
+        context = contexts.next();
+        System.assertEquals( 'sobjectTypeName', context.getName(), 'dmlDelete, when the user cannot delete records, will throw an exception with a context named sobjectTypeName' );
+        System.assertEquals( Account.getSObjectType().getDescribe().getName(), context.getValue(), 'dmlDelete, when the user cannot delete records, will throw an exception with a context named sobjectTypeName set to the name of the SObject' );
+
+        context = contexts.next();
+        System.assertEquals( 'records', context.getName(), 'dmlDelete, when the user cannot delete records, will throw an exception with a context named records' );
+        System.assertEquals( accounts, context.getValue(), 'dmlDelete, when the user cannot delete records, will throw an exception with a context named records set to the records that where sent' );
+
+        System.assertEquals( 'dmlDelete', thrownException.getStackTrace().getInnermostMethodName(), 'dmlDelete, when the user cannot delete records, will throw an exception with the stack trace pointing to the delete method' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenTheUserCanNotDeleteButCudOff_willDeleteTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+
+            ((TestableSecureDml)dml).canDelete = false; // mimics not having write access
+
+            dml.ignoreCudSettings();
+            dml.dmlDelete( accounts );
+
+        Test.stopTest();
+
+        List<Account> deletedAccounts = getAccountsDeleted();
+
+        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but cud switched off, will delete the records - 0' );
+        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but cud switched off, will delete the records - 1' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenTheUserCanNotDeleteButCudOffForThatObject_willDeleteTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreCudSettingsFor( Account.SobjectType );
+
+            ((TestableSecureDml)dml).canDelete = false; // mimics not having write access
+
+            dml.dmlDelete( accounts );
+
+        Test.stopTest();
+
+        List<Account> deletedAccounts = getAccountsDeleted();
+
+        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but cud switched off for that sobject type, will delete the records (0)' );
+        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but cud switched off for that sobject type, will delete the records (1)' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenTheUserCanNotDeleteButCudOffForMultipleObjects_willDeleteTheRecords() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
+        };
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml()
+                                    .ignoreCudSettingsFor( Account.SobjectType )
+                                    .ignoreCudSettingsFor( Contact.SobjectType );
+
+            ((TestableSecureDml)dml).canDelete = false; // mimics not having write access
+
+            dml.dmlDelete( accounts );
+
+        Test.stopTest();
+
+        List<Account> deletedAccounts = getAccountsDeleted();
+
+        System.assertEquals( accounts[0], deletedAccounts[0], 'dmlDelete, when the user cannot delete the records but cud switched off for multiple sobject types, including that one, will delete the records (0)' );
+        System.assertEquals( accounts[1], deletedAccounts[1], 'dmlDelete, when the user cannot delete the records but cud switched off for multiple sobject types, including that one, will delete the records (1)' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenTheUserCannotDeleteRecordsAndCudOfForOtherObjects_willThrowAnException() // NOPMD: Test method name format
+    {
+        List<Account> accounts = new List<Account>
+        {
+            new Account( Name = 'Account1' ),
+            new Account( Name = 'Account2' )
+        };
+
+        Test.startTest();
+            ortoo_Exception thrownException;
+            try
+            {
+                SecureDml dml = new TestableSecureDml()
+                                        .ignoreCudSettingsFor( Contact.sobjectType );
+
+                ((TestableSecureDml)dml).canDelete = false;
+
+                dml.dmlDelete( accounts );
+            }
+            catch ( SecureDml.SecureDmlException e )
+            {
+                thrownException = e;
+            }
+        Test.stopTest();
+
+        System.assertNotEquals( null, thrownException, 'dmlDelete, when the user cannot delete records and cud is off for other objects, will still throw an exception' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenGivenAnEmptyList_willDoNothing() // NOPMD: Test method name format
+    {
+        List<Account> emptyList = new List<Account>();
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+            dml.dmlDelete( emptyList );
+
+        Test.stopTest();
+
+        System.assertEquals( null, getAccountsDeleted(), 'dmlDelete, when given an empty list, will not issue any DML' );
+    }
+
+    @isTest
+    private static void dmlDelete_whenGivenAnEmptyListAndDeleteIsNotAllowed_willDoNothing() // NOPMD: Test method name format
+    {
+        List<Account> emptyList = new List<Account>();
+
+        Test.startTest();
+
+            SecureDml dml = new TestableSecureDml();
+
+            ((TestableSecureDml)dml).canDelete = false;
+
+            dml.dmlDelete( emptyList );
+
+        Test.stopTest();
+
+        System.assertEquals( null, getAccountsDeleted(), 'dmlDelete, when given an empty list of objects the user cannot delete, will not issue any DML or throw an exception' );
+    }
+
+
     private static List<Account> getAccountsInserted()
     {
         return recordsInserted;
