@@ -31,6 +31,40 @@ public inherited sharing class ortoo_SobjectUnitOfWork extends fflib_SObjectUnit
 	}
 
 	/**
+	 * Provides an elevated context for calls to the Unit of Work.
+	 *
+	 * Specifically, removes sharing from the call meaning that the Unit of Work can commit
+	 * records that the current user would not normally have write access to.
+	 *
+	 * @return ortoo_SobjectUnitOfWork.ElevatedContext	The elevated context against which a commit can be issued
+	 */
+	public ElevatedContext elevatedContext()
+	{
+		return new ElevatedContext( this );
+	}
+
+	/**
+	 * Provides the ability to remove sharing rules from the current context
+	 */
+	public without sharing class ElevatedContext
+	{
+		ortoo_SobjectUnitOfWork uow;
+
+		public ElevatedContext( ortoo_SobjectUnitOfWork uow )
+		{
+			this.uow = uow;
+		}
+
+		/**
+		 * Commit the currently queued work, not applying sharing rules when that is done.
+		 */
+		public void commitWork()
+		{
+			uow.commitWork();
+		}
+	}
+
+	/**
 	 * Returns the number of DML rows that are pending for this Unit of Work
 	 *
 	 * @return	Integer	The number of rows that this Unit of Work will send for commit
