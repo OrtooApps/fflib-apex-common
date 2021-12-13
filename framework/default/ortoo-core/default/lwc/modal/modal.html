@@ -1,0 +1,36 @@
+<template>
+    <!--
+        Remove formatted modal, and move it all into here.
+        Add the cancel cross - don't forget to test it.
+        You can't have a modal that isn't formatted because of the way the header contains the cancel button
+
+        The modal should have a background that includes the right level of padding and suchlike, so a form without formatting can be added
+
+        Create standard save buttons and extract from the view and edit form.
+
+        Change the selection criteria edit form so that it no longer uses the view and edit form.
+
+        Construct the modal with the right title / buttons and edit form in the definer
+
+        Consider making an 'edit modal' that takes a title and form and handles the save and edit buttons?
+    -->
+
+
+    <lightning-card if:true={visible} onkeydown={handleKeyDown}>
+        <div class="slds-container_small">
+            <section
+                role="dialog"
+                tabindex="-1"
+                aria-labelledby="modal-heading-01"
+                aria-modal="true"
+                aria-describedby="modal-content-id-1"
+                class="slds-modal slds-fade-in-open"
+            >
+                <div class="slds-modal__container">
+                    <slot name="contents"></slot>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </lightning-card>
+</template>

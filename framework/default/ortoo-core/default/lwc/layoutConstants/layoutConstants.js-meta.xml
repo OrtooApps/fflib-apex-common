@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>A service modal that provides constants relating to layouts (e.g. display density and classes for labels) as well as functions for returning the correct constants in certain circumstances.</description>
+    <masterLabel>Layout Constants</masterLabel>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

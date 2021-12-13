@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>Rendering of a read-only field in line with the standard formatting of Lightning view and edit forms.  Can be configured for different display densities, which must be done explicitly.</description>
+    <masterLabel>Read Only Field</masterLabel>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

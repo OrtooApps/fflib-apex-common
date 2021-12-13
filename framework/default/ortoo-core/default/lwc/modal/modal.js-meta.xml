@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>A modal that allows for the specification of content, without any formatting determined within the modal.  For a modal with a standard format, see formattedModal.</description>
+    <masterLabel>Modal</masterLabel>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>
