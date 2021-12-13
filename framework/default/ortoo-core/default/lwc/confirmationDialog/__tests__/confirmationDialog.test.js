@@ -9,7 +9,7 @@ describe('c-confirmation-dialog', () => {
         }
     });
 
-    it('When set to visible, and with a title contains a div containing the title, directing it to the title slot', () => {
+    it('When set to visible, with a title, contains a div with the title, directing it to the title slot', () => {
         const element = createElement('c-confirmation-dialog', {
             is: ConfirmationDialog
         });
@@ -17,7 +17,7 @@ describe('c-confirmation-dialog', () => {
         element.visible = true;
         document.body.appendChild(element);
 
-        const expectedElement = element.shadowRoot.querySelector( 'c-formatted-modal div[slot="title"]' );
+        const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="title"]' );
         expect( expectedElement.innerHTML ).toBe( 'The title' );
     });
 
@@ -29,7 +29,7 @@ describe('c-confirmation-dialog', () => {
         element.visible = true;
         document.body.appendChild(element);
 
-        const expectedElement = element.shadowRoot.querySelector( 'c-formatted-modal div[slot="contents"]' );
+        const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="contents"]' );
         expect( expectedElement ).not.toBe( null );
     });
 
@@ -42,7 +42,7 @@ describe('c-confirmation-dialog', () => {
         element.visible = true;
         document.body.appendChild(element);
 
-        const expectedElement = element.shadowRoot.querySelector( 'c-formatted-modal div[slot="footer"]' );
+        const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
         expect( expectedElement.querySelector( '[title="Confirm"]' ) ).not.toBe( null );

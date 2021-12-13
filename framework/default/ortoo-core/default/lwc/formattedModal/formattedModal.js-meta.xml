@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>52.0</apiVersion>
-    <description>A modal that follows the standard Lightning Card rendering convention of providing title, content and footer slots.</description>
-    <masterLabel>Formatted Modal</masterLabel>
-    <isExposed>false</isExposed>
-</LightningComponentBundle>

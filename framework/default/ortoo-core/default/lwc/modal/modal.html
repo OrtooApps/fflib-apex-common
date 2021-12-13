@@ -1,21 +1,4 @@
 <template>
-    <!--
-        Remove formatted modal, and move it all into here.
-        Add the cancel cross - don't forget to test it.
-        You can't have a modal that isn't formatted because of the way the header contains the cancel button
-
-        The modal should have a background that includes the right level of padding and suchlike, so a form without formatting can be added
-
-        Create standard save buttons and extract from the view and edit form.
-
-        Change the selection criteria edit form so that it no longer uses the view and edit form.
-
-        Construct the modal with the right title / buttons and edit form in the definer
-
-        Consider making an 'edit modal' that takes a title and form and handles the save and edit buttons?
-    -->
-
-
     <lightning-card if:true={visible} onkeydown={handleKeyDown}>
         <div class="slds-container_small">
             <section
@@ -27,7 +10,35 @@
                 class="slds-modal slds-fade-in-open"
             >
                 <div class="slds-modal__container">
-                    <slot name="contents"></slot>
+
+                    <header class="slds-modal__header">
+                        <!-- TODO: labels for 'Close' -->
+                        <button
+                            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close"
+                            onclick={handleCancel}
+                            aria-id="cancel-cross"
+                        >
+                            <lightning-icon
+                                icon-name="utility:close"
+                                alternative-text="close"
+                                variant="inverse"
+                                size="small"
+                            ></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                            <slot name="title"></slot>
+                        </h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <slot name="contents"></slot>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <slot name="footer"></slot>
+                    </footer>
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
