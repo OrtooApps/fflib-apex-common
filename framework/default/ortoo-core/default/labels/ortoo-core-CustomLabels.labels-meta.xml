@@ -84,4 +84,25 @@
         <shortDescription>The word 'Confirm', capitalised.</shortDescription>
         <value>Confirm</value>
     </labels>
+    <labels>
+        <fullName>ortoo_core_yes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Yes', capitalised.</shortDescription>
+        <value>Yes</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_no</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'No', capitalised.</shortDescription>
+        <value>No</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_save</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Save', capitalised.</shortDescription>
+        <value>Save</value>
+    </labels>
 </CustomLabels>

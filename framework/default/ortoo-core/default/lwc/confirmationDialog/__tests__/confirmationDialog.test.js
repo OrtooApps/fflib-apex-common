@@ -55,18 +55,41 @@ describe('c-confirmation-dialog', () => {
         const element = createElement('c-confirmation-dialog', {
             is: ConfirmationDialog
         });
-        element.confirmLabel = 'Confirm';
-        element.cancelLabel  = 'Cancel';
+        element.type = 'save';
+        element.confirmLabel = 'Confirm thing';
+        element.cancelLabel  = 'Cancel thing';
         element.visible = true;
         document.body.appendChild(element);
 
         const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).title ).toBe( element.confirmLabel );
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).toBe( element.confirmLabel );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).title ).toBe( element.cancelLabel );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).toBe( element.cancelLabel );
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).title ).toBe( 'Confirm thing' );
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).toBe( 'Confirm thing' );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).title ).toBe( 'Cancel thing' );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).toBe( 'Cancel thing' );
+    });
+
+    it('When set to visible and passed a valid type, contains a div containing cancel and confirm buttons with the specified labels, directing them to the modal footer slot', () => {
+        const element = createElement('c-confirmation-dialog', {
+            is: ConfirmationDialog
+        });
+        element.type = 'save';
+        element.visible = true;
+        document.body.appendChild(element);
+
+        const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
+        expect( expectedElement ).not.toBe( null );
+
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).not.toBe( null );
+    });
+
+    it('When set to an invalid type, will throw an error', () => {
+        const element = createElement('c-confirmation-dialog', {
+            is: ConfirmationDialog
+        });
+        expect( () => element.type = 'invalid' ).toThrowError( 'Invalid type specified, should be one of confirm, yesNo, save' );
     });
 
     it('Clicking the confirm button will issue an event containing the confirm event message', () => {

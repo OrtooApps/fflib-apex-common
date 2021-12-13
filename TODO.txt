@@ -22,6 +22,7 @@ Look at:
 
 * Standards
     * data-name to identify elements in a test
+        * e.g. [data-name="cancel"]
     * Labels should be:
         * Imported into a static named _LABEL
         * Referenced in an object named 'labels'.
