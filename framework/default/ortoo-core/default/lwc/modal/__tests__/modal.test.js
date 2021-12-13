@@ -100,7 +100,7 @@ describe('c-modal', () => {
         return Promise.resolve()
             .then( () => {
                 const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( 'button[aria-id="cancel-cross"]' ).dispatchEvent( clickEvent );
+                return element.shadowRoot.querySelector( 'button[data-name="cancel-cross"]' ).dispatchEvent( clickEvent );
             })
             .then( () => {
                 expect( cancelHandler ).toHaveBeenCalled();
