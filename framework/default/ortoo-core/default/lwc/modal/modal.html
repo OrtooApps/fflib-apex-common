@@ -12,7 +12,6 @@
                 <div class="slds-modal__container">
 
                     <header class="slds-modal__header">
-                        <!-- TODO: labels for 'Close' -->
                         <button
                             class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
                             title={labels.close}
@@ -37,7 +36,9 @@
                     </div>
 
                     <footer class="slds-modal__footer">
-                        <slot name="footer"></slot>
+                        <div class="slds-align_absolute-center">
+                            <slot name="footer"></slot>
+                        </div>
                     </footer>
                 </div>
             </section>
