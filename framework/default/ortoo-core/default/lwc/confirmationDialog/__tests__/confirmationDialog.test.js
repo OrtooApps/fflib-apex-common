@@ -45,10 +45,10 @@ describe('c-confirmation-dialog', () => {
         const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).getAttribute( 'title' ) ).not.toBe( null );
-//        expect( expectedElement.querySelector( '[data-name="confirm"]' ).getAttribute( 'label' ) ).not.toBe( null );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).getAttribute( 'title' ) ).not.toBe( null );
-//        expect( expectedElement.querySelector( '[data-name="cancel"]' ).getAttribute( 'label' ) ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).title ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).title ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).not.toBe( null );
     });
 
     it('When set to visible, contains a div containing cancel and confirm buttons with the specified labels, directing them to the modal footer slot', () => {
@@ -63,10 +63,10 @@ describe('c-confirmation-dialog', () => {
         const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).getAttribute( 'title' ) ).toBe( element.confirmLabel );
-//        expect( expectedElement.querySelector( '[data-name="confirm"]' ).getAttribute( 'label' ) ).toBe( element.confirmLabel );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).getAttribute( 'title' ) ).toBe( element.cancelLabel );
-//        expect( expectedElement.querySelector( '[data-name="cancel"]' ).getAttribute( 'label' ) ).toBe( element.cancelLabel );
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).title ).toBe( element.confirmLabel );
+        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).toBe( element.confirmLabel );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).title ).toBe( element.cancelLabel );
+        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).toBe( element.cancelLabel );
     });
 
     it('Clicking the confirm button will issue an event containing the confirm event message', () => {
@@ -78,9 +78,7 @@ describe('c-confirmation-dialog', () => {
             is: ConfirmationDialog
         });
 
-        element.confirmLabel        = 'Confirm';
         element.confirmEventMessage = CONFIRM_MESSAGE;
-        element.cancelLabel         = 'Cancel';
         element.cancelEventMessage  = CANCEL_MESSAGE;
 
         element.visible        = true;
@@ -92,7 +90,7 @@ describe('c-confirmation-dialog', () => {
         const cancelHandler = jest.fn();
         element.addEventListener( 'cancel', cancelHandler ) ;
 
-        element.shadowRoot.querySelector( '[title="Confirm"]' ).click();
+        element.shadowRoot.querySelector( '[data-name="confirm"]' ).click();
 
         expect( confirmHandler ).toHaveBeenCalled();
         expect( confirmHandler.mock.calls[0][0].detail ).toBe( CONFIRM_MESSAGE );
@@ -109,9 +107,7 @@ describe('c-confirmation-dialog', () => {
             is: ConfirmationDialog
         });
 
-        element.confirmLabel        = 'Confirm';
         element.confirmEventMessage = CONFIRM_MESSAGE;
-        element.cancelLabel         = 'Cancel';
         element.cancelEventMessage  = CANCEL_MESSAGE;
 
         element.visible        = true;
@@ -123,7 +119,7 @@ describe('c-confirmation-dialog', () => {
         const cancelHandler = jest.fn();
         element.addEventListener( 'cancel', cancelHandler ) ;
 
-        element.shadowRoot.querySelector( '[title="Cancel"]' ).click();
+        element.shadowRoot.querySelector( '[data-name="cancel"]' ).click();
 
         expect( cancelHandler ).toHaveBeenCalled();
         expect( cancelHandler.mock.calls[0][0].detail ).toBe( CANCEL_MESSAGE );
