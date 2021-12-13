@@ -1,5 +1,15 @@
 /**
- * Utility class that provides extra capabilities related to SObjects
+ * Utility class that provides extra capabilities related to SObjects.
+ *
+ * Many of the methods provide shortcuts to pre-existing Salesforce methods.
+ * For example: record.getSObjectType().getDescribe().isCreateable();
+ * These methods exist in order to:
+ * 		1 - Make the code in the app that performs these checks simpler and easier to read.
+ * 		2 - Provide the ability to make performance improvements as and when the
+ * 			relative performance of different methods change.
+ * 			This may include the ability to cache certain results.
+ *
+ * These methods should always be used to ask questions of SObjects.
  *
  * @group Utils
  */
@@ -40,6 +50,20 @@ public inherited sharing class SobjectUtils
 	}
 
 	/**
+	 * Given an instance of an SObject, will return its SobjectType
+	 *
+	 * @param	Sobject		The SObject for which to return the SobjectType
+	 * @return	SobjectType	The SobjectType of the SObject
+	 */
+	public static SobjectType getSobjectType( Sobject record )
+	{
+		Contract.requires( record != null, 'getSobjectType called with a null record' );
+
+		return record.getSObjectType();
+	}
+
+	// TODO: use the describe on the object?
+	/**
 	 * Given an instance of an SObject, will return the developer / API name of the SObject (e.g. Contact)
 	 *
 	 * @param	Sobject		The SObject to return the Name for
@@ -69,5 +93,62 @@ public inherited sharing class SobjectUtils
 
 		Contract.ensures( sobjectName != null, 'getSobjectName returned with a null sobjectName' );
 		return sobjectName;
+	}
+
+	/**
+	 * States if the given SObject is of a type that the current user is allowed to insert
+	 *
+	 * @param	SObject	The SObject to check the type of
+	 * @return	Boolean	States if the user can insert records of this type
+	 */
+	public static Boolean isCreateable( Sobject record )
+	{
+		Contract.requires( record != null, 'isCreateable called with a null record' );
+
+		return getSObjectDescribeResult( record ).isCreateable();
+	}
+
+	/**
+	 * States if the given SObject is of a type that the current user is allowed to update
+	 *
+	 * @param	SObject	The SObject to check the type of
+	 * @return	Boolean	States if the user can update records of this type
+	 */
+	public static Boolean isUpdateable( Sobject record )
+	{
+		Contract.requires( record != null, 'isUpdateable called with a null record' );
+
+		return getSObjectDescribeResult( record ).isUpdateable();
+	}
+
+	/**
+	 * States if the given SObject is of a type that the current user is allowed to delete
+	 *
+	 * @param	SObject	The SObject to check the type of
+	 * @return	Boolean	States if the user can delete records of this type
+	 */
+	public static Boolean isDeletable( Sobject record )
+	{
+		Contract.requires( record != null, 'isDeletable called with a null record' );
+
+		return getSObjectDescribeResult( record ).isDeletable();
+	}
+
+	/**
+	 * Given an SObject record, will return the DescrideSObjectResult for it.
+	 *
+	 * Generally shouldn't be used by external methods.  Instead the question of the
+	 * describe result should be asked of SobjectUtils.
+	 *
+	 * For example, see 'isCreateable'.
+	 *
+	 * @param	SObject					The SObject to get the describe for
+	 * @return	DescribeSObjectResult	The passed SObject's describe
+	 */
+	private static DescribeSObjectResult getSobjectDescribeResult( Sobject record )
+	{
+		Contract.requires( record != null, 'getSobjectDescribeResult called with a null record' );
+
+		return record.getSObjectType().getDescribe();
 	}
 }

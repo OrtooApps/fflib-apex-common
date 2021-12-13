@@ -119,6 +119,50 @@ public with sharing class ortoo_ExceptionTest {
     }
 
     @isTest
+    private static void regenerateStackTraceString_willCreateANewStackTraceFromTheGivenPoint()
+	{
+        String stackTrace;
+        Test.startTest();
+            try
+			{
+                throwASubclassedException();
+            }
+			catch ( SubclassedException e )
+			{
+                e.regenerateStackTraceString( 0 );
+                stackTrace = e.getStackTraceString();
+            }
+        Test.stopTest();
+
+        Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point' );
+        Amoss_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (method 1)' );
+        Amoss_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (method 2)' );
+        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.regenerateStackTraceString_willCreateANewStackTraceFromTheGivenPoint', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (actual spot called)' );
+    }
+
+    @isTest
+    private static void regenerateStackTraceString_whenPassedANumber_willCreateANewStackTraceWithLevelsSkipped()
+	{
+        Integer levelsToSkip = 1;
+
+        String stackTrace;
+        Test.startTest();
+            try
+			{
+                throwASubclassedException( levelsToSkip );
+            }
+			catch ( SubclassedException e )
+			{
+                stackTrace = e.getStackTraceString();
+            }
+        Test.stopTest();
+
+        Amoss_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (1st level is skipped)' );
+        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (2nd level is not skipped)' );
+        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.regenerateStackTraceString_whenPassedANumber_willCreateANewStackTraceWithLevelsSkipped', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (3rd level is not skipped)' );
+    }
+
+    @isTest
     private static void addContext_whenCalled_willAddItToTheExceptionWithStackInfo() // NOPMD: Test method name format
     {
         ortoo_Exception e = new ortoo_Exception( 'message' );
@@ -262,6 +306,48 @@ public with sharing class ortoo_ExceptionTest {
     }
 
     @isTest
+    private static void getMessageDetails_whenMessageDetailsAdded_willReturnThoseDetails() // NOPMD: Test method name format
+    {
+        ortoo_Exception exceptionUnderTest = new ortoo_Exception( 'message' );
+
+        List<Sobject> objectContexts = new List<Sobject>
+        {
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+            new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) )
+        };
+
+        List<MessageDetail> messageDetails = new List<MessageDetail>
+                                                {
+                                                    new MessageDetail( objectContexts[0], 'message1' ),
+                                                    new MessageDetail( objectContexts[1], 'message2' ),
+                                                    new MessageDetail( objectContexts[1], 'message3' ),
+                                                    new MessageDetail( objectContexts[0], 'message4' )
+                                                };
+
+        Test.startTest();
+            exceptionUnderTest.setMessageDetails( messageDetails );
+            List<MessageDetail> returnedMessageDetails = exceptionUnderTest.getMessageDetails();
+
+
+        Test.stopTest();
+
+        System.assertEquals( messageDetails, returnedMessageDetails, 'getMessageDetails, when some message details have been added, will return those details' );
+    }
+
+    @isTest
+    private static void getMessageDetails_whenNoMessageDetailsAdded_willReturnAnEmptyList() // NOPMD: Test method name format
+    {
+        ortoo_Exception exceptionUnderTest = new ortoo_Exception( 'message' );
+
+        Test.startTest();
+            List<MessageDetail> returnedMessageDetails = exceptionUnderTest.getMessageDetails();
+        Test.stopTest();
+
+        System.assertEquals( 0, returnedMessageDetails.size(), 'getMessageDetails, when no message details have been added, will return an empty list' );
+    }
+
+    @isTest
     private static void getObjectContext_whenMessageDetailsAdded_willReturnTheSobjects() // NOPMD: Test method name format
     {
         ortoo_Exception exceptionUnderTest = new ortoo_Exception( 'message' );
@@ -364,9 +450,19 @@ public with sharing class ortoo_ExceptionTest {
         throw new SubclassedException();
     }
 
+    private static void throwASubclassedExceptionInnerMethodCall( Integer levelsToSkip )
+	{
+        throw new SubclassedException().regenerateStackTraceString( levelsToSkip );
+    }
+
     private static void throwASubclassedException()
 	{
         throwASubclassedExceptionInnerMethodCall();
+    }
+
+    private static void throwASubclassedException( Integer levelsToSkip )
+	{
+        throwASubclassedExceptionInnerMethodCall( levelsToSkip);
     }
 
     private static String getClassName()

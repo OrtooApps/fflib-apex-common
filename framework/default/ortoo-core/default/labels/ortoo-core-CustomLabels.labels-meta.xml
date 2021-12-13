@@ -7,4 +7,60 @@
         <shortDescription>Message when validation errors caught by the SObject Validator structures occur.</shortDescription>
         <value>Validation Errors Occurred</value>
     </labels>
+    <labels>
+        <fullName>ortoo_core_insert</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'insert'.</shortDescription>
+        <value>insert</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_update</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'update'.</shortDescription>
+        <value>update</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_upsert</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'upsert'.</shortDescription>
+        <value>upsert</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_fls_violation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message when FLS violation occurs on a DML operation.</shortDescription>
+        <value>Attempted to {0} {1} with fields that are not accessible: {2}</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_crud_insert_violation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message when CRUD violation occurs on an insert. {0} is the name of the SObject.</shortDescription>
+        <value>Attempted to insert {0} records without the required permission</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_crud_update_violation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message when CRUD violation occurs on an update. {0} is the name of the SObject.</shortDescription>
+        <value>Attempted to update {0} records without the required permission</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_crud_delete_violation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message when CRUD violation occurs on a delete. {0} is the name of the SObject.</shortDescription>
+        <value>Attempted to delete {0} records without the required permission</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_crud_publish_violation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message when CRUD violation occurs on a publish. {0} is the name of the Event.</shortDescription>
+        <value>Attempted to publish {0} events without the required permission</value>
+    </labels>
 </CustomLabels>

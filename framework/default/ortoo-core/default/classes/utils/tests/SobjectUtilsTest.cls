@@ -43,6 +43,46 @@ private without sharing class SobjectUtilsTest
 	}
 
 	@isTest
+	private static void getSobjectType_whenGivenARecord_willReturnItsType() // NOPMD: Test method name format
+	{
+		SobjectType expectedType = Contact.getSObjectType();
+		SobjectType actualType = SobjectUtils.getSobjectType( new Contact() );
+
+		System.assertEquals( expectedType, actualType, 'getSobjectType, when given an SObject record, will its type' );
+	}
+
+	@isTest
+	private static void getSobjectType_whenGivenARecordHeldInAGenericVariable_willReturnItsType() // NOPMD: Test method name format
+	{
+		SobjectType expectedType = Contact.getSObjectType();
+
+		Sobject contactRecord = new Contact();
+		SobjectType actualType = SobjectUtils.getSobjectType( contactRecord );
+
+		System.assertEquals( expectedType, actualType, 'getSobjectType, when given an SObject record held in a generic variable, will its type' );
+	}
+
+	@isTest
+	private static void getSobjectType_whenPassedANullRecord_willThrowAnException() // NOPMD: Test method name format
+	{
+		Sobject nullRecord = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectType( nullRecord );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		Amoss_Asserts.assertContains( 'getSobjectType called with a null record', exceptionMessage, 'getSobjectType, when passed a null record, will throw an exception' );
+	}
+
+	@isTest
 	private static void getSobjectName_whenGivenAnSobject_willReturnTheApiNameOfIt() // NOPMD: Test method name format
 	{
 		String returnedName = SobjectUtils.getSobjectName( new Contact() );
@@ -94,5 +134,92 @@ private without sharing class SobjectUtilsTest
 		Test.stopTest();
 
 		Amoss_Asserts.assertContains( 'Attempted to get the name of a null SObjectType', exceptionMessage, 'getSobjectName, when given a null SobjectType, will throw an exception' );
+	}
+
+	@isTest
+	private static void isCreateable_whenCalled_willReturnIsCreatableOfThatSobject() // NOPMD: Test method name format
+	{
+		SObject record = new Contact();
+
+		Boolean expectedIsCreateable = record.getSObjectType().getDescribe().isCreateable();
+		Boolean actualIsCreateable   = SobjectUtils.isCreateable( record );
+
+		System.assertEquals( expectedIsCreateable, actualIsCreateable, 'isCreatable, when called with an SObject, will return if that SObject Type is createable by the current user' );
+	}
+
+	@isTest
+	private static void isCreateable_whenGivenANullSobject_willThrowAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.isCreateable( null );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		Amoss_Asserts.assertContains( 'isCreateable called with a null record', exceptionMessage, 'isCreateable, when given a null record, will throw an exception' );
+	}
+
+	@isTest
+	private static void isUpdateable_whenCalled_willReturnIsUpdateableOfThatSobject() // NOPMD: Test method name format
+	{
+		SObject record = new Contact();
+
+		Boolean expectedIsUpdateable = record.getSObjectType().getDescribe().isUpdateable();
+		Boolean actualIsUpdateable   = SobjectUtils.isUpdateable( record );
+
+		System.assertEquals( expectedIsUpdateable, actualIsUpdateable, 'isUpdateable, when called with an SObject, will return if that SObject Type is updateable by the current user' );
+	}
+
+	@isTest
+	private static void isUpdateable_whenGivenANullSobject_willThrowAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.isUpdateable( null );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		Amoss_Asserts.assertContains( 'isUpdateable called with a null record', exceptionMessage, 'isUpdateable, when given a null record, will throw an exception' );
+	}
+
+	@isTest
+	private static void isDeletable_whenCalled_willReturnIsUpdateableOfThatSobject() // NOPMD: Test method name format
+	{
+		SObject record = new Contact();
+
+		Boolean expectedIsDeletable = record.getSObjectType().getDescribe().isDeletable();
+		Boolean actualIsDeletable   = SobjectUtils.isDeletable( record );
+
+		System.assertEquals( expectedIsDeletable, actualIsDeletable, 'isDeletable, when called with an SObject, will return if that SObject Type is deletable by the current user' );
+	}
+
+	@isTest
+	private static void isDeletable_whenGivenANullSobject_willThrowAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.isDeletable( null );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		Amoss_Asserts.assertContains( 'isDeletable called with a null record', exceptionMessage, 'isDeletable, when given a null record, will throw an exception' );
 	}
 }

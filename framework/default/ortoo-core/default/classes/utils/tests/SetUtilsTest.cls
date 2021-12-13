@@ -69,12 +69,11 @@ private without sharing class SetUtilsTest
 			TestIdUtils.generateId( Account.getSObjectType(), 1 ) // this is a duplicate
 		};
 
+		Set<Id> expectedSet = new Set<Id>{ listToConvert[0], listToConvert[1], listToConvert[2] };
+
 		Set<Id> convertedSet = SetUtils.convertToSetOfIds( listToConvert );
 
-		System.assertEquals( 3, convertedSet.size(), 'convertToSetOfIds, when given a List of Ids, will return a List with an entry for each of the original unique list records' );
-		System.assert( convertedSet.contains( listToConvert[0] ), 'convertToSetOfIds, when given a List of Ids, will return a List with an entry for each of the original unique list records - checking for ' + listToConvert[0] );
-		System.assert( convertedSet.contains( listToConvert[1] ), 'convertToSetOfIds, when given a List of Ids, will return a List with an entry for each of the original unique list records - checking for ' + listToConvert[1] );
-		System.assert( convertedSet.contains( listToConvert[2] ), 'convertToSetOfIds, when given a List of Ids, will return a List with an entry for each of the original unique list records - checking for ' + listToConvert[2] );
+		System.assertEquals( expectedSet, convertedSet, 'convertToSetOfIds, when given a List of Ids, will return a List with an entry for each of the original unique list records' );
 	}
 
 	@isTest

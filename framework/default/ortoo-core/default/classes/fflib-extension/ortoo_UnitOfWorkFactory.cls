@@ -1,5 +1,6 @@
 public inherited sharing class ortoo_UnitOfWorkFactory extends fflib_Application.UnitOfWorkFactory // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
+    private static fflib_SobjectUnitOfWork.Idml defaultIdml = new SecureDml();
     /*
     * Constructs a Unit Of Work factory with no default configuration
     *
@@ -31,7 +32,7 @@ public inherited sharing class ortoo_UnitOfWorkFactory extends fflib_Application
         {
             return m_mockUow;
         }
-        return new ortoo_SObjectUnitOfWork( m_objectTypes );
+        return new ortoo_SObjectUnitOfWork( m_objectTypes, defaultIdml );
     }
 
     /**
@@ -39,7 +40,7 @@ public inherited sharing class ortoo_UnitOfWorkFactory extends fflib_Application
      *   SObjectType list provided in the constructor, returns a Mock implementation
      *   if set via the setMock method
      **/
-    public override fflib_ISObjectUnitOfWork newInstance( fflib_SObjectUnitOfWork.IDML dml )
+    public override fflib_ISObjectUnitOfWork newInstance( fflib_SObjectUnitOfWork.Idml dml )
     {
         if ( m_mockUow != null )
         {
@@ -62,7 +63,7 @@ public inherited sharing class ortoo_UnitOfWorkFactory extends fflib_Application
         {
             return m_mockUow;
         }
-        return new ortoo_SObjectUnitOfWork( objectTypes );
+        return new ortoo_SObjectUnitOfWork( objectTypes, defaultIdml );
     }
 
     /**
@@ -73,7 +74,7 @@ public inherited sharing class ortoo_UnitOfWorkFactory extends fflib_Application
      * @remark If mock is set, the list of SObjectType in the mock could be different
      *         then the list of SObjectType specified in this method call
      **/
-    public override fflib_ISObjectUnitOfWork newInstance( List<SObjectType> objectTypes, fflib_SObjectUnitOfWork.IDML dml )
+    public override fflib_ISObjectUnitOfWork newInstance( List<SObjectType> objectTypes, fflib_SObjectUnitOfWork.Idml dml )
     {
         if ( m_mockUow != null )
         {

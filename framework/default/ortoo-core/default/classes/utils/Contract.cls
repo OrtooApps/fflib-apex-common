@@ -51,7 +51,6 @@ public class Contract
 	 * @param	Boolean	The condition that must be true
 	 * @param	String	The message to emit when the condition is not true
 	 */
-
 	public static void ensures( Boolean condition, String message )
 	{
 		if ( !condition )

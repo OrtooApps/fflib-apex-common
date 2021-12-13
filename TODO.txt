@@ -6,15 +6,14 @@ Licenses that are needed with the source code and binary:
 
 Look at the use of 'MockDatabase' in fflib
 
+Test:
+   Unit of Work: elevatedContext
+
+Look at:
+    SobjectUtils.getSobjectName
+
 * To finalise the core architecture:
-    * Decide on FLS standards
     * Do we need to have a non all-or-nothing version of commitWork?
-
-Add reference to disabling individual trigger events in tests:
-    https://andyinthecloud.com/2016/04/13/disabling-trigger-events-in-apex-enterprise-patterns/
-
-Add to Framework plan
-    * Ability to configure different factory mappings per user / permission set / custom permission / whatever
 
 Add to documentation
     * Wrapping exceptions on the way out of services
@@ -28,24 +27,23 @@ Add to documentation
         * Do not do domain logic in them
 
     * Using the Mock Registarar
-    * Describe the Application Factories
 
 From Utilities, things that may be useful:
-* getReferenceObjectAPIName
-* getObjName - get the object name from an Id
-* getLabel / getObjectLabel - get the label for an sobject
-* getFieldLabel
-* delimitedStringToSet and reverse
-    * escaping single quotes - in both directions?
-* unitsBetweenDateTime
-* emailAddressIsValid / emailAddressListIsValid
-* sObjectIsCustom / sObjectIsCustomfromAPIName
-* IsfieldFilterable
-* isFieldCustom
-* idIsValid
-* getCrossObjectAPIName
-* objectFieldExist
-* sortSelectOptions - complete re-write
+    * getReferenceObjectAPIName
+    * getObjName - get the object name from an Id
+    * getLabel / getObjectLabel - get the label for an sobject
+    * getFieldLabel
+    * delimitedStringToSet and reverse
+        * escaping single quotes - in both directions?
+    * unitsBetweenDateTime
+    * emailAddressIsValid / emailAddressListIsValid
+    * sObjectIsCustom / sObjectIsCustomfromAPIName
+    * IsfieldFilterable
+    * isFieldCustom
+    * idIsValid
+    * getCrossObjectAPIName
+    * objectFieldExist
+    * sortSelectOptions - complete re-write
 
 Write tests for the SOQL generation in the criteria library
 
@@ -72,10 +70,6 @@ Bad Smells - strung out calls to describe methods - put them into SobjectUtils
 
 * Question: How do we handle Constants - where are they defined?
 * Question: How do we handle Exceptions:
-* Question: How do we handle FLS - what are the rules?
-
-    * Where are they defined?
-    * Do we want to pass a single type of exception (e.g. ServiceException back to the client)?
     * Do we handle individual types of exception in the Service?
     * Do we pass any of the domain exceptions back
 
@@ -86,22 +80,11 @@ Bad Smells - strung out calls to describe methods - put them into SobjectUtils
 
 * Question: Do you need Heap size management rules -
 
-
 * Produce test-case for lack of clickthrough and raise bug on VSCode
 
 * How do we handle constants?
 
 * Dynamic building of the Unit Of Work for processing data
 
-Standards?
-* Selector name - singular or plural?
-* When you have a class that wraps Sobject, what are the naming convensions - which one is called 'xxxObject'?
-* Creating a service that performs DML - always provide an unwrapped version that takes a UOW
-* Interfaces start with an I
-
 Notes:
 * Services should always be designed by seniors - at least which services exist
-
-What's missing:
-* Custom metadata driven execution of trigger code (register multiple trigger handlers)
-* How does QueryHandler drop into this? - Maintenance of change of state
