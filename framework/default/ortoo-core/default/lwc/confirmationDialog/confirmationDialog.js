@@ -35,7 +35,11 @@ export default class ConfirmationDialog extends LightningElement {
     };
     set type( value ) {
         if ( ! type.hasOwnProperty( value ) ) {
-            throw 'Invalid type specified, should be one of ' + type;
+            let typeList = [];
+            for ( let thisType in type ) {
+                typeList.push( type[ thisType ] );
+            }
+            throw 'Invalid type specified, should be one of ' + typeList.join( ', ' );
         }
         this._type = value;
     }
