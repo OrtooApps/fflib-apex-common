@@ -1,7 +1,11 @@
 <template>
-    <c-modal visible={visible}>
+    <c-modal
+        visible={visible}
+        oncancel={handleCancel}
+    >
+
         <div slot="title">
-            {title}
+            <slot name="title"></slot>
         </div>
 
         <div slot="contents">

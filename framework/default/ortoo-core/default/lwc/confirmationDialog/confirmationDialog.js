@@ -1,27 +1,29 @@
 import { LightningElement, api } from 'lwc';
 
+import CONFIRM_LABEL from '@salesforce/label/c.ortoo_core_confirm';
+import CANCEL_LABEL from '@salesforce/label/c.ortoo_core_cancel';
+
 export default class ConfirmationDialog extends LightningElement {
 
-    @api title;
-    @api name;
-    // TODO: default labels
     // TODO: consider standard variations - No / *Yes ; Cancel / *Confirm ; Cancel / *Save
-    @api confirmLabel;
-    @api cancelLabel;
+        // yesNoConfirmationDialog
+        // saveConfirmationDialog
+    @api confirmLabel = CONFIRM_LABEL;
+    @api cancelLabel  = CANCEL_LABEL;
 
     // The message to send back to the parent component when the confirmation button is clicked
-    @api confirmMessage;
+    @api confirmEventMessage;
 
     // The message to send back to the parent component when the cancel button is clicked
-    @api cancelMessage;
+    @api cancelEventMessage;
 
     @api visible;
 
     handleCancel( event ) {
-        this.dispatchEvent( new CustomEvent( 'cancel', { detail: this.cancelMessage } ) );
+        this.dispatchEvent( new CustomEvent( 'cancel', { detail: this.cancelEventMessage } ) );
     }
 
     handleConfirm( event ) {
-        this.dispatchEvent( new CustomEvent( 'confirm', { detail: this.confirmMessage } ) );
+        this.dispatchEvent( new CustomEvent( 'confirm', { detail: this.confirmEventMessage } ) );
     }
 }
