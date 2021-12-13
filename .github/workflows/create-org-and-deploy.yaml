@@ -65,10 +65,18 @@ jobs:
       - name: Deploy framework to Org
         run: sfdx force:source:deploy -p framework --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
 
-      # Run All Unit Tests
+      # Run Apex Unit Tests
 
-      - name: Run All Unit Tests
+      - name: Run Apex Unit Tests
         run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --codecoverage --wait 20 | grep -v ' Pass   '; test ${PIPESTATUS[0]} -eq 0
+
+      # Prepate Jest
+      - name: Install modules
+        run: npm install
+
+      # Run Jest Unit Tests
+      - name: Run Jest Unit Tests
+        run: npm test
 
       # Delete Scratch Org
 

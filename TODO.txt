@@ -10,11 +10,12 @@ Look at:
     SobjectUtils.getSobjectName
 
 * LWCs
-    * Finish Modal
+
     * Review:
-        * Confirmation Dialog
         * Read Only Field
         * Self Configured Combobox
+
+    * Create exception rendering / error rendering
 
     * Make a page for LWCs
     * Document:
