@@ -48,6 +48,7 @@ public inherited sharing class ortoo_SobjectUnitOfWork extends fflib_SObjectUnit
 	 */
 	public without sharing class ElevatedContext
 	{
+		@testVisible
 		ortoo_SobjectUnitOfWork uow;
 
 		public ElevatedContext( ortoo_SobjectUnitOfWork uow )

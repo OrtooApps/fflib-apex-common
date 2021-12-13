@@ -2,6 +2,17 @@
 private without sharing class ortoo_SobjectUnitOfWorkTest
 {
     @isTest
+    private static void elevatedContext_whenCalled_willReturnAnElevatedContext() // NOPMD: Test method name format
+    {
+        ortoo_SobjectUnitOfWork uow = new ortoo_SobjectUnitOfWork( new List<SobjectType>() );
+
+        ortoo_SobjectUnitOfWork.ElevatedContext elevatedUow = uow.elevatedContext();
+
+        System.assertEquals( uow, elevatedUow.uow, 'elevatedContext, when called, will return an elevated context with the UOW set to "this"' );
+    }
+
+
+    @isTest
     private static void getNumberOfPendingDmlRows_whenNothingHasBeenSentToTheUow_willReturnOne() // NOPMD: Test method name format
     {
         ortoo_SobjectUnitOfWork uow = new ortoo_SobjectUnitOfWork( new List<SobjectType>() );
