@@ -11,15 +11,12 @@ Look at:
 
 * LWCs
 
+    * Write up Layout Constants
+
     * Review:
-        * Read Only Field
-        * Self Configured Combobox
+        * Self Configured Combobox - not sure it's needed
 
     * Create exception rendering / error rendering
-
-    * Make a page for LWCs
-    * Document:
-        * Modal
 
     * Try parent and datatable referencing a DML Service
 

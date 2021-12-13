@@ -8,7 +8,7 @@ export default class ReadOnlyField extends LightningElement {
     @api label;
     @api value;
     @api fieldLevelHelp;
-    @api displayDensity = LAYOUT_CONSTANTS.DISPLAY_DENSITY.DEFAULT; // wonder if this should be on a OrtooLightningElement superclass?
+    @api displayDensity = LAYOUT_CONSTANTS.DISPLAY_DENSITY.DEFAULT;
 
     get labelClasses() {
         return LAYOUT_CONSTANTS.getLabelClasses( this.displayDensity );
