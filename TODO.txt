@@ -9,6 +9,30 @@ Look at the use of 'MockDatabase' in fflib
 Look at:
     SobjectUtils.getSobjectName
 
+* LWCs
+    * Finish Modal
+    * Review:
+        * Confirmation Dialog
+        * Read Only Field
+        * Self Configured Combobox
+
+    * Make a page for LWCs
+    * Document:
+        * Modal
+
+* Standards
+    * data-name to identify elements in a test
+    * Labels should be:
+        * Imported into a static named _LABEL
+        * Referenced in an object named 'labels'.
+        * E.g.
+        labels = {
+            confirm: CONFIRM_LABEL
+        }
+        * so in the html it's {labels.confirm}
+
+
+
 * To finalise the core architecture:
     * Do we need to have a non all-or-nothing version of commitWork?
 
