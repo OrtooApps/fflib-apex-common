@@ -1,7 +1,12 @@
 import { LightningElement, api } from 'lwc';
+import CLOSE_LABEL from '@salesforce/label/c.ortoo_core_close';
 
 export default class Modal extends LightningElement {
     @api visible;
+
+    labels = {
+        close: CLOSE_LABEL
+    };
 
     dispatchCancel() {
         const event = new CustomEvent( 'cancel' );
@@ -12,7 +17,6 @@ export default class Modal extends LightningElement {
         this.dispatchCancel();
     }
 
-    // Ideally the modal would auto-focus on launch
     handleKeyDown( event ) {
         if( event.code == 'Escape' ) {
             this.dispatchCancel();

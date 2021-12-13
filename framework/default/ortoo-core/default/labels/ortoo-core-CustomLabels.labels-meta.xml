@@ -63,4 +63,11 @@
         <shortDescription>Message when CRUD violation occurs on a publish. {0} is the name of the Event.</shortDescription>
         <value>Attempted to publish {0} events without the required permission</value>
     </labels>
+    <labels>
+        <fullName>ortoo_core_close</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Close', capitalised.</shortDescription>
+        <value>Close</value>
+    </labels>
 </CustomLabels>
