@@ -35,7 +35,9 @@ Look at:
         * Once you add it, it cannot be removed
     * Always qualify the record page target with the sobject types it's appropriate for
 
-
+    * use standard validation techniques
+        * Add the property data-validatable
+        * call reportValidity, binding it to the LWC
 
 * To finalise the core architecture:
     * Do we need to have a non all-or-nothing version of commitWork?

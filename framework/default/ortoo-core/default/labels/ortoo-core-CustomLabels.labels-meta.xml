@@ -106,6 +106,13 @@
         <value>Save</value>
     </labels>
     <labels>
+        <fullName>ortoo_core_edit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Edit', capitalised.</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
         <fullName>ortoo_core_error_title</fullName>
         <language>en_US</language>
         <protected>false</protected>
