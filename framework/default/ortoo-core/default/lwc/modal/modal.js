@@ -3,6 +3,7 @@ import CLOSE_LABEL from '@salesforce/label/c.ortoo_core_close';
 
 export default class Modal extends LightningElement {
     @api visible;
+    @api hideFooter = false;
 
     labels = {
         close: CLOSE_LABEL

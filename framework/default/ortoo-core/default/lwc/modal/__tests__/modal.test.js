@@ -9,8 +9,6 @@ describe('c-modal', () => {
         }
     });
 
-    // TODO: test the cancel event
-
     it( 'Component is set to visible, the title, contents and footer slots are shown', () => {
         const element = createElement('c-modal', {
             is: Modal
@@ -59,6 +57,25 @@ describe('c-modal', () => {
 
         const contentsDiv = element.shadowRoot.querySelector( 'slot[name="contents"]' );
         expect( contentsDiv ).toBe( null );
+
+        const footerDiv = element.shadowRoot.querySelector( 'slot[name="footer"]' );
+        expect( footerDiv ).toBe( null );
+    });
+
+    it( 'Component is set to visible, and hideFooter is true, the title, contents are show, but the footer slot is not', () => {
+        const element = createElement('c-modal', {
+            is: Modal
+        });
+        element.visible = true;
+        element.hideFooter = true;
+
+        document.body.appendChild( element );
+
+        const titleDiv = element.shadowRoot.querySelector( 'slot[name="title"]' );
+        expect( titleDiv ).not.toBe( null );
+
+        const contentsDiv = element.shadowRoot.querySelector( 'slot[name="contents"]' );
+        expect( contentsDiv ).not.toBe( null );
 
         const footerDiv = element.shadowRoot.querySelector( 'slot[name="footer"]' );
         expect( footerDiv ).toBe( null );
