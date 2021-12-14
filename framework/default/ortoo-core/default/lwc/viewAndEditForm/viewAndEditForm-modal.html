@@ -3,8 +3,8 @@
     <c-modal
         visible={visible}
         oncancel={handleCancelModalClick}
+        hide-footer={hideModalFooter}
     >
-    <!-- TODO - new event for Cancel Modal Click-->
 
         <div slot="title">
             <slot name="title"></slot>
@@ -27,7 +27,6 @@
                         onclick={handleEditClick}
                     ></lightning-button>
                 </lightning-button-group>
-
 
                 <slot name="viewForm"></slot>
 

@@ -87,8 +87,8 @@ describe('c-view-and-edit-form', () => {
         expect( editForm ).toBe( null );
     });
 
-// TODO: clicking the buttons...
-
+    // TODO: clicking the buttons...
+    // TODO: clicking the modal cancel...
 
     it('When visible modal and inEditMode, has a save and cancel button, but no edit', () => {
         const element = createElement('c-view-and-edit-form', {
@@ -113,9 +113,13 @@ describe('c-view-and-edit-form', () => {
 
         const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
         expect( additionalEditButtons ).not.toBe( null );
+
+        const modalFooter = element.shadowRoot.querySelector( '[slot="footer"]' );
+        expect( modalFooter ).not.toBe( null );
+
     });
 
-    it('When visible modal and not inEditMode, has an edit button, but no  save or cancel', () => {
+    it('When visible modal and not inEditMode, has an edit button, but no save or cancel', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
@@ -138,6 +142,9 @@ describe('c-view-and-edit-form', () => {
 
         const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
         expect( additionalEditButtons ).toBe( null );
+
+        const modalFooter = element.shadowRoot.querySelector( '[slot="footer"]' );
+        expect( modalFooter ).toBe( null );
     });
 
     it('When visible modal and inEditMode, has an editForm slot but no viewForm slot', () => {

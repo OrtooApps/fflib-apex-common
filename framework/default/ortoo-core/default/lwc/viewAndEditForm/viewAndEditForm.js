@@ -27,6 +27,10 @@ export default class ViewAndEditForm extends LightningElement {
 
     @api displayDensity;
 
+    get hideModalFooter() {
+        return ! this.inEditMode;
+    }
+
     render() {
         return templates[ this.mode ];
     }
@@ -43,6 +47,11 @@ export default class ViewAndEditForm extends LightningElement {
 
     handleCancelClick( event ) {
         const newEvent = new CustomEvent( 'cancel' );
+        this.dispatchEvent( newEvent );
+    }
+
+    handleCancelModalClick( event ) {
+        const newEvent = new CustomEvent( 'cancelModal' );
         this.dispatchEvent( newEvent );
     }
 }
