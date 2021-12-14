@@ -9,10 +9,11 @@ describe('c-view-and-edit-form', () => {
         }
     });
 
-    it('When inEditMode, has a save and cancel button, but no edit', () => {
+    it('When visible card and inEditMode, has a save and cancel button, but no edit', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
+        element.visible = true;
         element.inEditMode = true;
         document.body.appendChild(element);
 
@@ -24,12 +25,19 @@ describe('c-view-and-edit-form', () => {
 
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).toBe( null );
+
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        expect( additionalViewButtons ).toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        expect( additionalEditButtons ).not.toBe( null );
     });
 
-    it('When not inEditMode, has an edit button, but no  save or cancel', () => {
+    it('When visible card and not inEditMode, has an edit button, but no  save or cancel', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
+        element.visible = true;
         element.inEditMode = false;
         document.body.appendChild(element);
 
@@ -41,12 +49,19 @@ describe('c-view-and-edit-form', () => {
 
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).not.toBe( null );
+
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        expect( additionalViewButtons ).not.toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        expect( additionalEditButtons ).toBe( null );
     });
 
-    it('When inEditMode, has an editForm slot but no viewForm slot', () => {
+    it('When visible card and inEditMode, has an editForm slot but no viewForm slot', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
+        element.visible = true;
         element.inEditMode = true;
         document.body.appendChild(element);
 
@@ -57,10 +72,11 @@ describe('c-view-and-edit-form', () => {
         expect( editForm ).not.toBe( null );
     });
 
-    it('When not inEditMode, has a viewForm slot but no editForm slot', () => {
+    it('When visible card and not inEditMode, has a viewForm slot but no editForm slot', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
+        element.visible = true;
         element.inEditMode = false;
         document.body.appendChild(element);
 
@@ -70,4 +86,90 @@ describe('c-view-and-edit-form', () => {
         const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
         expect( editForm ).toBe( null );
     });
+
+// TODO: clicking the buttons...
+
+
+    it('When visible modal and inEditMode, has a save and cancel button, but no edit', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = true;
+        element.mode = 'modal';
+        document.body.appendChild(element);
+
+        const saveButton = element.shadowRoot.querySelector( '[data-name="save"]' );
+        expect( saveButton ).not.toBe( null );
+
+        const cancelButton = element.shadowRoot.querySelector( '[data-name="cancel"]' );
+        expect( cancelButton ).not.toBe( null );
+
+        const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
+        expect( editButton ).toBe( null );
+
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        expect( additionalViewButtons ).toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        expect( additionalEditButtons ).not.toBe( null );
+    });
+
+    it('When visible modal and not inEditMode, has an edit button, but no  save or cancel', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = false;
+        element.mode = 'modal';
+        document.body.appendChild(element);
+
+        const saveButton = element.shadowRoot.querySelector( '[data-name="save"]' );
+        expect( saveButton ).toBe( null );
+
+        const cancelButton = element.shadowRoot.querySelector( '[data-name="cancel"]' );
+        expect( cancelButton ).toBe( null );
+
+        const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
+        expect( editButton ).not.toBe( null );
+
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        expect( additionalViewButtons ).not.toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        expect( additionalEditButtons ).toBe( null );
+    });
+
+    it('When visible modal and inEditMode, has an editForm slot but no viewForm slot', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = true;
+        element.mode = 'modal';
+        document.body.appendChild(element);
+
+        const viewForm = element.shadowRoot.querySelector( 'slot[name="viewForm"]' );
+        expect( viewForm ).toBe( null );
+
+        const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
+        expect( editForm ).not.toBe( null );
+    });
+
+    it('When visible modal and not inEditMode, has a viewForm slot but no editForm slot', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = false;
+        element.mode = 'modal';
+        document.body.appendChild(element);
+
+        const viewForm = element.shadowRoot.querySelector( 'slot[name="viewForm"]' );
+        expect( viewForm ).not.toBe( null );
+
+        const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
+        expect( editForm ).toBe( null );
+    });
+
 });

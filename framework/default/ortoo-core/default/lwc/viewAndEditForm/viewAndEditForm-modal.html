@@ -1,0 +1,68 @@
+<template>
+
+    <c-modal
+        visible={visible}
+        oncancel={handleCancelModalClick}
+    >
+    <!-- TODO - new event for Cancel Modal Click-->
+
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
+
+        <div slot="contents">
+
+            <template if:false={inEditMode}>
+
+                <!-- TODO: where do these go? -->
+                <lightning-button-group>
+                    <slot name="additionalViewButtons"></slot>
+
+                    <lightning-button
+                        class="slds-m-top_small slds-float_right"
+                        variant="default"
+                        name="edit"
+                        data-name="edit"
+                        label={editButtonLabel}
+                        onclick={handleEditClick}
+                    ></lightning-button>
+                </lightning-button-group>
+
+
+                <slot name="viewForm"></slot>
+
+            </template>
+
+            <template if:true={inEditMode}>
+                <slot name="editForm"></slot>
+            </template>
+
+        </div>
+
+        <div slot="footer" if:true={inEditMode}>
+
+            <lightning-button-group>
+
+                <lightning-button
+                    variant="default"
+                    name="cancel"
+                    data-name="cancel"
+                    label={cancelButtonLabel}
+                    onclick={handleCancelClick}
+                ></lightning-button>
+
+                <slot name="additionalEditButtons"></slot>
+
+                <lightning-button
+                    variant="brand"
+                    name="save"
+                    data-name="save"
+                    label={saveButtonLabel}
+                    onclick={handleSaveClick}
+                ></lightning-button>
+            </lightning-button-group>
+        </div>
+
+    </c-modal>
+
+</template>
