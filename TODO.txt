@@ -31,6 +31,9 @@ Look at:
             confirm: CONFIRM_LABEL
         }
         * so in the html it's {labels.confirm}
+    * Do not add a target unless you KNOW it is appropriate.
+        * Once you add it, it cannot be removed
+    * Always qualify the record page target with the sobject types it's appropriate for
 
 
 

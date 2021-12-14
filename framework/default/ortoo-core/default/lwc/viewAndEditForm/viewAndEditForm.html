@@ -1,0 +1,61 @@
+<template>
+    <lightning-card if:false={inEditMode}>
+
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
+
+        <div slot="actions">
+            <lightning-button-group>
+                <slot name="additionalViewButtons"></slot>
+
+                <lightning-button
+                    class="slds-m-top_small slds-float_right"
+                    variant="default"
+                    name="edit"
+                    label={editButtonLabel}
+                    onclick={handleEditClick}
+                ></lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="slds-p-around_small">
+            <slot name="viewForm"></slot>
+        </div>
+    </lightning-card>
+
+    <lightning-card if:true={inEditMode}>
+
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
+
+        <div class="slds-p-around_small">
+            <lightning-messages></lightning-messages>
+
+            <slot name="editForm"></slot>
+        </div>
+
+        <div slot="footer">
+
+            <lightning-button-group>
+
+                <lightning-button
+                    variant="default"
+                    name="cancel"
+                    label={cancelButtonLabel}
+                    onclick={handleCancelClick}
+                ></lightning-button>
+
+                <slot name="additionalEditButtons"></slot>
+
+                <lightning-button
+                    variant="brand"
+                    name="save"
+                    label={saveButtonLabel}
+                    onclick={handleSaveClick}
+                ></lightning-button>
+            </lightning-button-group>
+        </div>
+    </lightning-card>
+</template>

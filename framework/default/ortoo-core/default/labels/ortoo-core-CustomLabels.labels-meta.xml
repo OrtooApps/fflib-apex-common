@@ -105,4 +105,11 @@
         <shortDescription>The word 'Save', capitalised.</shortDescription>
         <value>Save</value>
     </labels>
+    <labels>
+        <fullName>ortoo_core_error_title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The title that is used on generic errors in standard Ortoo LWCs.</shortDescription>
+        <value>Error</value>
+    </labels>
 </CustomLabels>
