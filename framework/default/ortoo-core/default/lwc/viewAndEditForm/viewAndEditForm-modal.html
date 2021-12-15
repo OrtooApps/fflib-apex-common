@@ -10,32 +10,29 @@
             <slot name="title"></slot>
         </div>
 
+        <lightning-button-group if:false={inEditMode} slot="header-buttons">
+
+            <slot name="additionalViewButtons"></slot>
+
+            <lightning-button
+                class="slds-float_right"
+                variant="default"
+                name="edit"
+                data-name="edit"
+                label={editButtonLabel}
+                onclick={handleEditClick}
+            ></lightning-button>
+
+        </lightning-button-group>
+
         <div slot="contents">
-
             <template if:false={inEditMode}>
-
-                <!-- TODO: where do these go? -->
-                <lightning-button-group>
-                    <slot name="additionalViewButtons"></slot>
-
-                    <lightning-button
-                        class="slds-m-top_small slds-float_right"
-                        variant="default"
-                        name="edit"
-                        data-name="edit"
-                        label={editButtonLabel}
-                        onclick={handleEditClick}
-                    ></lightning-button>
-                </lightning-button-group>
-
                 <slot name="viewForm"></slot>
-
             </template>
 
             <template if:true={inEditMode}>
                 <slot name="editForm"></slot>
             </template>
-
         </div>
 
         <div slot="footer" if:true={inEditMode}>

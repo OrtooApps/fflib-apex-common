@@ -26,9 +26,14 @@
                             ></lightning-icon>
                             <span class="slds-assistive-text">{labels.close}</span>
                         </button>
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
-                            <slot name="title"></slot>
-                        </h2>
+                        <div class="slds-grid">
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-has-flexi-truncate">
+                                <slot name="title"></slot>
+                            </h2>
+                            <div class="slds-no-flex">
+                                <slot name="header-buttons"></slot>
+                            </div>
+                        </div>
                     </header>
 
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
