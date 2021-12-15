@@ -21,7 +21,6 @@ const reportValidity = function() {
     validateableElements.forEach( thisElement => {
         if ( ! thisElement.reportValidity() ) {
             hasValidationError = true;
-            thisElement.get
         }
     });
 
