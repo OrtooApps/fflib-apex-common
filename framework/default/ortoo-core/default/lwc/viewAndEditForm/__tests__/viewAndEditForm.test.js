@@ -87,8 +87,68 @@ describe('c-view-and-edit-form', () => {
         expect( editForm ).toBe( null );
     });
 
-    // TODO: clicking the buttons...
-    // TODO: clicking the modal cancel...
+    it('When visible card, and inEditMode, clicking save will issue a save event', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = true;
+        document.body.appendChild(element);
+
+        let eventHandler = jest.fn();
+        element.addEventListener( 'save', eventHandler );
+
+        return Promise.resolve()
+            .then( () => {
+                const clickEvent = new CustomEvent( 'click', {} );
+                return element.shadowRoot.querySelector( '[data-name="save"]' ).click();
+            })
+            .then( () => {
+                expect( eventHandler ).toBeCalled();
+            })
+    });
+
+    it('When visible card, and inEditMode, clicking cancel will issue a cancel event', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = true;
+        document.body.appendChild(element);
+
+        let eventHandler = jest.fn();
+        element.addEventListener( 'cancel', eventHandler );
+
+        return Promise.resolve()
+            .then( () => {
+                const clickEvent = new CustomEvent( 'click', {} );
+                return element.shadowRoot.querySelector( '[data-name="cancel"]' ).click();
+            })
+            .then( () => {
+                expect( eventHandler ).toBeCalled();
+            })
+    });
+
+    it('When visible card, and not inEditMode, clicking edit will issue a edit event', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = false;
+        document.body.appendChild(element);
+
+        let eventHandler = jest.fn();
+        element.addEventListener( 'edit', eventHandler );
+
+        return Promise.resolve()
+            .then( () => {
+                const clickEvent = new CustomEvent( 'click', {} );
+                return element.shadowRoot.querySelector( '[data-name="edit"]' ).click();
+            })
+            .then( () => {
+                expect( eventHandler ).toBeCalled();
+            })
+    });
 
     it('When visible modal and inEditMode, has a save and cancel button, but no edit', () => {
         const element = createElement('c-view-and-edit-form', {
@@ -113,10 +173,6 @@ describe('c-view-and-edit-form', () => {
 
         const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
         expect( additionalEditButtons ).not.toBe( null );
-
-        const modalFooter = element.shadowRoot.querySelector( '[slot="footer"]' );
-        expect( modalFooter ).not.toBe( null );
-
     });
 
     it('When visible modal and not inEditMode, has an edit button, but no save or cancel', () => {
@@ -142,9 +198,6 @@ describe('c-view-and-edit-form', () => {
 
         const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
         expect( additionalEditButtons ).toBe( null );
-
-        const modalFooter = element.shadowRoot.querySelector( '[slot="footer"]' );
-        expect( modalFooter ).toBe( null );
     });
 
     it('When visible modal and inEditMode, has an editForm slot but no viewForm slot', () => {
@@ -179,4 +232,77 @@ describe('c-view-and-edit-form', () => {
         expect( editForm ).toBe( null );
     });
 
+    it('When visible modal, and inEditMode, clicking save will issue a save event', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.mode = 'modal';
+        element.visible = true;
+        element.inEditMode = true;
+        document.body.appendChild(element);
+
+        let eventHandler = jest.fn();
+        element.addEventListener( 'save', eventHandler );
+
+        return Promise.resolve()
+            .then( () => {
+                const clickEvent = new CustomEvent( 'click', {} );
+                return element.shadowRoot.querySelector( '[data-name="save"]' ).click();
+            })
+            .then( () => {
+                expect( eventHandler ).toBeCalled();
+            })
+    });
+
+    it('When visible modal, and inEditMode, clicking cancel will issue a cancel event', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.mode = 'modal';
+        element.visible = true;
+        element.inEditMode = true;
+        document.body.appendChild(element);
+
+        let eventHandler = jest.fn();
+        element.addEventListener( 'cancel', eventHandler );
+
+        return Promise.resolve()
+            .then( () => {
+                const clickEvent = new CustomEvent( 'click', {} );
+                return element.shadowRoot.querySelector( '[data-name="cancel"]' ).click();
+            })
+            .then( () => {
+                expect( eventHandler ).toBeCalled();
+            })
+    });
+
+    it('When visible modal, and not inEditMode, clicking edit will issue a edit event', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.mode = 'modal';
+        element.visible = true;
+        element.inEditMode = false;
+        document.body.appendChild(element);
+
+        let eventHandler = jest.fn();
+        element.addEventListener( 'edit', eventHandler );
+
+        return Promise.resolve()
+            .then( () => {
+                const clickEvent = new CustomEvent( 'click', {} );
+                return element.shadowRoot.querySelector( '[data-name="edit"]' ).click();
+            })
+            .then( () => {
+                expect( eventHandler ).toBeCalled();
+            })
+    });
+
+    it('When configured with an invalid mode, will throw an error', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+
+        expect( () => element.mode = 'invalid' ).toThrowError( 'Invalid mode specified, should be one of card, modal' );
+    });
 });

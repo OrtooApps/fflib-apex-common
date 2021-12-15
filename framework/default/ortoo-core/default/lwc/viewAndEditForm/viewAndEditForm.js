@@ -19,7 +19,6 @@ export default class ViewAndEditForm extends LightningElement {
 
     @api inEditMode = false;
     @api visible = false;
-    @api mode = 'card'; // TODO: enum-like, based on templates
 
     @api editButtonLabel   = EDIT_LABEL;
     @api cancelButtonLabel = CANCEL_LABEL;
@@ -29,6 +28,21 @@ export default class ViewAndEditForm extends LightningElement {
 
     get hideModalFooter() {
         return ! this.inEditMode;
+    }
+
+    _mode = 'card';
+    @api get mode() {
+        return this._mode;
+    }
+    set mode( value ) {
+        if ( ! templates.hasOwnProperty( value ) ) {
+            let modesList = [];
+            for ( let thisMode in templates ) {
+                modesList.push( thisMode );
+            }
+            throw 'Invalid mode specified, should be one of ' + modesList.join( ', ' );
+        }
+        this._mode = value;
     }
 
     render() {
