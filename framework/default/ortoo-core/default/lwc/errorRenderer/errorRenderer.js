@@ -10,7 +10,7 @@ const displayError = function( error ) {
     let title = ERROR_TITLE;
     let message = error;
 
-    console.error( 'Error reported:', error );
+    console.error( error );
 
     if ( error.body ) {
         message = error.body.message;
