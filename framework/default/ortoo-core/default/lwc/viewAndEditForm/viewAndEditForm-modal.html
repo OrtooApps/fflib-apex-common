@@ -12,7 +12,7 @@
 
         <lightning-button-group if:false={inEditMode} slot="header-buttons">
 
-            <slot name="additionalViewButtons"></slot>
+            <slot name="additional-view-buttons"></slot>
 
             <lightning-button
                 class="slds-float_right"
@@ -47,7 +47,7 @@
                     onclick={handleCancelClick}
                 ></lightning-button>
 
-                <slot name="additionalEditButtons"></slot>
+                <slot name="additional-edit-buttons"></slot>
 
                 <lightning-button
                     variant="brand"

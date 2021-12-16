@@ -26,10 +26,10 @@ describe('c-view-and-edit-form', () => {
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).toBe( null );
 
-        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).toBe( null );
 
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
         expect( additionalEditButtons ).not.toBe( null );
     });
 
@@ -50,10 +50,10 @@ describe('c-view-and-edit-form', () => {
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).not.toBe( null );
 
-        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).not.toBe( null );
 
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
         expect( additionalEditButtons ).toBe( null );
     });
 
@@ -65,10 +65,10 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = true;
         document.body.appendChild(element);
 
-        const viewForm = element.shadowRoot.querySelector( 'slot[name="viewForm"]' );
+        const viewForm = element.shadowRoot.querySelector( 'slot[name="view-form"]' );
         expect( viewForm ).toBe( null );
 
-        const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
+        const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).not.toBe( null );
     });
 
@@ -80,10 +80,10 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = false;
         document.body.appendChild(element);
 
-        const viewForm = element.shadowRoot.querySelector( 'slot[name="viewForm"]' );
+        const viewForm = element.shadowRoot.querySelector( 'slot[name="view-form"]' );
         expect( viewForm ).not.toBe( null );
 
-        const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
+        const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).toBe( null );
     });
 
@@ -168,10 +168,10 @@ describe('c-view-and-edit-form', () => {
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).toBe( null );
 
-        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).toBe( null );
 
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
         expect( additionalEditButtons ).not.toBe( null );
     });
 
@@ -193,10 +193,10 @@ describe('c-view-and-edit-form', () => {
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).not.toBe( null );
 
-        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additionalViewButtons"' );
+        const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).not.toBe( null );
 
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additionalEditButtons"' );
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
         expect( additionalEditButtons ).toBe( null );
     });
 
@@ -209,10 +209,10 @@ describe('c-view-and-edit-form', () => {
         element.mode = 'modal';
         document.body.appendChild(element);
 
-        const viewForm = element.shadowRoot.querySelector( 'slot[name="viewForm"]' );
+        const viewForm = element.shadowRoot.querySelector( 'slot[name="view-form"]' );
         expect( viewForm ).toBe( null );
 
-        const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
+        const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).not.toBe( null );
     });
 
@@ -225,10 +225,10 @@ describe('c-view-and-edit-form', () => {
         element.mode = 'modal';
         document.body.appendChild(element);
 
-        const viewForm = element.shadowRoot.querySelector( 'slot[name="viewForm"]' );
+        const viewForm = element.shadowRoot.querySelector( 'slot[name="view-form"]' );
         expect( viewForm ).not.toBe( null );
 
-        const editForm = element.shadowRoot.querySelector( 'slot[name="editForm"]' );
+        const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).toBe( null );
     });
 

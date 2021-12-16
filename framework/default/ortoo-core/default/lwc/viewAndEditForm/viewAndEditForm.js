@@ -20,6 +20,7 @@ export default class ViewAndEditForm extends LightningElement {
     @api inEditMode = false;
     @api visible = false;
 
+    // TODO: test these
     @api editLabel   = EDIT_LABEL;
     @api cancelLabel = CANCEL_LABEL;
     @api saveLabel   = SAVE_LABEL;
