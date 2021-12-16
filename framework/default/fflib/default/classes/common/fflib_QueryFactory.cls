@@ -660,7 +660,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 			}	
 		}
 		result += ' FROM ' + (relationship != null ? relationship.getRelationshipName() : table.getDescribe().getName());
-		if(conditionExpression != null)
+		if( String.isNotBlank( conditionExpression ) )
 			result += ' WHERE '+conditionExpression;
 
 		if(order.size() > 0){
