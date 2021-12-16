@@ -15,14 +15,14 @@
                         variant="default"
                         name="edit"
                         data-name="edit"
-                        label={editButtonLabel}
+                        label={editLabel}
                         onclick={handleEditClick}
                     ></lightning-button>
                 </lightning-button-group>
             </div>
 
             <div class="slds-p-around_small">
-                <slot name="viewForm"></slot>
+                <slot name="view-form"></slot>
             </div>
         </lightning-card>
 
@@ -35,7 +35,7 @@
             <div class="slds-p-around_small">
                 <lightning-messages></lightning-messages>
 
-                <slot name="editForm"></slot>
+                <slot name="edit-form"></slot>
             </div>
 
             <div slot="footer">
@@ -46,7 +46,7 @@
                         variant="default"
                         name="cancel"
                         data-name="cancel"
-                        label={cancelButtonLabel}
+                        label={cancelLabel}
                         onclick={handleCancelClick}
                     ></lightning-button>
 
@@ -56,7 +56,7 @@
                         variant="brand"
                         name="save"
                         data-name="save"
-                        label={saveButtonLabel}
+                        label={saveLabel}
                         onclick={handleSaveClick}
                     ></lightning-button>
                 </lightning-button-group>

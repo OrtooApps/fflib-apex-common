@@ -19,7 +19,7 @@
                 variant="default"
                 name="edit"
                 data-name="edit"
-                label={editButtonLabel}
+                label={editLabel}
                 onclick={handleEditClick}
             ></lightning-button>
 
@@ -27,11 +27,11 @@
 
         <div slot="contents">
             <template if:false={inEditMode}>
-                <slot name="viewForm"></slot>
+                <slot name="view-form"></slot>
             </template>
 
             <template if:true={inEditMode}>
-                <slot name="editForm"></slot>
+                <slot name="edit-form"></slot>
             </template>
         </div>
 
@@ -43,7 +43,7 @@
                     variant="default"
                     name="cancel"
                     data-name="cancel"
-                    label={cancelButtonLabel}
+                    label={cancelLabel}
                     onclick={handleCancelClick}
                 ></lightning-button>
 
@@ -53,7 +53,7 @@
                     variant="brand"
                     name="save"
                     data-name="save"
-                    label={saveButtonLabel}
+                    label={saveLabel}
                     onclick={handleSaveClick}
                 ></lightning-button>
             </lightning-button-group>

@@ -5,21 +5,25 @@ Licenses that are needed with the source code and binary:
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
 Look at the use of 'MockDatabase' in fflib
-
 Look at:
     SobjectUtils.getSobjectName
 
 * LWCs
-    * Complete testing of the form LWC
+    * Write up:
+        * Layout Constants
+        * View and Edit Form
 
-    * Write up Layout Constants
+    * Standards for:
+        * Edit Forms / Validation
+        * Edit Forms with Child Records
 
     * Review:
         * Self Configured Combobox - not sure it's needed
 
-    * Create exception rendering / error rendering
-
     * Try parent and datatable referencing a DML Service
+
+
+    * Can the view and edit form call the validate method?
 
 * Standards
     * data-name to identify elements in a test

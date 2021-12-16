@@ -20,15 +20,11 @@ export default class ViewAndEditForm extends LightningElement {
     @api inEditMode = false;
     @api visible = false;
 
-    @api editButtonLabel   = EDIT_LABEL;
-    @api cancelButtonLabel = CANCEL_LABEL;
-    @api saveButtonLabel   = SAVE_LABEL;
+    @api editLabel   = EDIT_LABEL;
+    @api cancelLabel = CANCEL_LABEL;
+    @api saveLabel   = SAVE_LABEL;
 
     @api displayDensity;
-
-    get hideModalFooter() {
-        return ! this.inEditMode;
-    }
 
     _mode = 'card';
     @api get mode() {
@@ -65,7 +61,7 @@ export default class ViewAndEditForm extends LightningElement {
     }
 
     handleCancelModalClick( event ) {
-        const newEvent = new CustomEvent( 'cancelModal' );
+        const newEvent = new CustomEvent( 'cancelmodal' );
         this.dispatchEvent( newEvent );
     }
 }
