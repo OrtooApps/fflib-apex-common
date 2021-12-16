@@ -63,4 +63,60 @@
         <shortDescription>Message when CRUD violation occurs on a publish. {0} is the name of the Event.</shortDescription>
         <value>Attempted to publish {0} events without the required permission</value>
     </labels>
+    <labels>
+        <fullName>ortoo_core_close</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Close', capitalised.</shortDescription>
+        <value>Close</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_cancel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Cancel', capitalised.</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_confirm</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Confirm', capitalised.</shortDescription>
+        <value>Confirm</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_yes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Yes', capitalised.</shortDescription>
+        <value>Yes</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_no</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'No', capitalised.</shortDescription>
+        <value>No</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_save</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Save', capitalised.</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_edit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Edit', capitalised.</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_error_title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The title that is used on generic errors in standard Ortoo LWCs.</shortDescription>
+        <value>Error</value>
+    </labels>
 </CustomLabels>

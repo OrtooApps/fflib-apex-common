@@ -1,0 +1,64 @@
+<template>
+
+    <c-modal
+        visible={visible}
+        oncancel={handleCancelModalClick}
+        hide-footer={hideModalFooter}
+    >
+
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
+
+        <lightning-button-group if:false={inEditMode} slot="header-buttons">
+
+            <slot name="additional-view-buttons"></slot>
+
+            <lightning-button
+                class="slds-float_right"
+                variant="default"
+                name="edit"
+                data-name="edit"
+                label={editLabel}
+                onclick={handleEditClick}
+            ></lightning-button>
+
+        </lightning-button-group>
+
+        <div slot="contents">
+            <template if:false={inEditMode}>
+                <slot name="view-form"></slot>
+            </template>
+
+            <template if:true={inEditMode}>
+                <slot name="edit-form"></slot>
+            </template>
+        </div>
+
+        <div slot="footer" if:true={inEditMode}>
+
+            <lightning-button-group>
+
+                <lightning-button
+                    variant="default"
+                    name="cancel"
+                    data-name="cancel"
+                    label={cancelLabel}
+                    onclick={handleCancelClick}
+                ></lightning-button>
+
+                <slot name="additional-edit-buttons"></slot>
+
+                <lightning-button
+                    variant="brand"
+                    name="save"
+                    data-name="save"
+                    label={saveLabel}
+                    onclick={handleSaveClick}
+                ></lightning-button>
+            </lightning-button-group>
+        </div>
+
+    </c-modal>
+
+</template>
