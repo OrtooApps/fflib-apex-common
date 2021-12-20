@@ -9,10 +9,6 @@ Look at:
     SobjectUtils.getSobjectName
 
 * LWCs
-    * Write up:
-        * Layout Constants
-        * View and Edit Form
-
     * Standards for:
         * Edit Forms / Validation
         * Edit Forms with Child Records
@@ -21,9 +17,6 @@ Look at:
         * Self Configured Combobox - not sure it's needed
 
     * Try parent and datatable referencing a DML Service
-
-
-    * Can the view and edit form call the validate method?
 
 * Standards
     * data-name to identify elements in a test
