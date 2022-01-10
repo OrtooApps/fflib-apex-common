@@ -136,7 +136,6 @@ describe('c-modal', () => {
 
         return Promise.resolve()
             .then( () => {
-                const clickEvent = new CustomEvent( 'click', {} );
                 expect( element.shadowRoot.querySelector( '[data-ortoo-elem-id="definedmodel-closecross"]' ) ).not.toBe( null );
             })
     });

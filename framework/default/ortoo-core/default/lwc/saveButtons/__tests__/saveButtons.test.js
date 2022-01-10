@@ -55,25 +55,20 @@ describe('c-save-buttons', () => {
             });
     });
 
-    /*
     it( 'Will use the passed prefix to define the element ids', () => {
 
         const element = createElement('c-modal', {
-            is: Modal
+            is: SaveButtons
         });
         element.visible = true;
-        element.ortooElemIdPrefix = 'definedmodel'
+        element.ortooElemIdPrefix = 'definedsavebuttons'
 
         document.body.appendChild( element );
 
         return Promise.resolve()
             .then( () => {
-                const clickEvent = new CustomEvent( 'click', {} );
-                expect( element.shadowRoot.querySelector( '[data-ortoo-elem-id="definedmodel-closecross"]' ) ).not.toBe( null );
+                expect( element.shadowRoot.querySelector( '[data-ortoo-elem-id="definedsavebuttons-save"]' ) ).not.toBe( null );
+                expect( element.shadowRoot.querySelector( '[data-ortoo-elem-id="definedsavebuttons-cancel"]' ) ).not.toBe( null );
             })
-    });
-*/
-    it( 'have moved other things over to these save buttons', () => {
-        expect( false ).toBe( true );
     });
 });
