@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
-import CLOSE_LABEL from '@salesforce/label/c.ortoo_core_close';
+import configureElementIdGenerator from 'c/elementIdGenerator';
 
+import CLOSE_LABEL from '@salesforce/label/c.ortoo_core_close';
 export default class Modal extends LightningElement {
     @api visible;
     @api hideFooter = false;
@@ -8,6 +9,16 @@ export default class Modal extends LightningElement {
     labels = {
         close: CLOSE_LABEL
     };
+
+    @api ortooElemIdPrefix = 'modal';
+
+    ortooIdConfiguration = {
+        closeCrossId: 'closecross',
+    }
+
+    connectedCallback() {
+        configureElementIdGenerator( this );
+    }
 
     dispatchCancel() {
         const event = new CustomEvent( 'cancel' );
@@ -24,5 +35,5 @@ export default class Modal extends LightningElement {
             event.preventDefault();
             event.stopImmediatePropagation();
         }
-      }
+    }
 }
