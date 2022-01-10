@@ -101,4 +101,87 @@ describe('c-form-validator', () => {
         expect( response ).toBe( false );
         mockSelectorReturn.forEach( thisElement  => expect( thisElement.reportValidity ).toHaveBeenCalledTimes( 1 ) );
     });
+
+    it( 'When an element reportValidity returns false, but options say to not show a toast, will not show a toast', () => {
+
+        let mockQuerySelector = jest.fn();
+        let mockDispatchEvent = jest.fn();
+
+        let objectToRunAgainst = {
+            dispatchEvent: mockDispatchEvent,
+            template: {
+                querySelectorAll: mockQuerySelector
+            }
+        };
+
+        mockQuerySelector.mockReturnValueOnce(
+            [
+                { reportValidity: () => true },
+                { reportValidity: () => false }
+            ]
+        );
+
+        reportValidity.call( objectToRunAgainst, { showToast: false } );
+        expect( mockDispatchEvent ).toHaveBeenCalledTimes( 0 );
+
+    });
+
+    it( 'When an element reportValidity returns false, and options say to show a toast, will show a toast', () => {
+
+        let mockQuerySelector = jest.fn();
+        let mockDispatchEvent = jest.fn();
+
+        let objectToRunAgainst = {
+            dispatchEvent: mockDispatchEvent,
+            template: {
+                querySelectorAll: mockQuerySelector
+            }
+        };
+
+        mockQuerySelector.mockReturnValueOnce(
+            [
+                { reportValidity: () => true },
+                { reportValidity: () => false }
+            ]
+        );
+
+        reportValidity.call( objectToRunAgainst, { showToast: true } );
+        expect( mockDispatchEvent ).toHaveBeenCalledTimes( 1 );
+
+    });
+    it( 'When an element reportValidity returns false, and given alternative error title and message, will show a toast with the specified text', () => {
+
+        let mockQuerySelector = jest.fn();
+        let mockDispatchEvent = jest.fn();
+
+        let objectToRunAgainst = {
+            dispatchEvent: mockDispatchEvent,
+            template: {
+                querySelectorAll: mockQuerySelector
+            }
+        };
+
+        mockQuerySelector.mockReturnValueOnce(
+            [
+                { reportValidity: () => true },
+                { reportValidity: () => false }
+            ]
+        );
+
+        let customTitle = 'custom title';
+        let customMessage = 'custom message';
+        let customVariant = 'warning';
+
+        let response = reportValidity.call( objectToRunAgainst, { validationErrorTitle: customTitle, validationErrorMessage: customMessage, toastVariant: customVariant } );
+
+        expect( response ).toBe( false );
+
+        expect( mockDispatchEvent ).toHaveBeenCalledTimes( 1 );
+
+        let dispatchedEvent = mockDispatchEvent.mock.calls[0][0];
+
+        expect( dispatchedEvent.detail.title ).toBe( customTitle );
+        expect( dispatchedEvent.detail.message ).toBe( customMessage );
+        expect( dispatchedEvent.detail.variant ).toBe( customVariant );
+    });
 });
