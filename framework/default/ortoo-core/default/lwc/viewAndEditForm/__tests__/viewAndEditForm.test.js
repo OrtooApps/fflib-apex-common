@@ -83,7 +83,7 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = true;
         document.body.appendChild(element);
 
-        let eventHandler = jest.fn();
+        const eventHandler = jest.fn();
         element.addEventListener( 'save', eventHandler );
 
         return Promise.resolve()
@@ -104,7 +104,7 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = true;
         document.body.appendChild(element);
 
-        let eventHandler = jest.fn();
+        const eventHandler = jest.fn();
         element.addEventListener( 'cancel', eventHandler );
 
         return Promise.resolve()
@@ -125,7 +125,7 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = false;
         document.body.appendChild(element);
 
-        let eventHandler = jest.fn();
+        const eventHandler = jest.fn();
         element.addEventListener( 'edit', eventHandler );
 
         return Promise.resolve()
@@ -217,7 +217,7 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = true;
         document.body.appendChild(element);
 
-        let eventHandler = jest.fn();
+        const eventHandler = jest.fn();
         element.addEventListener( 'save', eventHandler );
 
         return Promise.resolve()
@@ -239,7 +239,7 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = true;
         document.body.appendChild(element);
 
-        let eventHandler = jest.fn();
+        const eventHandler = jest.fn();
         element.addEventListener( 'cancel', eventHandler );
 
         return Promise.resolve()
@@ -261,7 +261,7 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = false;
         document.body.appendChild(element);
 
-        let eventHandler = jest.fn();
+        const eventHandler = jest.fn();
         element.addEventListener( 'edit', eventHandler );
 
         return Promise.resolve()

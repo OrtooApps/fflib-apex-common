@@ -13,10 +13,10 @@ describe('c-save-buttons', () => {
 
         document.body.appendChild( element );
 
-        let cancelHandler = jest.fn();
+        const cancelHandler = jest.fn();
         element.addEventListener( 'cancel', cancelHandler );
 
-        let saveHandler = jest.fn();
+        const saveHandler = jest.fn();
         element.addEventListener( 'save', saveHandler );
 
         return Promise.resolve()
@@ -38,10 +38,10 @@ describe('c-save-buttons', () => {
 
         document.body.appendChild( element );
 
-        let cancelHandler = jest.fn();
+        const cancelHandler = jest.fn();
         element.addEventListener( 'cancel', cancelHandler );
 
-        let saveHandler = jest.fn();
+        const saveHandler = jest.fn();
         element.addEventListener( 'save', saveHandler );
 
         return Promise.resolve()
