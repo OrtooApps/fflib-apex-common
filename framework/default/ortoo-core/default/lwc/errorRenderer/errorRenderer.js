@@ -1,5 +1,4 @@
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-
 import ERROR_TITLE from '@salesforce/label/c.ortoo_core_error_title';
 
 /**
@@ -7,11 +6,19 @@ import ERROR_TITLE from '@salesforce/label/c.ortoo_core_error_title';
  */
 const displayError = function( error ) {
 
-    let title = ERROR_TITLE;
+    let title = ERROR_TITLE; // should be a label
+
+    // By default we assume we have a string for the error
     let message = error;
 
     console.error( error );
 
+    // Javascript Errors will have message set
+    if ( error.message ) {
+        message = error.message;
+    }
+
+    // Apex Exceptions will have body.message set
     if ( error.body ) {
         message = error.body.message;
     }
