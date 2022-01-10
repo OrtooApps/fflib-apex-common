@@ -17,20 +17,14 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = true;
         document.body.appendChild(element);
 
-        const saveButton = element.shadowRoot.querySelector( '[data-name="save"]' );
-        expect( saveButton ).not.toBe( null );
-
-        const cancelButton = element.shadowRoot.querySelector( '[data-name="cancel"]' );
-        expect( cancelButton ).not.toBe( null );
+        const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
+        expect( saveButtons ).not.toBe( null );
 
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).toBe( null );
-
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
-        expect( additionalEditButtons ).not.toBe( null );
     });
 
     it('When visible card and not inEditMode, has an edit button, but no  save or cancel', () => {
@@ -41,20 +35,14 @@ describe('c-view-and-edit-form', () => {
         element.inEditMode = false;
         document.body.appendChild(element);
 
-        const saveButton = element.shadowRoot.querySelector( '[data-name="save"]' );
-        expect( saveButton ).toBe( null );
-
-        const cancelButton = element.shadowRoot.querySelector( '[data-name="cancel"]' );
-        expect( cancelButton ).toBe( null );
+        const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
+        expect( saveButtons ).toBe( null );
 
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).not.toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).not.toBe( null );
-
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
-        expect( additionalEditButtons ).toBe( null );
     });
 
     it('When visible card and inEditMode, has an editForm slot but no viewForm slot', () => {
@@ -100,8 +88,8 @@ describe('c-view-and-edit-form', () => {
 
         return Promise.resolve()
             .then( () => {
-                const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( '[data-name="save"]' ).click();
+                const saveEvent = new CustomEvent( 'save', {} );
+                return element.shadowRoot.querySelector( 'c-save-buttons' ).dispatchEvent( saveEvent );
             })
             .then( () => {
                 expect( eventHandler ).toBeCalled();
@@ -121,8 +109,8 @@ describe('c-view-and-edit-form', () => {
 
         return Promise.resolve()
             .then( () => {
-                const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( '[data-name="cancel"]' ).click();
+                const cancelEvent = new CustomEvent( 'cancel', {} );
+                return element.shadowRoot.querySelector( 'c-save-buttons' ).dispatchEvent( cancelEvent );
             })
             .then( () => {
                 expect( eventHandler ).toBeCalled();
@@ -159,20 +147,14 @@ describe('c-view-and-edit-form', () => {
         element.mode = 'modal';
         document.body.appendChild(element);
 
-        const saveButton = element.shadowRoot.querySelector( '[data-name="save"]' );
-        expect( saveButton ).not.toBe( null );
-
-        const cancelButton = element.shadowRoot.querySelector( '[data-name="cancel"]' );
-        expect( cancelButton ).not.toBe( null );
+        const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
+        expect( saveButtons ).not.toBe( null );
 
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).toBe( null );
-
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
-        expect( additionalEditButtons ).not.toBe( null );
     });
 
     it('When visible modal and not inEditMode, has an edit button, but no save or cancel', () => {
@@ -184,20 +166,14 @@ describe('c-view-and-edit-form', () => {
         element.mode = 'modal';
         document.body.appendChild(element);
 
-        const saveButton = element.shadowRoot.querySelector( '[data-name="save"]' );
-        expect( saveButton ).toBe( null );
-
-        const cancelButton = element.shadowRoot.querySelector( '[data-name="cancel"]' );
-        expect( cancelButton ).toBe( null );
+        const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
+        expect( saveButtons ).toBe( null );
 
         const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
         expect( editButton ).not.toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).not.toBe( null );
-
-        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
-        expect( additionalEditButtons ).toBe( null );
     });
 
     it('When visible modal and inEditMode, has an editForm slot but no viewForm slot', () => {
@@ -246,8 +222,8 @@ describe('c-view-and-edit-form', () => {
 
         return Promise.resolve()
             .then( () => {
-                const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( '[data-name="save"]' ).click();
+                const saveEvent = new CustomEvent( 'save', {} );
+                return element.shadowRoot.querySelector( 'c-save-buttons' ).dispatchEvent( saveEvent );
             })
             .then( () => {
                 expect( eventHandler ).toBeCalled();
@@ -268,8 +244,8 @@ describe('c-view-and-edit-form', () => {
 
         return Promise.resolve()
             .then( () => {
-                const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( '[data-name="cancel"]' ).click();
+                const cancelEvent = new CustomEvent( 'cancel', {} );
+                return element.shadowRoot.querySelector( 'c-save-buttons' ).dispatchEvent( cancelEvent );
             })
             .then( () => {
                 expect( eventHandler ).toBeCalled();

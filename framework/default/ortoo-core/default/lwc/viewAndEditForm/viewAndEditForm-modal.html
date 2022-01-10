@@ -37,26 +37,11 @@
 
         <div slot="footer" if:true={inEditMode}>
 
-            <lightning-button-group>
+            <c-save-buttons
+                onsave={handleSaveClick}
+                oncancel={handleCancelClick}
+             ></c-save-buttons>
 
-                <lightning-button
-                    variant="default"
-                    name="cancel"
-                    data-name="cancel"
-                    label={cancelLabel}
-                    onclick={handleCancelClick}
-                ></lightning-button>
-
-                <slot name="additional-edit-buttons"></slot>
-
-                <lightning-button
-                    variant="brand"
-                    name="save"
-                    data-name="save"
-                    label={saveLabel}
-                    onclick={handleSaveClick}
-                ></lightning-button>
-            </lightning-button-group>
         </div>
 
     </c-modal>
