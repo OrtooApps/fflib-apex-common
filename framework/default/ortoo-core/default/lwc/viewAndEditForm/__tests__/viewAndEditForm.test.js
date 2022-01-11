@@ -20,7 +20,7 @@ describe('c-view-and-edit-form', () => {
         const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
         expect( saveButtons ).not.toBe( null );
 
-        const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
+        const editButton = element.shadowRoot.querySelector( '[data-ortoo-elem-id="viewandeditform-edit"]' );
         expect( editButton ).toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
@@ -41,7 +41,7 @@ describe('c-view-and-edit-form', () => {
         const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
         expect( saveButtons ).toBe( null );
 
-        const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
+        const editButton = element.shadowRoot.querySelector( '[data-ortoo-elem-id="viewandeditform-edit"]' );
         expect( editButton ).not.toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
@@ -137,7 +137,7 @@ describe('c-view-and-edit-form', () => {
         return Promise.resolve()
             .then( () => {
                 const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( '[data-name="edit"]' ).click();
+                return element.shadowRoot.querySelector( '[data-ortoo-elem-id="viewandeditform-edit"]' ).click();
             })
             .then( () => {
                 expect( eventHandler ).toBeCalled();
@@ -156,7 +156,7 @@ describe('c-view-and-edit-form', () => {
         const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
         expect( saveButtons ).not.toBe( null );
 
-        const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
+        const editButton = element.shadowRoot.querySelector( '[data-ortoo-elem-id="viewandeditform-edit"]' );
         expect( editButton ).toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
@@ -178,7 +178,7 @@ describe('c-view-and-edit-form', () => {
         const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
         expect( saveButtons ).toBe( null );
 
-        const editButton = element.shadowRoot.querySelector( '[data-name="edit"]' );
+        const editButton = element.shadowRoot.querySelector( '[data-ortoo-elem-id="viewandeditform-edit"]' );
         expect( editButton ).not.toBe( null );
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
@@ -279,7 +279,7 @@ describe('c-view-and-edit-form', () => {
         return Promise.resolve()
             .then( () => {
                 const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( '[data-name="edit"]' ).click();
+                return element.shadowRoot.querySelector( '[data-ortoo-elem-id="viewandeditform-edit"]' ).click();
             })
             .then( () => {
                 expect( eventHandler ).toBeCalled();

@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import configureElementIdGenerator from 'c/elementIdGenerator';
 
 import cardTemplate from './viewAndEditForm-card.html';
 import modalTemplate from './viewAndEditForm-modal.html';
@@ -20,7 +21,6 @@ export default class ViewAndEditForm extends LightningElement {
     @api inEditMode = false;
     @api visible = false;
 
-    // TODO: test these
     @api editLabel   = EDIT_LABEL;
     @api cancelLabel = CANCEL_LABEL;
     @api saveLabel   = SAVE_LABEL;
@@ -40,6 +40,17 @@ export default class ViewAndEditForm extends LightningElement {
             throw 'Invalid mode specified, should be one of ' + modesList.join( ', ' );
         }
         this._mode = value;
+    }
+
+    @api ortooElemIdPrefix = 'viewandeditform';
+
+    ortooIdConfiguration = {
+        modalId: '',
+        editId: 'edit'
+    }
+
+    connectedCallback() {
+        configureElementIdGenerator( this );
     }
 
     render() {

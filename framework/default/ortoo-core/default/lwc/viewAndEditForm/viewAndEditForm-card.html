@@ -11,10 +11,9 @@
                     <slot name="additional-view-buttons"></slot>
 
                     <lightning-button
+                        data-ortoo-elem-id={editId}
                         class="slds-m-top_small slds-float_right"
                         variant="default"
-                        name="edit"
-                        data-name="edit"
                         label={editLabel}
                         onclick={handleEditClick}
                     ></lightning-button>

@@ -3,6 +3,7 @@
     <c-modal
         visible={visible}
         oncancel={handleCancelModalClick}
+        ortoo-elem-id-prefix={modalId}
         hide-footer={hideModalFooter}
     >
 
@@ -15,10 +16,9 @@
             <slot name="additional-view-buttons"></slot>
 
             <lightning-button
+                data-ortoo-elem-id={editId}
                 class="slds-float_right"
                 variant="default"
-                name="edit"
-                data-name="edit"
                 label={editLabel}
                 onclick={handleEditClick}
             ></lightning-button>
