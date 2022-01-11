@@ -25,6 +25,9 @@ describe('c-view-and-edit-form', () => {
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
+        expect( additionalEditButtons ).not.toBe( null );
     });
 
     it('When visible card and not inEditMode, has an edit button, but no  save or cancel', () => {
@@ -43,6 +46,9 @@ describe('c-view-and-edit-form', () => {
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).not.toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
+        expect( additionalEditButtons ).toBe( null );
     });
 
     it('When visible card and inEditMode, has an editForm slot but no viewForm slot', () => {
@@ -155,6 +161,9 @@ describe('c-view-and-edit-form', () => {
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
+        expect( additionalEditButtons ).not.toBe( null );
     });
 
     it('When visible modal and not inEditMode, has an edit button, but no save or cancel', () => {
@@ -174,6 +183,9 @@ describe('c-view-and-edit-form', () => {
 
         const additionalViewButtons = element.shadowRoot.querySelector( 'slot[name="additional-view-buttons"' );
         expect( additionalViewButtons ).not.toBe( null );
+
+        const additionalEditButtons = element.shadowRoot.querySelector( 'slot[name="additional-edit-buttons"' );
+        expect( additionalEditButtons ).toBe( null );
     });
 
     it('When visible modal and inEditMode, has an editForm slot but no viewForm slot', () => {

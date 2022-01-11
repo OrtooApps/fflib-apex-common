@@ -43,7 +43,11 @@
                 <c-save-buttons
                     onsave={handleSaveClick}
                     oncancel={handleCancelClick}
-                ></c-save-buttons>
+                >
+                    <span slot="additional-buttons">
+                        <slot name="additional-edit-buttons"></slot>
+                    </span>
+                </c-save-buttons>
 
             </div>
         </lightning-card>

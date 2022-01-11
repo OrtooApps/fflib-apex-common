@@ -55,6 +55,21 @@ describe('c-save-buttons', () => {
             });
     });
 
+    it( 'Has an additional-buttons slot', () => {
+
+        const element = createElement('c-save-buttons', {
+            is: SaveButtons
+        });
+
+        document.body.appendChild( element );
+
+        return Promise.resolve()
+            .then( () => {
+                const additionalButtonsSlot = element.shadowRoot.querySelector( 'slot[name="additional-buttons"]');
+                expect( additionalButtonsSlot ).not.toBeNull();
+            });
+    })
+
     it( 'Will use the passed prefix to define the element ids', () => {
 
         const element = createElement('c-modal', {
