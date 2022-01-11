@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import configureElementIdGenerator from 'c/elementIdGenerator';
 
 import CONFIRM_LABEL from '@salesforce/label/c.ortoo_core_confirm';
 import CANCEL_LABEL from '@salesforce/label/c.ortoo_core_cancel';
@@ -70,7 +71,16 @@ export default class ConfirmationDialog extends LightningElement {
 
     @api visible;
 
+    @api ortooElemIdPrefix = 'confirmation';
+
+    ortooIdConfiguration = {
+        modalId: '',
+        cancelId: 'cancel',
+        confirmId: 'confirm',
+    }
+
     connectedCallback() {
+        configureElementIdGenerator( this );
         this.confirmLabel = this.confirmLabel ? this.confirmLabel : buttonLabels[ this.type ].confirm;
         this.cancelLabel = this.cancelLabel ? this.cancelLabel : buttonLabels[ this.type ].cancel;
     }

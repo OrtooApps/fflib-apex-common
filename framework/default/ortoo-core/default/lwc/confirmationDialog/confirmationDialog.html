@@ -2,6 +2,7 @@
     <c-modal
         visible={visible}
         oncancel={handleCancel}
+        data-ortoo-elem-id={modalId}
     >
 
         <div slot="title">
@@ -15,20 +16,18 @@
         <div slot="footer">
 
             <lightning-button
+                data-ortoo-elem-id={cancelId}
                 class="slds-p-around_xxx-small"
                 variant="neutral"
-                name="cancel"
-                data-name="cancel"
                 label={cancelLabel}
                 title={cancelLabel}
                 onclick={handleCancel}
             ></lightning-button>
 
             <lightning-button
+                data-ortoo-elem-id={confirmId}
                 class="slds-p-around_xxx-small"
                 variant="brand"
-                name="confirm"
-                data-name="confirm"
                 label={confirmLabel}
                 title={confirmLabel}
                 onclick={handleConfirm}
