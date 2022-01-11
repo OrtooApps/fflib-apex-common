@@ -1,6 +1,6 @@
 import configureElementIdGenerator from 'c/elementIdGenerator';
 
-describe('c-element-id-generator', () => {
+describe('configureElementIdGenerator', () => {
     afterEach(() => {
     });
 

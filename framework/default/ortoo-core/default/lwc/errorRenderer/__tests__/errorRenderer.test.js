@@ -8,7 +8,7 @@ jest.mock('lightning/platformShowToastEvent', () => ({
     ShowToastEvent: showToastEvent
 }));
 
-describe('c-error-renderer', () => {
+describe('displayError', () => {
     afterEach(() => {
     });
 

@@ -8,7 +8,7 @@ jest.mock('lightning/platformShowToastEvent', () => ({
     ShowToastEvent: showToastEvent
 }));
 
-describe('c-form-validator', () => {
+describe('reportValidity', () => {
     afterEach(() => {
     });
 
