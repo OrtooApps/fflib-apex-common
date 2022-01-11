@@ -1,15 +1,20 @@
 import { LightningElement, api } from 'lwc';
 import configureElementIdGenerator from 'c/elementIdGenerator';
 
-//import CANCEL_LABEL from '@salesforce/label/c.ortoo_core_cancel';
-//import SAVE_LABEL from '@salesforce/label/c.ortoo_core_save';
+import CANCEL_LABEL from '@salesforce/label/c.ortoo_core_cancel';
+import SAVE_LABEL from '@salesforce/label/c.ortoo_core_save';
 
-const CANCEL_LABEL = 'Cancel';
-const SAVE_LABEL = 'Save';
+/**
+ * Provides a standard format for save and cancel buttons, as well as the ability to add additional ones into it.
+ *
+ * If the 'additional-buttons' slot is used, it should be used with:
+ *      * <span slot="additional-buttons">
+ *      * Buttons that have class="slds-p-around_xxx-small"
+ */
 export default class SaveButtons extends LightningElement {
 
-    @api cancelLabel = CANCEL_LABEL; // should be a label (see above)
-    @api saveLabel   = SAVE_LABEL; // should be a label (see above)
+    @api cancelLabel = CANCEL_LABEL;
+    @api saveLabel   = SAVE_LABEL;
 
     @api ortooElemIdPrefix = 'savebuttons';
 
