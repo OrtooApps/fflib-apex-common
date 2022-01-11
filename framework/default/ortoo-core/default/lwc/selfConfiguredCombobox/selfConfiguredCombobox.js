@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import configureElementIdGenerator from 'c/elementIdGenerator';
 
 import LAYOUT_CONSTANTS from 'c/layoutConstants';
 export default class SelfConfiguredCombobox extends LightningElement {
@@ -30,6 +31,16 @@ export default class SelfConfiguredCombobox extends LightningElement {
     set options( values ) {
         this._options = values;
         this.configureValue();
+    }
+
+    @api ortooElemIdPrefix = 'combobox';
+
+    ortooIdConfiguration = {
+        fieldId: ''
+    }
+
+    connectedCallback() {
+        configureElementIdGenerator( this );
     }
 
     noOptionsErrorMessage;
