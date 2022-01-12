@@ -1,0 +1,84 @@
+<template>
+
+    <lightning-card title={title}>
+
+        <div class="slds-p-around_medium">
+
+            <slot name="info"></slot>
+
+            <div if:true={loading}>
+                <lightning-spinner alternative-text={labels.loading} size="large"></lightning-spinner>
+            </div>
+
+            <div>
+
+                <lightning-layout vertical-align="end">
+
+                    <lightning-layout-item>
+                        <slot name="form"></slot>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item>
+
+                        <lightning-button
+                            ortoo-elem-id-prefix={searchButtonId}
+                            variant="brand"
+                            label={labels.searchButton}
+                            title={labels.searchButtonTitle}
+                            onclick={handleSearchClicked}
+                        ></lightning-button>
+
+                    </lightning-layout-item>
+
+                </lightning-layout>
+            </div>
+
+            <hr/>
+
+            <div>
+
+                <lightning-layout class="slds-p-bottom_small">
+
+                    <lightning-layout-item>
+                        <slot name="action-buttons"></slot>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="grow"></lightning-layout-item>
+
+                    <lightning-layout-item>
+                        <c-pagination-controls
+                            ortoo-elem-id-prefix={pageSelectorTopId}
+                            number-of-records={numberOfRecords}
+                            records-per-page={recordsPerPage}
+                            current-page={currentPage}
+                            onnavigatetopage={handleNavigateToPage}
+                        ></c-pagination-controls>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+
+                <slot name="data"></slot>
+
+                <lightning-layout class="slds-p-top_small">
+
+                    <lightning-layout-item>
+                        <slot name="action-buttons"></slot>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="grow"></lightning-layout-item>
+
+                    <lightning-layout-item>
+                        <c-pagination-controls
+                            ortoo-elem-id-prefix={pageSelectorTopId}
+                            number-of-records={numberOfRecords}
+                            records-per-page={recordsPerPage}
+                            current-page={currentPage}
+                            onnavigatetopage={handleNavigateToPage}
+                        ></c-pagination-controls>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+            </div>
+        </div>
+    </lightning-card>
+</template>

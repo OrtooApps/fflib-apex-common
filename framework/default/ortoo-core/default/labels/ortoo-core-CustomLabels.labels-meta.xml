@@ -113,10 +113,31 @@
         <value>Edit</value>
     </labels>
     <labels>
+        <fullName>ortoo_core_loading</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Loading', capitalised.</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
         <fullName>ortoo_core_error_title</fullName>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>The title that is used on generic errors in standard Ortoo LWCs.</shortDescription>
         <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_search_button_label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label that is used on search buttons.</shortDescription>
+        <value>Apply Filters</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_search_button_title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The title that is used on search buttons.</shortDescription>
+        <value>Apply Filters</value>
     </labels>
 </CustomLabels>
