@@ -26,6 +26,7 @@ export default class FilterAndResults extends LightningElement {
     @api numberOfRecords;
     @api recordsPerPage;
     @api currentPage;
+    @api showPaginationControls;
 
     connectedCallback() {
         configureElementIdGenerator( this );

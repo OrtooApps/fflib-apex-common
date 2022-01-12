@@ -47,6 +47,7 @@
 
                     <lightning-layout-item>
                         <c-pagination-controls
+                            if:true={showPaginationControls}
                             ortoo-elem-id-prefix={pageSelectorTopId}
                             number-of-records={numberOfRecords}
                             records-per-page={recordsPerPage}
@@ -69,6 +70,7 @@
 
                     <lightning-layout-item>
                         <c-pagination-controls
+                            if:true={showPaginationControls}
                             ortoo-elem-id-prefix={pageSelectorTopId}
                             number-of-records={numberOfRecords}
                             records-per-page={recordsPerPage}

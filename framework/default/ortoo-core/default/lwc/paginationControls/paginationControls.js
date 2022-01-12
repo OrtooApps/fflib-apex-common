@@ -1,23 +1,20 @@
 import { LightningElement, api, wire } from 'lwc';
 import configureElementIdGenerator from 'c/elementIdGenerator';
 
-import pageSizeOptions from '@salesforce/apex/UsersComponentController.pageSizeOptions';
-
-//import XXX_LABEL from '@salesforce/label/c.ortoo_core_xxxx';
-
-const FIRST_LABEL = 'First Page'; // labels, as per above
-const PREVIOUS_LABEL = 'Previous';
-const NEXT_LABEL = 'Next';
-const LAST_LABEL = 'Last Page';
-const TOTAL_RECORDS_LABEL = 'Total records';
-const PAGE_DESCRIPTION = 'Page {0} of {1}';
-const PAGE_SIZE_LABEL = 'Page Size';
+import FIRST_LABEL from '@salesforce/label/c.ortoo_core_first_page';
+import PREVIOUS_LABEL from '@salesforce/label/c.ortoo_core_previous_page';
+import NEXT_LABEL from '@salesforce/label/c.ortoo_core_next_page';
+import LAST_LABEL from '@salesforce/label/c.ortoo_core_last_page';
+import TOTAL_RECORDS_LABEL from '@salesforce/label/c.ortoo_core_total_records';
+import PAGE_SIZE_LABEL from '@salesforce/label/c.ortoo_core_page_size';
+import PAGE_DESCRIPTION from '@salesforce/label/c.ortoo_core_page_number_description';
 
 export default class PaginationControls extends LightningElement {
 
+    // TODO: errors on trying to navigate if these are not set
     @api numberOfRecords;
     @api recordsPerPage;
-    @api currentPage;
+    @api currentPage = 1;
 
     labels = {
         first: FIRST_LABEL,
@@ -38,7 +35,13 @@ export default class PaginationControls extends LightningElement {
         pageSizeId: 'pagesize',
     }
 
-    @wire(pageSizeOptions, {}) pageSizeOptions;
+    // Could potentially be loaded from the DB, but I'm not sure why you need to
+    pageSizeOptions = [
+        { label: '20', value: 20 },
+        { label: '50', value: 50 },
+        { label: '100', value: 100 },
+        { label: '200', value: 200 },
+    ];
 
     connectedCallback() {
         configureElementIdGenerator( this );
@@ -62,20 +65,24 @@ export default class PaginationControls extends LightningElement {
         return this.currentPage >= this.numberOfPages;
     }
 
+    get initialised() {
+        return this.numberOfRecords && this.recordsPerPage && this.currentPage;
+    }
+
     get disableFirstButton() {
-        return this.onFirstPage;
+        return this.initialised && this.onFirstPage;
     }
 
     get disablePreviousButton() {
-        return this.onFirstPage;
+        return this.initialised && this.onFirstPage;
     }
 
     get disableNextButton() {
-        return this.onLastPage;
+        return this.initialised && this.onLastPage;
     }
 
     get disableLastButton() {
-        return this.onLastPage;
+        return this.initialised && this.onLastPage;
     }
 
     handleFirstClick( event ) {

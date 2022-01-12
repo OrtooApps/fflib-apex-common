@@ -140,4 +140,53 @@
         <shortDescription>The title that is used on search buttons.</shortDescription>
         <value>Apply Filters</value>
     </labels>
+    <labels>
+        <fullName>ortoo_core_first_page</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label to use on the 'First Page' button of the pagination controls.</shortDescription>
+        <value>First Page</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_previous_page</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label to use on the 'Previous Page' button of the pagination controls.</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_next_page</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label to use on the 'Next Page' button of the pagination controls.</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_last_page</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label to use on the 'Last Page' button of the pagination controls.</shortDescription>
+        <value>Last Page</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_total_records</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label that is used with a 'Total Records' count.</shortDescription>
+        <value>Total Records</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_page_size</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The label that is used with a 'Page Size' count.</shortDescription>
+        <value>Page Size</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_page_number_description</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Describes the page no. of a total. {0} - Current Page, {1} - Total Pages.</shortDescription>
+        <value>Page {0} of {1}</value>
+    </labels>
 </CustomLabels>
