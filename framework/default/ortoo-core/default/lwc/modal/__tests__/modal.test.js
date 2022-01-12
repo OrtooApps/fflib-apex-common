@@ -117,12 +117,26 @@ describe('c-modal', () => {
         return Promise.resolve()
             .then( () => {
                 const clickEvent = new CustomEvent( 'click', {} );
-                return element.shadowRoot.querySelector( 'button[data-name="cancel-cross"]' ).dispatchEvent( clickEvent );
+                return element.shadowRoot.querySelector( '[data-ortoo-elem-id="modal-closecross"]' ).dispatchEvent( clickEvent );
             })
             .then( () => {
                 expect( cancelHandler ).toHaveBeenCalled();
             });
     });
 
+    it( 'Will use the passed prefix to define the element ids', () => {
 
+        const element = createElement('c-modal', {
+            is: Modal
+        });
+        element.visible = true;
+        element.ortooElemIdPrefix = 'definedmodel'
+
+        document.body.appendChild( element );
+
+        return Promise.resolve()
+            .then( () => {
+                expect( element.shadowRoot.querySelector( '[data-ortoo-elem-id="definedmodel-closecross"]' ) ).not.toBe( null );
+            })
+    });
 });

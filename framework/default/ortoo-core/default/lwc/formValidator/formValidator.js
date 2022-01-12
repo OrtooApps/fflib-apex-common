@@ -13,9 +13,21 @@ import VALIDATION_MESSAGE from '@salesforce/label/c.ortoo_core_validation_errors
  *
  * @returns Boolean States if the bound LWC is regarded as valid.
  */
-const reportValidity = function() {
+const reportValidity = function( options ) {
+
+    !options && ( options = {} );
+
+    !options.hasOwnProperty( 'showToast' ) && ( options.showToast = true );
+    !options.hasOwnProperty( 'toastVariant' ) && ( options.toastVariant = 'error' );
+
+    !options.validationErrorTitle && ( options.validationErrorTitle = ERROR_TITLE );
+    !options.validationErrorMessage && ( options.validationErrorMessage = VALIDATION_MESSAGE );
 
     const validateableElements = this.template.querySelectorAll( '[data-validateable]' );
+
+    if ( !validateableElements ) {
+        return true;
+    }
 
     let hasValidationError = false;
     validateableElements.forEach( thisElement => {
@@ -24,11 +36,11 @@ const reportValidity = function() {
         }
     });
 
-    if ( hasValidationError ) {
+    if ( hasValidationError && options.showToast ) {
         const toastEvent = new ShowToastEvent({
-            title: ERROR_TITLE,
-            message: VALIDATION_MESSAGE,
-            variant: 'error',
+            title: options.validationErrorTitle,
+            message: options.validationErrorMessage,
+            variant: options.toastVariant,
         });
         this.dispatchEvent( toastEvent );
     }

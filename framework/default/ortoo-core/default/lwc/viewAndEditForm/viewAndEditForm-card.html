@@ -11,10 +11,9 @@
                     <slot name="additional-view-buttons"></slot>
 
                     <lightning-button
+                        data-ortoo-elem-id={editId}
                         class="slds-m-top_small slds-float_right"
                         variant="default"
-                        name="edit"
-                        data-name="edit"
                         label={editLabel}
                         onclick={handleEditClick}
                     ></lightning-button>
@@ -40,26 +39,15 @@
 
             <div slot="footer">
 
-                <lightning-button-group>
+                <c-save-buttons
+                    onsave={handleSaveClick}
+                    oncancel={handleCancelClick}
+                >
+                    <span slot="additional-buttons">
+                        <slot name="additional-edit-buttons"></slot>
+                    </span>
+                </c-save-buttons>
 
-                    <lightning-button
-                        variant="default"
-                        name="cancel"
-                        data-name="cancel"
-                        label={cancelLabel}
-                        onclick={handleCancelClick}
-                    ></lightning-button>
-
-                    <slot name="additional-edit-buttons"></slot>
-
-                    <lightning-button
-                        variant="brand"
-                        name="save"
-                        data-name="save"
-                        label={saveLabel}
-                        onclick={handleSaveClick}
-                    ></lightning-button>
-                </lightning-button-group>
             </div>
         </lightning-card>
     </template>

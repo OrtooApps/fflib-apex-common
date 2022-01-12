@@ -45,10 +45,10 @@ describe('c-confirmation-dialog', () => {
         const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).title ).not.toBe( null );
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).not.toBe( null );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).title ).not.toBe( null );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-confirm"]' ).title ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-confirm"]' ).label ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-cancel"]' ).title ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-cancel"]' ).label ).not.toBe( null );
     });
 
     it('When set to visible, contains a div containing cancel and confirm buttons with the specified labels, directing them to the modal footer slot', () => {
@@ -64,10 +64,10 @@ describe('c-confirmation-dialog', () => {
         const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).title ).toBe( 'Confirm thing' );
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).toBe( 'Confirm thing' );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).title ).toBe( 'Cancel thing' );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).toBe( 'Cancel thing' );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-confirm"]' ).title ).toBe( 'Confirm thing' );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-confirm"]' ).label ).toBe( 'Confirm thing' );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-cancel"]' ).title ).toBe( 'Cancel thing' );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-cancel"]' ).label ).toBe( 'Cancel thing' );
     });
 
     it('When set to visible and passed a valid type, contains a div containing cancel and confirm buttons with the specified labels, directing them to the modal footer slot', () => {
@@ -81,8 +81,8 @@ describe('c-confirmation-dialog', () => {
         const expectedElement = element.shadowRoot.querySelector( 'c-modal div[slot="footer"]' );
         expect( expectedElement ).not.toBe( null );
 
-        expect( expectedElement.querySelector( '[data-name="confirm"]' ).label ).not.toBe( null );
-        expect( expectedElement.querySelector( '[data-name="cancel"]' ).label ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-confirm"]' ).label ).not.toBe( null );
+        expect( expectedElement.querySelector( '[data-ortoo-elem-id="confirmation-cancel"]' ).label ).not.toBe( null );
     });
 
     it('When set to an invalid type, will throw an error', () => {
@@ -113,7 +113,7 @@ describe('c-confirmation-dialog', () => {
         const cancelHandler = jest.fn();
         element.addEventListener( 'cancel', cancelHandler ) ;
 
-        element.shadowRoot.querySelector( '[data-name="confirm"]' ).click();
+        element.shadowRoot.querySelector( '[data-ortoo-elem-id="confirmation-confirm"]' ).click();
 
         expect( confirmHandler ).toHaveBeenCalled();
         expect( confirmHandler.mock.calls[0][0].detail ).toBe( CONFIRM_MESSAGE );
@@ -142,7 +142,7 @@ describe('c-confirmation-dialog', () => {
         const cancelHandler = jest.fn();
         element.addEventListener( 'cancel', cancelHandler ) ;
 
-        element.shadowRoot.querySelector( '[data-name="cancel"]' ).click();
+        element.shadowRoot.querySelector( '[data-ortoo-elem-id="confirmation-cancel"]' ).click();
 
         expect( cancelHandler ).toHaveBeenCalled();
         expect( cancelHandler.mock.calls[0][0].detail ).toBe( CANCEL_MESSAGE );

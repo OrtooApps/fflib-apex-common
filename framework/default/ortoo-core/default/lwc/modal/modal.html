@@ -13,10 +13,10 @@
 
                     <header class="slds-modal__header">
                         <button
+                            data-ortoo-elem-id={closeCrossId}
                             class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
                             title={labels.close}
                             onclick={handleCancel}
-                            data-name="cancel-cross"
                         >
                             <lightning-icon
                                 icon-name="utility:close"
@@ -36,7 +36,7 @@
                         </div>
                     </header>
 
-                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-modal__content slds-p-around_large" id="modal-content-id-1">
                         <slot name="contents"></slot>
                     </div>
 

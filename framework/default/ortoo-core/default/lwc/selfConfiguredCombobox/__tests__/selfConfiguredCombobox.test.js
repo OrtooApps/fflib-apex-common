@@ -90,13 +90,45 @@ describe('c-self-configured-combobox', () => {
         expect( console.error ).not.toHaveBeenCalled();
     });
 
+    it('when readonly, will show a field with the specified value', () => {
+        const element = createElement('c-self-configured-combobox', {
+            is: TestableSelfConfiguredCombobox
+        });
+        element.readOnly = true;
+        element.settableOptions = OPTIONS;
+        element.value = '0';
+        element.ortooElemIdPrefix = 'thefield';
+
+        document.body.appendChild(element);
+
+        const field = element.shadowRoot.querySelector( '[data-ortoo-elem-id="thefield"]' );
+        expect( field ).not.toBe( null );
+        expect( field.value ).toBe( 'Zero' );
+    });
+
+    it('when editable, will show a field with the specified value', () => {
+        const element = createElement('c-self-configured-combobox', {
+            is: TestableSelfConfiguredCombobox
+        });
+        element.readOnly = false;
+        element.settableOptions = OPTIONS;
+        element.value = '0';
+        element.ortooElemIdPrefix = 'thefield';
+
+        document.body.appendChild(element);
+
+        const field = element.shadowRoot.querySelector( '[data-ortoo-elem-id="thefield"]' );
+        expect( field ).not.toBe( null );
+        expect( field.value ).toBe( '0' );
+    });
+
     it('when readonly, will pass the label, help text and display density into the readonlyfield', () => {
         const element = createElement('c-self-configured-combobox', {
             is: TestableSelfConfiguredCombobox
         });
         element.readOnly       = true;
         element.label          = LABEL;
-        element.fieldLevelHelp       = HELP_TEXT;
+        element.fieldLevelHelp = HELP_TEXT;
         element.displayDensity = DISPLAY_DENSITY;
 
         document.body.appendChild(element);

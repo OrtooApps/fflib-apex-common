@@ -2,6 +2,7 @@
 
     <template if:true={readOnly}>
         <c-read-only-field
+            data-ortoo-elem-id={fieldId}
             label={label}
             value={valueLabel}
             field-level-help={fieldLevelHelp}
@@ -12,6 +13,7 @@
     <template if:false={readOnly}>
         <div class={fieldPadding}> <!-- can this be a constant?-->
             <lightning-combobox
+                data-ortoo-elem-id={fieldId}
                 name={name}
                 label={label}
                 value={value}
