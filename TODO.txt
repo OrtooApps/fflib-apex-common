@@ -4,12 +4,12 @@ Licenses that are needed with the source code and binary:
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
+* Docs at the top level about the ortoo Id
 
-Implement the passing of the ortoo id prefix into the bits
-Check the spacing of buttons on the confirmation dialog
-Update docs for the view and edit form (no longer has edit buttons)
-Add docs for the save buttons
-Add docs for the generation of Ids
+Remove need for data-name - reference the id info
+
+Add library for getting LWC elements by their generated Ortoo Id
+    Add docs for the retrieval of elements
 
 Look at the use of 'MockDatabase' in fflib
 Look at:
@@ -26,8 +26,6 @@ Look at:
     * Try parent and datatable referencing a DML Service
 
 * Standards
-    * data-name to identify elements in a test
-        * e.g. [data-name="cancel"]
     * Labels should be:
         * Imported into a static named _LABEL
         * Referenced in an object named 'labels'.
