@@ -1,12 +1,16 @@
 import { createElement } from 'lwc';
 import PaginationControls from 'c/paginationControls';
 
+jest.mock('@salesforce/label/c.ortoo_core_total_records', () => { return { default: "Total Records" } }, { virtual: true } );
+jest.mock('@salesforce/label/c.ortoo_core_page_size', () => { return { default: "Page Size" } }, { virtual: true } );
+jest.mock('@salesforce/label/c.ortoo_core_page_number_description', () => { return { default: "{0} of {1}" } }, { virtual: true } );
 
 const FIRST_SELECTOR = '[data-ortoo-elem-id="pageselector-first"]';
 const PREVIOUS_SELECTOR = '[data-ortoo-elem-id="pageselector-previous"]';
 const NEXT_SELECTOR = '[data-ortoo-elem-id="pageselector-next"]';
 const LAST_SELECTOR = '[data-ortoo-elem-id="pageselector-last"]';
 const PAGE_SIZE_SELECTOR = '[data-ortoo-elem-id="pageselector-pagesize"]';
+const INFO_SELECTOR = '[data-ortoo-elem-id="pageselector-info"]';
 
 describe( 'c-pagination-controls', () => {
 
@@ -522,4 +526,22 @@ describe( 'c-pagination-controls', () => {
         })
     });
 
+    it( 'will show a message containing details on the current page and the label for the page size selector, built up by labels', () => {
+
+        const element = createElement('c-pagination-controls', {
+            is: PaginationControls
+        });
+        element.numberOfRecords = 100;
+        element.recordsPerPage  = 10;
+        element.currentPage     = 5;
+
+        document.body.appendChild( element );
+
+        return Promise.resolve()
+        .then( () => {
+            const info = element.shadowRoot.querySelector( INFO_SELECTOR );
+
+            expect( info.textContent ).toBe( 'Total Records: 100 • 5 of 10 • Page Size' );
+        })
+    });
 });

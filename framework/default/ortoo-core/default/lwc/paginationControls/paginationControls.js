@@ -59,6 +59,7 @@ export default class PaginationControls extends LightningElement {
         nextButtonId: 'next',
         lastButtonId: 'last',
         pageSizeId: 'pagesize',
+        informationMessageId: 'info',
     }
 
     // Could potentially be loaded from the DB, but I'm not sure why you need to
