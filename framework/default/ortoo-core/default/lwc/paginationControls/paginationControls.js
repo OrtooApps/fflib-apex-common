@@ -130,7 +130,7 @@ export default class PaginationControls extends LightningElement {
         this.recordsPerPage = event.detail.value;
     }
 
-    dispatchNavigateEvent( pageToNavigateTo ) {
+    dispatchNavigateEvent() {
 
         const detail = {
                             pageToNavigateTo: this.currentPage,
