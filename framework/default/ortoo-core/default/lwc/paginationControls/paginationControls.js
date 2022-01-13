@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import configureElementIdGenerator from 'c/elementIdGenerator';
 
 import FIRST_LABEL from '@salesforce/label/c.ortoo_core_first_page';
