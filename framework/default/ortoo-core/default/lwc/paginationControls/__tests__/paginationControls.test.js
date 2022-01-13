@@ -94,7 +94,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 1 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 1 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 0 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 10 );
         })
@@ -122,7 +122,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 4 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 4 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 30 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 10 );
         })
@@ -150,7 +150,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 6 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 6 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 50 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 10 );
         })
@@ -178,7 +178,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 10 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 10 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 90 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 10 );
         })
@@ -209,7 +209,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 1 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 1 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 0 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 25 );
         })
@@ -240,7 +240,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 4 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 4 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 75 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 25 );
         })
@@ -271,7 +271,7 @@ describe( 'c-pagination-controls', () => {
 
             expect( navigateHandler ).toHaveBeenCalledTimes( 1 );
 
-            expect( navigateHandler.mock.calls[0][0].detail.pageToNavigateTo ).toBe( 3 );
+            expect( navigateHandler.mock.calls[0][0].detail.page ).toBe( 3 );
             expect( navigateHandler.mock.calls[0][0].detail.offset ).toBe( 50 );
             expect( navigateHandler.mock.calls[0][0].detail.window ).toBe( 25 );
         })
