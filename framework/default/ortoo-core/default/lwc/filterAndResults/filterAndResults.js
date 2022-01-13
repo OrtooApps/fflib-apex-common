@@ -24,9 +24,10 @@ export default class FilterAndResults extends LightningElement {
     @api title;
     @api loading;
     @api numberOfRecords;
-    @api recordsPerPage;
-    @api currentPage;
+    @api recordsWindowSize;
     @api showPaginationControls;
+    @api offset;
+    @api searchType; // defines the type of search to load / save against
 
     connectedCallback() {
         configureElementIdGenerator( this );
@@ -37,14 +38,8 @@ export default class FilterAndResults extends LightningElement {
         this.dispatchEvent( newEvent );
     }
 
-    handleNavigateToPage( event ) {
-        const detail = {
-            pageToNavigateTo: event.detail.pageToNavigateTo,
-            recordsPerPage  : event.detail.recordsPerPage
-        };
-        console.log( detail );
-
-        const newEvent = new CustomEvent( 'navigatetopage', { detail: detail } );
+    handleNavigate( event ) {
+        const newEvent = new CustomEvent( 'navigate', { detail: event.detail } );
         this.dispatchEvent( newEvent );
     }
 }

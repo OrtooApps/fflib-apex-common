@@ -50,9 +50,9 @@
                             if:true={showPaginationControls}
                             ortoo-elem-id-prefix={pageSelectorTopId}
                             number-of-records={numberOfRecords}
-                            records-per-page={recordsPerPage}
-                            current-page={currentPage}
-                            onnavigatetopage={handleNavigateToPage}
+                            records-per-page={recordsWindowSize}
+                            offset={offset}
+                            onnavigate={handleNavigate}
                         ></c-pagination-controls>
                     </lightning-layout-item>
 
@@ -73,9 +73,9 @@
                             if:true={showPaginationControls}
                             ortoo-elem-id-prefix={pageSelectorTopId}
                             number-of-records={numberOfRecords}
-                            records-per-page={recordsPerPage}
-                            current-page={currentPage}
-                            onnavigatetopage={handleNavigateToPage}
+                            records-per-page={recordsWindowSize}
+                            offset={offset}
+                            onnavigate={handleNavigate}
                         ></c-pagination-controls>
                     </lightning-layout-item>
 

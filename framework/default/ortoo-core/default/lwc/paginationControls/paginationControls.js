@@ -11,10 +11,35 @@ import PAGE_DESCRIPTION from '@salesforce/label/c.ortoo_core_page_number_descrip
 
 export default class PaginationControls extends LightningElement {
 
-    // TODO: errors on trying to navigate if these are not set
     @api numberOfRecords;
-    @api recordsPerPage;
-    @api currentPage = 1;
+
+    _recordsPerPage = 0;
+    @api get recordsPerPage() {
+        return this._recordsPerPage;
+    }
+    set recordsPerPage( value ) {
+        this._recordsPerPage = value;
+        this.currentPage = Math.min( this.currentPage, this.numberOfPages );
+    }
+
+    _currentPage = 1;
+    @api get currentPage() {
+        return this._currentPage;
+    }
+    set currentPage( value ) {
+        this._currentPage = ( value < 1 || isNaN( value ) ) ? 1 : value;
+        this.dispatchNavigateEvent();
+    }
+
+    @api
+    get offset() {
+        return ( this.currentPage - 1 ) * this.recordsPerPage;
+    }
+    set offset( value ) {
+        if ( ! isNaN( value ) && this.recordsPerPage ) {
+            this.currentPage = Math.floor( value / this.recordsPerPage ) + 1;
+        }
+    };
 
     labels = {
         first: FIRST_LABEL,
@@ -86,32 +111,33 @@ export default class PaginationControls extends LightningElement {
     }
 
     handleFirstClick( event ) {
-        this.dispatchNavigateToPageEvent( 0 );
+        this.currentPage = 0;
     }
 
     handlePreviousClick( event ) {
-        this.dispatchNavigateToPageEvent( this.currentPage - 1 );
+        this.currentPage--;
     }
 
     handleNextClick( event ) {
-        this.dispatchNavigateToPageEvent( this.currentPage + 1 );
+        this.currentPage++;
     }
 
     handleLastClick( event ) {
-        this.dispatchNavigateToPageEvent( this.numberOfPages );
+        this.currentPage = this.numberOfPages;
     }
 
     handleChangePageSize( event ) {
         this.recordsPerPage = event.detail.value;
-        this.dispatchNavigateToPageEvent( Math.min( this.currentPage, this.numberOfPages ) );
     }
 
-    dispatchNavigateToPageEvent( pageToNavigateTo ) {
+    dispatchNavigateEvent( pageToNavigateTo ) {
+
         const detail = {
-                            pageToNavigateTo: pageToNavigateTo,
-                            recordsPerPage  : this.recordsPerPage
+                            pageToNavigateTo: this.currentPage,
+                            offset: this.offset,
+                            window: this.recordsPerPage
                         };
-        const newEvent = new CustomEvent( 'navigatetopage', { detail: detail } );
+        const newEvent = new CustomEvent( 'navigate', { detail: detail } );
         this.dispatchEvent( newEvent );
     }
 }
