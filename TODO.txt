@@ -6,22 +6,25 @@ Licenses that are needed with the source code and binary:
 
 * Docs at the top level about the ortoo Id
 
-Remove need for data-name - reference the id info
-
-Add library for getting LWC elements by their generated Ortoo Id
-    Add docs for the retrieval of elements
-
 Look at the use of 'MockDatabase' in fflib
 Look at:
     SobjectUtils.getSobjectName
 
+
+
+* Look at implementing ordering in the datatable example, so you can define the standards more clearly
+
 * LWCs
     * Standards for:
+        * Filter and Results Page
+            * Apex format
+                * Inner Class for the search parameters
+                * Offset
+                * Order By - single column
+                * Order By Direction
+
         * Edit Forms / Validation
         * Edit Forms with Child Records
-
-    * Review:
-        * Self Configured Combobox - not sure it's needed
 
     * Try parent and datatable referencing a DML Service
 
