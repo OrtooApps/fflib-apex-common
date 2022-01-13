@@ -18,8 +18,9 @@ export default class PaginationControls extends LightningElement {
         return this._recordsPerPage;
     }
     set recordsPerPage( value ) {
+        const previousOffset = this.offset;
         this._recordsPerPage = value;
-        this.currentPage = Math.min( this.currentPage, this.numberOfPages );
+        this.offset = previousOffset;
     }
 
     _currentPage = 1;
@@ -91,27 +92,27 @@ export default class PaginationControls extends LightningElement {
     }
 
     get initialised() {
-        return this.numberOfRecords && this.recordsPerPage && this.currentPage;
+        return ! isNaN( this.numberOfRecords ) && ! isNaN( this.recordsPerPage ) && ! isNaN( this.currentPage );
     }
 
     get disableFirstButton() {
-        return this.initialised && this.onFirstPage;
+        return !this.initialised || this.onFirstPage;
     }
 
     get disablePreviousButton() {
-        return this.initialised && this.onFirstPage;
+        return !this.initialised || this.onFirstPage;
     }
 
     get disableNextButton() {
-        return this.initialised && this.onLastPage;
+        return !this.initialised || this.onLastPage;
     }
 
     get disableLastButton() {
-        return this.initialised && this.onLastPage;
+        return !this.initialised || this.onLastPage;
     }
 
     handleFirstClick( event ) {
-        this.currentPage = 0;
+        this.currentPage = 1;
     }
 
     handlePreviousClick( event ) {
