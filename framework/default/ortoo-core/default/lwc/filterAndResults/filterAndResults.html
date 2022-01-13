@@ -1,6 +1,6 @@
 <template>
 
-    <lightning-card title={title}>
+    <lightning-card title={title} data-ortoo-elem-id={cardId}>
 
         <div class="slds-p-around_medium">
 
@@ -21,7 +21,7 @@
                     <lightning-layout-item>
 
                         <lightning-button
-                            ortoo-elem-id-prefix={searchButtonId}
+                            data-ortoo-elem-id={searchButtonId}
                             variant="brand"
                             label={labels.searchButton}
                             title={labels.searchButtonTitle}
@@ -48,6 +48,7 @@
                     <lightning-layout-item>
                         <c-pagination-controls
                             if:true={showPaginationControls}
+                            data-ortoo-elem-id={pageSelectorTopId}
                             ortoo-elem-id-prefix={pageSelectorTopId}
                             number-of-records={numberOfRecords}
                             records-per-page={recordsWindowSize}
@@ -71,7 +72,8 @@
                     <lightning-layout-item>
                         <c-pagination-controls
                             if:true={showPaginationControls}
-                            ortoo-elem-id-prefix={pageSelectorTopId}
+                            data-ortoo-elem-id={pageSelectorBottomId}
+                            ortoo-elem-id-prefix={pageSelectorBottomId}
                             number-of-records={numberOfRecords}
                             records-per-page={recordsWindowSize}
                             offset={offset}

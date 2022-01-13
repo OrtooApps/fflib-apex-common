@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import configureElementIdGenerator from 'c/elementIdGenerator';
 
 import SEARCH_BUTTON_LABEL from '@salesforce/label/c.ortoo_core_search_button_label';
@@ -16,6 +16,7 @@ export default class FilterAndResults extends LightningElement {
     @api ortooElemIdPrefix = 'filterandresults';
 
     ortooIdConfiguration = {
+        cardId: 'card',
         searchButtonId: 'search',
         pageSelectorTopId: 'pageselectortop',
         pageSelectorBottomId: 'pageselectorbottom',
@@ -23,11 +24,10 @@ export default class FilterAndResults extends LightningElement {
 
     @api title;
     @api loading;
-    @api numberOfRecords;
-    @api recordsWindowSize;
     @api showPaginationControls;
+    @api numberOfRecords;
     @api offset;
-    @api searchType; // defines the type of search to load / save against
+    @api recordsWindowSize;
 
     connectedCallback() {
         configureElementIdGenerator( this );
