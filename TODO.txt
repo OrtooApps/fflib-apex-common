@@ -4,43 +4,35 @@ Licenses that are needed with the source code and binary:
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
-* Docs at the top level about the ortoo Id
-
-Remove need for data-name - reference the id info
-
-Add library for getting LWC elements by their generated Ortoo Id
-    Add docs for the retrieval of elements
+* Move all the Jest LWc tests over to create the component in the before
 
 Look at the use of 'MockDatabase' in fflib
 Look at:
     SobjectUtils.getSobjectName
 
+* Look at implementing ordering in the datatable example, so you can define the standards more clearly
+
+* Build a filter + results page for Contacts, allowing search on
+    * Salutation
+    * Name
+    * Account Name
+    * Account Rating
+
+
 * LWCs
     * Standards for:
+        * Filter and Results Page
+            * Apex format
+                * Inner Class for the search parameters
+                * Offset
+                * Order By - single column
+                * Order By Direction
+
         * Edit Forms / Validation
         * Edit Forms with Child Records
 
-    * Review:
-        * Self Configured Combobox - not sure it's needed
-
     * Try parent and datatable referencing a DML Service
 
-* Standards
-    * Labels should be:
-        * Imported into a static named _LABEL
-        * Referenced in an object named 'labels'.
-        * E.g.
-        labels = {
-            confirm: CONFIRM_LABEL
-        }
-        * so in the html it's {labels.confirm}
-    * Do not add a target unless you KNOW it is appropriate.
-        * Once you add it, it cannot be removed
-    * Always qualify the record page target with the sobject types it's appropriate for
-
-    * use standard validation techniques
-        * Add the property data-validatable
-        * call reportValidity, binding it to the LWC
 
 * To finalise the core architecture:
     * Do we need to have a non all-or-nothing version of commitWork?
