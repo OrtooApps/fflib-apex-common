@@ -23,6 +23,23 @@ public inherited sharing class StringUtils
 	}
 
 	/**
+	 * Given a string, will return either:
+	 * 		The passed string, if the input was not null
+	 * 		An empty string, if the input was null
+	 *
+	 * @param	String	The string to 'unNull'
+	 * @return	String	The resulting string
+	 */
+	public static String unNull( String input )
+	{
+		if ( input == null )
+		{
+			return '';
+		}
+		return input;
+	}
+
+	/**
 	 * Given a String that contains values that are semi-colon delimited, will split it,
 	 * trimming each entry and returning a list of strings.
 	 *

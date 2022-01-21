@@ -58,6 +58,21 @@ private without sharing class StringUtilsTest
 	}
 
 	@isTest
+	private static void unNull_whenGivenAStringThatIsNotNull_returnsThatString() // NOPMD: Test method name format
+	{
+		String originalString = 'not null string';
+		String got = StringUtils.unNull( originalString );
+		System.assertEquals( originalString, got, 'unNull, when given a String that is not null, will return that String' );
+	}
+
+	@isTest
+	private static void unNull_whenGivenAStringThatIsNull_returnsAnEmptyString() // NOPMD: Test method name format
+	{
+		String got = StringUtils.unNull( null );
+		System.assertEquals( '', got, 'unNull, when given a String that is null, will return an empty String' );
+	}
+
+	@isTest
 	private static void convertDelimitedStringToList_whenGivenAStringAndADelimiter_willSplitTheStringOnTheDelimiter() // NOPMD: Test method name format
 	{
 		String originalString = 'one,two,three';
