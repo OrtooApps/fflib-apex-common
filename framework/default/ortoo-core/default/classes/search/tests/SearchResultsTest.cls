@@ -100,4 +100,24 @@ public inherited sharing class SearchResultsTest
 
 		Amoss_Asserts.assertContains( 'constructor called with a totalNumberOfRecords that is lower than the size of records', exceptionMessage, 'constructor, when passed a total number of records that is lower than the number of records, will throw an exception' );
 	}
+
+	@isTest
+	private static void hasRecords_whenResultsHaveBeenSetToAnEmptyList_returnsFalse() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			Boolean got = new SearchResults( 15, new List<Object>() ).hasRecords();
+		Test.stopTest();
+
+		System.assertEquals( false, got, 'hasRecords, when results have been set to an empty list, will return false' );
+	}
+
+	@isTest
+	private static void hasRecords_whenResultsHaveBeenSetWithRecords_returnsTrue() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			Boolean got = new SearchResults( 15, new List<Object>{ 1, 2 } ).hasRecords();
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasRecords, when results have been set to a list with records, will return true' );
+	}
 }

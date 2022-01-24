@@ -18,7 +18,9 @@ public inherited sharing class SearchServiceImplTest
 		Amoss_Instance selectorController = ApplicationMockRegistrar.registerMockSelector( searchSobjectType, SearchServiceMockSearchSelector.class ); // the config will say this is the SobjectType we're searching for
 		Amoss_Instance domainController = ApplicationMockRegistrar.registerMockDomain( searchSobjectType, SearchServiceMockDomain.class );
 
-		SearchResults interimSearchResults = new SearchResults( 1, new List<Contact>{ new Contact( FirstName = 'Interim') } );
+		// it looks like it shouldn't, but selectBySearchCriteria does appear to return a list based on the actual SObject type, if there are records
+		// Therefore we return a SearchResults built with List<Contact>, and not List<Sobject>, as you might expect.
+		SearchResults interimSearchResults = new SearchResults( 1, new List<Contact>{ new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ), FirstName = 'Interim') } );
 		List<ISearchResult> adjustedObjects = new List<ISearchResult>{ finalResult };
 
 		// configure the expected behaviours
@@ -51,6 +53,46 @@ public inherited sharing class SearchServiceImplTest
 
 		System.assertEquals( interimSearchResults.totalNumberOfRecords, results.totalNumberOfRecords, 'search, when called with a config, criteria, window and order by, will request a search from the configured selector and keep the total records from there' );
 		System.assertEquals( adjustedObjects, results.records, 'search, when called with a config, criteria, window and order by, will construct a domain object based on the cofig, with the results from the selector and then ask it to buildSearchResults from them' );
+	}
+
+	@isTest
+	private static void search_whenNoRecordsAreReturnedByTheSearch_doesNotTryToCreateTheDomain() // NOPMD: Test method name format
+	{
+		SobjectType searchSobjectType = Contact.sobjectType;
+		Type searchConfigurationType = ISearchConfiguration.class;
+
+		// Define all the mocks and register them where appropriate
+		ISearchCriteria criteria = (ISearchCriteria)new Amoss_Instance( ISearchCriteria.class ).generateDouble();
+		SearchWindow window = (SearchWindow)new Amoss_Instance( SearchWindow.class ).generateDouble();
+		SearchOrderBy orderBy = (SearchOrderBy)new Amoss_Instance( SearchOrderBy.class ).generateDouble();
+
+		ISearchResult finalResult = (ISearchResult)new Amoss_Instance( ISearchResult.class ).generateDouble();
+
+		Amoss_Instance searchConfigController = ApplicationMockRegistrar.registerMockAppLogic( searchConfigurationType );
+		Amoss_Instance selectorController = ApplicationMockRegistrar.registerMockSelector( searchSobjectType, SearchServiceMockSearchSelector.class ); // the config will say this is the SobjectType we're searching for
+
+		SearchResults interimSearchResults = new SearchResults( 0, new List<Sobject>() );
+
+		// configure the expected behaviours
+		searchConfigController
+			.expects( 'getBaseSobjectType' )
+			.returns( searchSobjectType );
+
+		selectorController
+			.when( 'selectBySearchCriteria' )
+			.returns( interimSearchResults );
+
+		Test.startTest();
+
+			SearchResults results = new SearchServiceImpl().search( searchConfigurationType, criteria, window, orderBy );
+
+		Test.stopTest();
+
+		searchConfigController.verify();
+		selectorController.verify();
+
+		System.assertEquals( 0, results.totalNumberOfRecords, 'search, when the search matches no records, will give a total number of records of zero' );
+		System.assertEquals( 0, results.records.size(), 'search, when the search matches no records, will return an empty search results' );
 	}
 
 	@isTest
