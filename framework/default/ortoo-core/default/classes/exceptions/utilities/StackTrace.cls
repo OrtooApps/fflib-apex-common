@@ -176,6 +176,7 @@ public class StackTrace {
 		return stackTraceEntries[0];
 	}
 
+	@testVisible
 	private StackTraceEntry getEntryStackTraceEntry()
 	{
 		if ( stackTraceEntries.isEmpty() )

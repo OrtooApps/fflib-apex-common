@@ -12,18 +12,19 @@ private without sharing class ContractTest
 	private static void requires_whenGivenAFalseCondition_willThrowAnException() // NOPMD: Test method name format
 	{
 		Test.startTest();
-			String exceptionMessage;
+			ortoo_Exception exceptionThrown;
 			try
 			{
 				Contract.requires( false, 'will throw' );
 			}
-			catch ( Exception e )
+			catch ( ortoo_Exception e )
 			{
-				exceptionMessage = e.getMessage();
+				exceptionThrown = e;
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Contract.requires failed: will throw', exceptionMessage, 'requires, when given a false condition, will throw an exception' );
+		Amoss_Asserts.assertContains( 'Contract.requires failed: will throw', exceptionThrown.getMessage(), 'requires, when given a false condition, will throw an exception' );
+		System.assertEquals( 'requires_whenGivenAFalseCondition_willThrowAnException', exceptionThrown.getStackTrace().getInnermostMethodName(), 'requires, when given a false condition, will throw an exception with the stack trace set to the caller' );
 	}
 
 	@isTest
@@ -37,18 +38,19 @@ private without sharing class ContractTest
 	private static void ensures_whenGivenAFalseCondition_willThrowAnException() // NOPMD: Test method name format
 	{
 		Test.startTest();
-			String exceptionMessage;
+			ortoo_Exception exceptionThrown;
 			try
 			{
 				Contract.ensures( false, 'will throw' );
 			}
-			catch ( Exception e )
+			catch ( ortoo_Exception e )
 			{
-				exceptionMessage = e.getMessage();
+				exceptionThrown = e;
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Contract.ensures failed: will throw', exceptionMessage, 'ensures, when given a false condition, will throw an exception' );
+		Amoss_Asserts.assertContains( 'Contract.ensures failed: will throw', exceptionThrown.getMessage(), 'ensures, when given a false condition, will throw an exception' );
+		System.assertEquals( 'ensures_whenGivenAFalseCondition_willThrowAnException', exceptionThrown.getStackTrace().getInnermostMethodName(), 'ensures, when given a false condition, will throw an exception with the stack trace set to the caller' );
 	}
 
 	@isTest
@@ -62,17 +64,18 @@ private without sharing class ContractTest
 	private static void assert_whenGivenAFalseCondition_willThrowAnException() // NOPMD: Test method name format
 	{
 		Test.startTest();
-			String exceptionMessage;
+			ortoo_Exception exceptionThrown;
 			try
 			{
 				Contract.assert( false, 'will throw' );
 			}
-			catch ( Exception e )
+			catch ( ortoo_Exception e )
 			{
-				exceptionMessage = e.getMessage();
+				exceptionThrown = e;
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Contract.assert failed: will throw', exceptionMessage, 'assert, when given a false condition, will throw an exception' );
+		Amoss_Asserts.assertContains( 'Contract.assert failed: will throw', exceptionThrown.getMessage(), 'assert, when given a false condition, will throw an exception' );
+		System.assertEquals( 'assert_whenGivenAFalseCondition_willThrowAnException', exceptionThrown.getStackTrace().getInnermostMethodName(), 'assert, when given a false condition, will throw an exception with the stack trace set to the caller' );
 	}
 }

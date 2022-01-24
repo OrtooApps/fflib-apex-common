@@ -60,7 +60,7 @@ public inherited sharing class ApplicationMockRegistrar
 	 * @param	Type			The domain type (class) that the mock should be generated as
 	 * @return	Amoss_Instance	The controller for the mock Domain
 	 */
-	private static Amoss_Instance registerMockDomain( SobjectType sobjectType, Type domainType )
+	public static Amoss_Instance registerMockDomain( SobjectType sobjectType, Type domainType )
 	{
 		Amoss_Instance mockDomainController = new Amoss_Instance( domainType );
 		mockDomainController
@@ -187,7 +187,7 @@ public inherited sharing class ApplicationMockRegistrar
 	 * @param	Type			The selector type (class) that the mock should be generated as
 	 * @return	Amoss_Instance	The controller for the mock selector
 	 */
-	private static Amoss_Instance registerMockSelector( SobjectType sobjectType, Type selectorType )
+	public static Amoss_Instance registerMockSelector( SobjectType sobjectType, Type selectorType )
 	{
 		Amoss_Instance mockSelectorController = new Amoss_Instance( selectorType );
 		mockSelectorController
