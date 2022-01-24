@@ -5,7 +5,6 @@
  */
 public inherited sharing virtual class ortoo_Criteria extends fflib_Criteria implements ISearchCriteria // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
-
 	public virtual ortoo_Criteria likeString( Schema.SObjectField field, Object value )
 	{
 		addEvaluator( new FieldEvaluator( field, fflib_Operator.LIKEx, value ) );

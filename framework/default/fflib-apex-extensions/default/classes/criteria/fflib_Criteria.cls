@@ -54,7 +54,9 @@ public virtual with sharing class fflib_Criteria
 		this.type = 'AND';
 	}
 
-	// TODO: document and test
+	/**
+	 * Adds the given evalutor onto the formula stack
+	 */
 	protected void addEvaluator( Evaluator evaluator )
 	{
 		evaluators.add( evaluator );

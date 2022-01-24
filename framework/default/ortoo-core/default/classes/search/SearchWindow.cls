@@ -7,8 +7,8 @@
  */
 public inherited sharing class SearchWindow
 {
-    public Integer offset;
-    public Integer length;
+    public Integer offset {get; private set;}
+    public Integer length {get; private set;}
 
     /**
 	 * Configures the current instance with the given properties, defining the window

@@ -98,7 +98,7 @@ public inherited sharing class SobjectUtils
 	/**
 	 * States if the given SObject is of a type that the current user is allowed to insert
 	 *
-	 * @param	SObject	The SObject to check the type of
+	 * @param	SObject	The SObject to check 'isCreatable' of
 	 * @return	Boolean	States if the user can insert records of this type
 	 */
 	public static Boolean isCreateable( Sobject record )
@@ -111,7 +111,7 @@ public inherited sharing class SobjectUtils
 	/**
 	 * States if the given SObject is of a type that the current user is allowed to update
 	 *
-	 * @param	SObject	The SObject to check the type of
+	 * @param	SObject	The SObject to check 'isUpdateable' of
 	 * @return	Boolean	States if the user can update records of this type
 	 */
 	public static Boolean isUpdateable( Sobject record )
@@ -124,7 +124,7 @@ public inherited sharing class SobjectUtils
 	/**
 	 * States if the given SObject is of a type that the current user is allowed to delete
 	 *
-	 * @param	SObject	The SObject to check the type of
+	 * @param	SObject	The SObject to check 'isDeletable' of
 	 * @return	Boolean	States if the user can delete records of this type
 	 */
 	public static Boolean isDeletable( Sobject record )
@@ -132,6 +132,58 @@ public inherited sharing class SobjectUtils
 		Contract.requires( record != null, 'isDeletable called with a null record' );
 
 		return getSObjectDescribeResult( record ).isDeletable();
+	}
+
+	/**
+	 * States if the given SObjectType is one that the current user is allowed to insert
+	 *
+	 * @param	SobjectType	The SObject to check 'isCreateable' of
+	 * @return	Boolean	States if the user can insert records of this type
+	 */
+	public static Boolean isCreateable( SobjectType type )
+	{
+		Contract.requires( type != null, 'isCreateable called with a null type' );
+
+		return getSObjectDescribeResult( type ).isCreateable();
+	}
+
+	/**
+	 * States if the given SObjectType is one that the current user is allowed to update
+	 *
+	 * @param	SobjectType	The SObject to check 'isUpdateable' of
+	 * @return	Boolean	States if the user can update records of this type
+	 */
+	public static Boolean isUpdateable( SobjectType type )
+	{
+		Contract.requires( type != null, 'isUpdateable called with a null type' );
+
+		return getSObjectDescribeResult( type ).isUpdateable();
+	}
+
+	/**
+	 * States if the given SObjectType is one that the current user is allowed to delete
+	 *
+	 * @param	SobjectType	The SObject to check 'isDeletable' of
+	 * @return	Boolean	States if the user can delete records of this type
+	 */
+	public static Boolean isDeletable( SobjectType type )
+	{
+		Contract.requires( type != null, 'isDeletable called with a null type' );
+
+		return getSObjectDescribeResult( type ).isDeletable();
+	}
+
+	/**
+	 * States if the given SObjectType is one that the current user is allowed to access
+	 *
+	 * @param	SobjectType	The SObject to check 'isAccessible' of
+	 * @return	Boolean	States if the user can delete records of this type
+	 */
+	public static Boolean isAccessible( SobjectType type )
+	{
+		Contract.requires( type != null, 'isAccessible called with a null type' );
+
+		return getSObjectDescribeResult( type ).isAccessible();
 	}
 
 	/**
@@ -149,6 +201,24 @@ public inherited sharing class SobjectUtils
 	{
 		Contract.requires( record != null, 'getSobjectDescribeResult called with a null record' );
 
-		return record.getSObjectType().getDescribe();
+		return getSobjectDescribeResult( record.getSObjectType() );
+	}
+
+	/**
+	 * Given an SObject Type record, will return the DescrideSObjectResult for it.
+	 *
+	 * Generally shouldn't be used by external methods.  Instead the question of the
+	 * describe result should be asked of SobjectUtils.
+	 *
+	 * For example, see 'isCreateable'.
+	 *
+	 * @param	SObjectType				The SObjectType to get the describe for
+	 * @return	DescribeSObjectResult	The passed SObject's describe
+	 */
+	private static DescribeSObjectResult getSobjectDescribeResult( SobjectType type )
+	{
+		Contract.requires( type != null, 'getSobjectDescribeResult called with a null type' );
+
+		return type.getDescribe();
 	}
 }

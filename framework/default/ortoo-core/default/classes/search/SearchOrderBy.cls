@@ -10,8 +10,8 @@ public inherited sharing class SearchOrderBy
 	private static final String DIRECTION_ASCENDING = 'asc';
 	private static final String DIRECTION_DESCENDING = 'desc';
 
-	public String fieldName = '';
-	public String direction = '';
+	public String fieldName {get; private set;}
+	public String direction {get; private set;}
 
 	/**
 	 * Configures the order by, defining its properties.
@@ -56,5 +56,15 @@ public inherited sharing class SearchOrderBy
 			}
 		}
 		return this;
+	}
+
+	/**
+	 * States if the OrderBy object has been configured with a fieldName that makes sense.
+	 *
+	 * @return	Boolean	Is this object configured
+	 */
+	public Boolean isConfigured()
+	{
+		return String.isNotBlank( fieldName );
 	}
 }

@@ -24,10 +24,12 @@ public inherited sharing class SearchOrderByTest
 
 		System.assertEquals( 'targetFieldName', orderBy.fieldName, 'configure, when given properties with a fieldName and direction, will map the fieldName using the configuration and set the member variable' );
 		System.assertEquals( 'asc', orderBy.direction, 'configure, when given properties with a fieldName and direction, will set the direction member variable' );
+
+		System.assert( orderBy.isConfigured(), 'configure, when given properties with a fieldName and direction, will set the orderBy to configured' );
 	}
 
 	@isTest
-	private static void configure_whenNoFieldName_setsFieldNameAndDirectionToEmpty() // NOPMD: Test method name format
+	private static void configure_whenNoFieldName_setsFieldNameAndDirectionToNull() // NOPMD: Test method name format
 	{
 		Map<String,Object> properties = new Map<String,Object>{
 			'direction' => 'asc'
@@ -44,12 +46,14 @@ public inherited sharing class SearchOrderByTest
 
 		configurationController.verify();
 
-		System.assertEquals( '', orderBy.fieldName, 'configure, when given properties with no fieldName and direction, will set the fieldName to an empty string' );
-		System.assertEquals( '', orderBy.direction, 'configure, when given properties with no fieldName and direction, will set the direction to an empty string' );
+		System.assertEquals( null, orderBy.fieldName, 'configure, when given properties with no fieldName and direction, will set the fieldName to null' );
+		System.assertEquals( null, orderBy.direction, 'configure, when given properties with no fieldName and direction, will set the direction to null' );
+
+		System.assert( ! orderBy.isConfigured(), 'configure, when given properties with no fieldName and direction, will set the orderBy to not configured' );
 	}
 
 	@isTest
-	private static void configure_whenFieldNameEmpty_setsFieldNameAndDirectionToEmpty() // NOPMD: Test method name format
+	private static void configure_whenFieldNameEmpty_setsFieldNameAndDirectionToNull() // NOPMD: Test method name format
 	{
 		Map<String,Object> properties = new Map<String,Object>{
 			'fieldName' => '',
@@ -67,12 +71,14 @@ public inherited sharing class SearchOrderByTest
 
 		configurationController.verify();
 
-		System.assertEquals( '', orderBy.fieldName, 'configure, when given properties with empty fieldName and direction, will set the fieldName to an empty string' );
-		System.assertEquals( '', orderBy.direction, 'configure, when given properties with empty fieldName and direction, will set the fieldName to an empty string' );
+		System.assertEquals( null, orderBy.fieldName, 'configure, when given properties with empty fieldName and direction, will set the fieldName to null' );
+		System.assertEquals( null, orderBy.direction, 'configure, when given properties with empty fieldName and direction, will set the fieldName to null' );
+
+		System.assert( ! orderBy.isConfigured(), 'configure, when given properties with empty fieldName and direction, will set the orderBy to not configured' );
 	}
 
 	@isTest
-	private static void configure_whenFieldNameIsUnmapped_setsFieldNameAndDirectionToEmpty() // NOPMD: Test method name format
+	private static void configure_whenFieldNameIsUnmapped_setsFieldNameAndDirectionToNull() // NOPMD: Test method name format
 	{
 		Map<String,Object> properties = new Map<String,Object>{
 			'fieldName' => 'unmapped',
@@ -91,8 +97,10 @@ public inherited sharing class SearchOrderByTest
 
 		configurationController.verify();
 
-		System.assertEquals( '', orderBy.fieldName, 'configure, when given properties with unmapped fieldName, will set the fieldName to an empty string' );
-		System.assertEquals( '', orderBy.direction, 'configure, when given properties with unmapped fieldName, will set the direction to an empty string' );
+		System.assertEquals( null, orderBy.fieldName, 'configure, when given properties with unmapped fieldName, will set the fieldName to null' );
+		System.assertEquals( null, orderBy.direction, 'configure, when given properties with unmapped fieldName, will set the direction to null' );
+
+		System.assert( ! orderBy.isConfigured(), 'configure, when given properties with unmapped fieldName, will set the orderBy to not configured' );
 	}
 
 	@isTest
@@ -116,6 +124,8 @@ public inherited sharing class SearchOrderByTest
 
 		System.assertEquals( 'asc', orderBy.direction, 'configure, when given properties with no direction, will set the direction to asc' );
 		System.assertEquals( 'target', orderBy.fieldName, 'configure, when given properties with no direction, will set the fieldName' );
+
+		System.assert( orderBy.isConfigured(), 'configure, when given properties with no direction, will set the orderBy to configured' );
 	}
 
 	@isTest
@@ -169,7 +179,6 @@ public inherited sharing class SearchOrderByTest
 	@isTest
 	private static void configure_whenPassedInvalidDirection_throwsAnException() // NOPMD: Test method name format
 	{
-
 		Map<String,Object> properties = new Map<String,Object>{
 			'fieldName' => 'source',
 			'direction' => 'invalid'
@@ -290,5 +299,4 @@ public inherited sharing class SearchOrderByTest
 			return null;
 		}
 	}
-
 }
