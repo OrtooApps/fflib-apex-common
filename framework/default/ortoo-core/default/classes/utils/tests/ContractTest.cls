@@ -76,6 +76,6 @@ private without sharing class ContractTest
 		Test.stopTest();
 
 		Amoss_Asserts.assertContains( 'Contract.assert failed: will throw', exceptionThrown.getMessage(), 'assert, when given a false condition, will throw an exception' );
-		System.assertEquals( 'ensures_whenGivenAFalseCondition_willThrowAnException', exceptionThrown.getStackTrace().getInnermostMethodName(), 'assert, when given a false condition, will throw an exception with the stack trace set to the caller' );
+		System.assertEquals( 'assert_whenGivenAFalseCondition_willThrowAnException', exceptionThrown.getStackTrace().getInnermostMethodName(), 'assert, when given a false condition, will throw an exception with the stack trace set to the caller' );
 	}
 }
