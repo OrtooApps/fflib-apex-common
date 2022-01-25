@@ -25,6 +25,7 @@
                             variant="brand"
                             label={labels.searchButton}
                             title={labels.searchButtonTitle}
+                            disabled={disableSearchButton}
                             onclick={handleSearchClicked}
                         ></lightning-button>
 
@@ -40,7 +41,7 @@
                 <lightning-layout class="slds-p-bottom_small">
 
                     <lightning-layout-item>
-                        <slot name="action-buttons"></slot>
+                        <slot name="action-buttons-top"></slot>
                     </lightning-layout-item>
 
                     <lightning-layout-item flexibility="grow"></lightning-layout-item>
@@ -63,7 +64,7 @@
                 <lightning-layout class="slds-p-top_small">
 
                     <lightning-layout-item>
-                        <slot name="action-buttons"></slot>
+                        <slot name="action-buttons-bottom"></slot>
                     </lightning-layout-item>
 
                     <lightning-layout-item flexibility="grow"></lightning-layout-item>
