@@ -31,9 +31,11 @@ public with sharing class SearchServiceImpl implements ISearchService
 		SearchResults searchResults = ((ISearchSelector)Application.SELECTOR.newInstance( sObjectType ) )
 															.selectBySearchCriteria( searchConfiguration, criteria, window, orderBy );
 
-		ISearchResultBuilder searchResultsBuilder = ((ISearchResultBuilder)Application.DOMAIN.newInstance( (List<Sobject>)searchResults.records ) );
-
-		searchResults.records = searchResultsBuilder.buildSearchResults( searchConfiguration );
+		if ( searchResults.hasRecords() )
+		{
+			ISearchResultBuilder searchResultsBuilder = ((ISearchResultBuilder)Application.DOMAIN.newInstance( (List<Sobject>)searchResults.records ) );
+			searchResults.records = searchResultsBuilder.buildSearchResults( searchConfiguration );
+		}
 
 		Contract.ensures( searchResults != null, 'search attempted to return with a null searchResults' );
 		Contract.ensures( searchResults.records != null, 'search attempted to return with a null searchResults.records' );
