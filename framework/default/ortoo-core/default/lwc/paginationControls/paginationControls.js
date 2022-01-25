@@ -19,7 +19,8 @@ export default class PaginationControls extends LightningElement {
     }
     set recordsPerPage( value ) {
         const previousOffset = this.offset;
-        this._recordsPerPage = value;
+
+        this._recordsPerPage = isNaN( value ) ? this._recordsPerPage : parseInt( value );
         this.offset = previousOffset;
     }
 

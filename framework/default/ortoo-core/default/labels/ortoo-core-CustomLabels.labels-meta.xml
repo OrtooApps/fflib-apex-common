@@ -145,7 +145,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>The label to use on the 'First Page' button of the pagination controls.</shortDescription>
-        <value>First Page</value>
+        <value>First</value>
     </labels>
     <labels>
         <fullName>ortoo_core_previous_page</fullName>
@@ -166,7 +166,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>The label to use on the 'Last Page' button of the pagination controls.</shortDescription>
-        <value>Last Page</value>
+        <value>Last</value>
     </labels>
     <labels>
         <fullName>ortoo_core_total_records</fullName>
@@ -188,5 +188,12 @@
         <protected>false</protected>
         <shortDescription>Describes the page no. of a total. {0} - Current Page, {1} - Total Pages.</shortDescription>
         <value>Page {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_datatable_sorting_disabled_title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Title of the error toast that states that datatable sorting is disabled.</shortDescription>
+        <value>Problem occured when configuring which fields are orderable.  Table sorting is disabled.</value>
     </labels>
 </CustomLabels>

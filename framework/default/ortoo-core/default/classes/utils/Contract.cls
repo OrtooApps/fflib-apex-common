@@ -22,7 +22,7 @@ public class Contract
 	{
 		if ( !condition )
 		{
-			throw new RequiresException( 'Contract.requires failed: ' + message );
+			throw new RequiresException( 'Contract.requires failed: ' + message ).regenerateStackTraceString( 1 );
 		}
 	}
 
@@ -38,7 +38,7 @@ public class Contract
 	{
 		if ( !condition )
 		{
-			throw new AssertException( 'Contract.assert failed: ' + message );
+			throw new AssertException( 'Contract.assert failed: ' + message ).regenerateStackTraceString( 1 );
 		}
 	}
 
@@ -55,7 +55,7 @@ public class Contract
 	{
 		if ( !condition )
 		{
-			throw new EnsuresException( 'Contract.ensures failed: ' + message );
+			throw new EnsuresException( 'Contract.ensures failed: ' + message ).regenerateStackTraceString( 1 );
 		}
 	}
 }

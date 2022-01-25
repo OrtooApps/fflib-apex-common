@@ -91,7 +91,7 @@ public abstract with sharing class fflib_SObjectSelector
      * Implement this method to inform the base class of the SObject (custom or standard) to be queried
      **/
     abstract Schema.SObjectType getSObjectType();
-    
+
     /**
      * Implement this method to inform the base class of the common fields to be queried or listed by the base class methods
      **/

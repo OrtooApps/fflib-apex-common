@@ -55,6 +55,14 @@ public virtual with sharing class fflib_Criteria
 	}
 
 	/**
+	 * Adds the given evalutor onto the formula stack
+	 */
+	protected void addEvaluator( Evaluator evaluator )
+	{
+		evaluators.add( evaluator );
+	}
+
+	/**
 	 * Changes the default comparator for each criteria to OR
 	 *
 	 * @return Instance of fflib_Criteria
@@ -295,7 +303,7 @@ public virtual with sharing class fflib_Criteria
 		}
 	}
 
-	private class FormulaNumberEvaluator implements IFormulaEvaluator
+	public class FormulaNumberEvaluator implements IFormulaEvaluator
 	{
 		private Integer expressionNumber;
 
@@ -737,7 +745,7 @@ public virtual with sharing class fflib_Criteria
 		else if (operator == fflib_Operator.GREATER_THAN_OR_EQUAL_TO)
 			return '>=';
 		else if (operator == fflib_Operator.LIKEx)
-			return ' like ';
+			return ' LIKE ';
 		else if (operator == fflib_Operator.INx)
 			return ' IN ';
 		else if (operator == fflib_Operator.NOT_IN)
@@ -817,7 +825,7 @@ public virtual with sharing class fflib_Criteria
 		return result + ')';
 	}
 
-	private interface Evaluator
+	public interface Evaluator
 	{
 		Boolean evaluate(Object obj);
 		String toSOQL();
@@ -826,7 +834,7 @@ public virtual with sharing class fflib_Criteria
 	/**
 	 * Generic criteria handler for comparing against sets
 	 */
-	private virtual class FieldSetEvaluator implements Evaluator
+	public virtual class FieldSetEvaluator implements Evaluator
 	{
 		private Schema.SObjectField sObjectField;
 		private fflib_Objects values;
@@ -851,14 +859,14 @@ public virtual with sharing class fflib_Criteria
 
 		public String toSOQL()
 		{
-			return String.format(
-					'{0} {1} {2}',
-					new List<String>
-					{
-							this.sObjectField.getDescribe().getName(),
-							operatorToString(this.operator),
-							toLiteral(this.values)
-					}
+			return String.join(
+				new List<String>
+				{
+						this.sObjectField.getDescribe().getName(),
+						operatorToString(this.operator),
+						toLiteral(this.values)
+				},
+				''
 			);
 		}
 	}
@@ -866,7 +874,7 @@ public virtual with sharing class fflib_Criteria
 	/**
 	 * Generic field Evaluator
 	 */
-	private class FieldEvaluator implements Evaluator
+	public class FieldEvaluator implements Evaluator
 	{
 		private Schema.SObjectField sObjectField;
 		private Object value;
@@ -903,7 +911,7 @@ public virtual with sharing class fflib_Criteria
 		}
 	}
 
-	private abstract class AbstractRelatedFieldEvaluator implements Evaluator
+	public abstract class AbstractRelatedFieldEvaluator implements Evaluator
 	{
 		protected String fieldName;
 		protected fflib_Operator operator;
@@ -926,7 +934,7 @@ public virtual with sharing class fflib_Criteria
 
 	}
 
-	private class RelatedFieldEvaluator extends AbstractRelatedFieldEvaluator
+	public class RelatedFieldEvaluator extends AbstractRelatedFieldEvaluator
 	{
 		private Object value;
 
@@ -950,18 +958,18 @@ public virtual with sharing class fflib_Criteria
 		public String toSOQL()
 		{
 			return String.join(
-					new List<String>
-					{
-							this.fieldName,
-							operatorToString(this.operator),
-							toLiteral(this.value)
-					},
-					''
+				new List<String>
+				{
+						this.fieldName,
+						operatorToString(this.operator),
+						toLiteral(this.value)
+				},
+				''
 			);
 		}
 	}
 
-	private class RelatedFieldSetEvaluator extends AbstractRelatedFieldEvaluator
+	public class RelatedFieldSetEvaluator extends AbstractRelatedFieldEvaluator
 	{
 		private fflib_Objects values;
 
@@ -984,19 +992,19 @@ public virtual with sharing class fflib_Criteria
 
 		public String toSOQL()
 		{
-			return String.format(
-					'{0} {1} {2}',
-					new List<String>
-					{
-							this.fieldName,
-							operatorToString(this.operator),
-							toLiteral(this.values)
-					}
+			return String.join(
+				new List<String>
+				{
+						this.fieldName,
+						operatorToString(this.operator),
+						toLiteral(this.values)
+				},
+				''
 			);
 		}
 	}
 
-	private class PropertyEvaluator implements Evaluator
+	public class PropertyEvaluator implements Evaluator
 	{
 		private Object property;
 		private Object value;

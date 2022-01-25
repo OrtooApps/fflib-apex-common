@@ -95,4 +95,12 @@ describe('displayError', () => {
 
         expect( reportedError ).toBe( error );
     });
+
+    it( 'When called without binding to an instance, will throw', () => {
+
+        const error = 'An Error';
+        const call = () => displayError( error );
+
+        expect( call ).toThrow( 'displayError called against an object with no "dispatchEvent" function defined.  Have you bound your instance by using "bind" or "call"?' );
+    });
 });

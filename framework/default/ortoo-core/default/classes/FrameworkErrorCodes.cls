@@ -27,4 +27,7 @@ public inherited sharing class FrameworkErrorCodes {
 	public final static String DML_UPDATE_NOT_ALLOWED		= '00002';
 	public final static String DML_DELETE_NOT_ALLOWED		= '00003';
 	public final static String DML_PUBLISH_NOT_ALLOWED		= '00004';
+
+	public final static String SELECTOR_UNBOUND_COUNT_QUERY = '0000000';
+
 }

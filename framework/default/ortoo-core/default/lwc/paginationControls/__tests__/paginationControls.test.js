@@ -14,6 +14,14 @@ const INFO_SELECTOR = '[data-ortoo-elem-id="pageselector-info"]';
 
 describe( 'c-pagination-controls', () => {
 
+    beforeEach(() => {
+        const element = createElement('c-pagination-controls', {
+            is: PaginationControls
+        });
+
+        document.body.appendChild( element );
+    })
+
     afterEach(() => {
         // The jsdom instance is shared across test cases in a single file so reset the DOM
         while (document.body.firstChild) {
@@ -22,11 +30,8 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when no record properties are set, will leave all buttons as disabled', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
 
-        document.body.appendChild( element );
+        const element = document.body.querySelector( 'c-pagination-controls' );
 
         return Promise.resolve()
         .then( () => {
@@ -46,14 +51,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when in a middle page, defined by the currentPage, will enable all the buttons', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 5;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -73,14 +75,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the first button is pressed, will set the current page to 1 and issue an event', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 5;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -101,14 +100,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the previous button is pressed, will reduce the current page by 1 and issue an event', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 5;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -129,14 +125,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the next button is pressed, will increase the current page by 1 and issue an event', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 5;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -157,14 +150,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the last button is pressed, will set the current page to the last and issue an event', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 5;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -185,14 +175,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the number of records per page is changed, will issue a navigation event and set the current page so the previous first record is still shown - checking first page', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 1;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -216,14 +203,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the number of records per page is changed, will issue a navigation event and set the current page so the previous first record is still shown - checking last page', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 10;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -247,14 +231,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the number of records per page is changed, will issue a navigation event and set the current page so the previous first record is still shown - checking in the middle', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 7;
-
-        document.body.appendChild( element );
 
         const navigateHandler = jest.fn();
         element.addEventListener( 'navigate', navigateHandler );
@@ -278,14 +259,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when on the first page, defined by the currentPage, but more records exist, will enable the next buttons, but not the previous ones', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 1;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -305,14 +283,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when on the first page, defined by the offset, but more records exist, will enable the next buttons, but not the previous ones', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.offset          = 0;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -332,14 +307,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when on the last page, defined by the currentPage, but more records exist, will enable the previous buttons, but not the next ones', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 10;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -359,14 +331,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when on the last page, defined by the offset, but more records exist, will enable the previous buttons, but not the next ones', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.offset          = 90;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -386,14 +355,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when in a middle page, defined by the offset, will enable all the buttons', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.offset          = 50;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -413,14 +379,11 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the page size is bigger than the number of records, will disable all the buttons', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 10;
         element.recordsPerPage  = 20;
         element.offset          = 0;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -440,9 +403,8 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the current page is set, the offset will be set', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 20;
         element.currentPage     = 3;
@@ -451,9 +413,8 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the offset is set, the current page will be set', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 20;
         element.offset          = 40;
@@ -462,9 +423,8 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the offset is set so it is not on a page boundary, it will be rounded down to a page boundary', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 20;
         element.offset          = 45;
@@ -474,9 +434,8 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the offset is set to a negative number, it will be set to zero', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 20;
         element.offset          = -45;
@@ -486,9 +445,8 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the currentPage is set to a negative number, it will be set to 1', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 20;
         element.currentPage     = -45;
@@ -498,16 +456,13 @@ describe( 'c-pagination-controls', () => {
     });
 
     it( 'when the current page is set beyond the number of records, it will still render in that position', () => {
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 15; // beyond the end
 
         expect( element.currentPage ).toBe( 15 );
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -528,14 +483,10 @@ describe( 'c-pagination-controls', () => {
 
     it( 'will show a message containing details on the current page and the label for the page size selector, built up by labels', () => {
 
-        const element = createElement('c-pagination-controls', {
-            is: PaginationControls
-        });
+        const element = document.body.querySelector( 'c-pagination-controls' );
         element.numberOfRecords = 100;
         element.recordsPerPage  = 10;
         element.currentPage     = 5;
-
-        document.body.appendChild( element );
 
         return Promise.resolve()
         .then( () => {
@@ -543,5 +494,31 @@ describe( 'c-pagination-controls', () => {
 
             expect( info.textContent ).toBe( 'Total Records: 100 • 5 of 10 • Page Size' );
         })
+    });
+
+    it( 'when recordsPerPage is set to an Integer, will set the recordsPerPage', () => {
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
+        element.recordsPerPage=  100;
+
+        expect( element.recordsPerPage ).toBe( 100 );
+    });
+    it( 'when recordsPerPage is set to a String representing a number, will set the recordsPerPage to an Integer', () => {
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
+        element.recordsPerPage = '100';
+
+        expect( element.recordsPerPage ).toBe( 100 );
+    });
+
+    it( 'when recordsPerPage is set to a String not representing a number, will not reset the recordsPerPage', () => {
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
+
+        const defaultRecordsPerPage = element.recordsPerPage;
+
+        element.recordsPerPage = 'thing';
+
+        expect( element.recordsPerPage ).toBe( defaultRecordsPerPage );
     });
 });
