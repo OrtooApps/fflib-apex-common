@@ -24,10 +24,14 @@ export default class FilterAndResults extends LightningElement {
 
     @api title;
     @api loading;
+    @api disableSearchButton;
     @api showPaginationControls;
     @api numberOfRecords;
     @api offset;
     @api recordsWindowSize;
+
+    @api searchType;
+
 
     connectedCallback() {
         configureElementIdGenerator( this );
