@@ -32,7 +32,7 @@ const configureSortableFields = function( columnsPropertyName, fields, error ) {
 
     if ( error ) {
 
-        displayError.call( this, error, errorTitle );
+        displayError.call( this, error, { title: errorTitle } );
 
     } else if ( fields ) {
 

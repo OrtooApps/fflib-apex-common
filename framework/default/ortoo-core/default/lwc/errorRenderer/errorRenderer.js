@@ -4,9 +4,12 @@ import ERROR_TITLE from '@salesforce/label/c.ortoo_core_error_title';
 /**
  * When bound to a Lightning Web Component, will render the given error object.
  */
-const displayError = function( error, title ) {
+const displayError = function( error, options ) {
 
-    title = title ? title : ERROR_TITLE;
+    const title = options?.title ? options.title : ERROR_TITLE;
+    const messagePrefix = options?.messagePrefix ? options.messagePrefix + ': ' : '';
+    const mode = options?.mode ? options.mode : 'sticky';
+    const variant = options?.variant ? options.variant : 'error';
 
     // By default we assume we have a string for the error
     let message = error;
@@ -30,8 +33,9 @@ const displayError = function( error, title ) {
 
     const toastEvent = new ShowToastEvent({
         title: title,
-        message: message,
-        variant: 'error',
+        message: messagePrefix + message,
+        variant: variant,
+        mode: mode,
     });
     this.dispatchEvent( toastEvent );
 }
