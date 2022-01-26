@@ -48,7 +48,7 @@ const configureSortableFields = function( columnsPropertyName, fields, error ) {
             );
             refreshConfiguration.call( this, columnsPropertyName );
         } catch ( e ) {
-            displayError.call( this, e, errorTitle );
+            displayError.call( this, e, { title: errorTitle } );
         }
     }
 }
