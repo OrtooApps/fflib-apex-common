@@ -32,7 +32,7 @@ const configureSortableFields = function( columnsPropertyName, fields, error ) {
 
     if ( error ) {
 
-        displayError.call( this, error, errorTitle );
+        displayError.call( this, error, { title: errorTitle } );
 
     } else if ( fields ) {
 
@@ -48,7 +48,7 @@ const configureSortableFields = function( columnsPropertyName, fields, error ) {
             );
             refreshConfiguration.call( this, columnsPropertyName );
         } catch ( e ) {
-            displayError.call( this, e, errorTitle );
+            displayError.call( this, e, { title: errorTitle } );
         }
     }
 }

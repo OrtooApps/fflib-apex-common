@@ -227,6 +227,22 @@ describe( 'configureSortableFields', () => {
         expect( call ).toThrow( 'configureSortableFields called with a property (columnsProperty) that is not an Array of Objects.' );
     });
 
-    // given an error, will dispatch it
-    // throws an exception - e.g. the object is immutable, will dispatch an error
+    it( 'when given an error, will report that error and return', () => {
+
+        const columns = [
+            {}
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+        const sortableColumns = [ 'field1', 'field2' ];
+
+        const error = 'This is an error';
+
+        DatatableHelper.configureSortableFields.call( objectToRunAgainst, 'columnsProperty', sortableColumns, error );
+
+        expect( displayError.mock.calls[0][0] ).toBe( 'This is an error' );
+        expect( displayError.mock.calls[0][1]?.title ).toBe( 'Sorting configuration error' );
+    });
 });
