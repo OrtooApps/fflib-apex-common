@@ -33,7 +33,8 @@ describe( 'c-filter-and-results', () => {
         .then( () => {
             expect( element.shadowRoot.querySelector( 'slot[name="info"]' ) ).not.toBeNull();
             expect( element.shadowRoot.querySelector( 'slot[name="form"]' ) ).not.toBeNull();
-            expect( element.shadowRoot.querySelector( 'slot[name="action-buttons"]' ) ).not.toBeNull();
+            expect( element.shadowRoot.querySelector( 'slot[name="action-buttons-top"]' ) ).not.toBeNull();
+            expect( element.shadowRoot.querySelector( 'slot[name="action-buttons-bottom"]' ) ).not.toBeNull();
             expect( element.shadowRoot.querySelector( 'slot[name="data"]' ) ).not.toBeNull();
         })
     });
@@ -60,6 +61,30 @@ describe( 'c-filter-and-results', () => {
         .then( () => {
             expect( element.shadowRoot.querySelector( 'lightning-spinner' ) ).toBeNull();
         })
+    });
+
+    it( 'when disableSearchButton is set to true, will disable the search button', () => {
+
+        const element = document.body.querySelector( 'c-filter-and-result' );
+
+        element.disableSearchButton = true;
+
+        return Promise.resolve()
+        .then( () => {
+            expect( element.shadowRoot.querySelector( SEARCH_BUTTON_SELECTOR ).disabled ).toBe( true );
+        });
+    });
+
+    it( 'when disableSearchButton is set to false, will enable the search button', () => {
+
+        const element = document.body.querySelector( 'c-filter-and-result' );
+
+        element.disableSearchButton = false;
+
+        return Promise.resolve()
+        .then( () => {
+            expect( element.shadowRoot.querySelector( SEARCH_BUTTON_SELECTOR ).disabled ).toBe( false );
+        });
     });
 
     it( 'when showPaginationControls flag is set to true will show pagination controls above and below the data', () => {

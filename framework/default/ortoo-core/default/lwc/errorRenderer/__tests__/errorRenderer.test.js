@@ -31,6 +31,7 @@ describe('displayError', () => {
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
         expect( dispatchedEvent.detail.message ).toBe( error );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
         expect( console.error ).toHaveBeenCalledTimes( 1 );
         const reportedError = console.error.mock.calls[0][0];
@@ -59,6 +60,7 @@ describe('displayError', () => {
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
         expect( dispatchedEvent.detail.message ).toBe( 'javascript error format' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
         expect( console.error ).toHaveBeenCalledTimes( 1 );
         const reportedError = console.error.mock.calls[0][0];
@@ -89,6 +91,127 @@ describe('displayError', () => {
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
         expect( dispatchedEvent.detail.message ).toBe( 'An error message in the body' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
+
+        expect( console.error ).toHaveBeenCalledTimes( 1 );
+        const reportedError = console.error.mock.calls[0][0];
+
+        expect( reportedError ).toBe( error );
+    });
+
+    it( 'When given an options with a messagePrefix set, will use that to prefix the message and the rest defaulted', () => {
+
+        console.error = jest.fn();
+
+        const objectToRunAgainst = {
+            dispatchEvent: jest.fn()
+        };
+
+        const error = 'An error string';
+        const options = {
+            messagePrefix: 'Prefix'
+        };
+
+        displayError.call( objectToRunAgainst, error, options );
+
+        expect( objectToRunAgainst.dispatchEvent ).toBeCalled();
+
+        const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
+
+        expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
+        expect( dispatchedEvent.detail.message ).toBe( 'Prefix: An error string' );
+        expect( dispatchedEvent.detail.variant ).toBe( 'error' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
+
+        expect( console.error ).toHaveBeenCalledTimes( 1 );
+        const reportedError = console.error.mock.calls[0][0];
+
+        expect( reportedError ).toBe( error );
+    });
+
+    it( 'When given an options with a variant set, will use that variant and the rest defaulted', () => {
+
+        console.error = jest.fn();
+
+        const objectToRunAgainst = {
+            dispatchEvent: jest.fn()
+        };
+
+        const error = 'An error string';
+        const options = {
+            variant: 'warning'
+        };
+
+        displayError.call( objectToRunAgainst, error, options );
+
+        expect( objectToRunAgainst.dispatchEvent ).toBeCalled();
+
+        const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
+
+        expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
+        expect( dispatchedEvent.detail.message ).toBe( 'An error string' );
+        expect( dispatchedEvent.detail.variant ).toBe( 'warning' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
+
+        expect( console.error ).toHaveBeenCalledTimes( 1 );
+        const reportedError = console.error.mock.calls[0][0];
+
+        expect( reportedError ).toBe( error );
+    });
+
+    it( 'When given an options with title set, will use that as the title and the rest defaulted', () => {
+
+        console.error = jest.fn();
+
+        const objectToRunAgainst = {
+            dispatchEvent: jest.fn()
+        };
+
+        const error = 'An error string';
+        const options = {
+            title: 'replacement title'
+        };
+
+        displayError.call( objectToRunAgainst, error, options );
+
+        expect( objectToRunAgainst.dispatchEvent ).toBeCalled();
+
+        const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
+
+        expect( dispatchedEvent.detail.title ).toBe( options.title );
+        expect( dispatchedEvent.detail.message ).toBe( error );
+        expect( dispatchedEvent.detail.variant ).toBe( 'error' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
+
+        expect( console.error ).toHaveBeenCalledTimes( 1 );
+        const reportedError = console.error.mock.calls[0][0];
+
+        expect( reportedError ).toBe( error );
+    });
+
+    it( 'When given an options with a mode set, will use that mode and the rest defaulted', () => {
+
+        console.error = jest.fn();
+
+        const objectToRunAgainst = {
+            dispatchEvent: jest.fn()
+        };
+
+        const error = 'An error string';
+        const options = {
+            mode: 'pester'
+        };
+
+        displayError.call( objectToRunAgainst, error, options );
+
+        expect( objectToRunAgainst.dispatchEvent ).toBeCalled();
+
+        const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
+
+        expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
+        expect( dispatchedEvent.detail.message ).toBe( 'An error string' );
+        expect( dispatchedEvent.detail.variant ).toBe( 'error' );
+        expect( dispatchedEvent.detail.mode ).toBe( 'pester' );
 
         expect( console.error ).toHaveBeenCalledTimes( 1 );
         const reportedError = console.error.mock.calls[0][0];
