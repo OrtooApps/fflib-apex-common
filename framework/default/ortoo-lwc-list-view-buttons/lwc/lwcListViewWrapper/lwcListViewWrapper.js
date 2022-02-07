@@ -3,10 +3,11 @@ import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import displayError from 'c/errorRenderer';
 import getEpochTime from '@salesforce/apex/TimeController.getEpochTime';
 
+import INVALID_LOAD_LABEL from '@salesforce/label/c.ortoo_lwc_list_view_buttons_invalid_load';
+
 const LOAD_LEEWAY = 60; // number of seconds leeway between the redirection to the page and the load of it.
 
 // TODO: clarify the error message when using an old link
-// TODO: standards to always say how many records will be updated on the included LWC
 export default class LwcListViewWrapper extends NavigationMixin( LightningElement ) {
 
 	@track currentPageReference;
@@ -47,7 +48,7 @@ export default class LwcListViewWrapper extends NavigationMixin( LightningElemen
 
 			if ( ! withinLeeway )
 			{
-				displayError.call( this, 'It appears the page was loaded from an old link, and this is dangerous so it is not allowed' );
+				displayError.call( this, INVALID_LOAD_LABEL );
 			}
 			this.displayForm = withinLeeway;
 		});
