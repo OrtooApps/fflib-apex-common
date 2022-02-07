@@ -16,6 +16,8 @@ export default class SaveButtons extends LightningElement {
     @api cancelLabel = CANCEL_LABEL;
     @api saveLabel   = SAVE_LABEL;
 
+    @api disableSave;
+
     @api ortooElemIdPrefix = 'savebuttons';
 
     ortooIdConfiguration = {
