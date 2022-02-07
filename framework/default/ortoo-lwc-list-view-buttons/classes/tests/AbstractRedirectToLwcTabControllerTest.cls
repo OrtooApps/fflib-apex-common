@@ -1,5 +1,5 @@
 @isTest
-public with sharing class  AbstractRedirectToLwcTabControllerTest
+public with sharing class AbstractRedirectToLwcTabControllerTest
 {
 	@isTest
 	private static void hasRecords_whenRecordsAreSelected_returnsTrue() // NOPMD: Test method name format
@@ -12,7 +12,7 @@ public with sharing class  AbstractRedirectToLwcTabControllerTest
 
 		ApexPages.StandardSetController standardSetController = new ApexPages.StandardSetController( context );
 		standardSetController.setSelected( context );
-		TestableRedirectToLwcTabPageController controller = new TestableRedirectToLwcTabPageController( standardSetController );
+		TestableRedirectToLwcTabController controller = new TestableRedirectToLwcTabController( standardSetController );
 
 		Test.startTest();
 			Boolean got = controller.hasRecords;
@@ -32,7 +32,7 @@ public with sharing class  AbstractRedirectToLwcTabControllerTest
 
 		ApexPages.StandardSetController standardSetController = new ApexPages.StandardSetController( context );
 		standardSetController.setSelected( new List<Contact>() );
-		TestableRedirectToLwcTabPageController controller = new TestableRedirectToLwcTabPageController( standardSetController );
+		TestableRedirectToLwcTabController controller = new TestableRedirectToLwcTabController( standardSetController );
 
 		Test.startTest();
 			Boolean got = controller.hasRecords;
@@ -54,13 +54,13 @@ public with sharing class  AbstractRedirectToLwcTabControllerTest
 
 		ApexPages.StandardSetController standardSetController = new ApexPages.StandardSetController( context );
 		standardSetController.setSelected( context );
-		TestableRedirectToLwcTabPageController controller = new TestableRedirectToLwcTabPageController( standardSetController );
+		TestableRedirectToLwcTabController controller = new TestableRedirectToLwcTabController( standardSetController );
 
 		Test.startTest();
 			PageReference got = controller.redirectToTab();
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'tabpagename', got.getUrl(), 'redirectToTab, when called, will retrun a PageReference with the URL pointing to the defined tab page' );
+		Amoss_Asserts.assertContains( 'tabName', got.getUrl(), 'redirectToTab, when called, will retrun a PageReference with the URL pointing to the defined tab page' );
 
 		Map<String,String> parameters = got.getParameters();
 		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTab, when called, will return a PageReference with a return url parameter' );
@@ -81,13 +81,13 @@ public with sharing class  AbstractRedirectToLwcTabControllerTest
 
 		ApexPages.StandardSetController standardSetController = new ApexPages.StandardSetController( context );
 		standardSetController.setSelected( new List<Contact>() );
-		TestableRedirectToLwcTabPageController controller = new TestableRedirectToLwcTabPageController( standardSetController );
+		TestableRedirectToLwcTabController controller = new TestableRedirectToLwcTabController( standardSetController );
 
 		Test.startTest();
 			PageReference got = controller.redirectToTab();
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'tabpagename', got.getUrl(), 'redirectToTab, when no records are selected, will retrun a PageReference with the URL pointing to the defined tab page' );
+		Amoss_Asserts.assertContains( 'tabName', got.getUrl(), 'redirectToTab, when no records are selected, will retrun a PageReference with the URL pointing to the defined tab page' );
 
 		Map<String,String> parameters = got.getParameters();
 		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTab, when no records are selected, will return a PageReference with a return url parameter' );
@@ -95,12 +95,12 @@ public with sharing class  AbstractRedirectToLwcTabControllerTest
 		System.assertEquals( expectedRecordIds, parameters.get( 'c__recordIds' ), 'redirectToTab, when no records are selected, will return a PageReference with a record ids parameter that contains a serialised empty list' );
 	}
 
-	class TestableRedirectToLwcTabPageController extends AbstractRedirectToLwcTabController
+	class TestableRedirectToLwcTabController extends AbstractRedirectToLwcTabController
 	{
-		public TestableRedirectToLwcTabPageController( ApexPages.StandardSetController controller )
+		public TestableRedirectToLwcTabController( ApexPages.StandardSetController controller )
 		{
 			super( controller );
-			this.tabPageName = 'tabpagename';
+			this.tabName = 'tabName';
 		}
 	}
 }

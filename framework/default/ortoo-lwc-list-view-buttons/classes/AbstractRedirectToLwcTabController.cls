@@ -9,7 +9,7 @@
  */
 public virtual with sharing class AbstractRedirectToLwcTabController
 {
-	protected String tabPageName;
+	protected String tabName;
 
 	/**
 	 * States if the controller currently has records assigned to it
@@ -98,9 +98,9 @@ public virtual with sharing class AbstractRedirectToLwcTabController
 	 */
 	public PageReference redirectToTab()
 	{
-		Contract.requires( this.tabPageName != null, 'redirectToTab called with a null this.tabPageName.  Ensure that the controller extension ('+ObjectUtils.getClassName( this )+') sets "this.tabPageName" in the constructor' );
+		Contract.requires( this.tabName != null, 'redirectToTab called with a null this.tabName.  Ensure that the controller extension ('+ObjectUtils.getClassName( this )+') sets "this.tabName" in the constructor' );
 
-		PageReference appPage = new PageReference( '/lightning/n/' + this.tabPageName );
+		PageReference appPage = new PageReference( '/lightning/n/' + this.tabName );
 		appPage.getParameters().put( 'c__returnUrl', returnUrl );
 		appPage.getParameters().put( 'c__epoch', epochTime );
 		appPage.getParameters().put( 'c__recordIds', serializedRecordIds );
