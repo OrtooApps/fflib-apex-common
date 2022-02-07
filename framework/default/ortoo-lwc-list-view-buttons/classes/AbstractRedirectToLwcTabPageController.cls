@@ -7,8 +7,8 @@
  *      Includes a timestamp (Epoch time in seconds) for the generation of the URL
  *      Includes a return URL
  */
-public virtual with sharing class AbstractRedirectToLwcTabPageController {
-
+public virtual with sharing class AbstractRedirectToLwcTabPageController
+{
 	protected String tabPageName;
 
 	/**
@@ -96,11 +96,11 @@ public virtual with sharing class AbstractRedirectToLwcTabPageController {
 	 * Includes parameters for defining the return Url, the Epoch time (for checking the timely usage of the link)
 	 * and the record Ids that are to be processed.
 	 */
-	public PageReference redirectToTabPage() {
-
+	public PageReference redirectToTabPage()
+	{
 		Contract.requires( this.tabPageName != null, 'redirectToTabPage called with a null this.tabPageName.  Ensure that the controller extension ('+ObjectUtils.getClassName( this )+') sets "this.tabPageName" in the constructor' );
 
-		PageReference appPage = new PageReference( '/lightning/n/' + this.tabPageName ); // TODO: may not need the 'lightning' bit...
+		PageReference appPage = new PageReference( '/lightning/n/' + this.tabPageName );
 		appPage.getParameters().put( 'c__returnUrl', returnUrl );
 		appPage.getParameters().put( 'c__epoch', epochTime );
 		appPage.getParameters().put( 'c__recordIds', serializedRecordIds );

@@ -5,7 +5,6 @@ import getEpochTime from '@salesforce/apex/TimeController.getEpochTime';
 
 const LOAD_LEEWAY = 60; // number of seconds leeway between the redirection to the page and the load of it.
 
-// TODO: can we have a generic 'no records selected' error?
 // TODO: clarify the error message when using an old link
 // TODO: standards to always say how many records will be updated on the included LWC
 export default class LwcListViewWrapper extends NavigationMixin( LightningElement ) {
