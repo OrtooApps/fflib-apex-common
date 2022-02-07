@@ -1,5 +1,5 @@
 @isTest
-public with sharing class AbstractRedirectToLwcTabPageCtrlrTest
+public with sharing class  AbstractRedirectToLwcTabControllerTest
 {
 	@isTest
 	private static void hasRecords_whenRecordsAreSelected_returnsTrue() // NOPMD: Test method name format
@@ -42,7 +42,7 @@ public with sharing class AbstractRedirectToLwcTabPageCtrlrTest
 	}
 
 	@isTest
-	private static void redirectToTabPage_whenCalled_returnsAPageReferenceToTheTabPage() // NOPMD: Test method name format
+	private static void redirectToTab_whenCalled_returnsAPageReferenceToTheTabPage() // NOPMD: Test method name format
 	{
 		List<Contact> context = new List<Contact>{
 			new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
@@ -57,19 +57,19 @@ public with sharing class AbstractRedirectToLwcTabPageCtrlrTest
 		TestableRedirectToLwcTabPageController controller = new TestableRedirectToLwcTabPageController( standardSetController );
 
 		Test.startTest();
-			PageReference got = controller.redirectToTabPage();
+			PageReference got = controller.redirectToTab();
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'tabpagename', got.getUrl(), 'redirectToTabPage, when called, will retrun a PageReference with the URL pointing to the defined tab page' );
+		Amoss_Asserts.assertContains( 'tabpagename', got.getUrl(), 'redirectToTab, when called, will retrun a PageReference with the URL pointing to the defined tab page' );
 
 		Map<String,String> parameters = got.getParameters();
-		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTabPage, when called, will return a PageReference with a return url parameter' );
-		System.assertNotEquals( null, parameters.get( 'c__epoch' ), 'redirectToTabPage, when called, will return a PageReference with an epoch parameter' );
-		System.assertEquals( expectedRecordIds, parameters.get( 'c__recordIds' ), 'redirectToTabPage, when called, will return a PageReference with a record ids parameter that contains a serialised list of the selected record ids' );
+		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTab, when called, will return a PageReference with a return url parameter' );
+		System.assertNotEquals( null, parameters.get( 'c__epoch' ), 'redirectToTab, when called, will return a PageReference with an epoch parameter' );
+		System.assertEquals( expectedRecordIds, parameters.get( 'c__recordIds' ), 'redirectToTab, when called, will return a PageReference with a record ids parameter that contains a serialised list of the selected record ids' );
 	}
 
 	@isTest
-	private static void redirectToTabPage_whenNoRecords_returnsAPageReferenceToTheTabPage() // NOPMD: Test method name format
+	private static void redirectToTab_whenNoRecords_returnsAPageReferenceToTheTabPage() // NOPMD: Test method name format
 	{
 		List<Contact> context = new List<Contact>{
 			new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
@@ -84,18 +84,18 @@ public with sharing class AbstractRedirectToLwcTabPageCtrlrTest
 		TestableRedirectToLwcTabPageController controller = new TestableRedirectToLwcTabPageController( standardSetController );
 
 		Test.startTest();
-			PageReference got = controller.redirectToTabPage();
+			PageReference got = controller.redirectToTab();
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'tabpagename', got.getUrl(), 'redirectToTabPage, when no records are selected, will retrun a PageReference with the URL pointing to the defined tab page' );
+		Amoss_Asserts.assertContains( 'tabpagename', got.getUrl(), 'redirectToTab, when no records are selected, will retrun a PageReference with the URL pointing to the defined tab page' );
 
 		Map<String,String> parameters = got.getParameters();
-		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTabPage, when no records are selected, will return a PageReference with a return url parameter' );
-		System.assertNotEquals( null, parameters.get( 'c__epoch' ), 'redirectToTabPage, when no records are selected, will return a PageReference with an epoch parameter' );
-		System.assertEquals( expectedRecordIds, parameters.get( 'c__recordIds' ), 'redirectToTabPage, when no records are selected, will return a PageReference with a record ids parameter that contains a serialised empty list' );
+		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTab, when no records are selected, will return a PageReference with a return url parameter' );
+		System.assertNotEquals( null, parameters.get( 'c__epoch' ), 'redirectToTab, when no records are selected, will return a PageReference with an epoch parameter' );
+		System.assertEquals( expectedRecordIds, parameters.get( 'c__recordIds' ), 'redirectToTab, when no records are selected, will return a PageReference with a record ids parameter that contains a serialised empty list' );
 	}
 
-	class TestableRedirectToLwcTabPageController extends AbstractRedirectToLwcTabPageController
+	class TestableRedirectToLwcTabPageController extends AbstractRedirectToLwcTabController
 	{
 		public TestableRedirectToLwcTabPageController( ApexPages.StandardSetController controller )
 		{

@@ -7,7 +7,7 @@
  *      Includes a timestamp (Epoch time in seconds) for the generation of the URL
  *      Includes a return URL
  */
-public virtual with sharing class AbstractRedirectToLwcTabPageController
+public virtual with sharing class AbstractRedirectToLwcTabController
 {
 	protected String tabPageName;
 
@@ -79,7 +79,7 @@ public virtual with sharing class AbstractRedirectToLwcTabPageController
 	 *
 	 * @param	ApexPages.StandardSetController	The set controller that contains the context for this controller
 	 */
-	public AbstractRedirectToLwcTabPageController( ApexPages.StandardSetController controller )
+	public AbstractRedirectToLwcTabController( ApexPages.StandardSetController controller )
 	{
 		recordIds = new List<Id>();
 		List<Sobject> selectedSobjects = controller.getSelected();
@@ -96,9 +96,9 @@ public virtual with sharing class AbstractRedirectToLwcTabPageController
 	 * Includes parameters for defining the return Url, the Epoch time (for checking the timely usage of the link)
 	 * and the record Ids that are to be processed.
 	 */
-	public PageReference redirectToTabPage()
+	public PageReference redirectToTab()
 	{
-		Contract.requires( this.tabPageName != null, 'redirectToTabPage called with a null this.tabPageName.  Ensure that the controller extension ('+ObjectUtils.getClassName( this )+') sets "this.tabPageName" in the constructor' );
+		Contract.requires( this.tabPageName != null, 'redirectToTab called with a null this.tabPageName.  Ensure that the controller extension ('+ObjectUtils.getClassName( this )+') sets "this.tabPageName" in the constructor' );
 
 		PageReference appPage = new PageReference( '/lightning/n/' + this.tabPageName );
 		appPage.getParameters().put( 'c__returnUrl', returnUrl );
