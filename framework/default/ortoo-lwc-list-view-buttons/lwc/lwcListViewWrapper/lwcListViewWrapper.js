@@ -7,7 +7,6 @@ import INVALID_LOAD_LABEL from '@salesforce/label/c.ortoo_lwc_list_view_buttons_
 
 const LOAD_LEEWAY = 60; // number of seconds leeway between the redirection to the page and the load of it.
 
-// TODO: clarify the error message when using an old link
 export default class LwcListViewWrapper extends NavigationMixin( LightningElement ) {
 
 	@track currentPageReference;
