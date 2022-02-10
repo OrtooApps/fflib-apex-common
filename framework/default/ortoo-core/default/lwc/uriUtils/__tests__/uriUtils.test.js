@@ -139,6 +139,41 @@ describe( 'getUriFragmentAsObject', () => {
 
         expect( got ).toEqual( expected );
     })
+    it( 'will decode %20 as space in property names', () => {
+
+        location.hash = 'property%201=%22value%22';
+
+        const expected = {};
+        expected[ 'property 1' ] = 'value';
+        const got = UriUtils.getUriFragmentAsObject();
+
+        expect( got ).toEqual( expected );
+    })
+
+    it( 'will skip strings with no equals in them', () => {
+
+        location.hash = 'property1=%22value1%22&ignorethisbit&property2=%22value2%22';
+
+        const expected = {
+            property1: 'value1',
+            property2: 'value2'
+        };
+        const got = UriUtils.getUriFragmentAsObject();
+
+        expect( got ).toEqual( expected );
+    })
+    it( 'will skip values that do not decode properly', () => {
+
+        location.hash = 'property1=%22value1%22&invalid=%22incompleteJson&property2=%22value2%22';
+
+        const expected = {
+            property1: 'value1',
+            property2: 'value2'
+        };
+        const got = UriUtils.getUriFragmentAsObject();
+
+        expect( got ).toEqual( expected );
+    })
 });
 
 describe( 'setUriFragmentObject / getUriFragmentAsObject', () => {
@@ -177,19 +212,83 @@ describe( 'setUriFragmentObject / getUriFragmentAsObject', () => {
     });
 });
 
-describe( 'registerUriFragmentListener', () => {
+describe( 'addFragmentToUri', () => {
 
-    beforeAll(() => {
-        window.addEventListener = jest.fn();
-    })
+    it( 'when given a uri with no fragment and an object, will encode the object and add it as the fragment', () => {
 
-    it( 'will register the given function as an event listener for hashchanges on the window', () => {
+        const uri = 'theBaseUri';
+        const fragmentObject = { param: 'value' };
 
-        const handler = jest.fn();
+        const got = UriUtils.addFragmentToUri( uri, fragmentObject );
 
-        const got = UriUtils.registerUriFragmentListener( handler );
+        expect( got ).toBe( 'theBaseUri#param=%22value%22' );
+    });
 
-        expect( window.addEventListener ).toHaveBeenCalledTimes( 1 );
-        expect( window.addEventListener ).toHaveBeenCalledWith( 'hashchange', handler );
+    it( 'when given a uri with a fragment and an object, will encode the object and add to the end of the fragment', () => {
+
+        const uri = 'theBaseUri#originalfragment';
+        const fragmentObject = { param: 'value' };
+
+        const got = UriUtils.addFragmentToUri( uri, fragmentObject );
+
+        expect( got ).toBe( 'theBaseUri#originalfragment&param=%22value%22' );
+    });
+
+    it( 'when given a uri without a fragment and an empty object, will return the uri untouched', () => {
+
+        const uri = 'theBaseUri';
+        const fragmentObject = {};
+
+        const got = UriUtils.addFragmentToUri( uri, fragmentObject );
+
+        expect( got ).toBe( 'theBaseUri' );
+    });
+    it( 'when given a uri without a fragment and undefined, will return the uri untouched', () => {
+
+        const uri = 'theBaseUri';
+
+        const got = UriUtils.addFragmentToUri( uri );
+
+        expect( got ).toBe( 'theBaseUri' );
+    });
+
+    it( 'when given a uri without a fragment and an empty object, will return the uri untouched', () => {
+
+        const uri = 'theBaseUri';
+        const fragmentObject = {};
+
+        const got = UriUtils.addFragmentToUri( uri, fragmentObject );
+
+        expect( got ).toBe( 'theBaseUri' );
+    });
+
+    it( 'when given a uri with a fragment and an empty object, will return the uri untouched', () => {
+
+        const uri = 'theBaseUri#originalfragment';
+        const fragmentObject = {};
+
+        const got = UriUtils.addFragmentToUri( uri, fragmentObject );
+
+        expect( got ).toBe( 'theBaseUri#originalfragment' );
+    });
+
+    it( 'when given a uri and a string fragment, will return the uri with the string fragment added', () => {
+
+        const uri = 'theBaseUri';
+        const fragment = 'astring';
+
+        const got = UriUtils.addFragmentToUri( uri, fragment );
+
+        expect( got ).toBe( 'theBaseUri#astring' );
+    });
+
+    it( 'when given a uri with a fragment and a string fragment, will return the uri with the string fragment added', () => {
+
+        const uri = 'theBaseUri#existingFragment';
+        const fragment = 'astring';
+
+        const got = UriUtils.addFragmentToUri( uri, fragment );
+
+        expect( got ).toBe( 'theBaseUri#existingFragment&astring' );
     });
 });

@@ -10,7 +10,78 @@
  * Warning: Whilst it will encode Date and DateTime properties it may not do what you expect (due to timezones).
  * 			It is advised that you explicitly format the dates prior to using them in these functions.
  */
-const isObject = potentialObject => typeof potentialObject === 'object' && !Array.isArray( potentialObject );
+
+const addFragmentToUri = ( uri, object ) => {
+	const fragment = buildUriFragment( object );
+	return fragment
+			? ( uri.includes( '#' ) )
+				? uri + '&' + fragment
+				: uri + '#' + fragment
+			: uri;
+}
+
+const setUriFragmentObject = object => {
+	location.hash = buildUriFragment( object );
+}
+
+const getUriFragmentAsObject = () => {
+	return interpretUriFragment( location.hash );
+}
+
+const registerUriFragmentListener = handler => {
+	window.addEventListener( 'hashchange', handler );
+}
+
+const buildUriFragment = objectToHash => {
+
+	const hashes = [];
+	if ( !isObject( objectToHash ) ) {
+		return objectToHash;
+	}
+	const flattenedObject = flatten( objectToHash );
+
+	for ( const propertyName in flattenedObject ) {
+		if ( flattenedObject[ propertyName ] !== undefined && flattenedObject[ propertyName ] !== '' ) {
+			hashes.push( encodeURIComponent( propertyName ) + '=' + encodeURIComponent( JSON.stringify( flattenedObject[ propertyName ] ) ) );
+		}
+ 	}
+	return hashes.join( '&' );
+}
+
+const interpretUriFragment = hashToInterpret => {
+
+	if ( !hashToInterpret ) {
+		return {};
+	}
+
+	if ( hashToInterpret.includes( '#' ) ) {
+		hashToInterpret = hashToInterpret.substring( hashToInterpret.indexOf( '#' ) + 1 );
+	}
+
+	if ( ! hashToInterpret.includes( '=' ) ) {
+		return decodeURIComponent( hashToInterpret );
+	}
+
+	const flatObject = {};
+
+	hashToInterpret
+		.split( '&' )
+		.forEach( thisParameterPairString => {
+			if ( thisParameterPairString.includes( '=' ) ) {
+				const [rawParameterName,rawParameterValue] = thisParameterPairString.split( '=' );
+
+				let parameterValue = '';
+				try {
+					parameterValue = JSON.parse( decodeURIComponent( rawParameterValue ) );
+					flatObject[ decodeURIComponent( rawParameterName ) ] = parameterValue;
+				} catch ( e ) {
+					console.error( 'Invalid parameter value in URI fragment' );
+				}
+			}
+		});
+
+	return expand( flatObject );
+}
 
 const flatten = objectToFlatten => {
 
@@ -54,70 +125,10 @@ const expand = ( objectToExpand, objectToAssignTo ) => {
 	return objectToAssignTo;
 }
 
-const buildUriFragment = objectToHash => {
-
-	const hashes = [];
-	if ( !isObject( objectToHash ) ) {
-		return objectToHash;
-	}
-	const flattenedObject = flatten( objectToHash );
-
-	for ( const propertyName in flattenedObject ) {
-		if ( flattenedObject[ propertyName ] !== undefined && flattenedObject[ propertyName ] !== '' ) {
-			hashes.push( encodeURIComponent( propertyName ) + '=' + encodeURIComponent( JSON.stringify( flattenedObject[ propertyName ] ) ) );
-		}
- 	}
-	return hashes.join( '&' );
-}
-
-const interpretUriFragment = hashToInterpret => {
-
-	if ( !hashToInterpret ) {
-		return {};
-	}
-
-	if ( hashToInterpret.includes( '#' ) ) {
-		hashToInterpret = hashToInterpret.substring( hashToInterpret.indexOf( '#' ) + 1 );
-	}
-
-	if ( ! hashToInterpret.includes( '=' ) ) {
-		return decodeURIComponent( hashToInterpret );
-	}
-
-	const flatObject = {};
-
-	hashToInterpret
-		.split( '&' )
-		.forEach( thisParameterPairString => {
-			const [rawParameterName,rawParameterValue] = thisParameterPairString.split( '=' );
-
-			let parameterValue = '';
-			try {
-				parameterValue = JSON.parse( decodeURIComponent( rawParameterValue ) );
-			} catch ( e ) {
-				console.error( 'Invalid parameter value in URI fragment' );
-			}
-			flatObject[ decodeURIComponent( rawParameterName ) ] = parameterValue;
-		});
-
-	return expand( flatObject );
-}
-
-const setUriFragmentObject = object => {
-	location.hash = buildUriFragment( object );
-}
-
-const getUriFragmentAsObject = () => {
-	return interpretUriFragment( location.hash );
-}
-
-const registerUriFragmentListener = handler => {
-	window.addEventListener( 'hashchange', handler );
-}
+const isObject = potentialObject => typeof potentialObject === 'object' && !Array.isArray( potentialObject );
 
 export default {
-    buildUriFragment : buildUriFragment,
-    interpretUriFragment : interpretUriFragment,
+	addFragmentToUri : addFragmentToUri,
 	setUriFragmentObject : setUriFragmentObject,
 	getUriFragmentAsObject : getUriFragmentAsObject,
 	registerUriFragmentListener : registerUriFragmentListener,
