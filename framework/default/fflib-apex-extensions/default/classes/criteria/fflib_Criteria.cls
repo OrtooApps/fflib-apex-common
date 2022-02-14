@@ -796,7 +796,7 @@ public virtual with sharing class fflib_Criteria
 		}
 		else if (value instanceof Datetime)
 		{
-			return '' + ((Datetime) value).format('yyyy-MM-dd') + 'T' + ((Datetime) value).format('HH:mm:ss') + 'Z';
+			return '' + ((Datetime) value).format('yyyy-MM-dd', 'GMT+0') + 'T' + ((Datetime) value).format('HH:mm:ss', 'GMT+0') + 'Z';
 		}
 
 		throw new CriteriaException(
