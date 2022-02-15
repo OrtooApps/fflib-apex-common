@@ -18,6 +18,21 @@ public inherited sharing class SearchWindowTest
 	}
 
 	@isTest
+	private static void configure_whenCalledWithZeroOffset_storesItAsMemberVariable() // NOPMD: Test method name format
+	{
+		Map<String,Object> properties = new Map<String,Object>{
+			'offset' => 0,
+			'length' => 20
+		};
+
+		Test.startTest();
+			SearchWindow searchWindow = new SearchWindow().configure( properties );
+		Test.stopTest();
+
+		System.assertEquals( 0, searchWindow.offset, 'configure, when called with zero offset, will store the offset as a member variable' );
+	}
+
+	@isTest
 	private static void configure_whenPassedANullProperties_throwsAnException() // NOPMD: Test method name format
 	{
 		Test.startTest();

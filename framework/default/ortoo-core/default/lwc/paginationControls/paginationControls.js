@@ -11,7 +11,7 @@ import PAGE_DESCRIPTION from '@salesforce/label/c.ortoo_core_page_number_descrip
 
 export default class PaginationControls extends LightningElement {
 
-    @api numberOfRecords;
+    @api numberOfRecords = 0;
 
     _recordsPerPage = 0;
     @api get recordsPerPage() {
@@ -26,7 +26,7 @@ export default class PaginationControls extends LightningElement {
 
     _currentPage = 1;
     @api get currentPage() {
-        return this._currentPage;
+        return isNaN( this._currentPage ) ? 1 : this._currentPage;
     }
     set currentPage( value ) {
         this._currentPage = ( value < 1 || isNaN( value ) ) ? 1 : value;
@@ -81,8 +81,10 @@ export default class PaginationControls extends LightningElement {
                     .replace( '{1}', this.numberOfPages );
     }
 
+    @api
     get numberOfPages() {
-        return Math.ceil( this.numberOfRecords / this.recordsPerPage );
+        const numberOfPages = Math.ceil( this.numberOfRecords / this.recordsPerPage );
+        return ( isNaN( numberOfPages ) ) ? 0 : numberOfPages;
     }
 
     get onFirstPage() {

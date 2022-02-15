@@ -25,7 +25,7 @@ public inherited sharing class SearchWindow
         Integer length = deriveInteger( properties, 'length' );
         Contract.requires( length > 0 || length == null, 'configure called with a negative or zero length' );
 
-        this.offset = offset > 0 ? offset : null;
+        this.offset = offset;
         this.length = length;
 
         return this;
