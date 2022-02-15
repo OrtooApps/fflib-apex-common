@@ -7,26 +7,437 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 {
 	fflib_Criteria criteria;
 
+	// TODO: write tests for SOQL generation of:
+	//		orCriteria
+	//		andCriteria
+	//		andOrCriteria
+	//		andAndCriteria
+	//		formulaCriteria
+	//
+	//		equalTo
+	//		notEqualTo
+	//		greaterOrEqualTo
+	//		greaterThan
+	//		lessOrEqualTo
+	//		lessThan
+	//
+	// TODO: consider a test for filtering of records?
+	// TODO: change SObjects2 to allow ortoo_Criteria - maybe define an interface instead
+
 	public ortoo_Criteria()
 	{
 		criteria = new fflib_Criteria();
 	}
 
+	/**
+	 * Generates the SOQL equivalent of the configured criteria
+	 *
+	 * @return String	The "where" part in the SOQL statement
+	 */
 	public String toSOQL()
 	{
 		return criteria.toSOQL();
 	}
 
-	// TODO: add remaining public methods from fflib_Criteria
-	// TODO: change SObjects2 to allow ortoo_Criteria - maybe define an interface instead
+	/**
+	 * Evaluates the given object against the configured criteria
+	 *
+	 * @param	Object	The object to evaluate
+	 * @return	Boolean	Statement of whether the record matches the criteria
+	 */
+	public Boolean evaluate( Object record )
+	{
+		Contract.requires( record != null, 'evaluate called with a null record' );
+		return criteria.evaluate( record );
+	}
+
+	/**
+	 * Changes the default comparator for each criteria to OR
+	 *
+	 * @return	ortoo_Criteria	Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .orCriteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *  		.equalTo(Account.AccountNumber, '1234567')
+	 *
+	 *  Evaluates:
+	 *      Name = 'Example' OR AccountNumber = '1234567'
+	 */
+	public ortoo_Criteria orCriteria()
+	{
+		criteria.orCriteria();
+		return this;
+	}
+
+	/**
+	 * Changes the default comparator for each criteria to AND
+	 *
+	 * @return	ortoo_Criteria	Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .andCriteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *  		.equalTo(Account.AccountNumber, '1234567')
+	 *
+	 *  Evaluates:
+	 *      Name = 'Example' AND AccountNumber = '1234567'
+	 */
+	public ortoo_Criteria andCriteria()
+	{
+		criteria.andCriteria();
+		return this;
+	}
+
+	/**
+	 * Adds a sub-criteria with OR comparator
+	 *
+	 * @param	ortoo_Criteria	The condition of the sub criteria
+	 * @return	ortoo_Criteria	Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 * new ortoo_Criteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *          .addOrCriteria(
+	 *              new ortoo_Criteria()
+	 *              		.equalTo(Account.AccountNumber, '0001')
+	 *              		.equalTo(Account.AccountNumber, '0002'))
+	 *
+	 *  Evaluates:
+	 *      Account.Name = 'Example' AND (Account.AccountNumber = '0001' OR Account.AccountNumber = '0002')
+	 */
+	public ortoo_Criteria addOrCriteria( ortoo_Criteria subCriteria )
+	{
+		Contract.requires( subCriteria != null, 'addOrCriteria called with a null subCriteria' );
+		Contract.requires( subCriteria.criteria != null, 'addOrCriteria called with a subCriteria that has no criteria defined' );
+
+		criteria.addOrCriteria( subCriteria.criteria );
+		return this;
+	}
+
+	/**
+	 * Adds a sub-criteria with AND comparator
+	 *
+	 * @param	ortoo_Criteria	The condition of the sub criteria
+	 * @return	ortoo_Criteria	Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 * new ortoo_Criteria()
+	 *          .orCriteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *          .addAndCriteria(
+	 *              new ortoo_Criteria()
+	 *              		.equalTo(Account.AccountNumber, '0001')
+	 *              		.equalTo(Account.ShippingCountry, 'USA'))
+	 *
+	 *  Evaluates:
+	 *      Name = 'Example' OR (AccountNumber = '0001' AND ShippingCountry = 'USA')
+	 */
+	public ortoo_Criteria addAndCriteria( ortoo_Criteria subCriteria )
+	{
+		Contract.requires( subCriteria != null, 'addAndCriteria called with a null subCriteria' );
+		Contract.requires( subCriteria.criteria != null, 'addAndCriteria called with a subCriteria that has no criteria defined' );
+
+		criteria.addAndCriteria( subCriteria.criteria );
+		return this;
+	}
+
+	/**
+	 * Defines a formual within which the specified criteria should be evaluated.
+	 *
+	 * @param String The formula string using numbers, AND, OR and parenthesis
+	 * @return	ortoo_Criteria	Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 * new ortoo_Criteria()
+	 *          .formulaCriteria('(1 OR 2) AND 3')
+     *     		.equalTo(Account.AccountNumber, '0001')
+	 *    		.equalTo(Account.AccountNumber, '0002')
+	 *     		.equalTo(Account.ShippingCountry, 'USA'))
+	 *
+	 *  Evaluates:
+	 *      (AccountNumber = '0001' OR AccountNumber = '0001') AND ShippingCountry = 'USA'
+	 */
+	public ortoo_Criteria formulaCriteria( String formula )
+	{
+		Contract.requires( String.isNotBlank( formula ), 'formulaCriteria called with a blank formula' );
+
+		criteria.formulaCriteria( formula );
+		return this;
+	}
+
+	/**
+	 * Add an equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	Schema.SObjectField	The sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *
+	 * Evaluates:
+	 *      Name = 'Example'
+	 */
+	public ortoo_Criteria equalTo( Schema.SObjectField field, Object value )
+	{
+		Contract.requires( field != null, 'equalTo called with a null field' );
+
+		criteria.equalTo( field, value );
+		return this;
+	}
+
+	/**
+	 * Add an equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	String				The name of the sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .equalTo('Account.Name', 'Example')
+	 *
+	 * Evaluates:
+	 *      Account.Name = 'Example'
+	 */
+	public ortoo_Criteria equalTo( String relatedField, Object value )
+	{
+		Contract.requires( relatedField != null, 'equalTo called with a null relatedField' );
+
+		criteria.equalTo( relatedField, value );
+		return this;
+	}
+
+	/**
+	 * Add a not equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	Schema.SObjectField	The sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .notEqualTo(Account.Name, 'Example')
+	 *
+	 * Evaluates:
+	 *      Name != 'Example'
+	 */
+	public ortoo_Criteria notEqualTo( Schema.SObjectField field, Object value )
+	{
+		Contract.requires( field != null, 'notEqualTo called with a null field' );
+
+		criteria.notEqualTo( field, value );
+		return this;
+	}
+
+	/**
+	 * Add a not equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	String				The name of the sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .notEqualTo('Account.Name', 'Example')
+	 *
+	 * Evaluates:
+	 *      Account.Name != 'Example'
+	 */
+	public ortoo_Criteria notEqualTo( String relatedField, Object value )
+	{
+		Contract.requires( relatedField != null, 'notEqualTo called with a null relatedField' );
+
+		criteria.notEqualTo( relatedField, value );
+		return this;
+	}
+
+	/**
+	 * Add a greater than or equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	Schema.SObjectField	The sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .greaterOrEqualTo(Account.Numeric_Field__c, 10)
+	 *
+	 * Evaluates:
+	 *      Numeric_Field__c >= 10
+	 */
+	public ortoo_Criteria greaterOrEqualTo( Schema.SObjectField field, Object value )
+	{
+		Contract.requires( field != null, 'greaterOrEqualTo called with a null field' );
+
+		criteria.greaterOrEqualTo( field, value );
+		return this;
+	}
+
+	/**
+	 * Add a greater than or equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	String				The name of the sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .greaterOrEqualTo('Account.Numeric_Field__c', 10 )
+	 *
+	 * Evaluates:
+	 *      Account.Numeric_Field__c >= 10
+	 */
+	public ortoo_Criteria greaterOrEqualTo( String relatedField, Object value )
+	{
+		Contract.requires( relatedField != null, 'greaterOrEqualTo called with a null relatedField' );
+
+		criteria.greaterOrEqualTo( relatedField, value );
+		return this;
+	}
+
+	/**
+	 * Add a greater than criteria comparing a fields value to a given value
+	 *
+	 * @param	Schema.SObjectField	The sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .greaterThan(Account.Numeric_Field__c, 10)
+	 *
+	 * Evaluates:
+	 *      Numeric_Field__c > 10
+	 */
+	public ortoo_Criteria greaterThan( Schema.SObjectField field, Object value )
+	{
+		Contract.requires( field != null, 'greaterThan called with a null field' );
+
+		criteria.greaterThan( field, value );
+		return this;
+	}
+
+	/**
+	 * Add a greater than criteria comparing a fields value to a given value
+	 *
+	 * @param	String				The name of the sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .greaterThan('Account.Numeric_Field__c', 10 )
+	 *
+	 * Evaluates:
+	 *      Account.Numeric_Field__c > 10
+	 */
+	public ortoo_Criteria greaterThan( String relatedField, Object value )
+	{
+		Contract.requires( relatedField != null, 'greaterThan called with a null relatedField' );
+
+		criteria.greaterThan( relatedField, value );
+		return this;
+	}
+
+	/**
+	 * Add a less than or equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	Schema.SObjectField	The sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .lessOrEqualTo(Account.Name, 10 )
+	 *
+	 * Evaluates:
+	 *      Numeric_Field__c <= 10
+	 */
+	public ortoo_Criteria lessOrEqualTo( Schema.SObjectField field, Object value )
+	{
+		Contract.requires( field != null, 'lessOrEqualTo called with a null field' );
+
+		criteria.lessOrEqualTo( field, value );
+		return this;
+	}
+
+	/**
+	 * Add a less than or equal to criteria comparing a fields value to a given value
+	 *
+	 * @param	String				The name of the sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .lessOrEqualTo('Account.Numeric_Field__c', 10 )
+	 *
+	 * Evaluates:
+	 *      Account.Numeric_Field__c <= 10
+	 */
+	public ortoo_Criteria lessOrEqualTo( String relatedField, Object value )
+	{
+		Contract.requires( relatedField != null, 'lessOrEqualTo called with a null relatedField' );
+
+		criteria.lessOrEqualTo( relatedField, value );
+		return this;
+	}
+
+	/**
+	 * Add a less than criteria comparing a fields value to a given value
+	 *
+	 * @param	Schema.SObjectField	The sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .lessThan(Account.Numeric_Field__c, 10 )
+	 *
+	 * Evaluates:
+	 *      Numeric_Field__c < 10
+	 */
+	public ortoo_Criteria lessThan( Schema.SObjectField field, Object value )
+	{
+		Contract.requires( field != null, 'lessThan called with a null field' );
+
+		criteria.lessThan( field, value );
+		return this;
+	}
+
+	/**
+	 * Add a less than criteria comparing a fields value to a given value
+	 *
+	 * @param	String				The name of the sObjectField to evaluate
+	 * @param	Object				The value to be compared to the fields value
+	 * @return	ortoo_Criteria		Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 *  new ortoo_Criteria()
+	 *          .lessThan('Account.Numeric_Field__c', 10 )
+	 *
+	 * Evaluates:
+	 *      Account.Numeric_Field__c < 10
+	 */
+	public ortoo_Criteria lessThan( String relatedField, Object value )
+	{
+		Contract.requires( relatedField != null, 'lessThan called with a null relatedField' );
+
+		criteria.lessThan( relatedField, value );
+		return this;
+	}
 
 	/**
 	 * Checks if the given field has a value 'like' that given
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The value that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	String				The value that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -38,6 +449,7 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	public ortoo_Criteria likeString( Schema.SObjectField field, String value )
 	{
 		Contract.requires( field != null, 'likeString called with a null field' );
+
 		if ( ! String.isEmpty( value ) )
 		{
 			criteria.addEvaluator( new fflib_Criteria.FieldEvaluator( field, fflib_Operator.LIKEx, value ) );
@@ -48,9 +460,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a value 'like' that given
 	 *
-	 * @param	relatedField	The name of the to check the value of
-	 * @param	values			The value that resolve to 'true'
-	 *
+	 * @param	String			The name of the to check the value of
+	 * @param	String			The value that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -63,6 +474,7 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	public ortoo_Criteria likeString( String relatedField, String value )
 	{
 		Contract.requires( relatedField != null, 'likeString called with a null relatedField' );
+
 		if ( ! String.isEmpty( value ) )
 		{
 			criteria.addEvaluator( new fflib_Criteria.RelatedFieldEvaluator( relatedField, fflib_Operator.LIKEx, value ) );
@@ -73,10 +485,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Object>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -98,10 +509,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a DateTime value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<DateTime>		The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -123,10 +533,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Date value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Date>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -148,10 +557,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Decimal value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Decimal>		The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -173,10 +581,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Double value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Double>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -198,10 +605,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has an Id value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Id>				The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -223,10 +629,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Integer value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Integer>		The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -248,10 +653,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Long value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Long>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -273,10 +677,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a String value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<String>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -298,9 +701,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Object>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -322,9 +724,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a DateTime value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<DateTime>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -346,9 +747,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Date value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Date>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -370,9 +770,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Decimal value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Decimal>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -394,9 +793,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Double value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Double>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -418,9 +816,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has an Id value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String	The name of the field to check the value of
+	 * @param	Set<Id>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -442,9 +839,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Integer value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Integer>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -466,9 +862,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Long value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Long>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -490,9 +885,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a String value in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<String>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -514,10 +908,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Object>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -541,9 +934,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Object>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -568,10 +960,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a DateTime value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<DateTime>		The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -595,9 +986,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a DateTime value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<DateTime>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -622,10 +1012,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Date value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Date>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -649,9 +1038,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Date value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Date>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -676,10 +1064,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Decimal value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Decimal>		The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -703,9 +1090,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Decimal value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Decimal>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -730,10 +1116,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Double value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Double>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -757,9 +1142,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Double value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Double>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -784,10 +1168,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has an Id value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Id>				The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -811,9 +1194,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has an Id value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Id>			The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -838,10 +1220,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Integer value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Integer>		The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -865,9 +1246,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Integer value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Integer>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -892,10 +1272,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Long value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<Long>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -919,9 +1298,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a Long value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String			The name of the field to check the value of
+	 * @param	Set<Long>		The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -946,10 +1324,9 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a String value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
-	 * @return	ortoo_Criteria	Itself, providing a fluent interface
+	 * @param	Schema.SobjectField	The field to check the value of
+	 * @param	Set<String>			The values that resolve to 'true'
+	 * @return	ortoo_Criteria		Itself, providing a fluent interface
 	 *
 	 * @example
 	 *  new ortoo_Criteria()
@@ -973,9 +1350,8 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	/**
 	 * Checks if the given field has a String value that is not in the given set
 	 *
-	 * @param	field	The field to check the value of
-	 * @param	values	The values that resolve to 'true'
-	 *
+	 * @param	String	The field to check the value of
+	 * @param	Set<String>	The values that resolve to 'true'
 	 * @return	ortoo_Criteria	Itself, providing a fluent interface
 	 *
 	 * @example
@@ -1002,6 +1378,7 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 		criteria.addEvaluator( new fflib_Criteria.RelatedFieldSetEvaluator( relatedField, fflib_Operator.INx, values ) );
 		return this;
 	}
+
 	protected ortoo_Criteria notInSet( String relatedField, fflib_Objects values )
 	{
 		criteria.addEvaluator( new fflib_Criteria.RelatedFieldSetEvaluator( relatedField, fflib_Operator.NOT_IN, values ) );
