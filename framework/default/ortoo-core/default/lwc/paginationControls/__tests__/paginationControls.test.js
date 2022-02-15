@@ -455,6 +455,17 @@ describe( 'c-pagination-controls', () => {
         expect( element.currentPage ).toBe( 1 );
     });
 
+    it( 'when the currentPage is set to NaN, it will be set to 1', () => {
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
+        element.numberOfRecords = 100;
+        element.recordsPerPage  = 20;
+        element.currentPage     = 'not a number';
+
+        expect( element.offset ).toBe( 0 );
+        expect( element.currentPage ).toBe( 1 );
+    });
+
     it( 'when the current page is set beyond the number of records, it will still render in that position', () => {
 
         const element = document.body.querySelector( 'c-pagination-controls' );
@@ -520,5 +531,25 @@ describe( 'c-pagination-controls', () => {
         element.recordsPerPage = 'thing';
 
         expect( element.recordsPerPage ).toBe( defaultRecordsPerPage );
+    });
+
+    it( 'when first initialised, will set the paging to reasonable defaults', () => {
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
+
+        expect( element.offset ).toBe( 0 );
+        expect( element.currentPage ).toBe( 1 );
+        expect( element.numberOfPages ).toBe( 0 );
+    });
+
+    it( 'when numberOfRecords is set to zero, will set the paging to reasonable defaults', () => {
+
+        const element = document.body.querySelector( 'c-pagination-controls' );
+
+        element.numberOfRecords = 0;
+
+        expect( element.offset ).toBe( 0 );
+        expect( element.currentPage ).toBe( 1 );
+        expect( element.numberOfPages ).toBe( 0 );
     });
 });
