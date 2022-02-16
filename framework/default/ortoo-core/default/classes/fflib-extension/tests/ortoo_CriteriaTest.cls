@@ -13,7 +13,7 @@ private without sharing class ortoo_CriteriaTest
                             .toSoql();
         Test.stopTest();
 
-        String expected = 'Name=\'Example\' ANd AccountNumber=\'1234567\'';
+        String expected = 'Name=\'Example\' AND AccountNumber=\'1234567\'';
 
         System.assertEquals( expected, got, 'by default, will join the generated SOQL with AND' );
     }
