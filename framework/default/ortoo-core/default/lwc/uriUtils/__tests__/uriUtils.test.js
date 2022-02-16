@@ -164,6 +164,8 @@ describe( 'getUriFragmentAsObject', () => {
     })
     it( 'will skip values that do not decode properly', () => {
 
+        console.error = jest.fn()
+
         location.hash = 'property1=%22value1%22&invalid=%22incompleteJson&property2=%22value2%22';
 
         const expected = {
@@ -173,6 +175,8 @@ describe( 'getUriFragmentAsObject', () => {
         const got = UriUtils.getUriFragmentAsObject();
 
         expect( got ).toEqual( expected );
+        expect( console.error ).toHaveBeenCalled();
+        expect( console.error ).toHaveBeenCalledWith( 'Invalid parameter value in URI fragment' );
     })
 });
 
