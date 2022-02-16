@@ -7,23 +7,6 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 {
 	fflib_Criteria criteria;
 
-	// TODO: write tests for SOQL generation of:
-	//		orCriteria
-	//		andCriteria
-	//		andOrCriteria
-	//		andAndCriteria
-	//		formulaCriteria
-	//
-	//		equalTo
-	//		notEqualTo
-	//		greaterOrEqualTo
-	//		greaterThan
-	//		lessOrEqualTo
-	//		lessThan
-	//
-	// TODO: consider a test for filtering of records?
-	// TODO: change SObjects2 to allow ortoo_Criteria - maybe define an interface instead
-
 	public ortoo_Criteria()
 	{
 		criteria = new fflib_Criteria();
@@ -106,7 +89,7 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	 *              		.equalTo(Account.AccountNumber, '0002'))
 	 *
 	 *  Evaluates:
-	 *      Account.Name = 'Example' AND (Account.AccountNumber = '0001' OR Account.AccountNumber = '0002')
+	 *      Name = 'Example' AND (AccountNumber = '0001' OR AccountNumber = '0002')
 	 */
 	public ortoo_Criteria addOrCriteria( ortoo_Criteria subCriteria )
 	{
@@ -155,10 +138,10 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	 *          .formulaCriteria('(1 OR 2) AND 3')
      *     		.equalTo(Account.AccountNumber, '0001')
 	 *    		.equalTo(Account.AccountNumber, '0002')
-	 *     		.equalTo(Account.ShippingCountry, 'USA'))
+	 *     		.equalTo(Account.ShippingCountry, 'USA')
 	 *
 	 *  Evaluates:
-	 *      (AccountNumber = '0001' OR AccountNumber = '0001') AND ShippingCountry = 'USA'
+	 *      (AccountNumber = '0001' OR AccountNumber = '0002') AND ShippingCountry = 'USA'
 	 */
 	public ortoo_Criteria formulaCriteria( String formula )
 	{

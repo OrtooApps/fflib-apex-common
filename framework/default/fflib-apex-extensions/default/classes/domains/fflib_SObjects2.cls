@@ -120,7 +120,7 @@ public virtual class fflib_SObjects2
 	 *
 	 * @return Return the SObject records contained in the domain matching the criteria
 	 */
-	public virtual List<SObject> getRecords(fflib_Criteria criteria)
+	public virtual List<SObject> getRecords(fflib_Criteria.Evaluator criteria)
 	{
 		List<SObject> result = new List<SObject>();
 		for (SObject record : getRecords())
