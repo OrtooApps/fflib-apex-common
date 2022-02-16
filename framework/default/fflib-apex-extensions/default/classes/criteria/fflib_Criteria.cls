@@ -57,7 +57,7 @@ public virtual with sharing class fflib_Criteria
 	/**
 	 * Adds the given evalutor onto the formula stack
 	 */
-	protected void addEvaluator( Evaluator evaluator )
+	public void addEvaluator( Evaluator evaluator )
 	{
 		evaluators.add( evaluator );
 	}
