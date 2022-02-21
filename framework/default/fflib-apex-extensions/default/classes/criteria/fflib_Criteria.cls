@@ -768,6 +768,11 @@ public virtual with sharing class fflib_Criteria
 		this.embraced = embraced;
 	}
 
+	// TODO: move - consider adding to the original library
+	public interface Literal {
+		String toLiteral();
+	}
+
 	/**
 	 * @param value The value to convert
 	 *
@@ -776,6 +781,12 @@ public virtual with sharing class fflib_Criteria
 	private static String toLiteral(final Object value)
 	{
 		if (value == null) return 'null';
+
+		// TODO: test this
+		if ( value instanceOf Literal )
+		{
+			return ((Literal)value).toLiteral();
+		}
 
 		if (value instanceof String || value instanceof Id)
 		{
