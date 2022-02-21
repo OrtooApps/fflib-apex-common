@@ -772,6 +772,10 @@ public virtual with sharing class fflib_Criteria
 	public interface Literal {
 		String toLiteral();
 	}
+	// TODO: move - consider adding to the original library
+	public interface Evaluatable {
+		Object toValue();
+	}
 
 	/**
 	 * @param value The value to convert

@@ -7,26 +7,52 @@
  */
 public inherited sharing class ortoo_DateLiterals
 {
+	public class NonEvaluatableException extends ortoo_Exception {}
+
 	// TODO: consider 'compare' - how do we do that?
 	private interface Literal extends fflib_Criteria.Literal {}
+	private interface Evaluatable extends fflib_Criteria.Evaluatable {}
 
-	public class Today implements Literal
+	public class Today implements Literal, Evaluatable
 	{
 		public String toLiteral()
 		{
 			return 'TODAY';
 		}
+
+		public Date toValue()
+		{
+			return Date.today();
+		}
 	}
 
-	public class Yesterday implements Literal
+	public class Yesterday implements Literal, Evaluatable
 	{
 		public String toLiteral()
 		{
 			return 'YESTERDAY';
 		}
+
+		public Date toValue()
+		{
+			return Date.today().addDays(-1);
+		}
 	}
 
-	public class LastWeek implements Literal
+	public class Tomorrow implements Literal, Evaluatable
+	{
+		public String toLiteral()
+		{
+			return 'TOMORROW';
+		}
+
+		public Date toValue()
+		{
+			return Date.today().addDays(+1);
+		}
+	}
+
+	public class LastWeek extends NonEvaluatableLiteral implements Literal
 	{
 		public String toLiteral()
 		{
@@ -155,6 +181,16 @@ public inherited sharing class ortoo_DateLiterals
 		public String toLiteral()
 		{
 			return this.baseLiteral + ':' + this.numberOfThings;
+		}
+	}
+
+	private abstract class NonEvaluatableLiteral implements Evaluatable
+	{
+		public Object toValue()
+		{
+			throw new NonEvaluatableException( 'Literals of type ' + ObjectUtils.getClassName( this ) + ' cannot be evaluated in-memory' )
+						.setErrorCode( FrameworkErrorCodes.NON_EVALUATABLE_CRITERIA )
+						.addContext( 'ClassName', ObjectUtils.getClassName( this ) );
 		}
 	}
 }
