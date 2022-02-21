@@ -30,6 +30,16 @@
  */
 public with sharing class fflib_Comparator
 {
+	// TODO: move - consider adding to the original library
+	public interface Evaluatable
+	{
+		Object toValue();
+	}
+
+	public interface Comparable
+	{
+		Integer compare( Object otherValue );
+	}
 
 	public static Boolean compareTo(Object object1, fflib_Operator operator, Object object2)
 	{
@@ -53,6 +63,16 @@ public with sharing class fflib_Comparator
 
 	public static Integer compare(Object object1, Object object2)
 	{
+		// TODO: test
+		if ( object2 instanceOf fflib_Comparator.Comparable ) {
+			return ((fflib_Comparator.Comparable)object2).compare( object1 );
+		}
+
+		// TODO: test
+		if ( object2 instanceOf Evaluatable ) {
+			object2 = ((Evaluatable)object2)?.toValue();
+		}
+
 		if (object1 == null && object2 == null)
 			return 0;
 		else if (object1 == null)
