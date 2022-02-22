@@ -30,11 +30,6 @@
  */
 public with sharing class fflib_Comparator
 {
-	// TODO: move - consider adding to the original library
-	public interface Evaluatable
-	{
-		Object toValue();
-	}
 
 	public interface Comparable
 	{
@@ -64,13 +59,8 @@ public with sharing class fflib_Comparator
 	public static Integer compare(Object object1, Object object2)
 	{
 		// TODO: test
-		if ( object2 instanceOf fflib_Comparator.Comparable ) {
-			return ((fflib_Comparator.Comparable)object2).compare( object1 );
-		}
-
-		// TODO: test
-		if ( object2 instanceOf Evaluatable ) {
-			object2 = ((Evaluatable)object2)?.toValue();
+		if ( object2 instanceOf Comparable ) {
+			return ((Comparable)object2).compare( object1 );
 		}
 
 		if (object1 == null && object2 == null)
