@@ -149,7 +149,7 @@ public inherited sharing class ortoo_DateLiterals
 	{
 		get
 		{
-			return startOfThisMonth.addMonths( 1 ).addDays( -1 ); // Note, do not change to endOfThisMonth.addMonths, as this can switch months
+			return startOfThisMonth.addMonths( 2 ).addDays( -1 ); // Note, do not change to endOfThisMonth.addMonths, as this can switch months
 		}
 	}
 

@@ -1,6 +1,9 @@
+
 @isTest
 private without sharing class  ortoo_DateLiteralsTest
 {
+    // TODO: start of and end of this, on the day that is already start or end
+
     @isTest
     private static void today_whenReferenced_returnsTodaysDate() // NOPMD: Test method name format
     {
@@ -74,7 +77,7 @@ private without sharing class  ortoo_DateLiteralsTest
         Date expectedEarliest = Date.newInstance( 2024, 02, 18 );
         Date expectedLatest   = Date.newInstance( 2024, 02, 19 );
 
-        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'startOfLastWeek, when referenced, is set to the start of this week, based on the configured "today" and the current user locale' );
+        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'startOfLastWeek, when referenced, is set to the start of last week, based on the configured "today" and the current user locale' );
     }
 
     @isTest
@@ -89,7 +92,7 @@ private without sharing class  ortoo_DateLiteralsTest
         Date expectedEarliest = Date.newInstance( 2024, 02, 24 );
         Date expectedLatest   = Date.newInstance( 2024, 02, 25 );
 
-        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'endOfLastWeek, when referenced, is set to the end of this week, based on the configured "today" and the current user locale' );
+        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'endOfLastWeek, when referenced, is set to the end of last week, based on the configured "today" and the current user locale' );
     }
 
     @isTest
@@ -117,7 +120,7 @@ private without sharing class  ortoo_DateLiteralsTest
         Date expectedEarliest = Date.newInstance( 2024, 03, 03 );
         Date expectedLatest   = Date.newInstance( 2024, 03, 04 );
 
-        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'startOfNextWeek, when referenced, is set to the start of this week, based on the configured "today" and the current user locale' );
+        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'startOfNextWeek, when referenced, is set to the start of next week, based on the configured "today" and the current user locale' );
     }
 
     @isTest
@@ -132,7 +135,7 @@ private without sharing class  ortoo_DateLiteralsTest
         Date expectedEarliest = Date.newInstance( 2024, 03, 09 );
         Date expectedLatest   = Date.newInstance( 2024, 03, 10 );
 
-        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'endOfNextWeek, when referenced, is set to the end of this week, based on the configured "today" and the current user locale' );
+        ortoo_Asserts.assertBetweenInclusive( expectedEarliest, expectedLatest, got, 'endOfNextWeek, when referenced, is set to the end of next week, based on the configured "today" and the current user locale' );
     }
 
     @isTest
@@ -147,4 +150,100 @@ private without sharing class  ortoo_DateLiteralsTest
         System.assertEquals( ortoo_DateLiterals.endOfThisWeek.addDays( 1 ), got, 'startOfNextWeek, is set to the day after endOfThisWeek' );
     }
 
+    @isTest
+    private static void startOfThisMonth_whenReferenced_returnsStartOfThisMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.startOfThisMonth;
+        Test.stopTest();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 01 ), got, 'startOfThisMonth, is set to the start of this month, based on the configured today' );
+    }
+
+    @isTest
+    private static void endOfThisMonth_whenReferenced_returnsEndOfThisMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 10 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.endOfThisMonth;
+        Test.stopTest();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), got, 'endOfThisMonth, is set to the end of this month' );
+    }
+
+    @isTest
+    private static void startOfLastMonth_whenReferenced_returnsStartOfLastMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 30 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.startOfLastMonth;
+        Test.stopTest();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 01 ), got, 'startOfLastMonth, is set to the start of last month' );
+    }
+
+    @isTest
+    private static void endOfLastMonth_whenReferenced_returnsEndOfLastMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 30 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.endOfLastMonth;
+        Test.stopTest();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), got, 'endOfLastMonth, is set to the end of last month' );
+    }
+
+    @isTest
+    private static void endOfLastMonth_whenReferenced_returnsTheDayBeforeTheStartOfThisMonth() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 05 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.endOfLastMonth;
+        Test.stopTest();
+
+        System.assertEquals( ortoo_DateLiterals.startOfThisMonth.addDays( -1 ), got, 'endOfLastMonth, is set to the day before startOfThisMonth' );
+    }
+
+
+    @isTest
+    private static void startOfNextMonth_whenReferenced_returnsStartOfNextMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 01, 30 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.startOfNextMonth;
+        Test.stopTest();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 01 ), got, 'endOfLastMonth, is set to the end of next month' );
+    }
+
+    @isTest
+    private static void endOfNextMonth_whenReferenced_returnsEndOfNextMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 01, 30 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.endOfNextMonth;
+        Test.stopTest();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), got, 'endOfLastMonth, is set to the end of next month' );
+    }
+
+    @isTest
+    private static void startOfNextMonth_whenReferenced_returnsTheDayAfterTheEndOfThisMonth() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        Test.startTest();
+            Date got = ortoo_DateLiterals.startOfNextMonth;
+        Test.stopTest();
+
+        System.assertEquals( ortoo_DateLiterals.endOfThisMonth.addDays( 1 ), got, 'startOfNextMonth, is set to the day after endOfThisMonth' );
+    }
 }
