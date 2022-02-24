@@ -3,14 +3,14 @@
 private without sharing class  ortoo_DateLiteralsTest
 {
     @isTest
-    private static void today_whenReferenced_returnsTodaysDate() // NOPMD: Test method name format
+    private static void today_returnsTodaysDate() // NOPMD: Test method name format
     {
         Date got = ortoo_DateLiterals.today;
         System.assertEquals( Date.today(), got, 'today is set to today' );
     }
 
     @isTest
-    private static void yesterday_whenReferenced_returnYesterdayBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void yesterday_returnYesterdayBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 01 );
 
@@ -22,7 +22,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void tomorrow_whenReferenced_returnTomorrowBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void tomorrow_returnTomorrowBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -34,7 +34,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void startOfThisWeek_whenReferenced_returnsStartOfThisWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
+    private static void startOfThisWeek_returnsStartOfThisWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -62,7 +62,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfThisWeek_whenReferenced_returnsEndOfThisWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
+    private static void endOfThisWeek_returnsEndOfThisWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -90,7 +90,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void startOfLastWeek_whenReferenced_returnsStartOfLastWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
+    private static void startOfLastWeek_returnsStartOfLastWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -105,7 +105,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfLastWeek_whenReferenced_returnsEndOfLastWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
+    private static void endOfLastWeek_returnsEndOfLastWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -120,7 +120,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfLastWeek_whenReferenced_returnsTheDayBeforeTheStartOfThisWeek() // NOPMD: Test method name format
+    private static void endOfLastWeek_returnsTheDayBeforeTheStartOfThisWeek() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -133,7 +133,7 @@ private without sharing class  ortoo_DateLiteralsTest
 
 
     @isTest
-    private static void startOfNextWeek_whenReferenced_returnsStartOfNextWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
+    private static void startOfNextWeek_returnsStartOfNextWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -148,7 +148,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfNextWeek_whenReferenced_returnsEndOfNextWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
+    private static void endOfNextWeek_returnsEndOfNextWeekBasedOnTheConfiguredTodayAndLocale() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -163,7 +163,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void startOfNextWeek_whenReferenced_returnsTheDayAfterTheEndOfThisWeek() // NOPMD: Test method name format
+    private static void startOfNextWeek_returnsTheDayAfterTheEndOfThisWeek() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -175,7 +175,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void startOfThisMonth_whenReferenced_returnsStartOfThisMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void startOfThisMonth_returnsStartOfThisMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -200,7 +200,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfThisMonth_whenReferenced_returnsEndOfThisMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void endOfThisMonth_returnsEndOfThisMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 10 );
 
@@ -225,7 +225,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void startOfLastMonth_whenReferenced_returnsStartOfLastMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void startOfLastMonth_returnsStartOfLastMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 30 );
 
@@ -237,7 +237,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfLastMonth_whenReferenced_returnsEndOfLastMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void endOfLastMonth_returnsEndOfLastMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 30 );
 
@@ -249,7 +249,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfLastMonth_whenReferenced_returnsTheDayBeforeTheStartOfThisMonth() // NOPMD: Test method name format
+    private static void endOfLastMonth_returnsTheDayBeforeTheStartOfThisMonth() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 03, 05 );
 
@@ -262,7 +262,7 @@ private without sharing class  ortoo_DateLiteralsTest
 
 
     @isTest
-    private static void startOfNextMonth_whenReferenced_returnsStartOfNextMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void startOfNextMonth_returnsStartOfNextMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 01, 30 );
 
@@ -274,7 +274,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void endOfNextMonth_whenReferenced_returnsEndOfNextMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
+    private static void endOfNextMonth_returnsEndOfNextMonthBasedOnTheConfiguredToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 01, 30 );
 
@@ -286,7 +286,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void startOfNextMonth_whenReferenced_returnsTheDayAfterTheEndOfThisMonth() // NOPMD: Test method name format
+    private static void startOfNextMonth_returnsTheDayAfterTheEndOfThisMonth() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -295,5 +295,41 @@ private without sharing class  ortoo_DateLiteralsTest
         Test.stopTest();
 
         System.assertEquals( ortoo_DateLiterals.endOfThisMonth.addDays( 1 ), got, 'startOfNextMonth, is set to the day after endOfThisMonth' );
+    }
+
+    @isTest
+    private static void Today_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.Today().toLiteral();
+        System.assertEquals( 'TODAY', got, 'Today.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void Today_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.Today();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), literal.getStartDate(), 'Today_getStartDate, will return today' );
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), literal.getEndDate(), 'Today_getEndDate, will return today' );
+    }
+
+    @isTest
+    private static void Yesterday_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.Yesterday().toLiteral();
+        System.assertEquals( 'YESTERDAY', got, 'Yesterday.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void Yesterday_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.Yesterday();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 28 ), literal.getStartDate(), 'Yesterday_getStartDate, will return yesterday' );
+        System.assertEquals( Date.newInstance( 2024, 02, 28 ), literal.getEndDate(), 'Yesterday_getEndDate, will return yesterday' );
     }
 }

@@ -568,10 +568,14 @@ public inherited sharing class ortoo_DateLiterals
 		}
 	}
 
+	@testVisible
 	private abstract class DateRangeLiteral implements ortoo_DateLiterals.Comparable
 	{
+		@testVisible
 		protected abstract String toLiteral();
+		@testVisible
 		protected abstract Date getStartDate();
+		@testVisible
 		protected abstract Date getEndDate();
 
 		public Integer compare( Object otherValue )
@@ -593,8 +597,8 @@ public inherited sharing class ortoo_DateLiterals
 
 	private class DateTimeToDateRangeComparer
 	{
-		public Integer compare( DateTime value, Date startDate, Date endDate ) {
-
+		public Integer compare( DateTime value, Date startDate, Date endDate )
+		{
 			if ( value < DateTime.newInstance( startDate.year(), startDate.month(), startDate.day(), 0, 0, 0 ) )
 			{
 				return -1;
