@@ -305,7 +305,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void Today_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    private static void Today_getStartDateGetEndDate_returnsToday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -323,7 +323,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void Yesterday_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    private static void Yesterday_getStartDateGetEndDate_returnsYesterday() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -341,7 +341,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void Tomorrow_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    private static void Tomorrow_getStartDateGetEndDate_returnsTomorrow() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -359,7 +359,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void LastWeek_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    private static void LastWeek_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -377,7 +377,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void ThisWeek_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    private static void ThisWeek_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -395,7 +395,7 @@ private without sharing class  ortoo_DateLiteralsTest
     }
 
     @isTest
-    private static void NextWeek_getStartDateGetEndDate_returnToday() // NOPMD: Test method name format
+    private static void NextWeek_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
     {
         ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
 
@@ -403,5 +403,95 @@ private without sharing class  ortoo_DateLiteralsTest
 
         System.assertEquals( ortoo_DateLiterals.startOfNextWeek, literal.getStartDate(), 'NextWeek_getStartDate, will return the start of last week' );
         System.assertEquals( ortoo_DateLiterals.endOfNextWeek, literal.getEndDate(), 'NextWeek_getEndDate, will return the end of last week' );
+    }
+
+    @isTest
+    private static void LastMonth_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.LastMonth().toLiteral();
+        System.assertEquals( 'LAST_MONTH', got, 'LastMonth.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void LastMonth_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastMonth();
+
+        System.assertEquals( Date.newInstance( 2024, 01, 01 ), literal.getStartDate(), 'LastMonth_getStartDate, will return the start of last month' );
+        System.assertEquals( Date.newInstance( 2024, 01, 31 ), literal.getEndDate(), 'LastMonth_getEndDate, will return the end of last month' );
+    }
+
+    @isTest
+    private static void ThisMonth_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.ThisMonth().toLiteral();
+        System.assertEquals( 'THIS_MONTH', got, 'ThisMonth.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void ThisMonth_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.ThisMonth();
+
+        System.assertEquals( Date.newInstance( 2024, 02, 01 ), literal.getStartDate(), 'ThisMonth_getStartDate, will return the start of last month' );
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), literal.getEndDate(), 'ThisMonth_getEndDate, will return the end of last month' );
+    }
+
+    @isTest
+    private static void NextMonth_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.NextMonth().toLiteral();
+        System.assertEquals( 'NEXT_MONTH', got, 'NextMonth.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void NextMonth_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.NextMonth();
+
+        System.assertEquals( Date.newInstance( 2024, 03, 01 ), literal.getStartDate(), 'NextMonth_getStartDate, will return the start of last month' );
+        System.assertEquals( Date.newInstance( 2024, 03, 31 ), literal.getEndDate(), 'NextMonth_getEndDate, will return the end of last month' );
+    }
+
+    @isTest
+    private static void Last90Days_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.Last90Days().toLiteral();
+        System.assertEquals( 'LAST_90_DAYS', got, 'Last90Days.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void Last90Days_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.Last90Days();
+
+        System.assertEquals( Date.newInstance( 2023, 12, 01 ), literal.getStartDate(), 'Last90Days_getStartDate, will return 90 days ago' );
+        System.assertEquals( Date.newInstance( 2024, 02, 29 ), literal.getEndDate(), 'Last90Days_getEndDate, will return the end of last month' );
+    }
+
+    @isTest
+    private static void Next90Days_toLiteral_returnsTheSoqlDateLiteral() // NOPMD: Test method name format
+    {
+        String got = new ortoo_DateLiterals.Next90Days().toLiteral();
+        System.assertEquals( 'NEXT_90_DAYS', got, 'Next90Days.toLiteral, will return the SOQL Date Literal' );
+    }
+
+    @isTest
+    private static void Next90Days_getStartDateGetEndDate_returnsRange() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 29 );
+
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.Next90Days();
+
+        System.assertEquals( Date.newInstance( 2024, 03, 01 ), literal.getStartDate(), 'Next90Days_getStartDate, will return tomorrow' );
+        System.assertEquals( Date.newInstance( 2024, 05, 29 ), literal.getEndDate(), 'Next90Days_getEndDate, will return 90 days in the future' );
     }
 }
