@@ -26,7 +26,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date tomorrow
 	{
-		get {
+		get
+		{
 			return today.addDays( 1 );
 		}
 	}
@@ -36,7 +37,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date yesterday
 	{
-		get {
+		get
+		{
 			return today.addDays( -1 );
 		}
 	}
@@ -46,7 +48,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date startOfThisWeek
 	{
-		get {
+		get
+		{
 			return today.toStartOfWeek();
 		}
 	}
@@ -56,7 +59,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date endOfThisWeek
 	{
-		get {
+		get
+		{
 			return startOfThisWeek.addDays( 6 );
 		}
 	}
@@ -66,7 +70,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date startOfLastWeek
 	{
-		get {
+		get
+		{
 			return startOfThisWeek.addDays( -7 );
 		}
 	}
@@ -76,7 +81,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date endOfLastWeek
 	{
-		get {
+		get
+		{
 			return endOfThisWeek.addDays( -7 );
 		}
 	}
@@ -86,7 +92,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date startOfNextWeek
 	{
-		get {
+		get
+		{
 			return startOfThisWeek.addDays( 7 );
 		}
 	}
@@ -96,7 +103,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date endOfNextWeek
 	{
-		get {
+		get
+		{
 			return endOfThisWeek.addDays( 7 );
 		}
 	}
@@ -106,7 +114,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date startOfThisMonth
 	{
-		get {
+		get
+		{
 			return today.toStartOfMonth();
 		}
 	}
@@ -116,7 +125,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date endOfThisMonth
 	{
-		get {
+		get
+		{
 			return startOfThisMonth.addMonths( 1 ).addDays( -1 );
 		}
 	}
@@ -126,7 +136,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date startOfNextMonth
 	{
-		get {
+		get
+		{
 			return startOfThisMonth.addMonths( 1 );
 		}
 	}
@@ -136,7 +147,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date endOfNextMonth
 	{
-		get {
+		get
+		{
 			return startOfThisMonth.addMonths( 1 ).addDays( -1 ); // Note, do not change to endOfThisMonth.addMonths, as this can switch months
 		}
 	}
@@ -146,7 +158,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date startOfLastMonth
 	{
-		get {
+		get
+		{
 			return startOfThisMonth.addMonths( -1 );
 		}
 	}
@@ -156,7 +169,8 @@ public inherited sharing class ortoo_DateLiterals
 	 */
 	public static Date endOfLastMonth
 	{
-		get {
+		get
+		{
 			return startOfThisMonth.addDays( -1 ); // Note, do not change to endOfThisMonth.addMonths, as this can switch months
 		}
 	}
@@ -171,11 +185,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'TODAY';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return today;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return today;
 		}
 	}
@@ -190,11 +206,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'YESTERDAY';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return yesterday;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return yesterday;
 		}
 	}
@@ -209,11 +227,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'TOMORROW';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return tomorrow;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return tomorrow;
 		}
 	}
@@ -228,11 +248,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'LAST_WEEK';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfLastWeek;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfLastWeek;
 		}
 	}
@@ -247,11 +269,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'THIS_WEEK';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfThisWeek;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfThisWeek;
 		}
 	}
@@ -266,11 +290,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'NEXT_WEEK';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfNextWeek;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfNextWeek;
 		}
 	}
@@ -285,11 +311,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'LAST_MONTH';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfLastMonth;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfLastMonth;
 		}
 	}
@@ -304,11 +332,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'THIS_MONTH';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfThisMonth;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfThisMonth;
 		}
 	}
@@ -323,11 +353,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'NEXT_MONTH';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfNextMonth;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfNextMonth;
 		}
 	}
@@ -342,11 +374,13 @@ public inherited sharing class ortoo_DateLiterals
 			return 'LAST_90_DAYS';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return today.addDays( -90 );
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return today;
 		}
 	}
@@ -361,12 +395,14 @@ public inherited sharing class ortoo_DateLiterals
 			return 'NEXT_90_DAYS';
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return tomorrow;
 		}
 
-		protected override Date getEndDate() {
-			return today.addDays( 90 ); // TODO: not true
+		protected override Date getEndDate()
+		{
+			return today.addDays( 90 );
 		}
 	}
 
@@ -383,11 +419,13 @@ public inherited sharing class ortoo_DateLiterals
 			Contract.requires( numberOfThings > 0 , 'LastNDays constructed with a negative or zero number of days' );
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return today.addDays( numberOfThings * -1 );
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return today;
 		}
 	}
@@ -405,11 +443,13 @@ public inherited sharing class ortoo_DateLiterals
 			Contract.requires( numberOfThings > 0 , 'NextNDays constructed with a negative or zero number of days' );
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return tomorrow;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return today.addDays( numberOfThings );
 		}
 	}
@@ -427,11 +467,13 @@ public inherited sharing class ortoo_DateLiterals
 			Contract.requires( numberOfThings > 0 , 'LastNWeeks constructed with a negative or zero number of days' );
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfThisWeek.addDays( this.numberOfThings * -7 );
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfLastWeek;
 		}
 	}
@@ -446,11 +488,13 @@ public inherited sharing class ortoo_DateLiterals
 			super( numberOfThings, 'NEXT_N_WEEKS' );
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfNextWeek;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return endOfNextWeek.addDays( this.numberOfThings * 7 );
 		}
 	}
@@ -468,11 +512,13 @@ public inherited sharing class ortoo_DateLiterals
 			Contract.requires( numberOfThings > 0 , 'LastNMonths constructed with a negative or zero number of months' );
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return endOfLastMonth;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return startOfThisMonth.addMonths( numberOfThings * -1 );
 		}
 	}
@@ -491,11 +537,13 @@ public inherited sharing class ortoo_DateLiterals
 
 		}
 
-		protected override Date getStartDate() {
+		protected override Date getStartDate()
+		{
 			return startOfNextMonth;
 		}
 
-		protected override Date getEndDate() {
+		protected override Date getEndDate()
+		{
 			return startOfNextMonth.addMonths( numberOfThings ).addDays( -1 );
 		}
 	}
