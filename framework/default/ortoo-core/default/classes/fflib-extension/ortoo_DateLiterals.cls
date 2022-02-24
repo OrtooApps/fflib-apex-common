@@ -514,12 +514,12 @@ public inherited sharing class ortoo_DateLiterals
 
 		protected override Date getStartDate()
 		{
-			return endOfLastMonth;
+			return startOfThisMonth.addMonths( numberOfThings * -1 );
 		}
 
 		protected override Date getEndDate()
 		{
-			return startOfThisMonth.addMonths( numberOfThings * -1 );
+			return endOfLastMonth;
 		}
 	}
 
@@ -599,6 +599,7 @@ public inherited sharing class ortoo_DateLiterals
 	{
 		public Integer compare( DateTime value, Date startDate, Date endDate )
 		{
+			Contract.requires( startDate <= endDate, 'compare called with a start date that is higher than the end date ('+ startDate + ', ' + endDate + ')' );
 			if ( value < DateTime.newInstance( startDate.year(), startDate.month(), startDate.day(), 0, 0, 0 ) )
 			{
 				return -1;
@@ -614,6 +615,7 @@ public inherited sharing class ortoo_DateLiterals
 	private class DateToDateRangeComparer
 	{
 		public Integer compare( Date value, Date startDate, Date endDate ) {
+			Contract.requires( startDate <= endDate, 'compare called with a start date that is higher than the end date ('+ startDate + ', ' + endDate + ')' );
 			if ( value < startDate )
 			{
 				return -1;
