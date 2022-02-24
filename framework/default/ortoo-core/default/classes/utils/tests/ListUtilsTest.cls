@@ -181,7 +181,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'slice called with a null list', exceptionMessage, 'slice, when given a null list, will throw an exception' );
+		ortoo_Asserts.assertContains( 'slice called with a null list', exceptionMessage, 'slice, when given a null list, will throw an exception' );
 	}
 
 	@isTest
@@ -196,7 +196,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'slice called with a null startElement', exceptionMessage, 'slice, when given a null start, will throw an exception' );
+		ortoo_Asserts.assertContains( 'slice called with a null startElement', exceptionMessage, 'slice, when given a null start, will throw an exception' );
 	}
 
 	@isTest
@@ -211,7 +211,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'slice called with a null endElement', exceptionMessage, 'slice, when given a null end, will throw an exception' );
+		ortoo_Asserts.assertContains( 'slice called with a null endElement', exceptionMessage, 'slice, when given a null end, will throw an exception' );
 	}
 
 	@isTest
@@ -270,7 +270,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'trim called with a null list', exceptionMessage, 'trim, when given a null list, will throw an exception' );
+		ortoo_Asserts.assertContains( 'trim called with a null list', exceptionMessage, 'trim, when given a null list, will throw an exception' );
 	}
 
 	@isTest
@@ -285,7 +285,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'trim called with a null length', exceptionMessage, 'trim, when given a null length, will throw an exception' );
+		ortoo_Asserts.assertContains( 'trim called with a null length', exceptionMessage, 'trim, when given a null length, will throw an exception' );
 	}
 
 	@isTest
@@ -377,7 +377,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'getNumberOfUniqueIds called with a null listOfSobjects', exceptionMessage, 'getNumberOfUniqueIds, when given a null list, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getNumberOfUniqueIds called with a null listOfSobjects', exceptionMessage, 'getNumberOfUniqueIds, when given a null list, will throw an exception' );
 	}
 
 	@isTest
@@ -396,7 +396,7 @@ private without sharing class ListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'getNumberOfUniqueIds called with a null idField', exceptionMessage, 'getNumberOfUniqueIds, when given a null id field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getNumberOfUniqueIds called with a null idField', exceptionMessage, 'getNumberOfUniqueIds, when given a null id field, will throw an exception' );
 	}
 
 	@isTest

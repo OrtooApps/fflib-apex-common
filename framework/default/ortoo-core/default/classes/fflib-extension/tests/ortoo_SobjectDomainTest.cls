@@ -57,7 +57,7 @@ private without sharing class ortoo_SobjectDomainTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'triggerHandler called with a null domainClass', exceptionMessage, 'triggerHandler, when passed a null domainClass, will throw an exception' );
+        ortoo_Asserts.assertContains( 'triggerHandler called with a null domainClass', exceptionMessage, 'triggerHandler, when passed a null domainClass, will throw an exception' );
     }
 
     @isTest

@@ -180,7 +180,7 @@ private without sharing class ortoo_SobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Attempted to perform the count of an unbound query against ' + Account.sobjectType.getDescribe().getName(), exceptionMessage, 'selectBySearchCriteria, when given empty criteria, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Attempted to perform the count of an unbound query against ' + Account.sobjectType.getDescribe().getName(), exceptionMessage, 'selectBySearchCriteria, when given empty criteria, will throw an exception' );
     }
 
     @isTest
@@ -202,7 +202,7 @@ private without sharing class ortoo_SobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'selectBySearchCriteria called with a null searchConfiguration', exceptionMessage, 'selectBySearchCriteria, when passed a null searchConfiguration, will throw an exception' );
+        ortoo_Asserts.assertContains( 'selectBySearchCriteria called with a null searchConfiguration', exceptionMessage, 'selectBySearchCriteria, when passed a null searchConfiguration, will throw an exception' );
     }
 
     @isTest
@@ -224,7 +224,7 @@ private without sharing class ortoo_SobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'selectBySearchCriteria called with a null criteria', exceptionMessage, 'selectBySearchCriteria, when passed a null criteria, will throw an exception' );
+        ortoo_Asserts.assertContains( 'selectBySearchCriteria called with a null criteria', exceptionMessage, 'selectBySearchCriteria, when passed a null criteria, will throw an exception' );
     }
 
     @isTest
@@ -246,7 +246,7 @@ private without sharing class ortoo_SobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'selectBySearchCriteria called with a null window', exceptionMessage, 'selectBySearchCriteria, when passed a null window, will throw an exception' );
+        ortoo_Asserts.assertContains( 'selectBySearchCriteria called with a null window', exceptionMessage, 'selectBySearchCriteria, when passed a null window, will throw an exception' );
     }
 
     @isTest
@@ -268,7 +268,7 @@ private without sharing class ortoo_SobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'selectBySearchCriteria called with a null orderBy', exceptionMessage, 'selectBySearchCriteria, when passed a null orderBy, will throw an exception' );
+        ortoo_Asserts.assertContains( 'selectBySearchCriteria called with a null orderBy', exceptionMessage, 'selectBySearchCriteria, when passed a null orderBy, will throw an exception' );
     }
 
     class TestableSelector extends ortoo_SobjectSelector

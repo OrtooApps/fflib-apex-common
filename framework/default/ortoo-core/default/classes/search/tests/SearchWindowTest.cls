@@ -47,7 +47,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a null properties', exceptionMessage, 'configure, when passed a null properties, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a null properties', exceptionMessage, 'configure, when passed a null properties, will throw an exception' );
 	}
 
 	@isTest
@@ -171,7 +171,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a negative offset', exceptionMessage, 'configure, when given a negative offset, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a negative offset', exceptionMessage, 'configure, when given a negative offset, will throw an exception' );
 	}
 
 	@isTest
@@ -193,7 +193,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a negative offset', exceptionMessage, 'configure, when given a negative string offset, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a negative offset', exceptionMessage, 'configure, when given a negative string offset, will throw an exception' );
 	}
 
 	@isTest
@@ -215,7 +215,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a negative length, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a negative length, will throw an exception' );
 	}
 
 	@isTest
@@ -237,7 +237,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a negative string length, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a negative string length, will throw an exception' );
 	}
 
 	@isTest
@@ -259,7 +259,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a zero length, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a zero length, will throw an exception' );
 	}
 
 	@isTest
@@ -281,7 +281,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a zero string length, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a negative or zero length', exceptionMessage, 'configure, when given a zero string length, will throw an exception' );
 	}
 
 	@isTest
@@ -303,7 +303,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with offset that could not be cast into an Integer', exceptionMessage, 'configure, when given a non numeric offset, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with offset that could not be cast into an Integer', exceptionMessage, 'configure, when given a non numeric offset, will throw an exception' );
 	}
 
 	@isTest
@@ -325,7 +325,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with offset that could not be cast into an Integer', exceptionMessage, 'configure, when given a numeric string offset that cannot be cast to an integer, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with offset that could not be cast into an Integer', exceptionMessage, 'configure, when given a numeric string offset that cannot be cast to an integer, will throw an exception' );
 	}
 
 	@isTest
@@ -347,7 +347,7 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with length that could not be cast into an Integer', exceptionMessage, 'configure, when given a non numeric length, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with length that could not be cast into an Integer', exceptionMessage, 'configure, when given a non numeric length, will throw an exception' );
 	}
 
 
@@ -370,6 +370,6 @@ public inherited sharing class SearchWindowTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with length that could not be cast into an Integer', exceptionMessage, 'configure, when given a numeric string length that cannot be cast to an integer, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with length that could not be cast into an Integer', exceptionMessage, 'configure, when given a numeric string length that cannot be cast to an integer, will throw an exception' );
 	}
 }

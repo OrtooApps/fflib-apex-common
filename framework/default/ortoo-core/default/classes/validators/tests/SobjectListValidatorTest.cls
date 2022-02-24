@@ -61,6 +61,6 @@ private without sharing class SobjectListValidatorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'SobjectListValidator instantiated with a null records', exceptionMessage, 'constructor, when passed a null records, will throw an exception' );
+        ortoo_Asserts.assertContains( 'SobjectListValidator instantiated with a null records', exceptionMessage, 'constructor, when passed a null records, will throw an exception' );
     }
 }

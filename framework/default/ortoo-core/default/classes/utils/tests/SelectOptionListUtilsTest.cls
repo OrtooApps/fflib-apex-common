@@ -71,6 +71,6 @@ private without sharing class SelectOptionListUtilsTest
 			exceptionMessage = e.getMessage();
 		}
 
-		Amoss_Asserts.assertContains( 'trimToManageableLength called with a null List', exceptionMessage, 'trimToManageableLength, when given a null list, will throw an exception' );
+		ortoo_Asserts.assertContains( 'trimToManageableLength called with a null List', exceptionMessage, 'trimToManageableLength, when given a null list, will throw an exception' );
 	}
 }

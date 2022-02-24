@@ -164,6 +164,6 @@ private without sharing class MessageDetailTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'setSeverity called with a null severity', exceptionMessage, 'setSeverity, when passed null, will throw an exception' );
+		ortoo_Asserts.assertContains( 'setSeverity called with a null severity', exceptionMessage, 'setSeverity, when passed null, will throw an exception' );
 	}
 }

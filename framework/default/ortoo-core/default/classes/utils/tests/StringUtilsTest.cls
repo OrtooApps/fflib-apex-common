@@ -165,7 +165,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertDelimitedStringToList called with an empty delimiter', exceptionMessage, 'convertDelimitedStringToList, when passed a null delimiter, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertDelimitedStringToList called with an empty delimiter', exceptionMessage, 'convertDelimitedStringToList, when passed a null delimiter, will throw an exception' );
 	}
 
 	@isTest
@@ -183,7 +183,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertDelimitedStringToList called with an empty delimiter', exceptionMessage, 'convertDelimitedStringToList, when passed an empty delimiter, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertDelimitedStringToList called with an empty delimiter', exceptionMessage, 'convertDelimitedStringToList, when passed an empty delimiter, will throw an exception' );
 	}
 
 	@isTest
@@ -242,7 +242,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertListToDelimitedString called with a null listOfStrings', exceptionMessage, 'convertListToDelimitedString, when passed a null listOfStrings, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertListToDelimitedString called with a null listOfStrings', exceptionMessage, 'convertListToDelimitedString, when passed a null listOfStrings, will throw an exception' );
 	}
 
 	@isTest
@@ -288,7 +288,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertListToDelimitedString called with a null listOfObjects', exceptionMessage, 'convertListToDelimitedString, when passed a null listOfObjects, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertListToDelimitedString called with a null listOfObjects', exceptionMessage, 'convertListToDelimitedString, when passed a null listOfObjects, will throw an exception' );
 	}
 
 	@isTest
@@ -334,7 +334,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertListToDelimitedString called with a null listOfObjects', exceptionMessage, 'convertListToDelimitedString, when passed a null listOfObjects and a delimiter, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertListToDelimitedString called with a null listOfObjects', exceptionMessage, 'convertListToDelimitedString, when passed a null listOfObjects and a delimiter, will throw an exception' );
 	}
 
 	@isTest
@@ -354,7 +354,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertListToDelimitedString called with an empty delimiter', exceptionMessage, 'convertListToDelimitedString, when passed a null delimiter, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertListToDelimitedString called with an empty delimiter', exceptionMessage, 'convertListToDelimitedString, when passed a null delimiter, will throw an exception' );
 	}
 
 	@isTest
@@ -374,7 +374,7 @@ private without sharing class StringUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'convertListToDelimitedString called with an empty delimiter', exceptionMessage, 'convertListToDelimitedString, when passed an empty delimiter, will throw an exception' );
+		ortoo_Asserts.assertContains( 'convertListToDelimitedString called with an empty delimiter', exceptionMessage, 'convertListToDelimitedString, when passed an empty delimiter, will throw an exception' );
 	}
 
 	private inherited sharing class StringableThing {

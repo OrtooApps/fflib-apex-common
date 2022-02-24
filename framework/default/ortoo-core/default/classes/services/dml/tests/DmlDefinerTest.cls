@@ -82,7 +82,7 @@ private without sharing class DmlDefinerTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addRecord called with a null record', exceptionMessage, 'addRecord, when given null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addRecord called with a null record', exceptionMessage, 'addRecord, when given null, will throw an exception' );
     }
 
     @isTest
@@ -129,7 +129,7 @@ private without sharing class DmlDefinerTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addRecords called with a null list', exceptionMessage, 'addRecords, when given null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addRecords called with a null list', exceptionMessage, 'addRecords, when given null, will throw an exception' );
     }
 
     @isTest
@@ -163,7 +163,7 @@ private without sharing class DmlDefinerTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setOptions called with a null options', exceptionMessage, 'setOptions, when given null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setOptions called with a null options', exceptionMessage, 'setOptions, when given null, will throw an exception' );
     }
 
     @isTest
@@ -309,6 +309,6 @@ private without sharing class DmlDefinerTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addPreSaveAction called with a null action', exceptionMessage, 'addPreSaveAction, when given null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addPreSaveAction called with a null action', exceptionMessage, 'addPreSaveAction, when given null, will throw an exception' );
     }
 }

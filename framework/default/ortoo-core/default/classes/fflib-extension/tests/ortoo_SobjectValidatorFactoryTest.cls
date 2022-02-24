@@ -41,7 +41,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'NonConstructableType does not have parameterless constructor', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
+		ortoo_Asserts.assertContains( 'NonConstructableType does not have parameterless constructor', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
 	}
 
 	@isTest
@@ -65,7 +65,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'ortoo_SobjectValidatorFactoryTest.NonRegisterableType is not an implementation of ISobjectValidator', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
+		ortoo_Asserts.assertContains( 'ortoo_SobjectValidatorFactoryTest.NonRegisterableType is not an implementation of ISobjectValidator', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
 	}
 
 	@isTest
@@ -90,7 +90,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'No implementation registered for', exceptionMessage, 'newInstance, when called with an unmapped, will throw an exception' );
+		ortoo_Asserts.assertContains( 'No implementation registered for', exceptionMessage, 'newInstance, when called with an unmapped, will throw an exception' );
 	}
 
 	@isTest
@@ -146,7 +146,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null sobjectToValidate', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null sobjectToValidate', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
     }
 
 	@isTest
@@ -187,7 +187,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'NonConstructableType does not have parameterless constructor', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
+		ortoo_Asserts.assertContains( 'NonConstructableType does not have parameterless constructor', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
 	}
 
 	@isTest
@@ -211,7 +211,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'ortoo_SobjectValidatorFactoryTest.NonRegisterableType is not an implementation of ISobjectValidator', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
+		ortoo_Asserts.assertContains( 'ortoo_SobjectValidatorFactoryTest.NonRegisterableType is not an implementation of ISobjectValidator', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
 	}
 
 	@isTest
@@ -236,7 +236,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'No implementation registered for', exceptionMessage, 'newInstance, when called with an unmapped, will throw an exception' );
+		ortoo_Asserts.assertContains( 'No implementation registered for', exceptionMessage, 'newInstance, when called with an unmapped, will throw an exception' );
 	}
 
 	@isTest
@@ -292,7 +292,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null sobjectsToValidate', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null sobjectsToValidate', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -310,7 +310,7 @@ private without sharing class ortoo_SobjectValidatorFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ortoo_SobjectValidatorFactory instantiated with a null validatorBySobjectType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_SobjectValidatorFactory instantiated with a null validatorBySobjectType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
 	public without sharing class RegisterableType implements ISobjectValidator

@@ -40,7 +40,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'selectByCriteria called when sobjectType has not been set', exceptionMessage, 'selectByCriteria, when the sobject type has not been set, will throw an exception' );
+        ortoo_Asserts.assertContains( 'selectByCriteria called when sobjectType has not been set', exceptionMessage, 'selectByCriteria, when the sobject type has not been set, will throw an exception' );
     }
 
     @isTest
@@ -61,7 +61,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'selectByCriteria called with a null criteria', exceptionMessage, 'selectByCriteria, when given a null criteria, will throw an exception' );
+        ortoo_Asserts.assertContains( 'selectByCriteria called with a null criteria', exceptionMessage, 'selectByCriteria, when given a null criteria, will throw an exception' );
     }
 
     @isTest
@@ -112,7 +112,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addField called with a null fieldToAdd', exceptionMessage, 'addField, when passed a null field name, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addField called with a null fieldToAdd', exceptionMessage, 'addField, when passed a null field name, will throw an exception' );
     }
 
     @isTest
@@ -134,7 +134,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setSobjectType called with a null sobjectTypeName', exceptionMessage, 'setSobjectType, when passed a null string, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setSobjectType called with a null sobjectTypeName', exceptionMessage, 'setSobjectType, when passed a null string, will throw an exception' );
     }
 
     @isTest
@@ -154,7 +154,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setSobjectType called with an sobjectTypeName that does not represent a valid SObject Type', exceptionMessage, 'setSobjectType, when passed a string that does not represent an sobject, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setSobjectType called with an sobjectTypeName that does not represent a valid SObject Type', exceptionMessage, 'setSobjectType, when passed a string that does not represent an sobject, will throw an exception' );
     }
 
     @isTest
@@ -176,7 +176,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setSobjectType called with a null sobjectType', exceptionMessage, 'setSobjectType, when passed a null sobject type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setSobjectType called with a null sobjectType', exceptionMessage, 'setSobjectType, when passed a null sobject type, will throw an exception' );
     }
 
 }

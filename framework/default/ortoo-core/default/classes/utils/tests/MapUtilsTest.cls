@@ -63,7 +63,7 @@ private without sharing class MapUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( '', exceptionMessage, 'remove, when given a null map, will throw an exception' );
+		ortoo_Asserts.assertContains( '', exceptionMessage, 'remove, when given a null map, will throw an exception' );
 	}
 
 	/**

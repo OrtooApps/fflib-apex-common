@@ -39,7 +39,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Attempted to get the name of a null SObject', exceptionMessage, 'getSobjectType, when given a null Sobject, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Attempted to get the name of a null SObject', exceptionMessage, 'getSobjectType, when given a null Sobject, will throw an exception' );
 	}
 
 	@isTest
@@ -79,7 +79,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getSobjectType called with a null record', exceptionMessage, 'getSobjectType, when passed a null record, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getSobjectType called with a null record', exceptionMessage, 'getSobjectType, when passed a null record, will throw an exception' );
 	}
 
 	@isTest
@@ -106,7 +106,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Attempted to get the name of a null SObject', exceptionMessage, 'getSobjectName, when given a null Sobject, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Attempted to get the name of a null SObject', exceptionMessage, 'getSobjectName, when given a null Sobject, will throw an exception' );
 	}
 
 	@isTest
@@ -133,7 +133,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Attempted to get the name of a null SObjectType', exceptionMessage, 'getSobjectName, when given a null SobjectType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Attempted to get the name of a null SObjectType', exceptionMessage, 'getSobjectName, when given a null SobjectType, will throw an exception' );
 	}
 
 	@isTest
@@ -164,7 +164,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isCreateable called with a null record', exceptionMessage, 'isCreateable, when given a null record, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isCreateable called with a null record', exceptionMessage, 'isCreateable, when given a null record, will throw an exception' );
 	}
 
 	@isTest
@@ -195,7 +195,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isUpdateable called with a null record', exceptionMessage, 'isUpdateable, when given a null record, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isUpdateable called with a null record', exceptionMessage, 'isUpdateable, when given a null record, will throw an exception' );
 	}
 
 	@isTest
@@ -226,7 +226,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isDeletable called with a null record', exceptionMessage, 'isDeletable, when given a null record, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isDeletable called with a null record', exceptionMessage, 'isDeletable, when given a null record, will throw an exception' );
 	}
 
 	@isTest
@@ -255,7 +255,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isCreateable called with a null type', exceptionMessage, 'isCreateable, when given a null SObjectType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isCreateable called with a null type', exceptionMessage, 'isCreateable, when given a null SObjectType, will throw an exception' );
 	}
 
 	@isTest
@@ -284,7 +284,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isUpdateable called with a null type', exceptionMessage, 'isUpdateable, when given a null SObjectType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isUpdateable called with a null type', exceptionMessage, 'isUpdateable, when given a null SObjectType, will throw an exception' );
 	}
 
 	@isTest
@@ -313,7 +313,7 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isDeletable called with a null type', exceptionMessage, 'isDeletable, when given a null SObjectType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isDeletable called with a null type', exceptionMessage, 'isDeletable, when given a null SObjectType, will throw an exception' );
 	}
 
 	@isTest
@@ -342,6 +342,6 @@ private without sharing class SobjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'isAccessible called with a null type', exceptionMessage, 'isAccessible, when given a null SObjectType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'isAccessible called with a null type', exceptionMessage, 'isAccessible, when given a null SObjectType, will throw an exception' );
 	}
 }

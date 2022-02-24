@@ -84,6 +84,6 @@ private without sharing class ProcessDeactivationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'triggersDeactivated called with a null domainType', exceptionMessage, 'triggersDeactivated, when passed a null domainType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'triggersDeactivated called with a null domainType', exceptionMessage, 'triggersDeactivated, when passed a null domainType, will throw an exception' );
 	}
 }

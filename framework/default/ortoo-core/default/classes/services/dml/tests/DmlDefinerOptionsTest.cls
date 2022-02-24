@@ -37,6 +37,6 @@ private without sharing class DmlDefinerOptionsTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setOtherRecordsMode called with a null otherRecordsMode', exceptionMessage, 'setOtherRecordsMode, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setOtherRecordsMode called with a null otherRecordsMode', exceptionMessage, 'setOtherRecordsMode, when called with null, will throw an exception' );
     }
 }

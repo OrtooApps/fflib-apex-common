@@ -153,7 +153,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Expected a formula expression with number: 3', exceptionMessage, 'formulaCriteria, when given a formula and fewer criteria than referenced, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Expected a formula expression with number: 3', exceptionMessage, 'formulaCriteria, when given a formula and fewer criteria than referenced, will throw an exception' );
     }
 
     @isTest
@@ -608,7 +608,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Strings, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Strings, will throw an exception' );
     }
 
     @isTest
@@ -642,7 +642,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string name and an empty set of Strings, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string name and an empty set of Strings, will throw an exception' );
     }
 
     @isTest
@@ -676,7 +676,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Strings, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Strings, will throw an exception' );
     }
 
     @isTest
@@ -710,7 +710,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string name and an empty set of Longs, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string name and an empty set of Longs, will throw an exception' );
     }
 
     @isTest
@@ -744,7 +744,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Integers, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Integers, will throw an exception' );
     }
 
     @isTest
@@ -778,7 +778,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Integers, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Integers, will throw an exception' );
     }
 
     @isTest
@@ -815,7 +815,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Ids, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Ids, will throw an exception' );
     }
 
     @isTest
@@ -852,7 +852,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string name and an empty set of Ids, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string name and an empty set of Ids, will throw an exception' );
     }
 
     @isTest
@@ -886,7 +886,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Doubles, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Doubles, will throw an exception' );
     }
     @isTest
     private static void inSet_stringName_doubleValues_whenCalled_addsAnInToTheGeneratedSoql() // NOPMD: Test method name format
@@ -919,7 +919,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Doubles, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Doubles, will throw an exception' );
     }
 
     @isTest
@@ -953,7 +953,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Decimal, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Decimal, will throw an exception' );
     }
 
     @isTest
@@ -987,7 +987,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Decimals, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Decimals, will throw an exception' );
     }
 
     @isTest
@@ -1024,7 +1024,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Dates, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Dates, will throw an exception' );
     }
 
     @isTest
@@ -1061,7 +1061,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Dates, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Dates, will throw an exception' );
     }
 
     @isTest
@@ -1098,7 +1098,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of DateTime, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of DateTime, will throw an exception' );
     }
 
     @isTest
@@ -1135,7 +1135,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of DateTime, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of DateTime, will throw an exception' );
     }
 
     @isTest
@@ -1169,7 +1169,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Objects, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a field and an empty set of Objects, will throw an exception' );
     }
     @isTest
     private static void inSet_stringName_objectValues_whenCalled_addsAnInToTheGeneratedSoql() // NOPMD: Test method name format
@@ -1202,7 +1202,7 @@ private without sharing class ortoo_CriteriaTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Objects, will throw an exception' );
+        ortoo_Asserts.assertContains( 'inSet called with an empty values', exceptionMessage, 'isSet, when called with a string field name and an empty set of Objects, will throw an exception' );
     }
 
     @isTest

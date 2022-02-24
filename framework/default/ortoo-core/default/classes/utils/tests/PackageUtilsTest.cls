@@ -49,7 +49,7 @@ private without sharing class PackageUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getNamespace was called with a null classType', exceptionMessage, 'getNamespace, when called with a null object, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getNamespace was called with a null classType', exceptionMessage, 'getNamespace, when called with a null object, will throw an exception' );
 	}
 
 	@isTest

@@ -114,7 +114,7 @@ public inherited sharing class SearchServiceImplTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null searchConfigurationType', exceptionMessage, 'search, when passed a null searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null searchConfigurationType', exceptionMessage, 'search, when passed a null searchConfigurationType, will throw an exception' );
 	}
 
 	@isTest
@@ -136,7 +136,7 @@ public inherited sharing class SearchServiceImplTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null criteria', exceptionMessage, 'search, when passed a null criteria, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null criteria', exceptionMessage, 'search, when passed a null criteria, will throw an exception' );
 	}
 
 	@isTest
@@ -158,7 +158,7 @@ public inherited sharing class SearchServiceImplTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null window', exceptionMessage, 'search, when passed a null window, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null window', exceptionMessage, 'search, when passed a null window, will throw an exception' );
 	}
 
 	@isTest
@@ -180,7 +180,7 @@ public inherited sharing class SearchServiceImplTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null orderBy', exceptionMessage, 'search, when passed a null orderBy, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null orderBy', exceptionMessage, 'search, when passed a null orderBy, will throw an exception' );
 	}
 
 	@isTest
@@ -219,6 +219,6 @@ public inherited sharing class SearchServiceImplTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getSortableFields called with a null searchConfigurationType', exceptionMessage, 'getSortableFields, when passed a null searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getSortableFields called with a null searchConfigurationType', exceptionMessage, 'getSortableFields, when passed a null searchConfigurationType, will throw an exception' );
 	}
 }

@@ -64,7 +64,7 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ChildRecordFinderFactoryTest.NonRegisterableType does not implement IChildRecordFinder', exceptionMessage, 'newInstance, when called for an unmapped type that does not implement IChildRecordFinder, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ChildRecordFinderFactoryTest.NonRegisterableType does not implement IChildRecordFinder', exceptionMessage, 'newInstance, when called for an unmapped type that does not implement IChildRecordFinder, will throw an exception' );
     }
 
     @isTest
@@ -89,7 +89,7 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Object does not implement IChildRecordFinder', exceptionMessage, 'newInstance, when called for a mapped type that does not implement IChildRecordFinder, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Object does not implement IChildRecordFinder', exceptionMessage, 'newInstance, when called for a mapped type that does not implement IChildRecordFinder, will throw an exception' );
     }
 
     @isTest
@@ -109,7 +109,7 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -127,7 +127,7 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ortoo_ChildRecordFinderFactory instantiated with a null childRecordFinderPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_ChildRecordFinderFactory instantiated with a null childRecordFinderPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
     private without sharing class RegisterableType implements IChildRecordFinder
