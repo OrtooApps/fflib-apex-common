@@ -602,4 +602,108 @@ private without sharing class  ortoo_DateLiteralsTest
         System.assertEquals( Date.newInstance( 2024, 03, 01 ), literal.getStartDate(), 'NextNMonths_getStartDate, will return the start of next month' );
         System.assertEquals( Date.newInstance( 2024, 07, 31 ), literal.getEndDate(), 'NextNMonths_getEndDate, will return the end of the month, n months in the future' );
     }
+
+    @isTest
+    private static void compare_whenGivenADateBeforeTheRange_returnsMinus1() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( Date.newInstance( 2024, 02, 21 ) );
+        Test.stopTest();
+
+        System.assertEquals( -1, got, 'compare, when given a date before the range, will return minus 1' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateInsideTheRange_returnsZero() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( Date.newInstance( 2024, 02, 23 ) );
+        Test.stopTest();
+
+        System.assertEquals( 0, got, 'compare, when given a date inside the range, will return zero' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateAfterTheRange_returns1() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( Date.newInstance( 2024, 02, 24 ) );
+        Test.stopTest();
+
+        System.assertEquals( 1, got, 'compare, when given a date after the range, will return one' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateTimeJustBeforeTheRange_returnsMinus1() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( DateTime.newInstance( 2024, 02, 21, 23, 59, 59 ) );
+        Test.stopTest();
+
+        System.assertEquals( -1, got, 'compare, when given a datetime just before the range, will return minus 1' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateTimeJustAtStartOfTheRange_returnsZero() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( DateTime.newInstance( 2024, 02, 22, 0, 0, 1 ) );
+        Test.stopTest();
+
+        System.assertEquals( 0, got, 'compare, when given a datetime just at the start of the range, will return 0' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateTimeInTheMiddleOfTheRange_returnsZero() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( DateTime.newInstance( 2024, 02, 22, 12, 0, 0 ) );
+        Test.stopTest();
+
+        System.assertEquals( 0, got, 'compare, when given a datetime in the middle of the range, will return 0' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateTimeJustAtEndOfTheRange_returnsZero() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( DateTime.newInstance( 2024, 02, 23, 23, 59, 59 ) );
+        Test.stopTest();
+
+        System.assertEquals( 0, got, 'compare, when given a datetime just at the end of the range, will return 0' );
+    }
+
+    @isTest
+    private static void compare_whenGivenADateTimeJustAfterTheRange_returns1() // NOPMD: Test method name format
+    {
+        ortoo_DateLiterals.today = Date.newInstance( 2024, 02, 23 );
+        ortoo_DateLiterals.DateRangeLiteral literal = new ortoo_DateLiterals.LastNDays( 1 );
+
+        Test.startTest();
+            Integer got = literal.compare( DateTime.newInstance( 2024, 02, 24, 0, 0, 0 ) );
+        Test.stopTest();
+
+        System.assertEquals( 1, got, 'compare, when given a datetime just after the range, will return 1' );
+    }
 }
