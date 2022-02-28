@@ -85,7 +85,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ortoo_MessageRendererFactoryTest.NonRegisterableType does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for an unmapped type that does not implement IMessageRenderer, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_MessageRendererFactoryTest.NonRegisterableType does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for an unmapped type that does not implement IMessageRenderer, will throw an exception' );
     }
 
     @isTest
@@ -113,7 +113,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Object does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for a mapped type that does not implement IMessageRenderer, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Object does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for a mapped type that does not implement IMessageRenderer, will throw an exception' );
     }
 
     @isTest
@@ -136,7 +136,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null type, will throw an exception' );
     }
     @isTest
     private static void newInstance_whenCalledWithANullMessage_willThrowAnException() // NOPMD: Test method name format
@@ -155,7 +155,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null message', exceptionMessage, 'newInstance, when called with null message, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null message', exceptionMessage, 'newInstance, when called with null message, will throw an exception' );
     }
 
     @isTest
@@ -176,7 +176,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ortoo_MessageRendererFactory instantiated with a null implementationPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_MessageRendererFactory instantiated with a null implementationPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
     private without sharing class RegisterableType implements IMessageRenderer

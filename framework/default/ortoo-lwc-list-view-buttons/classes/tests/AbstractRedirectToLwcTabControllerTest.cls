@@ -60,7 +60,7 @@ public with sharing class AbstractRedirectToLwcTabControllerTest
 			PageReference got = controller.redirectToTab();
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'tabName', got.getUrl(), 'redirectToTab, when called, will retrun a PageReference with the URL pointing to the defined tab page' );
+		ortoo_Asserts.assertContains( 'tabName', got.getUrl(), 'redirectToTab, when called, will retrun a PageReference with the URL pointing to the defined tab page' );
 
 		Map<String,String> parameters = got.getParameters();
 		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTab, when called, will return a PageReference with a return url parameter' );
@@ -87,7 +87,7 @@ public with sharing class AbstractRedirectToLwcTabControllerTest
 			PageReference got = controller.redirectToTab();
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'tabName', got.getUrl(), 'redirectToTab, when no records are selected, will retrun a PageReference with the URL pointing to the defined tab page' );
+		ortoo_Asserts.assertContains( 'tabName', got.getUrl(), 'redirectToTab, when no records are selected, will retrun a PageReference with the URL pointing to the defined tab page' );
 
 		Map<String,String> parameters = got.getParameters();
 		System.assertEquals( 'testscenario', parameters.get( 'c__returnUrl' ), 'redirectToTab, when no records are selected, will return a PageReference with a return url parameter' );

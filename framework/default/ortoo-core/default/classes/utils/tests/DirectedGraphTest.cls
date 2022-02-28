@@ -139,7 +139,7 @@ private without sharing class DirectedGraphTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'The graph contains a circular reference and therefore cannot be resolved', exceptionMessage, 'generateSorted, when a circular reference has been defined, will throw an exception' );
+		ortoo_Asserts.assertContains( 'The graph contains a circular reference and therefore cannot be resolved', exceptionMessage, 'generateSorted, when a circular reference has been defined, will throw an exception' );
 	}
 
 	@isTest
@@ -159,7 +159,7 @@ private without sharing class DirectedGraphTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addRelationship called with a child that has not been added as a node (UnregisteredChild)', exceptionMessage, 'addRelationship, when given a child that has not previously been added, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addRelationship called with a child that has not been added as a node (UnregisteredChild)', exceptionMessage, 'addRelationship, when given a child that has not previously been added, will throw an exception' );
 	}
 
 	@isTest
@@ -179,6 +179,6 @@ private without sharing class DirectedGraphTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addRelationship called with a parent that has not been added as a node (UnregisteredParent)', exceptionMessage, 'addRelationship, when given a parent that has not previously been added, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addRelationship called with a parent that has not been added as a node (UnregisteredParent)', exceptionMessage, 'addRelationship, when given a parent that has not previously been added, will throw an exception' );
 	}
 }

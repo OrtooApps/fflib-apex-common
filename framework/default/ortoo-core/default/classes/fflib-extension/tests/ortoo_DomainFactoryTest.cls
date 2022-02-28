@@ -72,7 +72,7 @@ private without sharing class ortoo_DomainFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'getDomainType called with a null sobjectType', exceptionMessage, 'getDomainType, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'getDomainType called with a null sobjectType', exceptionMessage, 'getDomainType, when called with null, will throw an exception' );
     }
 
     public inherited sharing class RegisterableType {}

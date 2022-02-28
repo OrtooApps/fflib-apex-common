@@ -30,6 +30,10 @@
  */
 public with sharing class fflib_Comparator
 {
+	public interface Comparable
+	{
+		Integer compare( Object otherValue );
+	}
 
 	public static Boolean compareTo(Object object1, fflib_Operator operator, Object object2)
 	{
@@ -53,6 +57,10 @@ public with sharing class fflib_Comparator
 
 	public static Integer compare(Object object1, Object object2)
 	{
+		if ( object2 instanceOf Comparable ) {
+			return ((Comparable)object2).compare( object1 );
+		}
+
 		if (object1 == null && object2 == null)
 			return 0;
 		else if (object1 == null)

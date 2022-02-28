@@ -258,7 +258,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS, will throw an exception' );
 
         ortoo_Exception.Contexts contexts = thrownException.getContexts();
         ortoo_Exception.Context context;
@@ -423,7 +423,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and FLS switched off for a different object, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and FLS switched off for a different object, will throw an exception' );
     }
 
     @isTest
@@ -462,7 +462,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and FLS switched off for a different field, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and FLS switched off for a different field, will throw an exception' );
     }
 
     @isTest
@@ -501,8 +501,8 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Name', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception naming the fields in violation' );
-        Amoss_Asserts.assertDoesNotContain( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception, not naming the fields that are supressed' );
+        ortoo_Asserts.assertContains( 'Name', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception naming the fields in violation' );
+        ortoo_Asserts.assertDoesNotContain( 'NumberOfEmployees', thrownException.getMessage(), 'dmlInsert, when the user cannot create records because of FLS and not all fields are switched off, will throw an exception, not naming the fields that are supressed' );
 
         ortoo_Exception.Contexts contexts = thrownException.getContexts();
         ortoo_Exception.Context context;
@@ -807,7 +807,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS, will throw an exception' );
 
         ortoo_Exception.Contexts contexts = thrownException.getContexts();
         ortoo_Exception.Context context;
@@ -970,7 +970,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and FLS switched off for a different object, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and FLS switched off for a different object, will throw an exception' );
     }
 
     @isTest
@@ -1009,7 +1009,7 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and FLS switched off for a different field, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and FLS switched off for a different field, will throw an exception' );
     }
 
     @isTest
@@ -1048,8 +1048,8 @@ private without sharing class SecureDmlTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Name', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and not all fields are switched off, will throw an exception naming the fields in violation' );
-        Amoss_Asserts.assertDoesNotContain( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and not all fields are switched off, will throw an exception, not naming the fields that are supressed' );
+        ortoo_Asserts.assertContains( 'Name', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and not all fields are switched off, will throw an exception naming the fields in violation' );
+        ortoo_Asserts.assertDoesNotContain( 'NumberOfEmployees', thrownException.getMessage(), 'dmlUpdate, when the user cannot update records because of FLS and not all fields are switched off, will throw an exception, not naming the fields that are supressed' );
 
         ortoo_Exception.Contexts contexts = thrownException.getContexts();
         ortoo_Exception.Context context;

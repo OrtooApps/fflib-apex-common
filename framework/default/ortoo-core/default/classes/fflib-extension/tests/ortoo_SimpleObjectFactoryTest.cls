@@ -42,7 +42,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'NonConstructableType does not have parameterless constructor', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NonConstructableType does not have parameterless constructor', exceptionMessage, 'newInstance, when called with a type that cannot be constructed, will throw an exception' );
     }
 
     @isTest
@@ -113,7 +113,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'No implementation registered for', exceptionMessage, 'newInstance, when set to not allow unmapped, and called with an unmapped, will throw an exception' );
+        ortoo_Asserts.assertContains( 'No implementation registered for', exceptionMessage, 'newInstance, when set to not allow unmapped, and called with an unmapped, will throw an exception' );
     }
 
     @isTest
@@ -155,7 +155,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'No implementation registered for thingy', exceptionMessage, 'setTypeName, when an error occurs, will set the name of the type in the message' );
+        ortoo_Asserts.assertContains( 'No implementation registered for thingy', exceptionMessage, 'setTypeName, when an error occurs, will set the name of the type in the message' );
     }
 
     @isTest
@@ -175,7 +175,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setTypeName called with a null typeName', exceptionMessage, 'setTypeName, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setTypeName called with a null typeName', exceptionMessage, 'setTypeName, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -195,7 +195,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -215,7 +215,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setErrorOnUnmappedType called with a null errorOnUnmappedType', exceptionMessage, 'setErrorOnUnmappedType, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setErrorOnUnmappedType called with a null errorOnUnmappedType', exceptionMessage, 'setErrorOnUnmappedType, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -233,7 +233,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ortoo_SimpleObjectFactory instantiated with a null implementationByType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_SimpleObjectFactory instantiated with a null implementationByType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
     private without sharing class RegisterableType

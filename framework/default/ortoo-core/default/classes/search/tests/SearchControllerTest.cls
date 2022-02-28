@@ -20,7 +20,7 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'setSearchConfigurationType called with a null searchConfigurationType', exceptionMessage, 'setSearchConfigurationType, when passed a null searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'setSearchConfigurationType called with a null searchConfigurationType', exceptionMessage, 'setSearchConfigurationType, when passed a null searchConfigurationType, will throw an exception' );
 	}
 
 	@isTest
@@ -109,7 +109,7 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null searchCriteriaFactory', exceptionMessage, 'search, when passed a null searchCriteriaFactory, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null searchCriteriaFactory', exceptionMessage, 'search, when passed a null searchCriteriaFactory, will throw an exception' );
 	}
 
 	@isTest
@@ -130,7 +130,7 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null criteria', exceptionMessage, 'search, when passed a null criteria, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null criteria', exceptionMessage, 'search, when passed a null criteria, will throw an exception' );
 	}
 
 	@isTest
@@ -151,7 +151,7 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null window', exceptionMessage, 'search, when passed a null window, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null window', exceptionMessage, 'search, when passed a null window, will throw an exception' );
 	}
 
 	@isTest
@@ -172,7 +172,7 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called with a null orderBy', exceptionMessage, 'search, when passed a null orderBy, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called with a null orderBy', exceptionMessage, 'search, when passed a null orderBy, will throw an exception' );
 	}
 
 	@isTest
@@ -192,7 +192,7 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'search called when searchConfigurationType was null', exceptionMessage, 'search, when searchConfigurationType is not configured, will throw an exception' );
+		ortoo_Asserts.assertContains( 'search called when searchConfigurationType was null', exceptionMessage, 'search, when searchConfigurationType is not configured, will throw an exception' );
 	}
 
 	@isTest
@@ -232,6 +232,6 @@ public inherited sharing class SearchControllerTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getSortableFields called when searchConfigurationType was null', exceptionMessage, 'getSortableFields,when searchConfigurationType is not configured, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getSortableFields called when searchConfigurationType was null', exceptionMessage, 'getSortableFields,when searchConfigurationType is not configured, will throw an exception' );
 	}
 }

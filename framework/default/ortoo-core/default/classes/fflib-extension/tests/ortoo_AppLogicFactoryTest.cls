@@ -64,7 +64,7 @@ private without sharing class ortoo_AppLogicFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'newInstance called with a null requestedType', exceptionMessage, 'newInstance, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -82,7 +82,7 @@ private without sharing class ortoo_AppLogicFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'ortoo_AppLogicFactory instantiated with a null appLogicPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_AppLogicFactory instantiated with a null appLogicPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
     private without sharing class RegisterableType

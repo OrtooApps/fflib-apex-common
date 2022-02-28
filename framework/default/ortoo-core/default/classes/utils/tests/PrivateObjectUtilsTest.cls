@@ -39,7 +39,7 @@ private without sharing class PrivateObjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getClassType was unable to determine the type for the object.  Most likely it is private.', thrownException.getMessage(), 'getClassType, when given an instance of a private class, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getClassType was unable to determine the type for the object.  Most likely it is private.', thrownException.getMessage(), 'getClassType, when given an instance of a private class, will throw an exception' );
 		System.assertEquals( privateObject, thrownException.getContexts().next().getValue(), 'getClassType, when given an instance of a private class, will throw an exception with the object as a context property' );
 	}
 
@@ -67,7 +67,7 @@ private without sharing class PrivateObjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getClassType was unable to determine the type for the object.  Most likely it is private.', thrownException.getMessage(), 'getClassType,when given an instance of a private inner class of a private class, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getClassType was unable to determine the type for the object.  Most likely it is private.', thrownException.getMessage(), 'getClassType,when given an instance of a private inner class of a private class, will throw an exception' );
 		System.assertEquals( privateObject, thrownException.getContexts().next().getValue(), 'getClassType, when given an instance of a private inner class of a private class, will throw an exception with the object as a context property' );
 	}
 
@@ -86,7 +86,7 @@ private without sharing class PrivateObjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getParentClassType called with a type that does not represent an inner class in a publically accessible class', exceptionMessage, 'getParentClassType, when given a type for a top level class, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getParentClassType called with a type that does not represent an inner class in a publically accessible class', exceptionMessage, 'getParentClassType, when given a type for a top level class, will throw an exception' );
 	}
 
 	@isTest
@@ -104,7 +104,7 @@ private without sharing class PrivateObjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getParentClassType called with a type that does not represent an inner class in a publically accessible class', exceptionMessage, 'getParentClassType, when given a type for a top level class, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getParentClassType called with a type that does not represent an inner class in a publically accessible class', exceptionMessage, 'getParentClassType, when given a type for a top level class, will throw an exception' );
 	}
 
 	@isTest
@@ -122,7 +122,7 @@ private without sharing class PrivateObjectUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getParentClassType called with a type that does not represent an inner class in a publically accessible class', exceptionMessage, 'getParentClassType, when given a type for a top level class, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getParentClassType called with a type that does not represent an inner class in a publically accessible class', exceptionMessage, 'getParentClassType, when given a type for a top level class, will throw an exception' );
 	}
 
 	public class PublicInnerClass {}

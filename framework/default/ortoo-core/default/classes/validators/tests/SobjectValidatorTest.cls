@@ -32,7 +32,7 @@ private without sharing class SobjectValidatorTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setSobject called with a null sobjectToValidate', exceptionMessage, 'setSobject, when passed null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setSobject called with a null sobjectToValidate', exceptionMessage, 'setSobject, when passed null, will throw an exception' );
     }
 
     private without sharing class TestableSobjectValidator extends SobjectValidator

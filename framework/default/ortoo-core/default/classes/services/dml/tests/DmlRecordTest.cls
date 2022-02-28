@@ -27,7 +27,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'DmlRecord constructor called with a null recordToDml', exceptionMessage, 'constructor, when given null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'DmlRecord constructor called with a null recordToDml', exceptionMessage, 'constructor, when given null, will throw an exception' );
     }
 
     @isTest
@@ -60,7 +60,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChildContext called with a null childRecordType', exceptionMessage, 'addChildContext, when called with a null type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChildContext called with a null childRecordType', exceptionMessage, 'addChildContext, when called with a null type, will throw an exception' );
     }
 
     @isTest
@@ -79,7 +79,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChildContext called with a null childContext', exceptionMessage, 'addChildContext, when called with a null childContext, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChildContext called with a null childContext', exceptionMessage, 'addChildContext, when called with a null childContext, will throw an exception' );
     }
 
     @isTest
@@ -115,7 +115,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'InvalidType', exceptionMessage, 'addChild, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'InvalidType', exceptionMessage, 'addChild, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -135,7 +135,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChild called with a null childRecordType', exceptionMessage, 'addChild, when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChild called with a null childRecordType', exceptionMessage, 'addChild, when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -155,7 +155,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChild called with a null childRecord', exceptionMessage, 'addChild, when given a null child context, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChild called with a null childRecord', exceptionMessage, 'addChild, when given a null child context, will throw an exception' );
     }
 
     @isTest
@@ -195,7 +195,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'InvalidType', exceptionMessage, 'addChildren, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'InvalidType', exceptionMessage, 'addChildren, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -215,7 +215,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChildren called with a null childRecordType', exceptionMessage, 'addChildren, when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChildren called with a null childRecordType', exceptionMessage, 'addChildren, when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -235,7 +235,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChildren called with a null childRecords', exceptionMessage, 'addChildren, when given a null child context, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChildren called with a null childRecords', exceptionMessage, 'addChildren, when given a null child context, will throw an exception' );
     }
 
     @isTest
@@ -279,7 +279,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'InvalidType', exceptionMessage, 'setChild, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'InvalidType', exceptionMessage, 'setChild, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -299,7 +299,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChild called with a null childRecordType', exceptionMessage, 'setChild, when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChild called with a null childRecordType', exceptionMessage, 'setChild, when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -319,7 +319,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChild called with a null childRecord', exceptionMessage, 'setChild, when given a null child context, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChild called with a null childRecord', exceptionMessage, 'setChild, when given a null child context, will throw an exception' );
     }
 
     @isTest
@@ -366,7 +366,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'InvalidType', exceptionMessage, 'setChildren, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'InvalidType', exceptionMessage, 'setChildren, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -386,7 +386,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChildren called with a null childRecordType', exceptionMessage, 'setChildren, when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChildren called with a null childRecordType', exceptionMessage, 'setChildren, when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -408,7 +408,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChildren called with a null childRecords', exceptionMessage, 'setChildren, when given a null child context, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChildren called with a null childRecords', exceptionMessage, 'setChildren, when given a null child context, will throw an exception' );
     }
 
     @isTest
@@ -455,7 +455,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'InvalidType', exceptionMessage, 'setChildren (DmlDefiner), when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'InvalidType', exceptionMessage, 'setChildren (DmlDefiner), when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -475,7 +475,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChildren called with a null childRecordType', exceptionMessage, 'setChildren (DmlDefiner), when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChildren called with a null childRecordType', exceptionMessage, 'setChildren (DmlDefiner), when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -497,7 +497,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChildren called with a null childRecords', exceptionMessage, 'setChildren (DmlDefiner), when given a null child context, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChildren called with a null childRecords', exceptionMessage, 'setChildren (DmlDefiner), when given a null child context, will throw an exception' );
     }
 
     @isTest
@@ -517,7 +517,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Invalid', exceptionMessage, 'getChildDefiner, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Invalid', exceptionMessage, 'getChildDefiner, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -553,7 +553,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Invalid', exceptionMessage, 'setChildDmlOptions, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Invalid', exceptionMessage, 'setChildDmlOptions, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -574,7 +574,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChildDmlOptions called with a null childRecordType', exceptionMessage, 'setChildDmlOptions, when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChildDmlOptions called with a null childRecordType', exceptionMessage, 'setChildDmlOptions, when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -595,7 +595,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setChildDmlOptions called with a null options', exceptionMessage, 'setChildDmlOptions, when given a null options, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setChildDmlOptions called with a null options', exceptionMessage, 'setChildDmlOptions, when given a null options, will throw an exception' );
     }
 
     @isTest
@@ -632,7 +632,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'Invalid', exceptionMessage, 'addChildPreSaveAction, when given a child type that does not exist, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Invalid', exceptionMessage, 'addChildPreSaveAction, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest
@@ -655,7 +655,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChildPreSaveAction called with a null childRecordType', exceptionMessage, 'addChildPreSaveAction, when given a null child type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChildPreSaveAction called with a null childRecordType', exceptionMessage, 'addChildPreSaveAction, when given a null child type, will throw an exception' );
     }
 
     @isTest
@@ -676,7 +676,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'addChildPreSaveAction called with a null action', exceptionMessage, 'addChildPreSaveAction, when given a null action, will throw an exception' );
+        ortoo_Asserts.assertContains( 'addChildPreSaveAction called with a null action', exceptionMessage, 'addChildPreSaveAction, when given a null action, will throw an exception' );
     }
 
     @isTest
@@ -805,7 +805,7 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'saveSobject called with a null uow', exceptionMessage, 'saveSobject, when called with a null uow, will throw an exception' );
+        ortoo_Asserts.assertContains( 'saveSobject called with a null uow', exceptionMessage, 'saveSobject, when called with a null uow, will throw an exception' );
     }
 
     @isTest
@@ -969,6 +969,6 @@ private without sharing class DmlRecordTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'registerChildrenToDelete called with a null register', exceptionMessage, 'registerChildrenToDelete, when called with a null register, will throw an exception' );
+        ortoo_Asserts.assertContains( 'registerChildrenToDelete called with a null register', exceptionMessage, 'registerChildrenToDelete, when called with a null register, will throw an exception' );
     }
 }

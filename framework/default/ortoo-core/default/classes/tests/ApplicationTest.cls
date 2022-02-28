@@ -225,7 +225,7 @@ private without sharing class ApplicationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Configuration exists with an invalid type (InvalidType)', exceptionMessage, 'applyConfiguration, when a record has an invalid type, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Configuration exists with an invalid type (InvalidType)', exceptionMessage, 'applyConfiguration, when a record has an invalid type, will throw an exception' );
 	}
 
 	@isTest
@@ -253,7 +253,7 @@ private without sharing class ApplicationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Configuration exists with an invalid sObject (InvalidSobject)', exceptionMessage, 'applyConfiguration, when a record has an invalid Sobject, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Configuration exists with an invalid sObject (InvalidSobject)', exceptionMessage, 'applyConfiguration, when a record has an invalid Sobject, will throw an exception' );
 	}
 
 	@isTest
@@ -281,7 +281,7 @@ private without sharing class ApplicationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'Configuration exists with an invalid class (ApplicationTest.InvalidClass)', exceptionMessage, 'applyConfiguration, when a record has an invalid class, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Configuration exists with an invalid class (ApplicationTest.InvalidClass)', exceptionMessage, 'applyConfiguration, when a record has an invalid class, will throw an exception' );
 	}
 
 	public interface IServiceInterface{}

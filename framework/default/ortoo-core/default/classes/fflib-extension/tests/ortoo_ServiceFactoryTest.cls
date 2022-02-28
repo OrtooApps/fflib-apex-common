@@ -90,7 +90,7 @@ public without sharing class ortoo_ServiceFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'isRegisteredAsAnImplementation called with a null className', exceptionMessage, 'isRegisteredAsAnImplementation, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'isRegisteredAsAnImplementation called with a null className', exceptionMessage, 'isRegisteredAsAnImplementation, when called with null, will throw an exception' );
     }
 
     public inherited sharing class RegisterableType implements IRegisterableType {}

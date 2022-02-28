@@ -177,7 +177,7 @@ private without sharing class UriUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'buildUriFragment called with a null properties', exceptionMessage, 'buildUriFragment, when passed a null properties, will throw an exception' );
+		ortoo_Asserts.assertContains( 'buildUriFragment called with a null properties', exceptionMessage, 'buildUriFragment, when passed a null properties, will throw an exception' );
 	}
 
 	@isTest
@@ -215,7 +215,7 @@ private without sharing class UriUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addUriFragment called with a null pageReference', exceptionMessage, 'addUriFragment, when passed a null pageReference, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addUriFragment called with a null pageReference', exceptionMessage, 'addUriFragment, when passed a null pageReference, will throw an exception' );
 	}
 
 	@isTest
@@ -233,6 +233,6 @@ private without sharing class UriUtilsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addUriFragment called with a null properties', exceptionMessage, 'addUriFragment, when passed a null properties, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addUriFragment called with a null properties', exceptionMessage, 'addUriFragment, when passed a null properties, will throw an exception' );
 	}
 }

@@ -16,7 +16,7 @@ private without sharing class DmlChildContextTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'DmlChildContext was constructed with a null relatedByField', exceptionMessage, 'constructor, when called with a null field, will throw an exception' );
+        ortoo_Asserts.assertContains( 'DmlChildContext was constructed with a null relatedByField', exceptionMessage, 'constructor, when called with a null field, will throw an exception' );
     }
 
     @isTest
@@ -34,7 +34,7 @@ private without sharing class DmlChildContextTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'DmlChildContext was constructed with a null childFinderType', exceptionMessage, 'constructor, when called with a null finder type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'DmlChildContext was constructed with a null childFinderType', exceptionMessage, 'constructor, when called with a null finder type, will throw an exception' );
     }
 
     @isTest
@@ -77,7 +77,7 @@ private without sharing class DmlChildContextTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'setParent was called with a null parent', exceptionMessage, 'setParent, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'setParent was called with a null parent', exceptionMessage, 'setParent, when called with null, will throw an exception' );
     }
 
     @isTest
@@ -97,7 +97,7 @@ private without sharing class DmlChildContextTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'registerRelationship was called with a null unit of work', exceptionMessage, 'registerRelationship, when called with uow, will throw an exception' );
+        ortoo_Asserts.assertContains( 'registerRelationship was called with a null unit of work', exceptionMessage, 'registerRelationship, when called with uow, will throw an exception' );
     }
 
     @isTest
@@ -117,7 +117,7 @@ private without sharing class DmlChildContextTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'registerRelationship was called with a null child', exceptionMessage, 'registerRelationship, when called with child, will throw an exception' );
+        ortoo_Asserts.assertContains( 'registerRelationship was called with a null child', exceptionMessage, 'registerRelationship, when called with child, will throw an exception' );
     }
 
     @isTest
@@ -137,7 +137,7 @@ private without sharing class DmlChildContextTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'registerRelationship was called before a parent was set', exceptionMessage, 'registerRelationship, when called before a parent is set, will throw an exception' );
+        ortoo_Asserts.assertContains( 'registerRelationship was called before a parent was set', exceptionMessage, 'registerRelationship, when called before a parent is set, will throw an exception' );
     }
 
     @isTest

@@ -270,4 +270,27 @@ private with sharing class fflib_ComparatorTest
 		System.assert(exceptionThrown);
 
 	}
+
+	@isTest
+	private static void compare_whenGivenAComparatorComparable_callsCompareAgainstThat() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			Integer got = fflib_Comparator.compare( 'object1', new ComparableThing() );
+		Test.stopTest();
+
+		System.assertEquals( 0, got, 'compare, when given an instance of Comparator.Comparable in object2, will call compare against that and return the result' );
+	}
+
+	class ComparableThingCalledWithUnexpectedValueException extends Exception {}
+	class ComparableThing implements fflib_Comparator.Comparable
+	{
+		public Integer compare( Object otherValue )
+		{
+			if ( otherValue == 'object1' )
+			{
+				return 0;
+			}
+			throw new ComparableThingCalledWithUnexpectedValueException();
+		}
+	}
 }

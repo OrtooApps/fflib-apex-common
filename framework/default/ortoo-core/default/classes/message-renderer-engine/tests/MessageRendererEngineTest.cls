@@ -20,7 +20,7 @@ private without sharing class MessageRendererEngineTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'render called before the renderer was set', exceptionMessage, 'render, when no renderer has been set, will throw an exception' );
+		ortoo_Asserts.assertContains( 'render called before the renderer was set', exceptionMessage, 'render, when no renderer has been set, will throw an exception' );
 	}
 
 	@isTest
@@ -42,7 +42,7 @@ private without sharing class MessageRendererEngineTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'render called before the message was set', exceptionMessage, 'render, when no message has been set, will throw an exception' );
+		ortoo_Asserts.assertContains( 'render called before the message was set', exceptionMessage, 'render, when no message has been set, will throw an exception' );
 	}
 
 	@isTest
@@ -110,7 +110,7 @@ private without sharing class MessageRendererEngineTest
 
 		messageController.verify();
 
-		Amoss_Asserts.assertContains( 'Call to render messages was called, but no message was rendered', thrownException.getMessage(), 'render, when the renderer returns false, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Call to render messages was called, but no message was rendered', thrownException.getMessage(), 'render, when the renderer returns false, will throw an exception' );
 
 		ortoo_Exception.Contexts contexts = thrownException.getContexts();
 		ortoo_Exception.Context context;

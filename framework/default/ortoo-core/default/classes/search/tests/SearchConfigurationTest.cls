@@ -16,7 +16,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'constructor called with a null baseSobjectType', exceptionMessage, 'constructor, when passed a null baseSobjectType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'constructor called with a null baseSobjectType', exceptionMessage, 'constructor, when passed a null baseSobjectType, will throw an exception' );
 	}
 
 	@isTest
@@ -138,7 +138,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getMappedSobjectField called with a blank resultField', exceptionMessage, 'getMappedSobjectField, when passed a null result field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getMappedSobjectField called with a blank resultField', exceptionMessage, 'getMappedSobjectField, when passed a null result field, will throw an exception' );
 	}
 
 	@isTest
@@ -158,7 +158,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'getMappedSobjectField called with a blank resultField', exceptionMessage, 'getMappedSobjectField, when passed a null result field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'getMappedSobjectField called with a blank resultField', exceptionMessage, 'getMappedSobjectField, when passed a null result field, will throw an exception' );
 	}
 
 	@isTest
@@ -178,7 +178,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addFieldMapping called with a blank resultField', exceptionMessage, 'addFieldMapping, when passed a null result field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addFieldMapping called with a blank resultField', exceptionMessage, 'addFieldMapping, when passed a null result field, will throw an exception' );
 	}
 
 	@isTest
@@ -198,7 +198,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addFieldMapping called with a blank resultField', exceptionMessage, 'addFieldMapping, when passed a blank result field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addFieldMapping called with a blank resultField', exceptionMessage, 'addFieldMapping, when passed a blank result field, will throw an exception' );
 	}
 
 	@isTest
@@ -218,7 +218,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addFieldMapping called with a blank sobjectField', exceptionMessage, 'addFieldMapping, when passed a null sobject field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addFieldMapping called with a blank sobjectField', exceptionMessage, 'addFieldMapping, when passed a null sobject field, will throw an exception' );
 	}
 
 	@isTest
@@ -238,7 +238,7 @@ public inherited sharing class SearchConfigurationTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'addFieldMapping called with a blank sobjectField', exceptionMessage, 'addFieldMapping, when passed a blank sobject field, will throw an exception' );
+		ortoo_Asserts.assertContains( 'addFieldMapping called with a blank sobjectField', exceptionMessage, 'addFieldMapping, when passed a blank sobject field, will throw an exception' );
 	}
 
 	class TestableSearchConfiguration extends SearchConfiguration

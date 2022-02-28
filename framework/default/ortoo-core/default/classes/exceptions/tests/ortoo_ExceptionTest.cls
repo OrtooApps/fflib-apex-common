@@ -53,8 +53,8 @@ public with sharing class ortoo_ExceptionTest {
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, will return the Stack Trace based on where the exception was constructed (but not the exception constructor)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_willReturnTheStackTrace', stackTrace, 'getStackTraceString, will return the Stack Trace based on where the exception was constructed' );
+        ortoo_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, will return the Stack Trace based on where the exception was constructed (but not the exception constructor)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_willReturnTheStackTrace', stackTrace, 'getStackTraceString, will return the Stack Trace based on where the exception was constructed' );
     }
 
     @isTest
@@ -72,8 +72,8 @@ public with sharing class ortoo_ExceptionTest {
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when the exception is subclassed, will return the Stack Trace based on where the exception was constructed (but not the exception constructor)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenSubclassed_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when the exception is subclassed, will return the Stack Trace based on where the exception was constructed' );
+        ortoo_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when the exception is subclassed, will return the Stack Trace based on where the exception was constructed (but not the exception constructor)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenSubclassed_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when the exception is subclassed, will return the Stack Trace based on where the exception was constructed' );
     }
 
     @isTest
@@ -91,10 +91,10 @@ public with sharing class ortoo_ExceptionTest {
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (not the exception constructor)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwAnOrtooExceptionInnerMethodCall', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 1)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwAnOrtooException', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 2)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenBuiltInsideLayers_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 3)' );
+        ortoo_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (not the exception constructor)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.throwAnOrtooExceptionInnerMethodCall', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 1)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.throwAnOrtooException', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 2)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenBuiltInsideLayers_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 3)' );
     }
 
     @isTest
@@ -112,10 +112,10 @@ public with sharing class ortoo_ExceptionTest {
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when the exception is subclassed and there are multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (not the exception constructor)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'getStackTraceString, when the exception is subclassed and there are multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 1)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'getStackTraceString, when the exception is subclassed and when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 2)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenSubclassedAndMultipleMethods_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when the exception is subclassed and there are multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 3)' );
+        ortoo_Asserts.assertDoesNotContain( '<init>', stackTrace, 'getStackTraceString, when the exception is subclassed and there are multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (not the exception constructor)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'getStackTraceString, when the exception is subclassed and there are multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 1)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'getStackTraceString, when the exception is subclassed and when construction is inside multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 2)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.getStackTraceString_whenSubclassedAndMultipleMethods_willReturnTheStackTrace', stackTrace, 'getStackTraceString, when the exception is subclassed and there are multiple layers of methods, will return the Stack Trace based on where the exception was raised - with each level (method 3)' );
     }
 
     @isTest
@@ -134,10 +134,10 @@ public with sharing class ortoo_ExceptionTest {
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertDoesNotContain( '<init>', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point' );
-        Amoss_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (method 1)' );
-        Amoss_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (method 2)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.regenerateStackTraceString_willCreateANewStackTraceFromTheGivenPoint', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (actual spot called)' );
+        ortoo_Asserts.assertDoesNotContain( '<init>', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point' );
+        ortoo_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (method 1)' );
+        ortoo_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (method 2)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.regenerateStackTraceString_willCreateANewStackTraceFromTheGivenPoint', stackTrace, 'regenerateStackTraceString, when called, will create a new stack trace from the given point (actual spot called)' );
     }
 
     @isTest
@@ -157,9 +157,9 @@ public with sharing class ortoo_ExceptionTest {
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (1st level is skipped)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (2nd level is not skipped)' );
-        Amoss_Asserts.assertContains( 'ortoo_ExceptionTest.regenerateStackTraceString_whenPassedANumber_willCreateANewStackTraceWithLevelsSkipped', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (3rd level is not skipped)' );
+        ortoo_Asserts.assertDoesNotContain( 'ortoo_ExceptionTest.throwASubclassedExceptionInnerMethodCall', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (1st level is skipped)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.throwASubclassedException', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (2nd level is not skipped)' );
+        ortoo_Asserts.assertContains( 'ortoo_ExceptionTest.regenerateStackTraceString_whenPassedANumber_willCreateANewStackTraceWithLevelsSkipped', stackTrace, 'regenerateStackTraceString, when called with a number of levels to skipp, will create a new stack trace from the given point, skipping the specified number of levels (3rd level is not skipped)' );
     }
 
     @isTest

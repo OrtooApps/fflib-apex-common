@@ -769,6 +769,16 @@ public virtual with sharing class fflib_Criteria
 	}
 
 	/**
+	 * Defines a 'Literal' that can be used as to compare against.
+	 * For example, a Date Literal such as TODAY.
+	 *
+	 * @param embraced Braces will be added if set to TRUE
+	 */
+	public interface Literal {
+		String toLiteral();
+	}
+
+	/**
 	 * @param value The value to convert
 	 *
 	 * @return Returns the given value converted to literal string
@@ -776,6 +786,11 @@ public virtual with sharing class fflib_Criteria
 	private static String toLiteral(final Object value)
 	{
 		if (value == null) return 'null';
+
+		if ( value instanceOf Literal )
+		{
+			return ((Literal)value).toLiteral();
+		}
 
 		if (value instanceof String || value instanceof Id)
 		{

@@ -202,7 +202,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with an invalid direction.  Was "invalid", but should be one of [asc,desc]', exceptionMessage, 'configure, when passed an invalid direction, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with an invalid direction.  Was "invalid", but should be one of [asc,desc]', exceptionMessage, 'configure, when passed an invalid direction, will throw an exception' );
 	}
 
 	@isTest
@@ -220,7 +220,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a null properties', exceptionMessage, 'configure, when passed a null properties, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a null properties', exceptionMessage, 'configure, when passed a null properties, will throw an exception' );
 	}
 
 	@isTest
@@ -238,7 +238,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a null searchConfigurationType', exceptionMessage, 'configure, when passed a null searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a null searchConfigurationType', exceptionMessage, 'configure, when passed a null searchConfigurationType, will throw an exception' );
 	}
 
 	@isTest
@@ -256,7 +256,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a searchConfigurationType ('+SearchOrderByTest.class+') that does not implement ISearchConfiguration or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a searchConfigurationType ('+SearchOrderByTest.class+') that does not implement ISearchConfiguration or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid searchConfigurationType, will throw an exception' );
 	}
 
 	@isTest
@@ -274,7 +274,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'configure called with a searchConfigurationType ('+SearchOrderByTest.NoParameterlessConstructor.class+') that does not implement ISearchConfiguration or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a searchConfigurationType ('+SearchOrderByTest.NoParameterlessConstructor.class+') that does not implement ISearchConfiguration or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid searchConfigurationType, will throw an exception' );
 	}
 
 

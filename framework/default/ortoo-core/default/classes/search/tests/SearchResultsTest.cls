@@ -44,7 +44,7 @@ public inherited sharing class SearchResultsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'constructor called with a null totalNumberOfRecords', exceptionMessage, 'constructor, when passed a null totalNumberOfRecords, will throw an exception' );
+		ortoo_Asserts.assertContains( 'constructor called with a null totalNumberOfRecords', exceptionMessage, 'constructor, when passed a null totalNumberOfRecords, will throw an exception' );
 	}
 
 	@isTest
@@ -62,7 +62,7 @@ public inherited sharing class SearchResultsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'constructor called with a negative totalNumberOfRecords', exceptionMessage, 'constructor, when passed a negative totalNumberOfRecords, will throw an exception' );
+		ortoo_Asserts.assertContains( 'constructor called with a negative totalNumberOfRecords', exceptionMessage, 'constructor, when passed a negative totalNumberOfRecords, will throw an exception' );
 	}
 
 	@isTest
@@ -80,7 +80,7 @@ public inherited sharing class SearchResultsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'constructor called with a null records', exceptionMessage, 'constructor, when passed a null records, will throw an exception' );
+		ortoo_Asserts.assertContains( 'constructor called with a null records', exceptionMessage, 'constructor, when passed a null records, will throw an exception' );
 	}
 
 	@isTest
@@ -98,7 +98,7 @@ public inherited sharing class SearchResultsTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'constructor called with a totalNumberOfRecords that is lower than the size of records', exceptionMessage, 'constructor, when passed a total number of records that is lower than the number of records, will throw an exception' );
+		ortoo_Asserts.assertContains( 'constructor called with a totalNumberOfRecords that is lower than the size of records', exceptionMessage, 'constructor, when passed a total number of records that is lower than the number of records, will throw an exception' );
 	}
 
 	@isTest

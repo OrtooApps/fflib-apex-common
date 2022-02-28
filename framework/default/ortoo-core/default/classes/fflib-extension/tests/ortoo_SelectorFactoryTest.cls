@@ -49,7 +49,7 @@ private without sharing class ortoo_SelectorFactoryTest
             }
         Test.stopTest();
 
-        Amoss_Asserts.assertContains( 'getSelectorType called with a null sobjectType', exceptionMessage, 'getSelectorType, when called with null, will throw an exception' );
+        ortoo_Asserts.assertContains( 'getSelectorType called with a null sobjectType', exceptionMessage, 'getSelectorType, when called with null, will throw an exception' );
     }
 
     public inherited sharing class RegisterableType {}

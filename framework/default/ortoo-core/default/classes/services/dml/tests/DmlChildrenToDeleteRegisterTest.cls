@@ -140,7 +140,7 @@ private without sharing class DmlChildrenToDeleteRegisterTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'registerChildContextAndParent called with a null childContext', exceptionMessage, 'registerChildContextAndParent, when given a null child context, will throw an exception' );
+		ortoo_Asserts.assertContains( 'registerChildContextAndParent called with a null childContext', exceptionMessage, 'registerChildContextAndParent, when given a null child context, will throw an exception' );
 	}
 
 	@isTest
@@ -167,7 +167,7 @@ private without sharing class DmlChildrenToDeleteRegisterTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'registerChildContextAndParent called with a DmlChildContext that returns a null Child Finder Type', exceptionMessage, 'registerChildContextAndParent, when getChildFinderType returns null, will throw an exception' );
+		ortoo_Asserts.assertContains( 'registerChildContextAndParent called with a DmlChildContext that returns a null Child Finder Type', exceptionMessage, 'registerChildContextAndParent, when getChildFinderType returns null, will throw an exception' );
 	}
 
 	@isTest
@@ -197,7 +197,7 @@ private without sharing class DmlChildrenToDeleteRegisterTest
 			}
 		Test.stopTest();
 
-		Amoss_Asserts.assertContains( 'registerChildContextAndParent called with a DmlChildContext that returns a null Child Finder', exceptionMessage, 'registerChildContextAndParent, when getChildFinder returns null, will throw an exception' );
+		ortoo_Asserts.assertContains( 'registerChildContextAndParent called with a DmlChildContext that returns a null Child Finder', exceptionMessage, 'registerChildContextAndParent, when getChildFinder returns null, will throw an exception' );
 	}
 
 	@isTest
