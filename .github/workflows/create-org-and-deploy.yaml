@@ -68,7 +68,7 @@ jobs:
       # Run Apex Unit Tests
 
       - name: Run Apex Unit Tests
-        run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --codecoverage --wait 20 | grep -v ' Pass   '; test ${PIPESTATUS[0]} -eq 0
+        run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --wait 20 | grep -v ' Pass   '; test ${PIPESTATUS[0]} -eq 0
 
       # Prepare Jest Modules
 
