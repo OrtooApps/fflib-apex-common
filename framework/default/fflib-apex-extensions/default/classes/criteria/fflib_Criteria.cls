@@ -768,7 +768,12 @@ public virtual with sharing class fflib_Criteria
 		this.embraced = embraced;
 	}
 
-	// TODO: move - consider adding to the original library
+	/**
+	 * Defines a 'Literal' that can be used as to compare against.
+	 * For example, a Date Literal such as TODAY.
+	 *
+	 * @param embraced Braces will be added if set to TRUE
+	 */
 	public interface Literal {
 		String toLiteral();
 	}
@@ -782,7 +787,6 @@ public virtual with sharing class fflib_Criteria
 	{
 		if (value == null) return 'null';
 
-		// TODO: test this
 		if ( value instanceOf Literal )
 		{
 			return ((Literal)value).toLiteral();

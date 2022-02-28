@@ -30,7 +30,6 @@
  */
 public with sharing class fflib_Comparator
 {
-
 	public interface Comparable
 	{
 		Integer compare( Object otherValue );
@@ -58,7 +57,6 @@ public with sharing class fflib_Comparator
 
 	public static Integer compare(Object object1, Object object2)
 	{
-		// TODO: test
 		if ( object2 instanceOf Comparable ) {
 			return ((Comparable)object2).compare( object1 );
 		}
