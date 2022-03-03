@@ -14,7 +14,7 @@ public inherited sharing class SearchServiceMockDomain implements fflib_ISObject
 	{
 		return null;
 	}
-	public List<ortoo_qra.ISearchResult> buildSearchResults( ISearchConfiguration searchConfiguration )
+	public List<ISearchResult> buildSearchResults( ISearchConfiguration searchConfiguration )
 	{
 		return null;
 	}
