@@ -6,10 +6,13 @@
  * If used, it is recommended that triggers are added to those objects, or code added to the UI that updates the objects
  * referenced in the SOQL that invalidate the cache.
  */
+
+// TODO: parameter for org wide / session specific?
+// TODO: custom permission to access the org wide cache
 public inherited sharing class OrgCachedSoqlExecutor
 {
     private final static String SOQL_PARTITION_NAME = 'soql';
-    private final static Integer CACHE_LIFESPAN_SECONDS = 43200;
+    private final static Integer CACHE_LIFESPAN_SECONDS = 43200;   // TODO: soft setting / option
 
     /**
      * Perform the given query, first checking if the Org Platform Cache Partition contains results for that SOQL.
@@ -66,7 +69,7 @@ public inherited sharing class OrgCachedSoqlExecutor
     }
 
 	/**
-     * Clears the cached results all cached SOQL
+     * Clears the cached results for all cached SOQL
      */
     // TODO: how do we get this to just try to remove things that are in this partition?
     public void clearAllCache()
