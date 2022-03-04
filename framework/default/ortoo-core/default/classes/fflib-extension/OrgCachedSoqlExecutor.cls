@@ -6,13 +6,24 @@
  * If used, it is recommended that triggers are added to those objects, or code added to the UI that updates the objects
  * referenced in the SOQL that invalidate the cache.
  */
-
-// TODO: parameter for org wide / session specific?
-// TODO: custom permission to access the org wide cache
 public inherited sharing class OrgCachedSoqlExecutor
 {
     private final static String SOQL_PARTITION_NAME = 'soql';
     private final static Integer CACHE_LIFESPAN_SECONDS = 43200;   // TODO: soft setting / option
+	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessSOQLCache';
+
+	private Boolean hasAccessToCache
+	{
+		get
+		{
+			if ( hasAccessToCache == null )
+			{
+				hasAccessToCache = PermissionsService.hasPermission( CAN_ACCESS_SOQL_CACHE_PERMISSION );
+			}
+			return hasAccessToCache;
+		}
+		set;
+	}
 
     /**
      * Perform the given query, first checking if the Org Platform Cache Partition contains results for that SOQL.
@@ -31,22 +42,36 @@ public inherited sharing class OrgCachedSoqlExecutor
 
         try
         {
-            returnValues = (List<Sobject>)Cache.Org.get( key );
+			if ( hasAccessToCache )
+			{
+	            returnValues = (List<Sobject>)Cache.Org.get( key );
+			}
+			else
+			{
+            	System.debug( LoggingLevel.INFO, 'Opportunity to use Org Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
+			}
         }
         catch ( cache.Org.OrgCacheException e )
         {
             System.debug( LoggingLevel.ERROR, 'Attempt to read from the Org Platform Cache failed for the SOQL: ' + soql );
             System.debug( LoggingLevel.ERROR, e );
         }
+
         if ( returnValues == null )
         {
-            System.debug( LoggingLevel.INFO, 'Org Platform Cache miss when running the SOQL: ' + soql );
+			if ( hasAccessToCache )
+			{
+            	System.debug( LoggingLevel.INFO, 'Org Platform Cache miss when running the SOQL: ' + soql );
+			}
 
             returnValues = Database.query( soql );
 
             try
             {
-                Cache.Org.put( key, returnValues, CACHE_LIFESPAN_SECONDS, Cache.Visibility.NAMESPACE, false ); // immutable results
+				if ( hasAccessToCache )
+				{
+	                Cache.Org.put( key, returnValues, CACHE_LIFESPAN_SECONDS, Cache.Visibility.NAMESPACE, false ); // immutable results
+				}
             }
             catch ( Exception e )
             {
