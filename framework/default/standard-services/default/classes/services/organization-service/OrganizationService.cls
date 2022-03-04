@@ -1,6 +1,6 @@
-public with sharing class OrganizationService {
-
-    public static Boolean inDevOrg()
+public with sharing class OrganizationService
+{
+	public static Boolean inDevOrg()
 	{
 		return service().inDevOrg();
 	}
@@ -11,11 +11,12 @@ public with sharing class OrganizationService {
 	}
 
 	public static String getOrgEdition()
-    {
-        return service().getOrgEdition();
-    }
+	{
+		return service().getOrgEdition();
+	}
 
-    private static IOrganizationService service() {
-        return (IOrganizationService)Application.SERVICE.newInstance( IOrganizationService.class );
+	private static IOrganizationService service()
+	{
+		return (IOrganizationService)Application.SERVICE.newInstance( IOrganizationService.class );
 	}
 }
