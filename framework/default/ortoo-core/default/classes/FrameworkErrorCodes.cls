@@ -24,6 +24,9 @@ public inherited sharing class FrameworkErrorCodes {
 
 	public final static String NON_EVALUATABLE_CRITERIA		= 'CRI-00000';
 
+	public final static String CACHE_ACCESS_VIOLATION = 'CACHE-00000';
+
+
 	public final static String DML_ON_INACCESSIBLE_FIELDS	= '0000000';
 	public final static String DML_INSERT_NOT_ALLOWED		= '0000001';
 	public final static String DML_UPDATE_NOT_ALLOWED		= '0000002';
