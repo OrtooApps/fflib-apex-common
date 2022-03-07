@@ -67,11 +67,44 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 	 */
 	public List<Sobject> selectByCriteria( ortoo_Criteria criteria )
 	{
-		Contract.requires( criteria != null, 'selectByCriteria called with a null criteria' );
+		return selectByCriteria( criteria, false );
+	}
 
+	/**
+	 * Retrieve the records that match the passed criteria, optionally via the Org Level SOQL Cache
+	 *
+	 * @param	ortoo_Criteria	The criteria that should be used to derive the records to return
+	 * @param	Boolean			Should the query go via the Org Level SOQL Cache?
+	 * @return	List<Sobject>	The result of the Selection
+	 */
+	public List<Sobject> selectByCriteria( ortoo_Criteria criteria, Boolean cached )
+	{
+		Contract.requires( criteria != null, 'selectByCriteria called with a null criteria' );
+		Contract.requires( cached != null, 'selectByCriteria called with a null cached' );
 		Contract.assert( sobjectType != null, 'selectByCriteria called when sobjectType has not been set' );
 
-		return Database.query( generateSoqlByCriteria( criteria ) );
+		String soql = generateSoqlByCriteria( criteria );
+		if ( cached )
+		{
+			return ((OrgCachedSoqlExecutor)Application.APP_LOGIC.newInstance( OrgCachedSoqlExecutor.class ))
+						.query( soql );
+		}
+		return  Database.query( soql );
+	}
+
+	/**
+	 * Request that the cached results for the given criteria be cleared.
+	 * Assumes that the fields are set up correctly.
+	 *
+	 * @param	ortoo_Criteria	The criteria that should be used to derive the SOQL results to clear
+	 */
+	public ortoo_DynamicSobjectSelector clearCacheFor( ortoo_Criteria criteria )
+	{
+		Contract.requires( criteria != null, 'clearCacheFor called with a null criteria' );
+
+		((OrgCachedSoqlExecutor)Application.APP_LOGIC.newInstance( OrgCachedSoqlExecutor.class ))
+						.clearCacheFor( generateSoqlByCriteria( criteria ) );
+		return this;
 	}
 
 	/**

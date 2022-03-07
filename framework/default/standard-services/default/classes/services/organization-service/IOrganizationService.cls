@@ -1,4 +1,5 @@
-public interface IOrganizationService {
+public interface IOrganizationService
+{
     Boolean inDevOrg();
 	Boolean inSandbox();
 	String getOrgEdition();
