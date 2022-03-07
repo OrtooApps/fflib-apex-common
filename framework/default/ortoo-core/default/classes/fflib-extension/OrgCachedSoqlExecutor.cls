@@ -42,6 +42,8 @@ public inherited sharing class OrgCachedSoqlExecutor
 	 */
 	public List<Sobject> query( String soql )
 	{
+		Contract.requires( soql != null, 'query called with a null soql' );
+
 		String key = generateKey( soql );
 		List<Sobject> returnValues = null;
 
@@ -95,6 +97,8 @@ public inherited sharing class OrgCachedSoqlExecutor
 	 */
 	public void clearCacheFor( String soql )
 	{
+		Contract.requires( soql != null, 'clearCacheFor called with a null soql' );
+
 		if ( ! hasAccessToCache )
 		{
 			throw new OrgCacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
