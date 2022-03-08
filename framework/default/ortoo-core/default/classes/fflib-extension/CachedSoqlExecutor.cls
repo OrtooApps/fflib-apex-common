@@ -10,10 +10,11 @@ public inherited sharing class CachedSoqlExecutor
 {
 	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
-	CacheWrapper cacheWrapper = new OrgCache();
+
+	CacheWrapper cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
 	private final static String SOQL_PARTITION_NAME = 'soql';
-	private final static Integer CACHE_LIFESPAN_SECONDS = 43200;   // TODO: soft setting / option
+	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
 
 	@testVisible
 	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessSOQLCache';
@@ -47,7 +48,7 @@ public inherited sharing class CachedSoqlExecutor
 			{
 				cacheWrapper = new SessionCache();
 			}
-			when else
+			when NONE
 			{
 				cacheWrapper = new NullCache();
 			}
@@ -77,16 +78,16 @@ public inherited sharing class CachedSoqlExecutor
 		{
 			if ( hasAccessToCache )
 			{
-				returnValues = (List<Sobject>)Cache.Org.get( key );
+				returnValues = (List<Sobject>)cacheWrapper.get( key );
 			}
 			else
 			{
-				System.debug( LoggingLevel.INFO, 'Opportunity to use Org Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
+				System.debug( LoggingLevel.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
 			}
 		}
-		catch ( Cache.Org.OrgCacheException e ) // TODO: add the other one too
+		catch ( Exception e )
 		{
-			System.debug( LoggingLevel.ERROR, 'Attempt to read from the Org Platform Cache failed for the SOQL: ' + soql );
+			System.debug( LoggingLevel.ERROR, 'Attempt to read from the Platform Cache failed for the SOQL: ' + soql );
 			System.debug( LoggingLevel.ERROR, e );
 		}
 
@@ -94,7 +95,7 @@ public inherited sharing class CachedSoqlExecutor
 		{
 			if ( hasAccessToCache )
 			{
-				System.debug( LoggingLevel.INFO, 'Org Platform Cache miss when running the SOQL: ' + soql );
+				System.debug( LoggingLevel.INFO, 'Platform Cache miss when running the SOQL: ' + soql );
 			}
 
 			returnValues = Database.query( soql );
@@ -103,12 +104,12 @@ public inherited sharing class CachedSoqlExecutor
 			{
 				if ( hasAccessToCache )
 				{
-					Cache.Org.put( key, returnValues, CACHE_LIFESPAN_SECONDS, Cache.Visibility.NAMESPACE, false ); // immutable results
+					cacheWrapper.put( key, returnValues, CACHE_LIFESPAN_SECONDS );
 				}
 			}
 			catch ( Exception e )
 			{
-				System.debug( LoggingLevel.ERROR, 'Attempt to write into the Org Platform Cache failed for the SOQL: ' + soql );
+				System.debug( LoggingLevel.ERROR, 'Attempt to write into the Platform Cache failed for the SOQL: ' + soql );
 				System.debug( LoggingLevel.ERROR, e );
 			}
 		}
@@ -132,7 +133,7 @@ public inherited sharing class CachedSoqlExecutor
 						.addContext( 'method', 'clearCacheFor' )
 						.addContext( 'soql', soql );
 		}
-		Cache.Org.remove( generateKey( soql ) );
+		cacheWrapper.remove( generateKey( soql ) );
 	}
 
 	/**
@@ -147,13 +148,13 @@ public inherited sharing class CachedSoqlExecutor
 						.addContext( 'method', 'clearAllCache' );
 		}
 
-		String fullSoqlPartitionName = Cache.OrgPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME );
-		for ( String thisKey : Cache.Org.getKeys() )
+		String fullSoqlPartitionName = cacheWrapper.createFullyQualifiedPartitionName( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME );
+		for ( String thisKey : cacheWrapper.getKeys() )
 		{
 			String qualifiedKey = qualifiedKey( thisKey );
-			if ( Cache.Org.contains( qualifiedKey ) )
+			if ( cacheWrapper.contains( qualifiedKey ) )
 			{
-				Cache.Org.remove( qualifiedKey );
+				cacheWrapper.remove( qualifiedKey );
 			}
 		}
 	}
@@ -166,7 +167,7 @@ public inherited sharing class CachedSoqlExecutor
 
 	private String qualifiedKey( String subkey )
 	{
-		return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
+		return cacheWrapper.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
 	}
 
 	private interface CacheWrapper
@@ -189,7 +190,7 @@ public inherited sharing class CachedSoqlExecutor
 
 		public void put( String key, Object value, Integer lifespan )
 		{
-			Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, false ); // immutable results
+			Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable results
 		}
 
 		public Set<String> getKeys()
@@ -227,7 +228,7 @@ public inherited sharing class CachedSoqlExecutor
 
 		public void put( String key, Object value, Integer lifespan )
 		{
-			Cache.Session.put( key, value, lifespan, Cache.Visibility.NAMESPACE, false ); // immutable results
+			Cache.Session.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable results
 		}
 
 		public Set<String> getKeys()
