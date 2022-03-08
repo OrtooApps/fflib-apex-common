@@ -6,7 +6,7 @@
  * If used, it is recommended that triggers are added to those objects, or code added to the UI that updates the objects
  * referenced in the SOQL that invalidate the cache.
  */
-public inherited sharing class CachedSoqlExecutor
+public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of too many public methods caused by inner classes
 {
 	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
@@ -283,7 +283,7 @@ public inherited sharing class CachedSoqlExecutor
 			return null;
 		}
 
-		public void put( String key, Object value, Integer lifespan )
+		public void put( String key, Object value, Integer lifespan ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
 		{
 		}
 
@@ -297,7 +297,7 @@ public inherited sharing class CachedSoqlExecutor
 			return false;
 		}
 
-		public void remove( String key )
+		public void remove( String key ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
 		{
 		}
 
