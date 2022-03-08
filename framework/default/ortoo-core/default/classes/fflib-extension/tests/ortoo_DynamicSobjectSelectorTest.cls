@@ -24,42 +24,103 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
 	}
 
 	@isTest
-	private static void selectByCriteria_whenToldToUseTheCache_willUseTheOrgSoqlCache() // NOPMD: Test method name format
+	private static void selectByCriteria_whenToldToUseTheOrgCache_willUseTheOrgSoqlCache() // NOPMD: Test method name format
 	{
 		ortoo_DynamicSobjectSelector selector = new ortoo_DynamicSobjectSelector()
 														.setSobjectType( Contact.sobjectType );
 
 		List<Contact> expects = new List<Contact>{ new Contact() };
-		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( OrgCachedSoqlExecutor.class );
+		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( CachedSoqlExecutor.class );
 		cacheController
+			.expects( 'setScope' )
+			.withParameter( CachedSoqlExecutor.CacheScope.ORG )
+			.returning( cacheController.getDouble() )
+		.then()
 			.expects( 'query' )
 			.withParameter().containing( 'SELECT Id FROM Contact' )
 			.returning( expects );
 
 		Test.startTest();
-			List<Sobject> returnedSobjects = selector.selectByCriteria( new ortoo_Criteria(), true );
+			List<Sobject> returnedSobjects = selector.selectByCriteria( new ortoo_Criteria(), CachedSoqlExecutor.CacheScope.ORG );
 		Test.stopTest();
 
 		cacheController.verify();
 
-		System.assertEquals( expects, returnedSobjects, 'selectByCriteria, when told to use the cache, will direct the query via the OrgCachedSoqlExecutor' );
+		System.assertEquals( expects, returnedSobjects, 'selectByCriteria, when told to use the org cache, will tell the CachedSoqlExecutor to use the org cache' );
 	}
 
 	@isTest
-	private static void selectByCriteria_whenToldNotToUseTheCache_willNotUseTheOrgSoqlCache() // NOPMD: Test method name format
+	private static void selectByCriteria_whenToldToUseTheSessionCache_willUseTheSessionSoqlCache() // NOPMD: Test method name format
 	{
 		ortoo_DynamicSobjectSelector selector = new ortoo_DynamicSobjectSelector()
 														.setSobjectType( Contact.sobjectType );
 
-		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( OrgCachedSoqlExecutor.class );
+		List<Contact> expects = new List<Contact>{ new Contact() };
+		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( CachedSoqlExecutor.class );
 		cacheController
-			.expectsNoCalls();
+			.expects( 'setScope' )
+			.withParameter( CachedSoqlExecutor.CacheScope.SESSION )
+			.returning( cacheController.getDouble() )
+		.then()
+			.expects( 'query' )
+			.withParameter().containing( 'SELECT Id FROM Contact' )
+			.returning( expects );
 
 		Test.startTest();
-			List<Sobject> returnedSobjects = selector.selectByCriteria( new ortoo_Criteria(), false );
+			List<Sobject> returnedSobjects = selector.selectByCriteria( new ortoo_Criteria(), CachedSoqlExecutor.CacheScope.SESSION );
 		Test.stopTest();
 
-		System.assertEquals( new List<Sobject>(), returnedSobjects, 'selectByCriteria, when told to not use the cache, will not direct the query via the OrgCachedSoqlExecutor' );
+		cacheController.verify();
+
+		System.assertEquals( expects, returnedSobjects, 'selectByCriteria, when told to use the session cache, will tell the CachedSoqlExecutor to use the session cache' );
+	}
+
+	@isTest
+	private static void selectByCriteria_whenToldNotToUseTheCache_willSetTheSoqlCacheToNone() // NOPMD: Test method name format
+	{
+		ortoo_DynamicSobjectSelector selector = new ortoo_DynamicSobjectSelector()
+														.setSobjectType( Contact.sobjectType );
+
+		List<Contact> expects = new List<Contact>{ new Contact() };
+		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( CachedSoqlExecutor.class );
+		cacheController
+			.expects( 'setScope' )
+			.withParameter( CachedSoqlExecutor.CacheScope.NONE )
+			.returning( cacheController.getDouble() )
+		.then()
+			.expects( 'query' )
+			.withParameter().containing( 'SELECT Id FROM Contact' )
+			.returning( expects );
+
+		Test.startTest();
+			List<Sobject> returnedSobjects = selector.selectByCriteria( new ortoo_Criteria(), CachedSoqlExecutor.CacheScope.NONE );
+		Test.stopTest();
+
+		System.assertEquals( expects, returnedSobjects, 'selectByCriteria, when told to not use the cache, will tell the CachedSoqlExecutor to use no cache' );
+	}
+
+	@isTest
+	private static void selectByCriteria_whenNotToldAboutCache_willSetTheSoqlCacheToNone() // NOPMD: Test method name format
+	{
+		ortoo_DynamicSobjectSelector selector = new ortoo_DynamicSobjectSelector()
+														.setSobjectType( Contact.sobjectType );
+
+		List<Contact> expects = new List<Contact>{ new Contact() };
+		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( CachedSoqlExecutor.class );
+		cacheController
+			.expects( 'setScope' )
+			.withParameter( CachedSoqlExecutor.CacheScope.NONE )
+			.returning( cacheController.getDouble() )
+		.then()
+			.expects( 'query' )
+			.withParameter().containing( 'SELECT Id FROM Contact' )
+			.returning( expects );
+
+		Test.startTest();
+			List<Sobject> returnedSobjects = selector.selectByCriteria( new ortoo_Criteria() );
+		Test.stopTest();
+
+		System.assertEquals( expects, returnedSobjects, 'selectByCriteria, when not told about cache, will tell the CachedSoqlExecutor to use no cache' );
 	}
 
 	@isTest
@@ -224,7 +285,7 @@ private without sharing class ortoo_DynamicSobjectSelectorTest
 		ortoo_DynamicSobjectSelector selector = new ortoo_DynamicSobjectSelector()
 														.setSobjectType( Contact.sobjectType );
 
-		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( OrgCachedSoqlExecutor.class );
+		Amoss_Instance cacheController = ApplicationMockRegistrar.registerMockAppLogic( CachedSoqlExecutor.class );
 		cacheController
 			.expects( 'clearCacheFor' )
 			.withParameter().containing( 'SELECT Id FROM Contact' );

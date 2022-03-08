@@ -67,7 +67,7 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 	 */
 	public List<Sobject> selectByCriteria( ortoo_Criteria criteria )
 	{
-		return selectByCriteria( criteria, false );
+		return selectByCriteria( criteria, CachedSoqlExecutor.CacheScope.NONE );
 	}
 
 	/**
@@ -77,19 +77,17 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 	 * @param	Boolean			Should the query go via the Org Level SOQL Cache?
 	 * @return	List<Sobject>	The result of the Selection
 	 */
-	public List<Sobject> selectByCriteria( ortoo_Criteria criteria, Boolean cached )
+	public List<Sobject> selectByCriteria( ortoo_Criteria criteria, CachedSoqlExecutor.CacheScope cacheScope )
 	{
 		Contract.requires( criteria != null, 'selectByCriteria called with a null criteria' );
-		Contract.requires( cached != null, 'selectByCriteria called with a null cached' );
+		Contract.requires( cacheScope != null, 'selectByCriteria called with a null cacheScope' );
 		Contract.assert( sobjectType != null, 'selectByCriteria called when sobjectType has not been set' );
 
 		String soql = generateSoqlByCriteria( criteria );
-		if ( cached )
-		{
-			return ((OrgCachedSoqlExecutor)Application.APP_LOGIC.newInstance( OrgCachedSoqlExecutor.class ))
-						.query( soql );
-		}
-		return  Database.query( soql );
+
+		return ((CachedSoqlExecutor)Application.APP_LOGIC.newInstance( CachedSoqlExecutor.class ))
+					.setScope( cacheScope )
+					.query( soql );
 	}
 
 	/**
@@ -102,7 +100,7 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 	{
 		Contract.requires( criteria != null, 'clearCacheFor called with a null criteria' );
 
-		((OrgCachedSoqlExecutor)Application.APP_LOGIC.newInstance( OrgCachedSoqlExecutor.class ))
+		((CachedSoqlExecutor)Application.APP_LOGIC.newInstance( CachedSoqlExecutor.class ))
 						.clearCacheFor( generateSoqlByCriteria( criteria ) );
 		return this;
 	}

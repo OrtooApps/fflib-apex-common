@@ -6,10 +6,11 @@
  * If used, it is recommended that triggers are added to those objects, or code added to the UI that updates the objects
  * referenced in the SOQL that invalidate the cache.
  */
-public inherited sharing class OrgCachedSoqlExecutor
+public inherited sharing class CachedSoqlExecutor
 {
-	public class OrgCacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
+	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
+	CacheWrapper cacheWrapper = new OrgCache();
 
 	private final static String SOQL_PARTITION_NAME = 'soql';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 43200;   // TODO: soft setting / option
@@ -28,6 +29,31 @@ public inherited sharing class OrgCachedSoqlExecutor
 			return hasAccessToCache;
 		}
 		set;
+	}
+
+	public enum CacheScope { NONE, ORG, SESSION }
+
+	public CachedSoqlExecutor setScope( CacheScope scope )
+	{
+		Contract.requires( scope != null, 'setScope called with a null scope' );
+
+		switch on scope
+		{
+			when ORG
+			{
+				cacheWrapper = new OrgCache();
+			}
+			when SESSION
+			{
+				cacheWrapper = new SessionCache();
+			}
+			when else
+			{
+				cacheWrapper = new NullCache();
+			}
+		}
+
+		return this;
 	}
 
 	/**
@@ -58,7 +84,7 @@ public inherited sharing class OrgCachedSoqlExecutor
 				System.debug( LoggingLevel.INFO, 'Opportunity to use Org Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
 			}
 		}
-		catch ( cache.Org.OrgCacheException e )
+		catch ( Cache.Org.OrgCacheException e ) // TODO: add the other one too
 		{
 			System.debug( LoggingLevel.ERROR, 'Attempt to read from the Org Platform Cache failed for the SOQL: ' + soql );
 			System.debug( LoggingLevel.ERROR, e );
@@ -101,7 +127,7 @@ public inherited sharing class OrgCachedSoqlExecutor
 
 		if ( ! hasAccessToCache )
 		{
-			throw new OrgCacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
+			throw new CacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
 						.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
 						.addContext( 'method', 'clearCacheFor' )
 						.addContext( 'soql', soql );
@@ -116,7 +142,7 @@ public inherited sharing class OrgCachedSoqlExecutor
 	{
 		if ( ! hasAccessToCache )
 		{
-			throw new OrgCacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
+			throw new CacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
 						.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
 						.addContext( 'method', 'clearAllCache' );
 		}
@@ -141,5 +167,128 @@ public inherited sharing class OrgCachedSoqlExecutor
 	private String qualifiedKey( String subkey )
 	{
 		return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
+	}
+
+	private interface CacheWrapper
+	{
+		Object get( String key );
+		void put( String key, Object value, Integer lifespan );
+		Set<String> getKeys();
+		Boolean contains( String key );
+		void remove( String key );
+		String createFullyQualifiedPartitionName( String namespace, String partitionName );
+		String createFullyQualifiedKey( String namespace, String partitionName, String subKey );
+	}
+
+	private class OrgCache implements CacheWrapper
+	{
+		public Object get( String key )
+		{
+			return Cache.Org.get( key );
+		}
+
+		public void put( String key, Object value, Integer lifespan )
+		{
+			Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, false ); // immutable results
+		}
+
+		public Set<String> getKeys()
+		{
+			return Cache.Org.getKeys();
+		}
+
+		public Boolean contains( String key )
+		{
+			return Cache.Org.contains( key );
+		}
+
+		public void remove( String key )
+		{
+			Cache.Org.remove( key );
+		}
+
+		public String createFullyQualifiedPartitionName( String namespace, String partitionName )
+		{
+			return Cache.OrgPartition.createFullyQualifiedPartition( namespace, partitionName );
+		}
+
+		public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
+		{
+			return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
+		}
+	}
+
+	private class SessionCache implements CacheWrapper
+	{
+		public Object get( String key )
+		{
+			return Cache.Session.get( key );
+		}
+
+		public void put( String key, Object value, Integer lifespan )
+		{
+			Cache.Session.put( key, value, lifespan, Cache.Visibility.NAMESPACE, false ); // immutable results
+		}
+
+		public Set<String> getKeys()
+		{
+			return Cache.Session.getKeys();
+		}
+
+		public Boolean contains( String key )
+		{
+			return Cache.Session.contains( key );
+		}
+
+		public void remove( String key )
+		{
+			Cache.Session.remove( key );
+		}
+
+		public String createFullyQualifiedPartitionName( String namespace, String partitionName )
+		{
+			return Cache.SessionPartition.createFullyQualifiedPartition( namespace, partitionName );
+		}
+
+		public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
+		{
+			return Cache.SessionPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
+		}
+	}
+
+	private class NullCache implements CacheWrapper
+	{
+		public Object get( String key )
+		{
+			return null;
+		}
+
+		public void put( String key, Object value, Integer lifespan )
+		{
+		}
+
+		public Set<String> getKeys()
+		{
+			return new Set<String>();
+		}
+
+		public Boolean contains( String key )
+		{
+			return false;
+		}
+
+		public void remove( String key )
+		{
+		}
+
+		public String createFullyQualifiedPartitionName( String namespace, String partitionName )
+		{
+			return namespace + '.' + partitionName;
+		}
+
+		public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
+		{
+			return namespace + '.' + partitionName + '.' + subkey;
+		}
 	}
 }
