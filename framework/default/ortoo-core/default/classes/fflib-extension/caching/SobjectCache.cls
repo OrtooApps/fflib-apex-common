@@ -1,8 +1,5 @@
 public with sharing class SobjectCache
 {
-    // TODO: try writing something that gets some things from the cache, then deals with the difference.
-    // TODO: maybe we need a return object that contains a list of the cache misses.
-
 	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
 	public enum CacheScope { ORG, SESSION }
@@ -47,25 +44,75 @@ public with sharing class SobjectCache
 		return this;
 	}
 
-    // returns as many of the objects from the cache as can be returned
     public CacheRetrieval get( String key, Set<Id> ids )
     {
-        return new CacheRetrieval();
+        CacheRetrieval values = new CacheRetrieval();
+        for ( Id thisId : ids )
+        {
+            SObject thisValue = (SObject)cacheWrapper.get( createFullyQualifiedKey( key, thisId ) );
+            if ( thisValue != null )
+            {
+                values.addCacheHit( thisId, thisValue );
+            }
+            else
+            {
+                values.addCacheMiss( thisId );
+            }
+        }
+        return values;
+    }
+
+    public SobjectCache put( String key, List<Sobject> sobjects )
+    {
+        return put( key, 'Id', sobjects );
     }
 
     public SobjectCache put( String key, String idField, List<Sobject> sobjects )
     {
+        for ( Sobject thisSobject : sobjects )
+        {
+            final String thisKey = createFullyQualifiedKey( key, (Id)thisSobject.get( idField ) );
+            cacheWrapper.put( thisKey, thisSobject, CACHE_LIFESPAN_SECONDS );
+        }
         return this;
     }
 
-    public SobjectCache clear( String key )
+    public SobjectCache remove( String subkeyToRemove )
     {
+        Set<String> keys = cacheWrapper.getKeys();
+
+        for ( String thisKey : keys )
+        {
+            if ( isAKeyFor( thisKey, subkeyToRemove ) )
+            {
+                cacheWrapper.remove( thisKey );
+            }
+        }
         return this;
     }
 
-    public SobjectCache clear( String key, Set<Id> ids )
+    public SobjectCache remove( String key, Set<Id> ids )
     {
+        for ( Id thisId : ids )
+        {
+            cacheWrapper.remove( createFullyQualifiedKey( key, thisId ) );
+        }
         return this;
+    }
+
+    private Boolean isAKeyFor( String keyToCheck, String keyToCheckAgainst )
+    {
+        return keyToCheck.startsWith( createKeyPrefix( keyToCheckAgainst ) );
+    }
+
+    private String createFullyQualifiedKey( String subKey, String id )
+    {
+        return createKeyPrefix( subKey ) + id;
+    }
+
+    private String createKeyPrefix( String subKey )
+    {
+        return cacheWrapper.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, subkey ) + 'x';
     }
 
     public class CacheRetrieval
