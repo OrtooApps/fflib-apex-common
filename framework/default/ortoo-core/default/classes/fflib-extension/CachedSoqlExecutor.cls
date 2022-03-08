@@ -82,7 +82,10 @@ public inherited sharing class CachedSoqlExecutor
 			}
 			else
 			{
-				System.debug( LoggingLevel.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
+				if ( cacheWrapper.isACache() )
+				{
+					System.debug( LoggingLevel.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
+				}
 			}
 		}
 		catch ( Exception e )
@@ -93,7 +96,7 @@ public inherited sharing class CachedSoqlExecutor
 
 		if ( returnValues == null )
 		{
-			if ( hasAccessToCache )
+			if ( hasAccessToCache && cacheWrapper.isACache() )
 			{
 				System.debug( LoggingLevel.INFO, 'Platform Cache miss when running the SOQL: ' + soql );
 			}
@@ -172,6 +175,7 @@ public inherited sharing class CachedSoqlExecutor
 
 	private interface CacheWrapper
 	{
+		Boolean isACache();
 		Object get( String key );
 		void put( String key, Object value, Integer lifespan );
 		Set<String> getKeys();
@@ -183,6 +187,11 @@ public inherited sharing class CachedSoqlExecutor
 
 	private class OrgCache implements CacheWrapper
 	{
+		public Boolean isACache()
+		{
+			return true;
+		}
+
 		public Object get( String key )
 		{
 			return Cache.Org.get( key );
@@ -221,6 +230,11 @@ public inherited sharing class CachedSoqlExecutor
 
 	private class SessionCache implements CacheWrapper
 	{
+		public Boolean isACache()
+		{
+			return true;
+		}
+
 		public Object get( String key )
 		{
 			return Cache.Session.get( key );
@@ -259,6 +273,11 @@ public inherited sharing class CachedSoqlExecutor
 
 	private class NullCache implements CacheWrapper
 	{
+		public Boolean isACache()
+		{
+			return false;
+		}
+
 		public Object get( String key )
 		{
 			return null;
