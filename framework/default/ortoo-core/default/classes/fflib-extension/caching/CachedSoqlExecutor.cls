@@ -10,8 +10,9 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 {
 	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
+	public enum CacheScope { NONE, ORG, SESSION }
 
-	CacheWrapper cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
+	ICacheAdaptor cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
 	private final static String SOQL_PARTITION_NAME = 'soql';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
@@ -31,8 +32,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 		}
 		set;
 	}
-
-	public enum CacheScope { NONE, ORG, SESSION }
 
 	public CachedSoqlExecutor setScope( CacheScope scope )
 	{
@@ -171,144 +170,5 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	private String qualifiedKey( String subkey )
 	{
 		return cacheWrapper.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
-	}
-
-	private interface CacheWrapper
-	{
-		Boolean isACache();
-		Object get( String key );
-		void put( String key, Object value, Integer lifespan );
-		Set<String> getKeys();
-		Boolean contains( String key );
-		void remove( String key );
-		String createFullyQualifiedPartitionName( String namespace, String partitionName );
-		String createFullyQualifiedKey( String namespace, String partitionName, String subKey );
-	}
-
-	private class OrgCache implements CacheWrapper
-	{
-		public Boolean isACache()
-		{
-			return true;
-		}
-
-		public Object get( String key )
-		{
-			return Cache.Org.get( key );
-		}
-
-		public void put( String key, Object value, Integer lifespan )
-		{
-			Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable results
-		}
-
-		public Set<String> getKeys()
-		{
-			return Cache.Org.getKeys();
-		}
-
-		public Boolean contains( String key )
-		{
-			return Cache.Org.contains( key );
-		}
-
-		public void remove( String key )
-		{
-			Cache.Org.remove( key );
-		}
-
-		public String createFullyQualifiedPartitionName( String namespace, String partitionName )
-		{
-			return Cache.OrgPartition.createFullyQualifiedPartition( namespace, partitionName );
-		}
-
-		public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
-		{
-			return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
-		}
-	}
-
-	private class SessionCache implements CacheWrapper
-	{
-		public Boolean isACache()
-		{
-			return true;
-		}
-
-		public Object get( String key )
-		{
-			return Cache.Session.get( key );
-		}
-
-		public void put( String key, Object value, Integer lifespan )
-		{
-			Cache.Session.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable results
-		}
-
-		public Set<String> getKeys()
-		{
-			return Cache.Session.getKeys();
-		}
-
-		public Boolean contains( String key )
-		{
-			return Cache.Session.contains( key );
-		}
-
-		public void remove( String key )
-		{
-			Cache.Session.remove( key );
-		}
-
-		public String createFullyQualifiedPartitionName( String namespace, String partitionName )
-		{
-			return Cache.SessionPartition.createFullyQualifiedPartition( namespace, partitionName );
-		}
-
-		public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
-		{
-			return Cache.SessionPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
-		}
-	}
-
-	private class NullCache implements CacheWrapper
-	{
-		public Boolean isACache()
-		{
-			return false;
-		}
-
-		public Object get( String key )
-		{
-			return null;
-		}
-
-		public void put( String key, Object value, Integer lifespan ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
-		{
-		}
-
-		public Set<String> getKeys()
-		{
-			return new Set<String>();
-		}
-
-		public Boolean contains( String key )
-		{
-			return false;
-		}
-
-		public void remove( String key ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
-		{
-		}
-
-		public String createFullyQualifiedPartitionName( String namespace, String partitionName )
-		{
-			return namespace + '.' + partitionName;
-		}
-
-		public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
-		{
-			return namespace + '.' + partitionName + '.' + subkey;
-		}
 	}
 }
