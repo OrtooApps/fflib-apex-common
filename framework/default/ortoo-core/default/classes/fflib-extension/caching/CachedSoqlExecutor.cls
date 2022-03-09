@@ -33,6 +33,12 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 		set;
 	}
 
+	/**
+	 * Set the scope of the this cache instance.
+	 *
+	 * @param	CacheScope			The scope of this cache instance.
+	 * @return	CachedSoqlExecutor	Itself, allowing for a fluent interface
+	 */
 	public CachedSoqlExecutor setScope( CacheScope scope )
 	{
 		Contract.requires( scope != null, 'setScope called with a null scope' );
