@@ -1,5 +1,10 @@
 public class SessionCache implements ICacheAdaptor
 {
+    public Boolean hasAccessToCache()
+    {
+        return true;
+    }
+
     public Boolean isACache()
     {
         return true;

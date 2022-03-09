@@ -1,5 +1,10 @@
 public class NullCache implements ICacheAdaptor
 {
+    public Boolean hasAccessToCache()
+    {
+        return false;
+    }
+
     public Boolean isACache()
     {
         return false;

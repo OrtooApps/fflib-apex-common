@@ -1,5 +1,6 @@
 public interface ICacheAdaptor
 {
+    Boolean hasAccessToCache();
     Boolean isACache();
     Object get( String key );
     void put( String key, Object value, Integer lifespan );

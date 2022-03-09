@@ -8,30 +8,12 @@
  */
 public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of too many public methods caused by inner classes
 {
-	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
-																							// in such a way that it's never possible to get this exception
 	public enum CacheScope { NONE, ORG, SESSION }
 
 	ICacheAdaptor cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
-	private final static String SOQL_PARTITION_NAME = 'soql';
+	private final static String SOQL_PARTITION_NAME = 'core';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
-
-	@testVisible
-	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessSOQLCache';
-
-	private Boolean hasAccessToCache
-	{
-		get
-		{
-			if ( hasAccessToCache == null )
-			{
-				hasAccessToCache = PermissionsService.hasPermission( CAN_ACCESS_SOQL_CACHE_PERMISSION );
-			}
-			return hasAccessToCache;
-		}
-		set;
-	}
 
 	/**
 	 * Set the scope of the this cache instance.
@@ -81,7 +63,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 
 		try
 		{
-			if ( hasAccessToCache )
+			if ( cacheWrapper.hasAccessToCache() )
 			{
 				returnValues = (List<Sobject>)cacheWrapper.get( key );
 			}
@@ -89,7 +71,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 			{
 				if ( cacheWrapper.isACache() )
 				{
-					System.debug( LoggingLevel.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission (custom permission: ' + CAN_ACCESS_SOQL_CACHE_PERMISSION + ')' );
+					System.debug( LoggingLevel.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission' ); // TODO: can we get the permission name into this?
 				}
 			}
 		}
@@ -101,7 +83,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 
 		if ( returnValues == null )
 		{
-			if ( hasAccessToCache && cacheWrapper.isACache() )
+			if ( cacheWrapper.hasAccessToCache() && cacheWrapper.isACache() )
 			{
 				System.debug( LoggingLevel.INFO, 'Platform Cache miss when running the SOQL: ' + soql );
 			}
@@ -110,7 +92,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 
 			try
 			{
-				if ( hasAccessToCache )
+				if ( cacheWrapper.hasAccessToCache() )
 				{
 					cacheWrapper.put( key, returnValues, CACHE_LIFESPAN_SECONDS );
 				}
@@ -133,14 +115,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	public void clearCacheFor( String soql )
 	{
 		Contract.requires( soql != null, 'clearCacheFor called with a null soql' );
-
-		if ( ! hasAccessToCache )
-		{
-			throw new CacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
-						.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-						.addContext( 'method', 'clearCacheFor' )
-						.addContext( 'soql', soql );
-		}
 		cacheWrapper.remove( generateKey( soql ) );
 	}
 
@@ -149,13 +123,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	 */
 	public void clearAllCache()
 	{
-		if ( ! hasAccessToCache )
-		{
-			throw new CacheAccessViolationException( Label.ortoo_core_soql_cache_access_violation )
-						.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-						.addContext( 'method', 'clearAllCache' );
-		}
-
 		String fullSoqlPartitionName = cacheWrapper.createFullyQualifiedPartitionName( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME );
 		for ( String thisKey : cacheWrapper.getKeys() )
 		{

@@ -110,13 +110,13 @@ private without sharing class CachedSoqlExecutorTest
             {
                 executor.clearAllCache();
             }
-            catch ( CachedSoqlExecutor.CacheAccessViolationException e )
+            catch ( OrgCache.AccessViolationException e )
             {
                 exceptionThrown = e;
             }
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( Label.ortoo_core_soql_cache_access_violation, exceptionThrown?.getMessage(), 'clearAllCache, when the user does not have access to the cache, will throw an exception' );
+        ortoo_Asserts.assertContains( Label.ortoo_core_org_cache_access_violation, exceptionThrown?.getMessage(), 'clearAllCache, when the user does not have access to the cache, will throw an exception' );
     }
 
     @isTest
@@ -192,13 +192,13 @@ private without sharing class CachedSoqlExecutorTest
             {
                 executor.clearCacheFor( soqlStatement );
             }
-            catch ( CachedSoqlExecutor.CacheAccessViolationException e )
+            catch ( OrgCache.AccessViolationException e )
             {
                 exceptionThrown = e;
             }
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( Label.ortoo_core_soql_cache_access_violation, exceptionThrown?.getMessage(), 'clearCacheFor, when the user does not have access to the cache, will throw an exception' );
+        ortoo_Asserts.assertContains( Label.ortoo_core_org_cache_access_violation, exceptionThrown?.getMessage(), 'clearCacheFor, when the user does not have access to the cache, will throw an exception' );
     }
 
     @isTest
@@ -257,7 +257,7 @@ private without sharing class CachedSoqlExecutorTest
     }
 
     @isTest
-    private static void query_session_whenCalledTwiceByAUserWithoutAccessToTheCache_issuesTwoSoqlStatements() // NOPMD: Test method name format
+    private static void query_session_whenCalledTwiceByAUserWithoutAccessToTheCache_issuesOneSoqlStatement() // NOPMD: Test method name format
     {
         String soqlStatement = 'SELECT Id FROM Account';
 
@@ -271,8 +271,8 @@ private without sharing class CachedSoqlExecutorTest
             Integer soqlCalls = Limits.getQueries();
         Test.stopTest();
 
-        System.assertEquals( 2, soqlCalls, 'query, when called twice by a user with no access to the cache, will issue two SOQL statements' );
-        System.assertEquals( originalResults, secondResults, 'query, when called twice by a user with not access to the cache, returns the same results in both calls' );
+        System.assertEquals( 1, soqlCalls, 'query, when called twice by a user with no access to the org cache, will issue one SOQL statement' );
+        System.assertEquals( originalResults, secondResults, 'query, when called twice by a user with no access to the cache, returns the same results in both calls' );
     }
 
     @isTest
@@ -314,25 +314,17 @@ private without sharing class CachedSoqlExecutorTest
     }
 
     @isTest
-    private static void clearAllCache_session_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format
+    private static void clearAllCache_session_whenTheUserDoesNotHaveAccessToTheOrgCache_willNotThrowAnException() // NOPMD: Test method name format
     {
         setupAccessToSoqlCache( false );
 
         CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
 
         Test.startTest();
-            Exception exceptionThrown;
-            try
-            {
-                executor.clearAllCache();
-            }
-            catch ( CachedSoqlExecutor.CacheAccessViolationException e )
-            {
-                exceptionThrown = e;
-            }
+            executor.clearAllCache();
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( Label.ortoo_core_soql_cache_access_violation, exceptionThrown?.getMessage(), 'clearAllCache, when the user does not have access to the cache, will throw an exception' );
+        System.assert( true, 'clearAllCache, when the user does not have access to the org cache, will not throw an exception' );
     }
 
     @isTest
@@ -394,7 +386,7 @@ private without sharing class CachedSoqlExecutorTest
     }
 
     @isTest
-    private static void clearCacheFor_session_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format
+    private static void clearCacheFor_session_whenTheUserDoesNotHaveAccessToTheOrgCache_willNotThrowAnException() // NOPMD: Test method name format
     {
         String soqlStatement = 'SELECT Id FROM Account';
 
@@ -403,19 +395,11 @@ private without sharing class CachedSoqlExecutorTest
         CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
 
         Test.startTest();
-            Exception exceptionThrown;
-            try
-            {
-                executor.clearCacheFor( soqlStatement );
-            }
-            catch ( CachedSoqlExecutor.CacheAccessViolationException e )
-            {
-                exceptionThrown = e;
-            }
+            executor.clearCacheFor( soqlStatement );
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( Label.ortoo_core_soql_cache_access_violation, exceptionThrown?.getMessage(), 'clearCacheFor, when the user does not have access to the cache, will throw an exception' );
-    }
+        System.assert( true, 'clearCacheFor, when the user does not have access to the org cache, will not throw an exception' );
+   }
 
     @isTest
     private static void query_session_whenRanFor100Queries_willNotThrowAnException()
@@ -515,25 +499,17 @@ private without sharing class CachedSoqlExecutorTest
     }
 
     @isTest
-    private static void clearAllCache_none_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format
+    private static void clearAllCache_none_whenTheUserDoesNotHaveAccessToTheOrgCache_willNotThrowAnException() // NOPMD: Test method name format
     {
         setupAccessToSoqlCache( false );
 
         CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.NONE );
 
         Test.startTest();
-            Exception exceptionThrown;
-            try
-            {
-                executor.clearAllCache();
-            }
-            catch ( CachedSoqlExecutor.CacheAccessViolationException e )
-            {
-                exceptionThrown = e;
-            }
+            executor.clearAllCache();
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( Label.ortoo_core_soql_cache_access_violation, exceptionThrown?.getMessage(), 'clearAllCache against a none cache, when the user does not have access to the cache, will throw an exception' );
+        System.assert( true, 'clearAllCache against a none cache, when called by a user that does not have access to the org cache, will not throw an exception' );
     }
 
     @isTest
@@ -556,7 +532,6 @@ private without sharing class CachedSoqlExecutorTest
         System.assertEquals( 1, soqlCalls, 'clearCacheFor against a none cache, does not affect the number of SOQL statements issued' );
     }
 
-
     @isTest
     private static void clearCacheFor_none_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format
     {
@@ -567,18 +542,10 @@ private without sharing class CachedSoqlExecutorTest
         CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.NONE );
 
         Test.startTest();
-            Exception exceptionThrown;
-            try
-            {
-                executor.clearCacheFor( soqlStatement );
-            }
-            catch ( CachedSoqlExecutor.CacheAccessViolationException e )
-            {
-                exceptionThrown = e;
-            }
+            executor.clearCacheFor( soqlStatement );
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( Label.ortoo_core_soql_cache_access_violation, exceptionThrown?.getMessage(), 'clearCacheFor against a none cache, when the user does not have access to the cache, will throw an exception' );
+        System.assert( true, 'clearCacheFor against a none cache, when called by a user that does not have access to the org cache, will not throw an exception' );
     }
 
     @isTest
@@ -595,7 +562,6 @@ private without sharing class CachedSoqlExecutorTest
         CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.NONE );
 
         Test.startTest();
-
             // Run each statement once - this is the maximum we can do
             for ( String thisSoqlStatement : soqlStatements )
             {
@@ -610,7 +576,7 @@ private without sharing class CachedSoqlExecutorTest
     {
         ApplicationMockRegistrar.registerMockService( IPermissionsService.class )
             .when( 'hasPermission' )
-            .withParameter( CachedSoqlExecutor.CAN_ACCESS_SOQL_CACHE_PERMISSION )
+            .withParameter( OrgCache.CAN_ACCESS_CACHE_PERMISSION )
             .returns( accessToCache );
     }
 }

@@ -197,10 +197,10 @@
         <value>Problem occured when configuring which fields are orderable.  Table sorting is disabled.</value>
     </labels>
     <labels>
-        <fullName>ortoo_core_soql_cache_access_violation</fullName>
+        <fullName>ortoo_core_org_cache_access_violation</fullName>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Error when unauthorised user performs an action against Org Level SOQL Cache.</shortDescription>
-        <value>Attempted to access the Org Level SOQL Cache when the user does not have permission.</value>
+        <shortDescription>Error when unauthorised user performs an action against the Org Level Cache.</shortDescription>
+        <value>Attempted to access the Org Level Platform Cache when the user does not have permission.</value>
     </labels>
 </CustomLabels>

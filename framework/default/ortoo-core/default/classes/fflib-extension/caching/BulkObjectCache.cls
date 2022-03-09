@@ -16,10 +16,10 @@ public with sharing class BulkObjectCache
 	// TODO: could just ignore and invalidate the cache - check with the rest of the seniors
 	// TODO: Single cache
 	// TODO: Docs on keys
+	// TODO: do we need to protect against non-numeric keys?  Or let the platform cache deal withit?
 
 	public class InvalidIdentifierException extends Exceptions.DeveloperException {}
-	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
-																							// in such a way that it's never possible to get this exception
+
 	public enum CacheScope { ORG, SESSION }
 
 	/**
@@ -80,11 +80,11 @@ public with sharing class BulkObjectCache
 
 	ICacheAdaptor cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
-	private final static String PARTITION_NAME = 'soql'; // TODO: same partition? set partition?
+	private final static String PARTITION_NAME = 'core';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
 
 	@testVisible
-	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessSOQLCache';  // TODO: same permission?
+	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessCache';  // TODO: same permission?
 
 	private Boolean hasAccessToCache
 	{
@@ -344,8 +344,10 @@ public with sharing class BulkObjectCache
 			}
 			catch ( Exception e )
 			{
-				// TODO: set context and error code
-				throw new InvalidIdentifierException( 'Unable to retrieve the String Identifier from the field ' + idField + ' from the SObject: ' + objectToGetIdFor );
+				throw new InvalidIdentifierException( 'Unable to retrieve the String Identifier from the field ' + idField + ' from the SObject: ' + objectToGetIdFor, e )
+							.setErrorCode( FrameworkErrorCodes.UNABLE_TO_RETRIEVE_IDENTIFIER )
+							.addContext( 'object', objectToGetIdFor )
+							.addContext( 'idField', idField );
 			}
 		}
 	}
