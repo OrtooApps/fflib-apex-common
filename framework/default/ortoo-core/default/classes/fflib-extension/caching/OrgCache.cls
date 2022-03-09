@@ -1,12 +1,20 @@
+/**
+ * An implementation of the ICacheAdaptor that utilises the Org Level Platform Cache.
+ *
+ * Due to the shared nature of the cache, all interactions with the cache require the user to have the
+ * custom permission as defined in 'CAN_ACCESS_CACHE_PERMISSION'.
+ *
+ * Attempting to access the cache without this permission will result in an OrgCache.AccessViolationException
+ */
 public class OrgCache implements ICacheAdaptor
 {
 	public class AccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
 
-    @testVisible
+	@testVisible
 	private final static String CAN_ACCESS_CACHE_PERMISSION = 'ProcessesCanAccessCache';
 
-	public Boolean hasAccessToCache
+	private Boolean hasAccessToCache
 	{
 		get
 		{
@@ -19,86 +27,143 @@ public class OrgCache implements ICacheAdaptor
 		private set;
 	}
 
-    public Boolean hasAccessToCache()
-    {
-        return this.hasAccessToCache;
-    }
+	/**
+	 * States if this user has access to the cache - I.E. has the custom permission defined in CAN_ACCESS_CACHE_PERMISSION
+	 *
+	 * @return	Boolean	States if the current user has access to the cache
+	 */
+	public Boolean hasAccessToCache()
+	{
+		return this.hasAccessToCache;
+	}
 
-    public Boolean isACache()
-    {
-        return true;
-    }
+	/**
+	 * States that this is a cache
+	 *
+	 * @return	Boolean	True, stating that this instance represents a true cache
+	 */
+	public Boolean isACache()
+	{
+		return true;
+	}
 
-    public Object get( String key )
-    {
-        if ( ! hasAccessToCache )
-        {
-            throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
-                            .setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-                            .addContext( 'method', 'get' )
-                            .addContext( 'key', key );
-        }
+	/**
+	 * Retrieve the cache entry with the given key.
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 * If the entry does not exist in the cache, will return null
+	 *
+	 * @param	String	The key for the object to retrieve
+	 * @return	Object	The cached object, if it exists
+	 */
+	public Object get( String key )
+	{
+		Contract.requires( key != null, 'get called with a null key' );
 
-        return Cache.Org.get( key );
-    }
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'get' )
+							.addContext( 'key', key );
+		}
 
-    public void put( String key, Object value, Integer lifespan )
-    {
-        if ( ! hasAccessToCache )
-        {
-            throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
-                            .setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-                            .addContext( 'method', 'put' )
-                            .addContext( 'key', key )
-                            .addContext( 'value', value );
-        }
+		return Cache.Org.get( key );
+	}
 
-        Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
-    }
+	/**
+	 * Put the stated value into the stated key for the specified duration (in seconds)
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 *
+	 * @param	String	The key to use for the storage of the object
+	 * @param	Object	The object to store
+	 * @param	Integer	The lifespan of the object within the cache, in seconds
+	 * @return	Object	The cached object, if it exists
+	 */
+	public void put( String key, Object value, Integer lifespan )
+	{
+		Contract.requires( key != null, 'put called with a null key' );
+		Contract.requires( lifespan != null, 'put called with a null lifespan' );
+		Contract.requires( lifespan >= 0, 'put called with a negaitve lifespan' );
 
-    public Set<String> getKeys()
-    {
-        if ( ! hasAccessToCache )
-        {
-            throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
-                            .setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-                            .addContext( 'method', 'getKeys' );
-        }
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'put' )
+							.addContext( 'key', key )
+							.addContext( 'value', value );
+		}
 
-        return Cache.Org.getKeys();
-    }
+		Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
+	}
 
-    public Boolean contains( String key )
-    {
-        if ( ! hasAccessToCache )
-        {
-            throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
-                            .setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-                            .addContext( 'method', 'contains' )
-                            .addContext( 'key', key );
-        }
-        return Cache.Org.contains( key );
-    }
+	/**
+	 * Retrieve a set of the current keys of objects stored in this cache.
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 *
+	 * @return	Set<String>	The keys that currently exist in the cache
+	 */
+	public Set<String> getKeys()
+	{
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'getKeys' );
+		}
 
-    public void remove( String key )
-    {
-        if ( ! hasAccessToCache )
-        {
-            throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
-                            .setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-                            .addContext( 'method', 'remove' )
-                            .addContext( 'key', key );
-        }
-        Cache.Org.remove( key );
-    }
+		return Cache.Org.getKeys();
+	}
 
-    public String createFullyQualifiedPartitionName( String namespace, String partitionName )
-    {
-        return Cache.OrgPartition.createFullyQualifiedPartition( namespace, partitionName );
-    }
+	/**
+	 * States if the cache currently contains an object in the given key.
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 *
+	 * @param	String	The key for the object to look for
+	 * @return	Boolean	Whether the key exists in the cache
+	 */
+	public Boolean contains( String key )
+	{
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'contains' )
+							.addContext( 'key', key );
+		}
+		return Cache.Org.contains( key );
+	}
 
-    public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
-    {
-        return Cache.OrgPartition.createFullyQualifiedKey(  namespace, partitionName, subkey );
-    }
+	/**
+	 * Instucts the cache to remove the object at the given key
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 *
+	 * @param	String	The key to remove
+	 */
+	public void remove( String key )
+	{
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'remove' )
+							.addContext( 'key', key );
+		}
+		Cache.Org.remove( key );
+	}
+
+	public String createFullyQualifiedPartitionName( String partitionName )
+	{
+		return Cache.OrgPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, partitionName );
+	}
+
+	public String createFullyQualifiedKey( String partitionName, String subKey )
+	{
+		return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, partitionName, subkey );
+	}
 }

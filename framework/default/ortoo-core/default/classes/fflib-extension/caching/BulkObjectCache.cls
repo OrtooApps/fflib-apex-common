@@ -301,9 +301,9 @@ public with sharing class BulkObjectCache
 		return this;
 	}
 
-	private String createFullyQualifiedKey( String subKey )
+	private String createFullyQualifiedKey( String key )
 	{
-		return cacheWrapper.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, subkey );
+		return cacheWrapper.createFullyQualifiedKey( PARTITION_NAME, key );
 	}
 
 	private class SobjectIdGetter implements IdGetter

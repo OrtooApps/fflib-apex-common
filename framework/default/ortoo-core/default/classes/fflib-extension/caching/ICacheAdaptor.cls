@@ -1,3 +1,12 @@
+/**
+ * Defines an interface that can be used to wrap / adapt a caching mechanism.
+ *
+ * Specifically designed to support the wrapping of the static Apex methods for:
+ *      * Cache.Org / Cache.OrgPartition
+ *      * Cache.Session / Cache.SessionPartition
+ *
+ * This allows for the types of cache to be used interchangably / and dynamically
+ */
 public interface ICacheAdaptor
 {
     Boolean hasAccessToCache();
@@ -7,6 +16,6 @@ public interface ICacheAdaptor
     Set<String> getKeys();
     Boolean contains( String key );
     void remove( String key );
-    String createFullyQualifiedPartitionName( String namespace, String partitionName );
-    String createFullyQualifiedKey( String namespace, String partitionName, String subKey );
+    String createFullyQualifiedPartitionName( String partitionName );
+    String createFullyQualifiedKey( String partitionName, String key );
 }

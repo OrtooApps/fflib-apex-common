@@ -12,7 +12,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 
 	ICacheAdaptor cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
-	private final static String SOQL_PARTITION_NAME = 'core';
+	private final static String PARTITION_NAME = 'core';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
 
 	/**
@@ -123,7 +123,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	 */
 	public void clearAllCache()
 	{
-		String fullSoqlPartitionName = cacheWrapper.createFullyQualifiedPartitionName( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME );
+		String fullSoqlPartitionName = cacheWrapper.createFullyQualifiedPartitionName( PARTITION_NAME );
 		for ( String thisKey : cacheWrapper.getKeys() )
 		{
 			String qualifiedKey = qualifiedKey( thisKey );
@@ -142,6 +142,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 
 	private String qualifiedKey( String subkey )
 	{
-		return cacheWrapper.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, SOQL_PARTITION_NAME, subkey );
+		return cacheWrapper.createFullyQualifiedKey( PARTITION_NAME, subkey );
 	}
 }

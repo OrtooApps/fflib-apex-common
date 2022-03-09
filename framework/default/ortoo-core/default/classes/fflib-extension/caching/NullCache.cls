@@ -1,8 +1,15 @@
+/**
+ * An implementation of the ICacheAdaptor that is benign.
+ *
+ * Allows for the use of code that will automatically interact with a cache and be able to switch that off dynamically and simply.
+ *
+ * All users are assumed to be allowed to use the cache, but it describes itself as 'not a cache' and effectively does nothing.
+ */
 public class NullCache implements ICacheAdaptor
 {
     public Boolean hasAccessToCache()
     {
-        return false;
+        return true;
     }
 
     public Boolean isACache()
@@ -33,13 +40,13 @@ public class NullCache implements ICacheAdaptor
     {
     }
 
-    public String createFullyQualifiedPartitionName( String namespace, String partitionName )
+    public String createFullyQualifiedPartitionName( String partitionName )
     {
-        return namespace + '.' + partitionName;
+        return partitionName;
     }
 
-    public String createFullyQualifiedKey( String namespace, String partitionName, String subKey )
+    public String createFullyQualifiedKey( String partitionName, String subKey )
     {
-        return namespace + '.' + partitionName + '.' + subkey;
+        return partitionName + '.' + subkey;
     }
 }
