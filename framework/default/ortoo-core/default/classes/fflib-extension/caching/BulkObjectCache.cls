@@ -14,9 +14,9 @@ public with sharing class BulkObjectCache
 	// TODO: could implement a longest time since accessed, first out
 	// TODO: could implement a random age out
 	// TODO: could just ignore and invalidate the cache - check with the rest of the seniors
-	// TODO: Single cache
 	// TODO: Docs on keys
-	// TODO: do we need to protect against non-numeric keys?  Or let the platform cache deal withit?
+
+	// TODO: hide createFullyQualifiedPartitionName and createFullyQualifiedKey
 
 	public class InvalidIdentifierException extends Exceptions.DeveloperException {}
 
@@ -82,22 +82,6 @@ public with sharing class BulkObjectCache
 
 	private final static String PARTITION_NAME = 'core';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
-
-	@testVisible
-	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessCache';  // TODO: same permission?
-
-	private Boolean hasAccessToCache
-	{
-		get
-		{
-			if ( hasAccessToCache == null )
-			{
-				hasAccessToCache = PermissionsService.hasPermission( CAN_ACCESS_SOQL_CACHE_PERMISSION );
-			}
-			return hasAccessToCache;
-		}
-		set;
-	}
 
 	/**
 	 * Set the scope of the this cache instance.
