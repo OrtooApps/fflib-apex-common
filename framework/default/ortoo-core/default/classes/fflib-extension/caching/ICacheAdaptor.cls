@@ -9,13 +9,10 @@
  */
 public interface ICacheAdaptor
 {
-    Boolean hasAccessToCache();
-    Boolean isACache();
-    Object get( String key );
-    void put( String key, Object value, Integer lifespan );
-    Set<String> getKeys();
-    Boolean contains( String key );
-    void remove( String key );
-    String createFullyQualifiedPartitionName( String partitionName );
-    String createFullyQualifiedKey( String partitionName, String key );
+	Boolean hasAccessToCache();
+	Boolean isACache();
+	Object get( String key );
+	void put( String key, Object value, Integer lifespan );
+	Boolean contains( String key );
+	void remove( String key );
 }

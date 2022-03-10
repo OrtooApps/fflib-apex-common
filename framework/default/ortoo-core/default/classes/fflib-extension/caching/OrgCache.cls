@@ -6,10 +6,13 @@
  *
  * Attempting to access the cache without this permission will result in an OrgCache.AccessViolationException
  */
-public class OrgCache implements ICacheAdaptor
+public inherited sharing class OrgCache implements ICacheAdaptor
 {
+	// TODO: clear all
 	public class AccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
+
+	private final static String PARTITION_NAME = 'core';
 
 	private Boolean hasAccessToCache
 	{
@@ -65,7 +68,7 @@ public class OrgCache implements ICacheAdaptor
 							.addContext( 'key', key );
 		}
 
-		return Cache.Org.get( key );
+		return Cache.Org.get( createFullyQualifiedKey( key ) );
 	}
 
 	/**
@@ -93,26 +96,7 @@ public class OrgCache implements ICacheAdaptor
 							.addContext( 'value', value );
 		}
 
-		Cache.Org.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
-	}
-
-	/**
-	 * Retrieve a set of the current keys of objects stored in this cache.
-	 *
-	 * If the user does not have access to the cache, will throw an AccessViolationException.
-	 *
-	 * @return	Set<String>	The keys that currently exist in the cache
-	 */
-	public Set<String> getKeys()
-	{
-		if ( ! hasAccessToCache )
-		{
-			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
-							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
-							.addContext( 'method', 'getKeys' );
-		}
-
-		return Cache.Org.getKeys();
+		Cache.Org.put( createFullyQualifiedKey( key ), value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
 	}
 
 	/**
@@ -132,7 +116,7 @@ public class OrgCache implements ICacheAdaptor
 							.addContext( 'method', 'contains' )
 							.addContext( 'key', key );
 		}
-		return Cache.Org.contains( key );
+		return Cache.Org.contains( createFullyQualifiedKey( key ) );
 	}
 
 	/**
@@ -151,16 +135,16 @@ public class OrgCache implements ICacheAdaptor
 							.addContext( 'method', 'remove' )
 							.addContext( 'key', key );
 		}
-		Cache.Org.remove( key );
+		Cache.Org.remove( createFullyQualifiedKey( key ) );
 	}
 
-	public String createFullyQualifiedPartitionName( String partitionName )
+	private String createFullyQualifiedPartitionName()
 	{
-		return Cache.OrgPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, partitionName );
+		return Cache.OrgPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME );
 	}
 
-	public String createFullyQualifiedKey( String partitionName, String subKey )
+	private String createFullyQualifiedKey( String key )
 	{
-		return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, partitionName, subkey );
+		return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, key );
 	}
 }

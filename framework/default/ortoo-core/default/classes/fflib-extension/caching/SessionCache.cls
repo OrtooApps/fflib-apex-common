@@ -3,8 +3,10 @@
  *
  * All users are assumed to have access to the cache.
  */
-public class SessionCache implements ICacheAdaptor
+public inherited sharing class SessionCache implements ICacheAdaptor
 {
+	private static final String PARTITION_NAME = 'core';
+
 	/**
 	 * States if this user has access to the cache - which is always true
 	 *
@@ -50,16 +52,6 @@ public class SessionCache implements ICacheAdaptor
 	}
 
 	/**
-	 * Retrieve a set of the current keys of objects stored in this cache.
-	 *
-	 * @return	Set<String>	The keys that currently exist in the cache
-	 */
-	public Set<String> getKeys()
-	{
-		return Cache.Session.getKeys();
-	}
-
-	/**
 	 * States if the cache currently contains an object in the given key.
 	 *
 	 * @param	String	The key for the object to look for
@@ -80,13 +72,13 @@ public class SessionCache implements ICacheAdaptor
 		Cache.Session.remove( key );
 	}
 
-	public String createFullyQualifiedPartitionName( String partitionName )
+	private String createFullyQualifiedPartitionName()
 	{
-		return Cache.SessionPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, partitionName );
+		return Cache.SessionPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME );
 	}
 
-	public String createFullyQualifiedKey( String partitionName, String subKey )
+	private String createFullyQualifiedKey( String key )
 	{
-		return Cache.SessionPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, partitionName, subkey );
+		return Cache.SessionPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, key );
 	}
 }

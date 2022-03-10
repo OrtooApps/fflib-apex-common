@@ -12,7 +12,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 
 	ICacheAdaptor cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
-	private final static String PARTITION_NAME = 'core';
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
 
 	/**
@@ -118,30 +117,8 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 		cacheWrapper.remove( generateKey( soql ) );
 	}
 
-	/**
-	 * Clears the cached results for all cached SOQL
-	 */
-	public void clearAllCache()
-	{
-		String fullSoqlPartitionName = cacheWrapper.createFullyQualifiedPartitionName( PARTITION_NAME );
-		for ( String thisKey : cacheWrapper.getKeys() )
-		{
-			String qualifiedKey = qualifiedKey( thisKey );
-			if ( cacheWrapper.contains( qualifiedKey ) )
-			{
-				cacheWrapper.remove( qualifiedKey );
-			}
-		}
-	}
-
 	private String generateKey( String soql )
 	{
-		String subkey = EncodingUtil.convertToHex( Crypto.generateDigest( 'SHA1', Blob.valueOf( soql ) ) );
-		return qualifiedKey( subkey );
-	}
-
-	private String qualifiedKey( String subkey )
-	{
-		return cacheWrapper.createFullyQualifiedKey( PARTITION_NAME, subkey );
+		return EncodingUtil.convertToHex( Crypto.generateDigest( 'SHA1', Blob.valueOf( soql ) ) );
 	}
 }

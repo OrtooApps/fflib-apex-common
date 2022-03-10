@@ -5,48 +5,33 @@
  *
  * All users are assumed to be allowed to use the cache, but it describes itself as 'not a cache' and effectively does nothing.
  */
-public class NullCache implements ICacheAdaptor
+public inherited sharing class NullCache implements ICacheAdaptor
 {
-    public Boolean hasAccessToCache()
-    {
-        return true;
-    }
+	public Boolean hasAccessToCache()
+	{
+		return true;
+	}
 
-    public Boolean isACache()
-    {
-        return false;
-    }
+	public Boolean isACache()
+	{
+		return false;
+	}
 
-    public Object get( String key )
-    {
-        return null;
-    }
+	public Object get( String key )
+	{
+		return null;
+	}
 
-    public void put( String key, Object value, Integer lifespan ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
-    {
-    }
+	public void put( String key, Object value, Integer lifespan ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
+	{
+	}
 
-    public Set<String> getKeys()
-    {
-        return new Set<String>();
-    }
+	public Boolean contains( String key )
+	{
+		return false;
+	}
 
-    public Boolean contains( String key )
-    {
-        return false;
-    }
-
-    public void remove( String key ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
-    {
-    }
-
-    public String createFullyQualifiedPartitionName( String partitionName )
-    {
-        return partitionName;
-    }
-
-    public String createFullyQualifiedKey( String partitionName, String subKey )
-    {
-        return partitionName + '.' + subkey;
-    }
+	public void remove( String key ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
+	{
+	}
 }
