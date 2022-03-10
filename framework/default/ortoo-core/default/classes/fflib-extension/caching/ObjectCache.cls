@@ -76,6 +76,7 @@ public with sharing class ObjectCache
 		String getIdFor( Object objectToGetIdFor );
 	}
 
+	@testVisible
 	ICacheAdaptor cacheWrapper = new OrgCache(); // by default, configure the cache to use the org version
 
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
