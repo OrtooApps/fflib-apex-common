@@ -8,7 +8,6 @@
  */
 public inherited sharing class OrgCache implements ICacheAdaptor
 {
-	// TODO: clear all
 	public class AccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
 
@@ -136,6 +135,28 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 							.addContext( 'key', key );
 		}
 		Cache.Org.remove( createFullyQualifiedKey( key ) );
+	}
+
+	/**
+	 * Instucts the cache to remove all objects from the cache.
+	 *
+	 * Is useful for clearing the cache out completely when the majority of entries would otherwise be dirty.
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 */
+	public void removeAll()
+	{
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'removeAll' );
+		}
+
+		for ( String thisKey : Cache.Org.getKeys() )
+		{
+			Cache.Org.remove( thisKey );
+		}
 	}
 
 	private String createFullyQualifiedPartitionName()

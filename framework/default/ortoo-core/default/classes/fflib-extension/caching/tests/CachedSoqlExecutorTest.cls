@@ -27,7 +27,7 @@ private without sharing class CachedSoqlExecutorTest
 
 		setupAccessToSoqlCache( true );
 
-		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.ORG );
 
 		Test.startTest();
 			List<Sobject> originalResults = executor.query( soqlStatement );
