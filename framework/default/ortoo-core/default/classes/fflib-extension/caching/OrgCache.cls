@@ -11,16 +11,13 @@ public class OrgCache implements ICacheAdaptor
 	public class AccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
 																							// in such a way that it's never possible to get this exception
 
-	@testVisible
-	private final static String CAN_ACCESS_CACHE_PERMISSION = 'ProcessesCanAccessCache';
-
 	private Boolean hasAccessToCache
 	{
 		get
 		{
 			if ( hasAccessToCache == null )
 			{
-				hasAccessToCache = PermissionsService.hasPermission( CAN_ACCESS_CACHE_PERMISSION );
+				hasAccessToCache = PermissionsService.hasAccessToCorePlatformCache();
 			}
 			return hasAccessToCache;
 		}

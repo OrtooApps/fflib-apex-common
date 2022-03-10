@@ -575,8 +575,7 @@ private without sharing class CachedSoqlExecutorTest
     private static void setupAccessToSoqlCache( Boolean accessToCache )
     {
         ApplicationMockRegistrar.registerMockService( IPermissionsService.class )
-            .when( 'hasPermission' )
-            .withParameter( OrgCache.CAN_ACCESS_CACHE_PERMISSION )
+            .when( 'hasAccessToCorePlatformCache' )
             .returns( accessToCache );
     }
 }

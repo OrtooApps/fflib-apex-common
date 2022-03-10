@@ -4,14 +4,13 @@
 public with sharing class PermissionsService {
 
 	/**
-	 * States if the user has the custom permission with the given API name.
+	 * States if the user has rights to access the core platform cache
 	 *
-	 * @param	String	The API name of the custom permission to check the assignment of.
 	 * @return	Boolean	Does the current user have the stated permission.
 	 */
-    public static Boolean hasPermission( String customPermissionName )
+	public static Boolean hasAccessToCorePlatformCache()
 	{
-		return service().hasPermission( customPermissionName );
+		return service().hasAccessToCorePlatformCache();
 	}
 
     private static IPermissionsService service()

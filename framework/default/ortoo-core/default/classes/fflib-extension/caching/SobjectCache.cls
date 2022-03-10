@@ -1,3 +1,4 @@
+// TODO: defunt
 public with sharing class SobjectCache
 {
 	public class CacheAccessViolationException extends Exceptions.DeveloperException {}	// this looks like a config exception, but actually the system should be built
@@ -9,16 +10,13 @@ public with sharing class SobjectCache
 	private final static String PARTITION_NAME = 'soql'; // TODO: same partition?
 	private final static Integer CACHE_LIFESPAN_SECONDS = 28800;   // TODO: soft setting / option
 
-	@testVisible
-	private final static String CAN_ACCESS_SOQL_CACHE_PERMISSION = 'ProcessesCanAccessSOQLCache';  // TODO: same permission?
-
 	private Boolean hasAccessToCache
 	{
 		get
 		{
 			if ( hasAccessToCache == null )
 			{
-				hasAccessToCache = PermissionsService.hasPermission( CAN_ACCESS_SOQL_CACHE_PERMISSION );
+				hasAccessToCache = PermissionsService.hasAccessToCorePlatformCache();
 			}
 			return hasAccessToCache;
 		}
@@ -112,7 +110,7 @@ public with sharing class SobjectCache
 
     private String createKeyPrefix( String subKey )
     {
-        return cacheWrapper.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, subkey ) + 'x';
+        return cacheWrapper.createFullyQualifiedKey( PARTITION_NAME, subkey ) + 'x';
     }
 
     public class CacheRetrieval
