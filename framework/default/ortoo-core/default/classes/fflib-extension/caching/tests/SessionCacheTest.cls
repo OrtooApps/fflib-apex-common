@@ -99,6 +99,7 @@ private without sharing class SessionCacheTest
 	@isTest
 	private static void remove_whenCalledForAKeyThatWasNotPut_doesNotError() // NOPMD: Test method name format
 	{
+		SessionCache cache = new SessionCache();
 		cache.remove( 'keythatneverexisted' );
 
 		System.assertEquals( false, new SessionCache().contains( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking contains' );
