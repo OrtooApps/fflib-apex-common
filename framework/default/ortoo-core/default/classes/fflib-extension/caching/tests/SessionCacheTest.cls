@@ -6,21 +6,24 @@ private without sharing class SessionCacheTest
 	@isTest
 	private static void hasAccessToCache_whenCalled_returnsTrue() // NOPMD: Test method name format
 	{
-		Boolean got = new SessionCache().hasAccessToCache();
+		SessionCache cache = new SessionCache();
+		Boolean got = cache.hasAccessToCache();
 		System.assertEquals( true, got, 'hasAccessToCache, when called, will return true' );
 	}
 
 	@isTest
 	private static void isACache_whenCalled_returnsTrue() // NOPMD: Test method name format
 	{
-		Boolean got = new SessionCache().isACache();
+		SessionCache cache = new SessionCache();
+		Boolean got = cache.isACache();
 		System.assertEquals( true, got, 'hasAccessToCache, when called, will return true' );
 	}
 
 	@isTest
 	private static void get_whenCalledWithAKeyNotInTheCache_returnsNull() // NOPMD: Test method name format
 	{
-		Object got = new SessionCache().get( 'doesnotexist' );
+		SessionCache cache = new SessionCache();
+		Object got = cache.get( 'doesnotexist' );
 		System.assertEquals( null, got, 'get, when called with a key that is not in the cache, will return null' );
 	}
 
@@ -30,7 +33,8 @@ private without sharing class SessionCacheTest
 		String expected = 'thecachedthing';
 		new SessionCache().put( 'key', expected, DEFAULT_LIFESPAN );
 
-		Object got = new SessionCache().get( 'key' );
+		SessionCache cache = new SessionCache();
+		Object got = cache.get( 'key' );
 		System.assertEquals( expected, got, 'get, when called with a key that is in the cache, will return it' );
 	}
 
@@ -42,7 +46,8 @@ private without sharing class SessionCacheTest
 		new SessionCache().put( 'key', '3', DEFAULT_LIFESPAN );
 		new SessionCache().put( 'key', '4', DEFAULT_LIFESPAN );
 
-		Object got = new SessionCache().get( 'key' );
+		SessionCache cache = new SessionCache();
+		Object got = cache.get( 'key' );
 		System.assertEquals( '4', got, 'put, when called multiple times with the same key, overwrites it' );
 	}
 
@@ -54,7 +59,8 @@ private without sharing class SessionCacheTest
 		new SessionCache().put( 'key3', '3', DEFAULT_LIFESPAN );
 		new SessionCache().put( 'key4', '4', DEFAULT_LIFESPAN );
 
-		Object got = new SessionCache().get( 'key2' );
+		SessionCache cache = new SessionCache();
+		Object got = cache.get( 'key2' );
 		System.assertEquals( '2', got, 'put, when called multiple times with different keys, stores them' );
 	}
 
@@ -63,7 +69,8 @@ private without sharing class SessionCacheTest
 	{
 		new SessionCache().put( 'keythatexists', '1', DEFAULT_LIFESPAN );
 
-		Boolean got = new SessionCache().contains( 'keythatexists' );
+		SessionCache cache = new SessionCache();
+		Boolean got = cache.contains( 'keythatexists' );
 		System.assertEquals( true, got, 'contains, when called for a key that was put, returns true' );
 	}
 
@@ -72,7 +79,8 @@ private without sharing class SessionCacheTest
 	{
 		new SessionCache().put( 'keythatexists', '1', DEFAULT_LIFESPAN );
 
-		Boolean got = new SessionCache().contains( 'keythatdoesnotexist' );
+		SessionCache cache = new SessionCache();
+		Boolean got = cache.contains( 'keythatdoesnotexist' );
 		System.assertEquals( false, got, 'contains, when called for a key that was not put, returns false' );
 	}
 
@@ -81,7 +89,8 @@ private without sharing class SessionCacheTest
 	{
 		new SessionCache().put( 'originalkey', '1', DEFAULT_LIFESPAN );
 
-		new SessionCache().remove( 'originalkey' );
+		SessionCache cache = new SessionCache();
+		cache.remove( 'originalkey' );
 
 		System.assertEquals( false, new SessionCache().contains( 'originalkey' ), 'remove, when called for a key that was put, will remove it - checking contains' );
 		System.assertEquals( null, new SessionCache().get( 'originalkey' ), 'remove, when called for a key that was put, will remove it - checking get' );
@@ -90,7 +99,7 @@ private without sharing class SessionCacheTest
 	@isTest
 	private static void remove_whenCalledForAKeyThatWasNotPut_doesNotError() // NOPMD: Test method name format
 	{
-		new SessionCache().remove( 'keythatneverexisted' );
+		cache.remove( 'keythatneverexisted' );
 
 		System.assertEquals( false, new SessionCache().contains( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking contains' );
 		System.assertEquals( null, new SessionCache().get( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking get' );
