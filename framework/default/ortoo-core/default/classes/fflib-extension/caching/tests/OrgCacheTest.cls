@@ -7,8 +7,9 @@ private without sharing class OrgCacheTest
 	private static void hasAccessToCache_whenCalledByUserWithCacheAccess_returnsTrue() // NOPMD: Test method name format
 	{
 		setupAccessToSoqlCache( true );
+		OrgCache cache = new OrgCache();
 
-		Boolean got = new OrgCache().hasAccessToCache();
+		Boolean got = cache.hasAccessToCache();
 		System.assertEquals( true, got, 'hasAccessToCache, when called, will return true' );
 	}
 
@@ -16,8 +17,9 @@ private without sharing class OrgCacheTest
 	private static void hasAccessToCache_whenCalledByUserWithoutCacheAccess_returnsFalse() // NOPMD: Test method name format
 	{
 		setupAccessToSoqlCache( false );
+		OrgCache cache = new OrgCache();
 
-		Boolean got = new OrgCache().hasAccessToCache();
+		Boolean got = cache.hasAccessToCache();
 		System.assertEquals( false, got, 'hasAccessToCache, when called, will return false' );
 	}
 
@@ -26,7 +28,8 @@ private without sharing class OrgCacheTest
 	{
 		setupAccessToSoqlCache( true );
 
-		Boolean got = new OrgCache().isACache();
+		OrgCache cache = new OrgCache();
+		Boolean got = cache.isACache();
 		System.assertEquals( true, got, 'hasAccessToCache, when called, will return true' );
 	}
 
@@ -35,7 +38,8 @@ private without sharing class OrgCacheTest
 	{
 		setupAccessToSoqlCache( false );
 
-		Boolean got = new OrgCache().isACache();
+		OrgCache cache = new OrgCache();
+		Boolean got = cache.isACache();
 		System.assertEquals( true, got, 'hasAccessToCache, when called, will return true' );
 	}
 
@@ -66,7 +70,8 @@ private without sharing class OrgCacheTest
 	{
 		setupAccessToSoqlCache( true );
 
-		Object got = new OrgCache().get( 'doesnotexist' );
+		OrgCache cache = new OrgCache();
+		Object got = cache.get( 'doesnotexist' );
 		System.assertEquals( null, got, 'get, when called with a key that is not in the cache, will return null' );
 	}
 
@@ -78,7 +83,8 @@ private without sharing class OrgCacheTest
 		String expected = 'thecachedthing';
 		new OrgCache().put( 'key', expected, DEFAULT_LIFESPAN );
 
-		Object got = new OrgCache().get( 'key' );
+		OrgCache cache = new OrgCache();
+		Object got = cache.get( 'key' );
 		System.assertEquals( expected, got, 'get, when called with a key that is in the cache, will return it' );
 	}
 
@@ -115,7 +121,8 @@ private without sharing class OrgCacheTest
 		new OrgCache().put( 'key', '3', DEFAULT_LIFESPAN );
 		new OrgCache().put( 'key', '4', DEFAULT_LIFESPAN );
 
-		Object got = new OrgCache().get( 'key' );
+		OrgCache cache = new OrgCache();
+		Object got = cache.get( 'key' );
 		System.assertEquals( '4', got, 'put, when called multiple times with the same key, overwrites it' );
 	}
 
@@ -129,7 +136,8 @@ private without sharing class OrgCacheTest
 		new OrgCache().put( 'key3', '3', DEFAULT_LIFESPAN );
 		new OrgCache().put( 'key4', '4', DEFAULT_LIFESPAN );
 
-		Object got = new OrgCache().get( 'key2' );
+		OrgCache cache = new OrgCache();
+		Object got = cache.get( 'key2' );
 		System.assertEquals( '2', got, 'put, when called multiple times with different keys, stores them' );
 	}
 
@@ -163,7 +171,8 @@ private without sharing class OrgCacheTest
 
 		new OrgCache().put( 'keythatexists', '1', DEFAULT_LIFESPAN );
 
-		Boolean got = new OrgCache().contains( 'keythatexists' );
+		OrgCache cache = new OrgCache();
+		Boolean got = cache.contains( 'keythatexists' );
 		System.assertEquals( true, got, 'contains, when called for a key that was put, returns true' );
 	}
 
@@ -174,7 +183,8 @@ private without sharing class OrgCacheTest
 
 		new OrgCache().put( 'keythatexists', '1', DEFAULT_LIFESPAN );
 
-		Boolean got = new OrgCache().contains( 'keythatdoesnotexist' );
+		OrgCache cache = new OrgCache();
+		Boolean got = cache.contains( 'keythatdoesnotexist' );
 		System.assertEquals( false, got, 'contains, when called for a key that was not put, returns false' );
 	}
 
@@ -207,7 +217,8 @@ private without sharing class OrgCacheTest
 
 		new OrgCache().put( 'originalkey', '1', DEFAULT_LIFESPAN );
 
-		new OrgCache().remove( 'originalkey' );
+		OrgCache cache = new OrgCache();
+		cache.remove( 'originalkey' );
 
 		System.assertEquals( false, new OrgCache().contains( 'originalkey' ), 'remove, when called for a key that was put, will remove it - checking contains' );
 		System.assertEquals( null, new OrgCache().get( 'originalkey' ), 'remove, when called for a key that was put, will remove it - checking get' );
@@ -218,7 +229,8 @@ private without sharing class OrgCacheTest
 	{
 		setupAccessToSoqlCache( true );
 
-		new OrgCache().remove( 'keythatneverexisted' );
+		OrgCache cache = new OrgCache();
+		cache.remove( 'keythatneverexisted' );
 
 		System.assertEquals( false, new OrgCache().contains( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking contains' );
 		System.assertEquals( null, new OrgCache().get( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking get' );
@@ -255,7 +267,10 @@ private without sharing class OrgCacheTest
 		new OrgCache().put( 'key2', '2', DEFAULT_LIFESPAN );
 		new OrgCache().put( 'key3', '3', DEFAULT_LIFESPAN );
 
-		new OrgCache().removeAll();
+		Test.startTest();
+			OrgCache cache = new OrgCache();
+			cache.removeAll();
+		Test.stopTest();
 
 		System.assertEquals( false, new OrgCache().contains( 'key1' ), 'removeAll, when called for a key that was put, will remove it - checking contains - 1' );
 		System.assertEquals( null, new OrgCache().get( 'key1' ), 'removeAll, when called for a key that was put, will remove it - checking get - 1' );
