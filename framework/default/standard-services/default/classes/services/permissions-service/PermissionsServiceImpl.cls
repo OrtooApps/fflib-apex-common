@@ -2,7 +2,7 @@ public with sharing class PermissionsServiceImpl implements IPermissionsService
 {
 	public Boolean hasAccessToCorePlatformCache()
 	{
-		return hasCustomPermission( 'customPermissionName' );
+		return hasCustomPermission( 'ProcessesCanAccessCache' );
 	}
 
 	/**
