@@ -1,5 +1,5 @@
 /**
- * An implementation of the ICacheAdaptor that is benign - conforms to the Null Object Pattern
+ * An implementation of the ICacheAdaptor that is benign - conforms to the Null Object Pattern.
  *
  * Allows for the use of code that will automatically interact with a cache and be able to switch that off dynamically and simply.
  *

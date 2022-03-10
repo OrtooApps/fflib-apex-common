@@ -35,6 +35,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public Object get( String key )
 	{
+		Contract.requires( key != null, 'get called with a null key' );
 		return Cache.Session.get( key );
 	}
 
@@ -48,6 +49,12 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public void put( String key, Object value, Integer lifespan )
 	{
+		Contract.requires( key != null, 'put called with a null key' );
+		Contract.requires( value != null, 'put called with a null value (call remove instead)' );
+		Contract.requires( lifespan != null, 'put called with a null lifespan' );
+		Contract.requires( lifespan >= 0, 'put called with a negative lifespan' );
+		// Note that the maximum is handled by Salesforce, just in case it increases
+
 		Cache.Session.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
 	}
 
@@ -59,6 +66,8 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public Boolean contains( String key )
 	{
+		Contract.requires( key != null, 'contains called with a null key' );
+
 		return Cache.Session.contains( key );
 	}
 
@@ -69,6 +78,8 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public void remove( String key )
 	{
+		Contract.requires( key != null, 'remove called with a null key' );
+
 		Cache.Session.remove( key );
 	}
 
