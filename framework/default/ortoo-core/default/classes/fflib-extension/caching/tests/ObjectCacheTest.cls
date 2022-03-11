@@ -79,8 +79,8 @@ private without sharing class ObjectCacheTest
 			ObjectCache.CacheRetrieval retrieval = cache.get( 'key', ids );
 		Test.stopTest();
 
-		System.assertEquals( new Set<String>{ 'miss1Id', 'miss2Id' }, retrieval.cacheMisses,       'get, when given some string ids that exist and some that do not, will return those that do not as cache misses' );
-		System.assertEquals( new Set<String>{ 'hit1Id', 'hit2Id' }, retrieval.cacheHits.keySet(),  'get, when given some string ids that exist and some that do not, will return those that do indexed by their id (checking id)' );
+		System.assertEquals( new Set<String>{ 'miss1Id', 'miss2Id' }, retrieval.cacheMisses, 'get, when given some string ids that exist and some that do not, will return those that do not as cache misses' );
+		System.assertEquals( new Set<String>{ 'hit1Id', 'hit2Id' }, retrieval.cacheHits.keySet(), 'get, when given some string ids that exist and some that do not, will return those that do indexed by their id (checking id)' );
 		System.assertEquals( new List<String>{ 'hit1', 'hit2' }, retrieval.cacheHits.values(), 'get, when given some string ids that exist and some that do not, will return those that do indexed by their id (checking content)' );
 	}
 
@@ -97,7 +97,7 @@ private without sharing class ObjectCacheTest
 		Test.stopTest();
 
 		System.assertEquals( new Set<String>(), retrieval.cacheMisses, 'get, when given all string ids that exist, will return no cache misses' );
-		System.assertEquals( new Set<String>{ 'hit1Id', 'hit2Id' }, retrieval.cacheHits.keySet(),  'get, when given all string ids that exist, will return those that do indexed by their id (checking id)' );
+		System.assertEquals( new Set<String>{ 'hit1Id', 'hit2Id' }, retrieval.cacheHits.keySet(), 'get, when given all string ids that exist, will return those that do indexed by their id (checking id)' );
 		System.assertEquals( new List<String>{ 'hit1', 'hit2' }, retrieval.cacheHits.values(), 'get, when given all string ids that exist, will return those that do indexed by their id (checking content)' );
 	}
 
@@ -155,27 +155,273 @@ private without sharing class ObjectCacheTest
 		System.assertEquals( expectedHits[1], retrieval.cacheHits.values()[1], 'get, when given some ids that exist and some that do not, will return those that do indexed by their id (checking content)' );
 	}
 
-	// get, when given a single string key that exists, will return it as a cache hit
-	// get, when given a single string key that does not exist, will return it as a cache miss
-	// get, when given a single id key that exists, will return it as a cache hit
-	// get, when given a single id key that does not exist, will return it as a cache miss
+	@isTest
+	private static void get_whenGivenASingleStringIdThatExists_willReturnAsAHit() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+		cache.put( 'key', new StringIdGetter(), new List<String>{ 'hit1', 'hit2' } );
 
-	// put, when given a list of sobjects, will cache them by their id
-	// put, when given a list of sobjects, and one is null, will throw an exception
-	// put, when given a list of sobjects, and one has a null id, will throw an exception
-	// put, when given a list of sobjects and a name of a string field, will cache the sobjects by the value in that field
-	// put, when given a list of sobjects and a name of a string field, and one has a null value, will throw an exception
+		Test.startTest();
+			ObjectCache.CacheRetrieval retrieval = cache.get( 'key', 'hit1Id' );
+		Test.stopTest();
 
-	// put, when given a list of sobjects and the name of a non string field, will throw an exception
+		System.assertEquals( new Set<String>(), retrieval.cacheMisses, 'get, when given a string id that exists, will return no cache misses' );
+		System.assertEquals( new Set<String>{ 'hit1Id' }, retrieval.cacheHits.keySet(), 'get, when given a string id that exists, will return it as a hit indexed by their id (checking id)' );
+		System.assertEquals( new List<String>{ 'hit1' }, retrieval.cacheHits.values(), 'get, when given a string id that exists, will return it as a hit indexed by their id (checking content)' );
+	}
 
-	// put, when given a list of objects and an idgetter, will cache them based on the return of the idgetter
-	// put, when given a list of objects and an idgetter, and one of the objects is null, will throw an exception
-	// put, when given a list of objects and an idgetter, and one of the objects returns a null id, will throw an exception
+	@isTest
+	private static void get_whenGivenASingleStringIdThatDoesNotExist_willReturnAsAMiss() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+		cache.put( 'key', new StringIdGetter(), new List<String>{ 'hit1', 'hit2' } );
 
-	// put, when given a list of objects and an idgetter, when objects are already in the cache, will not overwrite ones not referenced twice
-	// put, when given a list of objects and an idgetter, when objects are already in the cache, will not overwrite ones that are referenced twice
+		Test.startTest();
+			ObjectCache.CacheRetrieval retrieval = cache.get( 'key', 'miss1' );
+		Test.stopTest();
 
-	// put, when called multiple times with different base keys will not overwrite the other keys
+		System.assertEquals( new Set<String>{ 'miss1' }, retrieval.cacheMisses, 'get, when given a string id that does not exist, will return it as a cache miss' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'get, when given a single string id does not exist, will return no hits' );
+	}
+
+	@isTest
+	private static void get_whenGivenASingleIdThatExists_willReturnAsAHit() // NOPMD: Test method name format
+	{
+		Map<String,Contact> contacts = new Map<String,Contact>{
+			'hit1' => new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) ),
+			'hit2' => new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) )
+		};
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+		cache.put( 'key', contacts.values() );
+
+		Test.startTest();
+			ObjectCache.CacheRetrieval retrieval = cache.get( 'key', contacts.get( 'hit1' ).Id );
+		Test.stopTest();
+
+		System.assertEquals( new Set<String>(), retrieval.cacheMisses, 'get, when given an id that exists, will return no cache misses' );
+		System.assertEquals( new Set<String>{ contacts.get( 'hit1' ).Id }, retrieval.cacheHits.keySet(), 'get, when given an id that exists, will return it as a hit indexed by their id (checking id)' );
+		System.assertEquals( contacts.get( 'hit1' ), retrieval.cacheHits.values()[0], 'get, when given an id that exists, will return it as a hit indexed by their id (checking content)' );
+	}
+
+	@isTest
+	private static void get_whenGivenASingleIdThatDoesNotExist_willReturnAsAMiss() // NOPMD: Test method name format
+	{
+		List<Contact> hitContacts = new List<Contact>{
+			new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) )
+		};
+
+		Contact missContact = new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) );
+
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+		cache.put( 'key', hitContacts );
+
+		Test.startTest();
+			ObjectCache.CacheRetrieval retrieval = cache.get( 'key', missContact.Id  );
+		Test.stopTest();
+
+		System.assertEquals( new Set<String>{ missContact.Id }, retrieval.cacheMisses, 'get, when given an id that does not exist, will return it as a cache miss' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'get, when given an id does not exist, will return no hits' );
+	}
+
+	@isTest
+	private static void put_whenGivenSObjectsAndOneIsNull_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', new List<Contact>{
+					new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) ),
+					null,
+					new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) )
+				});
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with a null entry in objects', exceptionMessage, 'put, when given SObjects and one is null, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenSObjectsAndOneHasNullId_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', new List<Contact>{
+					new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) ),
+					new Contact(),
+					new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) )
+				});
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with an object that has a null Id', exceptionMessage, 'put, when given SObjects and one has a null Id, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenAListOfSobjectsAndAValidStringFieldName_willCacheBasedOnThePassedField() // NOPMD: Test method name format
+	{
+		List<Contact> contacts = new List<Contact>{
+			new Contact( LastName = 'hit1' ),
+			new Contact( LastName = 'hit2' )
+		};
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			cache.put( 'key', 'LastName', contacts );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval = cache.get( 'key', 'hit1' );
+
+		System.assertEquals( contacts[0], retrieval.cacheHits.get( 'hit1' ), 'put, when given a list of sobjects and a valid string field name, will index by the field passed' );
+	}
+
+	@isTest
+	private static void put_whenGivenSobjectsAndAnInvalidFieldName_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', 'INVALID_FIELD_NAME', new List<Contact>{ new Contact( LastName = 'hit1' ) });
+			}
+			catch ( ObjectCache.InvalidIdentifierException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Unable to retrieve the String Identifier from the field INVALID_FIELD_NAME from the SObject: Contact', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenSobjectsAndANonStringFieldName_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', 'MailingLatitude', new List<Contact>{ new Contact( MailingLatitude = 0 ) });
+			}
+			catch ( ObjectCache.InvalidIdentifierException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Unable to retrieve the String Identifier from the field MailingLatitude from the SObject: Contact', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenSobjectsAndASobjectWithNullField_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', 'LastName', new List<Contact>{
+															new Contact( LastName = 'hit1' ),
+															new Contact()
+														});
+			}
+			catch ( Contract.AssertException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with an object that has a null Id: Contact', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenObjectAndOneWithANullId_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', new StringIdGetter(), new List<String>{
+																'hit1',
+																'nullid',
+																'hit2'
+															});
+			}
+			catch ( Contract.AssertException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with an object that has a null Id: nullid', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenDifferentKeysWithTheSameIds_willNotOverwriteEachOther() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+		String OBJECT_ID = 'id1';
+
+		List<ObjectToStore> objectsToStore = new List<ObjectToStore>{
+			new ObjectToStore( OBJECT_ID, 'value1' ),
+			new ObjectToStore( OBJECT_ID, 'value2' )
+		};
+
+		Test.startTest();
+			cache.put( 'key1', new ObjectIdGetter(), new List<ObjectToStore>{ objectsToStore[0] } );
+			cache.put( 'key2', new ObjectIdGetter(), new List<ObjectToStore>{ objectsToStore[1] } );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval;
+
+		retrieval = cache.get( 'key1', OBJECT_ID );
+		System.assertEquals( objectsToStore[0], retrieval.cacheHits.get( OBJECT_ID ), 'put, when given objects with the same ids, but different keys, will index them independently' );
+
+		retrieval = cache.get( 'key2', OBJECT_ID );
+		System.assertEquals( objectsToStore[1], retrieval.cacheHits.get( OBJECT_ID ), 'put, when given objects with the same ids, but different keys, will index them independently (checking index 2)' );
+	}
+
+	@isTest
+	private static void put_whenGivenDifferentObjectsWithTheSameKeyAndId_willOverwriteEachOther() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+		String OBJECT_ID = 'id1';
+
+		List<ObjectToStore> objectsToStore = new List<ObjectToStore>{
+			new ObjectToStore( OBJECT_ID, 'value1' ),
+			new ObjectToStore( OBJECT_ID, 'value2' )
+		};
+
+		Test.startTest();
+			cache.put( 'key1', new ObjectIdGetter(), new List<ObjectToStore>{ objectsToStore[0] } );
+			cache.put( 'key1', new ObjectIdGetter(), new List<ObjectToStore>{ objectsToStore[1] } );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval;
+
+		retrieval = cache.get( 'key1', OBJECT_ID );
+		System.assertEquals( objectsToStore[1], retrieval.cacheHits.get( OBJECT_ID ), 'put, when given objects with the same ids and keys, the latter will overwrite the earlier' );
+	}
 
 	// remove, when called with a key that exists, will remove all objects from the cache for that key
 	// remove, when called with a key that does not exist, will not throw an exception
@@ -190,10 +436,31 @@ private without sharing class ObjectCacheTest
 	{
 		public String getIdFor( Object objectToGetIdFor )
 		{
+			if ( objectToGetIdFor == 'nullid' )
+			{
+				return null;
+			}
 			return (String)objectToGetIdFor + 'Id';
 		}
 	}
 
+	public class ObjectToStore
+	{
+		public String id;
+		public String value;
 
+		public ObjectToStore( String id, String value )
+		{
+			this.id = id;
+			this.value = value;
+		}
+	}
+
+	public class ObjectIdGetter implements ObjectCache.IdGetter
+	{
+		public String getIdFor( Object objectToGetIdFor )
+		{
+			return ((ObjectToStore)objectToGetIdFor).id;
+		}
+	}
 }
-

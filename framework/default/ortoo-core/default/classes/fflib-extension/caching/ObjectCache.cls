@@ -211,6 +211,7 @@ public with sharing class ObjectCache
 		return put( key, new SobjectIdGetter( idField ), sobjects );
 	}
 
+	// TODO: implement put( String key, IdGetter idGetter, Object objectToStore )
 	/**
 	 * Put the given Objects into the cache, using the given base key combined with the value that is returned from
 	 * each object when the IdGetter is called against it
@@ -304,11 +305,6 @@ public with sharing class ObjectCache
 			this.idField = idField;
 		}
 
-		private SobjectIdGetter()
-		{
-			this( 'Id' );
-		}
-
 		public String getIdFor( Object objectToGetIdFor )
 		{
 			try
@@ -317,7 +313,7 @@ public with sharing class ObjectCache
 			}
 			catch ( Exception e )
 			{
-				throw new InvalidIdentifierException( 'Unable to retrieve the String Identifier from the field ' + idField + ' from the SObject: ' + objectToGetIdFor, e )
+				throw new InvalidIdentifierException( 'Unable to retrieve the String Identifier from the field ' + idField + ' from the SObject: ' + objectToGetIdFor + ' - maybe it is not a String or Id?', e )
 							.setErrorCode( FrameworkErrorCodes.UNABLE_TO_RETRIEVE_IDENTIFIER )
 							.addContext( 'object', objectToGetIdFor )
 							.addContext( 'idField', idField );
