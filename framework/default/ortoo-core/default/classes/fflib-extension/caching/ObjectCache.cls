@@ -10,12 +10,6 @@
  */
 public with sharing class ObjectCache
 {
-	// TODO: do we need to protect against 100kb limit
-	// TODO: could implement a longest time since accessed, first out
-	// TODO: could implement a random age out
-	// TODO: could just ignore and invalidate the cache - check with the rest of the seniors
-	// TODO: Docs on keys
-
 	public class InvalidIdentifierException extends Exceptions.DeveloperException {}
 
 	public enum CacheScope { ORG, SESSION }
@@ -118,6 +112,11 @@ public with sharing class ObjectCache
 		Contract.requires( key != null, 'get called with a null key' );
 		Contract.requires( ids != null, 'get called with a null ids' );
 
+		for ( String thisId : ids )
+		{
+			Contract.requires( thisId != null, 'get called with a null entry in ids' );
+		}
+
 		CacheRetrieval values = new CacheRetrieval();
 
 		Map<String,Object> cachedObjects = (Map<String,Object>)cacheWrapper.get( key );
@@ -129,8 +128,6 @@ public with sharing class ObjectCache
 
 		for ( String thisId : ids )
 		{
-			Contract.assert( thisId != null, 'get called with a null entry in ids' );
-
 			Object thisValue = cachedObjects.get( thisId );
 			if ( thisValue != null )
 			{
