@@ -27,7 +27,6 @@ private without sharing class ObjectCacheTest
 	@isTest
 	private static void setScope_whenGivenSession_setsTheCacheToSessionCache() // NOPMD: Test method name format
 	{
-
 		ObjectCache cache = new ObjectCache();
 
 		Test.startTest();
@@ -42,7 +41,7 @@ private without sharing class ObjectCacheTest
 	{
 		Set<String> ids = new Set<String>{ 'missId1', 'missId2' };
 
-		ObjectCache cache = new ObjectCache();
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 
 		Test.startTest();
 			ObjectCache.CacheRetrieval retrieval = cache.get( 'nonekey', ids );
@@ -57,7 +56,7 @@ private without sharing class ObjectCacheTest
 	{
 		Set<String> ids = new Set<String>{ 'miss1Id', 'miss2Id' };
 
-		ObjectCache cache = new ObjectCache();
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 		cache.put( 'key', new StringIdGetter(), new List<String>{ 'hit1', 'hit2' } );
 
 		Test.startTest();
@@ -73,7 +72,7 @@ private without sharing class ObjectCacheTest
 	{
 		Set<String> ids = new Set<String>{ 'miss1Id', 'miss2Id', 'hit1Id', 'hit2Id' };
 
-		ObjectCache cache = new ObjectCache();
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 		cache.put( 'key', new StringIdGetter(), new List<String>{ 'hit1', 'hit2' } );
 
 		Test.startTest();
@@ -90,7 +89,7 @@ private without sharing class ObjectCacheTest
 	{
 		Set<String> ids = new Set<String>{ 'hit1Id', 'hit2Id' };
 
-		ObjectCache cache = new ObjectCache();
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 		cache.put( 'key', new StringIdGetter(), new List<String>{ 'hit1', 'hit2' } );
 
 		Test.startTest();
@@ -105,7 +104,7 @@ private without sharing class ObjectCacheTest
 	@isTest
 	private static void get_whenGivenANullKey_throwsAnException() // NOPMD: Test method name format
 	{
-		ObjectCache cache = new ObjectCache();
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 
 		Test.startTest();
 			String exceptionMessage;
@@ -139,7 +138,7 @@ private without sharing class ObjectCacheTest
 			contacts.get( 'miss2' ).Id
 		};
 
-		ObjectCache cache = new ObjectCache();
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 		cache.put( 'key', new List<SObject>{ contacts.get( 'hit1' ), contacts.get( 'hit2' ) } );
 
 		Test.startTest();
