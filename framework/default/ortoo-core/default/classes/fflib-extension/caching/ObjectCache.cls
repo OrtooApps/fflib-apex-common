@@ -8,7 +8,7 @@
  * Note: The lifespan of a given object is reset whenever any object in that object's list is written.
  *       That is, either the whole of the list is aged out, or none of it is.
  */
-public with sharing class ObjectCache
+public inherited sharing class ObjectCache
 {
 	public class InvalidIdentifierException extends Exceptions.DeveloperException {}
 
@@ -119,16 +119,9 @@ public with sharing class ObjectCache
 
 		CacheRetrieval values = new CacheRetrieval();
 
-		Map<String,Object> cachedObjects = (Map<String,Object>)cacheWrapper.get( key );
-
-		if ( cachedObjects == null )
-		{
-			return values.setCacheMisses( ids );
-		}
-
 		for ( String thisId : ids )
 		{
-			Object thisValue = cachedObjects.get( thisId );
+			Object thisValue = cacheWrapper.get( buildFullKey( key, thisId ) );
 			if ( thisValue != null )
 			{
 				values.addCacheHit( thisId, thisValue );
@@ -212,6 +205,9 @@ public with sharing class ObjectCache
 	}
 
 	// TODO: implement put( String key, IdGetter idGetter, Object objectToStore )
+	// TODO: implement put( String key, String idField, Sobject sobjectToStore )
+	// TODO: implement put( String key, Sobject sobjectToStore )
+
 	/**
 	 * Put the given Objects into the cache, using the given base key combined with the value that is returned from
 	 * each object when the IdGetter is called against it
@@ -227,22 +223,15 @@ public with sharing class ObjectCache
 		Contract.requires( idGetter != null, 'put called with a null idGetter' );
 		Contract.requires( objects != null, 'put called with a null objects' );
 
-		Map<String,Object> cachedObjects = (Map<String,Object>)cacheWrapper.get( key );
-
-		if ( cachedObjects == null )
-		{
-			cachedObjects = new Map<String,Object>();
-		}
-
 		for ( Object thisObject : objects )
 		{
 			Contract.assert( thisObject != null, 'put called with a null entry in objects' );
 			String thisId = idGetter.getIdFor( thisObject );
 
 			Contract.assert( thisId != null, 'put called with an object that has a null Id: ' + thisObject );
-			cachedObjects.put( thisId, thisObject );
+
+			cacheWrapper.put( buildFullKey( key, thisId ), thisObject, CACHE_LIFESPAN_SECONDS );
 		}
-		cacheWrapper.put( key, cachedObjects, CACHE_LIFESPAN_SECONDS );
 
 		return this;
 	}
@@ -253,10 +242,19 @@ public with sharing class ObjectCache
 	 * @param	String			The base key to remove the objects from.
 	 * @return	ObjectCache	Itself, allowing for a fluent interface
 	 */
-	public ObjectCache remove( String key )
+	public ObjectCache remove( String keyToRemove )
 	{
-		Contract.requires( key != null, 'remove called with a null key' );
-		cacheWrapper.remove( key );
+		Contract.requires( keyToRemove != null, 'remove called with a null keyToRemove' );
+
+		Set<String> allExistingKeys = cacheWrapper.getKeys();
+
+		for ( String thisExistingKey : allExistingKeys )
+		{
+			if ( isForKey( thisExistingKey, keyToRemove ) )
+			{
+				cacheWrapper.remove( thisExistingKey );
+			}
+		}
 		return this;
 	}
 
@@ -285,21 +283,32 @@ public with sharing class ObjectCache
 		Contract.requires( key != null, 'remove called with a null key' );
 		Contract.requires( ids != null, 'remove called with a null ids' );
 
-		Map<String,Object> cachedObjects = (Map<String,Object>)cacheWrapper.get( key );
-
-		if ( cachedObjects == null )
+		// This is two loops because we want to check all the ids before we remove anything
+		for ( String thisId : ids )
 		{
-			return this;
+			Contract.assert( thisId != null, 'remove called with a null entry in ids' );
 		}
 
 		for ( String thisId : ids )
 		{
-			Contract.assert( thisId != null, 'remove called with a null entry in ids' );
-
-			cachedObjects.remove( thisId );
+			cacheWrapper.remove( buildFullKey( key, thisId ) );
 		}
-		cacheWrapper.put( key, cachedObjects, CACHE_LIFESPAN_SECONDS );
 		return this;
+	}
+
+	private String buildFullKey( String key, String id )
+	{
+		return buildKeyPrefix( key ) + id;
+	}
+
+	private Boolean isForKey( String fullKey, String key )
+	{
+		return fullKey.startsWith( buildKeyPrefix( key ) );
+	}
+
+	private String buildKeyPrefix( String key )
+	{
+		return key + 'xXXx';
 	}
 
 	private class SobjectIdGetter implements IdGetter

@@ -71,6 +71,24 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	}
 
 	/**
+	 * Retrieve all the keys that are currently stored in the cache.
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 *
+	 * @return	Set<String>	The keys for all cached objects
+	 */
+	public Set<String> getKeys()
+	{
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'getKeys' );
+		}
+		return Cache.Org.getKeys();
+	}
+
+	/**
 	 * Put the stated value into the stated key for the specified duration (in seconds)
 	 *
 	 * If the user does not have access to the cache, will throw an AccessViolationException.
@@ -122,7 +140,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	}
 
 	/**
-	 * Instucts the cache to remove the object at the given key
+	 * Instructs the cache to remove the object at the given key
 	 *
 	 * If the user does not have access to the cache, will throw an AccessViolationException.
 	 *
@@ -143,7 +161,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	}
 
 	/**
-	 * Instucts the cache to remove all objects from the cache.
+	 * Instructs the cache to remove all objects from the cache.
 	 *
 	 * Is useful for clearing the cache out completely when the majority of entries would otherwise be dirty.
 	 *

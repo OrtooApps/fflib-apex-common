@@ -15,4 +15,5 @@ public interface ICacheAdaptor
 	void put( String key, Object value, Integer lifespan );
 	Boolean contains( String key );
 	void remove( String key );
+	Set<String> getKeys();
 }

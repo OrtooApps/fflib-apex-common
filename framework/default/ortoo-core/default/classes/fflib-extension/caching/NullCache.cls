@@ -22,6 +22,11 @@ public inherited sharing class NullCache implements ICacheAdaptor
 		return null;
 	}
 
+	public Set<String> getKeys()
+	{
+		return new Set<String>();
+	}
+
 	public void put( String key, Object value, Integer lifespan ) // NOPMD: Intentionally left empty, as this should do nothing in a NullCache
 	{
 	}

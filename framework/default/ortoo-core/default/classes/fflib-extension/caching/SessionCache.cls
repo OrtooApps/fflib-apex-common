@@ -40,6 +40,16 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	}
 
 	/**
+	 * Retrieve all the keys that are currently stored in the cache.
+	 *
+	 * @return	Set<String>	The keys for all cached objects
+	 */
+	public Set<String> getKeys()
+	{
+		return Cache.Session.getKeys();
+	}
+
+	/**
 	 * Put the stated value into the stated key for the specified duration (in seconds)
 	 *
 	 * @param	String	The key to use for the storage of the object
@@ -72,7 +82,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	}
 
 	/**
-	 * Instucts the cache to remove the object at the given key
+	 * Instructs the cache to remove the object at the given key
 	 *
 	 * @param	String	The key to remove
 	 */

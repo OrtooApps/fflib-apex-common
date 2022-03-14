@@ -546,6 +546,9 @@ private without sharing class ObjectCacheTest
 		System.assert( true, 'remove, when given a key and Id combination that does not exist, will not throw an exception' );
 	}
 
+// TODO: remove called with a null / empty id will throw an exception
+// TODO: remove called with a null / empty id will not remove other things
+
 	public class StringIdGetter implements ObjectCache.IdGetter
 	{
 		public String getIdFor( Object objectToGetIdFor )
