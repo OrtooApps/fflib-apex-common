@@ -14,7 +14,6 @@ private without sharing class ObjectCacheTest
 	@isTest
 	private static void setScope_whenGivenOrg_setsTheCacheToOrgCache() // NOPMD: Test method name format
 	{
-
 		ObjectCache cache = new ObjectCache();
 
 		Test.startTest();
@@ -477,11 +476,75 @@ private without sharing class ObjectCacheTest
 		System.assert( true, 'remove, when given a key that does not exist, will not throw an exception' );
 	}
 
-	// remove, when called with a key and and a set of Ids that exist, will remove the ones that do, leave the others
-	// remove, when called with a key and and a set of Ids that do not exist, will not throw an exception
+	@isTest
+	private static void remove_whenGivenAKeyAndStringIdsThatExist_willRemoveTheOnesThatExist() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+									.put( 'key', new StringIdGetter(), new List<String>{ 'value1', 'value2', 'value3' } );
 
-	// remove, when called with a key and and a set of Strings that exist, will remove the ones that do, leave the others
-	// remove, when called with a key and and a set of Strings that do not exist, will not throw an exception
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'key', new Set<String>{ 'value1Id', 'value3Id' } );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval;
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value1Id' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key and String ids that exist, will remove the ones that exist - 1' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value2Id' );
+		System.assertEquals( 1, retrieval.cacheHits.size(), 'remove, when given a key and String ids that exist, will not remove the ones that are not specified' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value3Id' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key and String ids that exist, will remove the ones that exist - 2' );
+	}
+
+	@isTest
+	private static void remove_whenGivenAKeyAndStringIdCombinationThatDoesNotExist_willNotThrowAnExecption() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'key', new Set<String>{ 'value1Id', 'value3Id' }  );
+		Test.stopTest();
+
+		System.assert( true, 'remove, when given a key and String Id combination that does not exist, will not throw an exception' );
+	}
+
+	@isTest
+	private static void remove_whenGivenAKeyAndIdsThatExist_willRemoveTheOnesThatExist() // NOPMD: Test method name format
+	{
+		List<Contact> contacts = new List<Contact>{
+			new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+			new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) ),
+			new Contact( Id = TestIdUtils.generateId( Contact.sobjectType ) )
+		};
+
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+									.put( 'key', contacts );
+
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'key', new Set<String>{ contacts[0].Id, contacts[2].Id } );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval;
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', contacts[0].Id );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key and ids that exist, will remove the ones that exist - 1' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', contacts[1].Id );
+		System.assertEquals( 1, retrieval.cacheHits.size(), 'remove, when given a key and ids that exist, will not remove the ones that are not specified' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', contacts[2].Id );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key and ids that exist, will remove the ones that exist - 2' );
+	}
+
+	@isTest
+	private static void remove_whenGivenAKeyAndIdCombinationThatDoesNotExist_willNotThrowAnExecption() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'key', new Set<Id>{ TestIdUtils.generateId( Contact.SobjectType ) }  );
+		Test.stopTest();
+
+		System.assert( true, 'remove, when given a key and Id combination that does not exist, will not throw an exception' );
+	}
 
 	public class StringIdGetter implements ObjectCache.IdGetter
 	{

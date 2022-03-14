@@ -286,6 +286,12 @@ public with sharing class ObjectCache
 		Contract.requires( ids != null, 'remove called with a null ids' );
 
 		Map<String,Object> cachedObjects = (Map<String,Object>)cacheWrapper.get( key );
+
+		if ( cachedObjects == null )
+		{
+			return this;
+		}
+
 		for ( String thisId : ids )
 		{
 			Contract.assert( thisId != null, 'remove called with a null entry in ids' );
