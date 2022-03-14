@@ -423,6 +423,70 @@ private without sharing class ObjectCacheTest
 	}
 
 	@isTest
+	private static void put_whenGivenASingleSobject_storesIt() // NOPMD: Test method name format
+	{
+		Contact contact = new Contact( Id = TestIdUtils.generateId( Contact.SobjectType ) );
+
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+					.put( 'key', contact );
+
+		Test.stopTest();
+
+		ObjectCache.cacheRetrieval got = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+											.get( 'key', contact.Id );
+
+		System.assertEquals( contact, (Contact)got.cacheHits.get( contact.Id ), 'put, when given a single SObject, will store it' );
+	}
+
+	@isTest
+	private static void put_whenGivenASingleSobjectAndAFieldName_storesIt() // NOPMD: Test method name format
+	{
+		Contact contact = new Contact( AccountId = TestIdUtils.generateId( Account.SobjectType ) );
+
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+					.put( 'key', 'AccountId', contact );
+
+		Test.stopTest();
+
+		ObjectCache.cacheRetrieval got = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+											.get( 'key', contact.AccountId );
+
+		System.assertEquals( contact, (Contact)got.cacheHits.get( contact.AccountId ), 'put, when given a single SObject and a field name, will store it' );
+	}
+
+	@isTest
+	private static void put_whenGivenASingleObjectAndAnIdGetter_storesIt() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+								.put( 'key', new StringIdGetter(), 'value1' );
+
+		Test.stopTest();
+
+		ObjectCache.cacheRetrieval got = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+											.get( 'key', 'value1Id' );
+
+		System.assertEquals( 'value1', got.cacheHits.get( 'value1Id' ), 'put, when given a single object and an id getter, will store it' );
+	}
+
+	@isTest
+	private static void put_whenGivenASingleObjectAndAnId_storesIt() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+								.put( 'key', 'id1', 'value1' );
+
+		Test.stopTest();
+
+		ObjectCache.cacheRetrieval got = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+											.get( 'key', 'id1' );
+
+		System.assertEquals( 'value1', got.cacheHits.get( 'id1' ), 'put, when given a single object and an id, will store it' );
+	}
+
+	@isTest
 	private static void remove_whenGivenAKeyThatExists_willRemoveAllObjectsFromThatKey() // NOPMD: Test method name format
 	{
 		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )

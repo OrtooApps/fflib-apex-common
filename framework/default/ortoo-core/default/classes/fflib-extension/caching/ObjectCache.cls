@@ -182,11 +182,23 @@ public inherited sharing class ObjectCache
 	 *
 	 * @param	String			The base key to put the objects into
 	 * @param	List<Sobject>	The SObjects to store
-	 * @return	ObjectCache	Itself, allowing for a fluent interface
+	 * @return	ObjectCache		Itself, allowing for a fluent interface
 	 */
 	public ObjectCache put( String key, List<Sobject> sobjects )
 	{
 		return put( key, 'Id', sobjects );
+	}
+
+	/**
+	 * Put the given SObject into the cache, using the given base key combined with the SObject's Id
+	 *
+	 * @param	String			The base key to put the objects into
+	 * @param	Sobject			The SObject to store
+	 * @return	ObjectCache		Itself, allowing for a fluent interface
+	 */
+	public ObjectCache put( String key, Sobject sobjectToStore )
+	{
+		return put( key, new List<Sobject>{ sobjectToStore } );
 	}
 
 	/**
@@ -204,9 +216,19 @@ public inherited sharing class ObjectCache
 		return put( key, new SobjectIdGetter( idField ), sobjects );
 	}
 
-	// TODO: implement put( String key, IdGetter idGetter, Object objectToStore )
-	// TODO: implement put( String key, String idField, Sobject sobjectToStore )
-	// TODO: implement put( String key, Sobject sobjectToStore )
+	/**
+	 * Put the given SObject into the cache, using the given base key combined with the value stored
+	 * in the SObject field as defined by idField
+	 *
+	 * @param	String			The base key to put the object into
+	 * @param	String			The field to get the SObject identifiersfrom (field value must be a non-null String)
+	 * @param	Sobject			The SObject to store
+	 * @return	ObjectCache		Itself, allowing for a fluent interface
+	 */
+	public ObjectCache put( String key, String idField, Sobject sobjectToStore )
+	{
+		return put( key, idField, new List<Sobject>{ sobjectToStore } );
+	}
 
 	/**
 	 * Put the given Objects into the cache, using the given base key combined with the value that is returned from
@@ -235,8 +257,41 @@ public inherited sharing class ObjectCache
 		for ( Object thisObject : objects )
 		{
 			String thisId = idGetter.getIdFor( thisObject );
-			cacheWrapper.put( buildFullKey( key, thisId ), thisObject, CACHE_LIFESPAN_SECONDS );
+			put( key, thisId, thisObject );
 		}
+
+		return this;
+	}
+
+	/**
+	 * Put the given Object into the cache, using the given base key combined with the value that is returned from
+	 * the object when the IdGetter is called against it
+	 *
+	 * @param	String			The base key to put the object into
+	 * @param	IdGetter		The mechanism for getting the Id from the object
+	 * @param	Object			The Object to store
+	 * @return	ObjectCache	Itself, allowing for a fluent interface
+	 */
+	public ObjectCache put( String key, IdGetter idGetter, Object objectToStore )
+	{
+		return put( key, idGetter, new List<Object>{ objectToStore } );
+	}
+
+	/**
+	 * Put the given Object into the cache, using the given base key combined with given id
+	 *
+	 * @param	String			The base key to put the object into
+	 * @param	String			The Id within the key to put the object into
+	 * @param	Object			The Object to store
+	 * @return	ObjectCache	Itself, allowing for a fluent interface
+	 */
+	public ObjectCache put( String key, String id, Object objectToStore )
+	{
+		Contract.requires( String.isNotBlank( key ), 'put called with a blank key' );
+		Contract.requires( String.isNotBlank( id ), 'put called with a blank id' );
+		Contract.requires( objectToStore != null, 'put called with a null objectToStore' );
+
+		cacheWrapper.put( buildFullKey( key, id ), objectToStore, CACHE_LIFESPAN_SECONDS );
 
 		return this;
 	}
