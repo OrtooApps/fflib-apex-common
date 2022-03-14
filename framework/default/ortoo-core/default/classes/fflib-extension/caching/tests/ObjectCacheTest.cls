@@ -423,8 +423,59 @@ private without sharing class ObjectCacheTest
 		System.assertEquals( objectsToStore[1], retrieval.cacheHits.get( OBJECT_ID ), 'put, when given objects with the same ids and keys, the latter will overwrite the earlier' );
 	}
 
-	// remove, when called with a key that exists, will remove all objects from the cache for that key
-	// remove, when called with a key that does not exist, will not throw an exception
+	@isTest
+	private static void remove_whenGivenAKeyThatExists_willRemoveAllObjectsFromThatKey() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+									.put( 'key', new StringIdGetter(), new List<String>{ 'value1', 'value2', 'value3' } );
+
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'key' );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval;
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value1Id' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key that exists, will remove all objects from that key - 1' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value2Id' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key that exists, will remove all objects from that key - 2' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value3Id' );
+		System.assertEquals( 0, retrieval.cacheHits.size(), 'remove, when given a key that exists, will remove all objects from that key - 3' );
+	}
+
+	@isTest
+	private static void remove_whenGivenAKeyThatExists_willNotRemoveObjectsFromOtherKeys() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+											.put( 'key', new StringIdGetter(), new List<String>{ 'value1', 'value2', 'value3' } );
+
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'otherKey' );
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval;
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value1Id' );
+		System.assertEquals( 1, retrieval.cacheHits.size(), 'remove, when given a key that exists, will not remove obejcts from other keys - 1' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value2Id' );
+		System.assertEquals( 1, retrieval.cacheHits.size(), 'remove, when given a key that exists, will not remove obejcts from other keys - 2' );
+
+		retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).get( 'key', 'value3Id' );
+		System.assertEquals( 1, retrieval.cacheHits.size(), 'remove, when given a key that exists, will not remove obejcts from other keys - 3' );
+	}
+
+	@isTest
+	private static void remove_whenGivenAKeyThatDoesNotExist_willNotThrowAnExecption() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			new ObjectCache().setScope( ObjectCache.CacheScope.SESSION ).remove( 'key' );
+		Test.stopTest();
+
+		System.assert( true, 'remove, when given a key that does not exist, will not throw an exception' );
+	}
 
 	// remove, when called with a key and and a set of Ids that exist, will remove the ones that do, leave the others
 	// remove, when called with a key and and a set of Ids that do not exist, will not throw an exception
