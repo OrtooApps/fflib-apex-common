@@ -64,6 +64,21 @@ private without sharing class SessionCacheTest
 		System.assertEquals( '2', got, 'put, when called multiple times with different keys, stores them' );
 	}
 
+
+	@isTest
+	private static void getKeys_returnsTheKeysInTheCache() // NOPMD: Test method name format
+	{
+		new SessionCache().put( 'key1', '1', DEFAULT_LIFESPAN );
+		new SessionCache().put( 'key2', '2', DEFAULT_LIFESPAN );
+		new SessionCache().put( 'key3', '3', DEFAULT_LIFESPAN );
+		new SessionCache().put( 'key4', '4', DEFAULT_LIFESPAN );
+
+		SessionCache cache = new SessionCache();
+		Object got = cache.getKeys();
+
+		System.assertEquals( new Set<String>{ 'key1', 'key2', 'key3', 'key4' }, got, 'getKeys, returns the keys in the cache' );
+	}
+
 	@isTest
 	private static void contains_whenCalledForAKeyThatWasPut_returnsTrue() // NOPMD: Test method name format
 	{

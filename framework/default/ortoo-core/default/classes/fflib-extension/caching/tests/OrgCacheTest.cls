@@ -141,6 +141,43 @@ private without sharing class OrgCacheTest
 		System.assertEquals( '2', got, 'put, when called multiple times with different keys, stores them' );
 	}
 
+	@isTest
+	private static void getKeyss_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( false );
+
+		OrgCache cache = new OrgCache();
+
+		Test.startTest();
+			Exception exceptionThrown;
+			try
+			{
+				cache.getKeys();
+			}
+			catch ( OrgCache.AccessViolationException e )
+			{
+				exceptionThrown = e;
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( Label.ortoo_core_org_cache_access_violation, exceptionThrown?.getMessage(), 'getKeys, when the user does not have access to the cache, will throw an exception' );
+	}
+
+	@isTest
+	private static void getKeys_whenCalledByUserWithCacheAccess_returnsTheKeysInTheCache() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+
+		new OrgCache().put( 'key1', '1', DEFAULT_LIFESPAN );
+		new OrgCache().put( 'key2', '2', DEFAULT_LIFESPAN );
+		new OrgCache().put( 'key3', '3', DEFAULT_LIFESPAN );
+		new OrgCache().put( 'key4', '4', DEFAULT_LIFESPAN );
+
+		OrgCache cache = new OrgCache();
+		Object got = cache.getKeys();
+
+		System.assertEquals( new Set<String>{ 'key1', 'key2', 'key3', 'key4' }, got, 'getKeys, when called by user with cache access, returns the keys in the cache' );
+	}
 
 	@isTest
 	private static void contains_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format

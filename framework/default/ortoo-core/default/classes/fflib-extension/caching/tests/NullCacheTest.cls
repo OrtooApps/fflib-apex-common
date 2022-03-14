@@ -34,6 +34,14 @@ private without sharing class NullCacheTest
 	}
 
 	@isTest
+	private static void getKeys_whenCalled_returnsAnEmptySet() // NOPMD: Test method name format
+	{
+		NullCache cache = new NullCache();
+		Set<String> got = cache.getKeys();
+		System.assertEquals( 0, got.size(), 'getKeys, when called, will return an empty set' );
+	}
+
+	@isTest
 	private static void contains_whenCalled_returnsFalse() // NOPMD: Test method name format
 	{
 		NullCache cache = new NullCache();
