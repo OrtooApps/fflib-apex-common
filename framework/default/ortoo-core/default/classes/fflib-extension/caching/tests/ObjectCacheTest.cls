@@ -487,6 +487,68 @@ private without sharing class ObjectCacheTest
 	}
 
 	@isTest
+	private static void put_whenGivenASingleObjectAndAnEmptyKey_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( '	 	', 'id', 'value' );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with a blank key', exceptionMessage, 'put, when given a single object and an empty key, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenASingleObjectAndAnEmptyId_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', '	 	', 'value' );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with a blank id', exceptionMessage, 'put, when given a single object and an empty id, will throw an exception' );
+	}
+
+	@isTest
+	private static void put_whenGivenASingleNullObject_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Object nullObject = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.put( 'key', 'id', nullObject );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'put called with a null objectToStore', exceptionMessage, 'put, when given a single object that is null, will throw an exception' );
+	}
+
+	@isTest
 	private static void remove_whenGivenAKeyThatExists_willRemoveAllObjectsFromThatKey() // NOPMD: Test method name format
 	{
 		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )

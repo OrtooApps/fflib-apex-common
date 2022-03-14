@@ -274,7 +274,7 @@ public inherited sharing class ObjectCache
 	 */
 	public ObjectCache put( String key, IdGetter idGetter, Object objectToStore )
 	{
-		return put( key, idGetter, new List<Object>{ objectToStore } );
+		return put( key, idGetter.getIdFor( objectToStore ), objectToStore );
 	}
 
 	/**
