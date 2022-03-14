@@ -35,7 +35,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public Object get( String key )
 	{
-		Contract.requires( key != null, 'get called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
 		return Cache.Session.get( key );
 	}
 
@@ -59,7 +59,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public void put( String key, Object value, Integer lifespan )
 	{
-		Contract.requires( key != null, 'put called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'put called with a blank key' );
 		Contract.requires( value != null, 'put called with a null value (call remove instead)' );
 		Contract.requires( lifespan != null, 'put called with a null lifespan' );
 		Contract.requires( lifespan >= 0, 'put called with a negative lifespan' );
@@ -76,7 +76,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public Boolean contains( String key )
 	{
-		Contract.requires( key != null, 'contains called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'contains called with a blank key' );
 
 		return Cache.Session.contains( key );
 	}
@@ -88,7 +88,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public void remove( String key )
 	{
-		Contract.requires( key != null, 'remove called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'remove called with a blank key' );
 
 		Cache.Session.remove( key );
 	}

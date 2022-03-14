@@ -109,12 +109,12 @@ public inherited sharing class ObjectCache
 	 */
 	public CacheRetrieval get( String key, Set<String> ids )
 	{
-		Contract.requires( key != null, 'get called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
 		Contract.requires( ids != null, 'get called with a null ids' );
 
 		for ( String thisId : ids )
 		{
-			Contract.requires( thisId != null, 'get called with a null entry in ids' );
+			Contract.requires( String.isNotBlank( thisId ), 'get called with a blank entry in ids' );
 		}
 
 		CacheRetrieval values = new CacheRetrieval();
@@ -157,7 +157,7 @@ public inherited sharing class ObjectCache
 	 */
 	public CacheRetrieval get( String key, String id )
 	{
-		Contract.requires( id != null, 'get called with a null id' );
+		Contract.requires( String.isNotBlank( id ), 'get called with a blank id' );
 
 		return get( key, new Set<String>{ id } );
 	}
@@ -171,8 +171,8 @@ public inherited sharing class ObjectCache
 	 */
 	public CacheRetrieval get( String key, Id id )
 	{
-		Contract.requires( key != null, 'get called with a null key' );
-		Contract.requires( id != null, 'get called with a null id' );
+		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
+		Contract.requires( String.isNotBlank( id ), 'get called with a blank id' );
 
 		return get( key, new Set<String>{ id } );
 	}
@@ -200,7 +200,7 @@ public inherited sharing class ObjectCache
 	 */
 	public ObjectCache put( String key, String idField, List<Sobject> sobjects )
 	{
-		Contract.requires( idField != null, 'put called with a null idField' );
+		Contract.requires( String.isNotBlank( idField ), 'put called with a blank idField' );
 		return put( key, new SobjectIdGetter( idField ), sobjects );
 	}
 
@@ -219,17 +219,22 @@ public inherited sharing class ObjectCache
 	 */
 	public ObjectCache put( String key, IdGetter idGetter, List<Object> objects )
 	{
-		Contract.requires( key != null, 'put called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'put called with a blank key' );
 		Contract.requires( idGetter != null, 'put called with a null idGetter' );
 		Contract.requires( objects != null, 'put called with a null objects' );
 
 		for ( Object thisObject : objects )
 		{
-			Contract.assert( thisObject != null, 'put called with a null entry in objects' );
+			Contract.requires( thisObject != null, 'put called with a null entry in objects' );
+
 			String thisId = idGetter.getIdFor( thisObject );
+			Contract.requires( String.isNotBlank( thisId ), 'put called with an object that has a blank Id: ' + thisObject );
+		}
 
-			Contract.assert( thisId != null, 'put called with an object that has a null Id: ' + thisObject );
-
+		// Done in two loops so we check that everything is valid before writing anything
+		for ( Object thisObject : objects )
+		{
+			String thisId = idGetter.getIdFor( thisObject );
 			cacheWrapper.put( buildFullKey( key, thisId ), thisObject, CACHE_LIFESPAN_SECONDS );
 		}
 
@@ -244,7 +249,7 @@ public inherited sharing class ObjectCache
 	 */
 	public ObjectCache remove( String keyToRemove )
 	{
-		Contract.requires( keyToRemove != null, 'remove called with a null keyToRemove' );
+		Contract.requires( String.isNotBlank( keyToRemove ), 'remove called with a blank keyToRemove' );
 
 		Set<String> allExistingKeys = cacheWrapper.getKeys();
 
@@ -280,13 +285,13 @@ public inherited sharing class ObjectCache
 	 */
 	public ObjectCache remove( String key, Set<String> ids )
 	{
-		Contract.requires( key != null, 'remove called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'remove called with a blank key' );
 		Contract.requires( ids != null, 'remove called with a null ids' );
 
 		// This is two loops because we want to check all the ids before we remove anything
 		for ( String thisId : ids )
 		{
-			Contract.assert( thisId != null, 'remove called with a null entry in ids' );
+			Contract.requires( String.isNotBlank( thisId ), 'remove called with a blank entry in ids' );
 		}
 
 		for ( String thisId : ids )

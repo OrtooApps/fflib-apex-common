@@ -57,7 +57,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	 */
 	public Object get( String key )
 	{
-		Contract.requires( key != null, 'get called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
 
 		if ( ! hasAccessToCache )
 		{
@@ -100,7 +100,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	 */
 	public void put( String key, Object value, Integer lifespan )
 	{
-		Contract.requires( key != null, 'put called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'put called with a blank key' );
 		Contract.requires( lifespan != null, 'put called with a null lifespan' );
 		Contract.requires( value != null, 'put called with a null value' );
 		Contract.requires( lifespan >= 0, 'put called with a negaitve lifespan' );
@@ -127,7 +127,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	 */
 	public Boolean contains( String key )
 	{
-		Contract.requires( key != null, 'contains called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'contains called with a blank key' );
 
 		if ( ! hasAccessToCache )
 		{
@@ -148,7 +148,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	 */
 	public void remove( String key )
 	{
-		Contract.requires( key != null, 'remove called with a null key' );
+		Contract.requires( String.isNotBlank( key ), 'remove called with a blank key' );
 
 		if ( ! hasAccessToCache )
 		{

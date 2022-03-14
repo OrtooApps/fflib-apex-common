@@ -101,7 +101,7 @@ private without sharing class ObjectCacheTest
 	}
 
 	@isTest
-	private static void get_whenGivenANullKey_throwsAnException() // NOPMD: Test method name format
+	private static void get_whenGivenABlankKey_throwsAnException() // NOPMD: Test method name format
 	{
 		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
 
@@ -109,7 +109,7 @@ private without sharing class ObjectCacheTest
 			String exceptionMessage;
 			try
 			{
-				ObjectCache.CacheRetrieval retrieval = cache.get( 'key', new Set<String>{ 'id1', null, 'id2' } );
+				ObjectCache.CacheRetrieval retrieval = cache.get( 'key', new Set<String>{ 'id1', '   ', 'id2' } );
 			}
 			catch ( Contract.RequiresException e )
 			{
@@ -117,7 +117,7 @@ private without sharing class ObjectCacheTest
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'get called with a null entry in ids', exceptionMessage, 'get, when given a null key, will throw an exception' );
+		ortoo_Asserts.assertContains( 'get called with a blank entry in ids', exceptionMessage, 'get, when given a blank key, will throw an exception' );
 	}
 
 	@isTest
@@ -267,7 +267,7 @@ private without sharing class ObjectCacheTest
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'put called with an object that has a null Id', exceptionMessage, 'put, when given SObjects and one has a null Id, will throw an exception' );
+		ortoo_Asserts.assertContains( 'put called with an object that has a blank Id', exceptionMessage, 'put, when given SObjects and one has a blank Id, will throw an exception' );
 	}
 
 	@isTest
@@ -325,7 +325,7 @@ private without sharing class ObjectCacheTest
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'Unable to retrieve the String Identifier from the field MailingLatitude from the SObject: Contact', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Unable to retrieve the String Identifier from the field MailingLatitude from the SObject: Contact', exceptionMessage, 'put, when given a list of sobjects and a non string field name, will throw an exception' );
 	}
 
 	@isTest
@@ -342,13 +342,13 @@ private without sharing class ObjectCacheTest
 															new Contact()
 														});
 			}
-			catch ( Contract.AssertException e )
+			catch ( Contract.RequiresException e )
 			{
 				exceptionMessage = e.getMessage();
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'put called with an object that has a null Id: Contact', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+		ortoo_Asserts.assertContains( 'put called with an object that has a blank Id: Contact', exceptionMessage, 'put, when given a list of sobjects and one with a null Id will throw an exception' );
 	}
 
 	@isTest
@@ -366,13 +366,13 @@ private without sharing class ObjectCacheTest
 																'hit2'
 															});
 			}
-			catch ( Contract.AssertException e )
+			catch ( Contract.RequiresException e )
 			{
 				exceptionMessage = e.getMessage();
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'put called with an object that has a null Id: nullid', exceptionMessage, 'put, when given a list of sobjects and an invalid field name, will throw an exception' );
+		ortoo_Asserts.assertContains( 'put called with an object that has a blank Id: nullid', exceptionMessage, 'put, when given a list of sobjects one with a null Id, will throw an exception' );
 	}
 
 	@isTest
@@ -546,8 +546,69 @@ private without sharing class ObjectCacheTest
 		System.assert( true, 'remove, when given a key and Id combination that does not exist, will not throw an exception' );
 	}
 
-// TODO: remove called with a null / empty id will throw an exception
-// TODO: remove called with a null / empty id will not remove other things
+	@isTest
+	private static void remove_whenGivenANullKey_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.remove( 'key', new Set<String>{ 'id1', '	 ', 'id2' } );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'remove called with a blank entry in ids', exceptionMessage, 'remove, when given a blank key, will throw an exception' );
+	}
+
+	@isTest
+	private static void remove_whenGivenABlankKey_throwsAnException() // NOPMD: Test method name format
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.remove( 'key', new Set<String>{ 'id1', '	', 'id2' } );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'remove called with a blank entry in ids', exceptionMessage, 'remove, when given a blank key, will throw an exception' );
+	}
+
+	@isTest
+	private static void remove_whenGivenABlankKey_willNotRemoveTheOtherKeys()
+	{
+		ObjectCache cache = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+									.put( 'key', new StringIdGetter(), new List<String>{ 'value1', 'value2', 'value3' } );
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				cache.remove( 'key', new Set<String>{ 'value1Id', '	', 'value3Id' } );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ObjectCache.CacheRetrieval retrieval = new ObjectCache().setScope( ObjectCache.CacheScope.SESSION )
+													.get( 'key', new Set<String>{ 'value1Id', 'value2Id', 'value3Id' } );
+
+		System.assertEquals( 3, retrieval.cacheHits.size(), 'remove, when given a mix of blank and non-blank keys, will not remove the blank ones' );
+	}
 
 	public class StringIdGetter implements ObjectCache.IdGetter
 	{
