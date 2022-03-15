@@ -7,7 +7,7 @@ import ERROR_TITLE from '@salesforce/label/c.ortoo_core_error_title';
 const displayError = function( error, options ) {
 
     const title = options?.title ? options.title : ERROR_TITLE;
-    const messagePrefix = options?.messagePrefix ? options.messagePrefix + ': ' : '';
+    const messagePrefix = options?.messagePrefix ? options.messagePrefix + ': ' : 'Your action could not be completed: '; // TODO: should be a label
     const mode = options?.mode ? options.mode : 'sticky';
     const variant = options?.variant ? options.variant : 'error';
 
