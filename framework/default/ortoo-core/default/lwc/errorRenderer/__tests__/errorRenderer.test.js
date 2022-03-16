@@ -29,7 +29,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'Your action could not be completed: ' + error );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefix' + error );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -58,7 +58,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'Your action could not be completed: javascript error format' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixjavascript error format' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -89,7 +89,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'Your action could not be completed: An error message in the body' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixAn error message in the body' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -149,7 +149,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'Your action could not be completed: An error string' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixAn error string' );
         expect( dispatchedEvent.detail.variant ).toBe( 'warning' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -179,7 +179,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( options.title );
-        expect( dispatchedEvent.detail.message ).toBe( 'Your action could not be completed: ' + error );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefix' + error );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -209,7 +209,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'Your action could not be completed: An error string' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixAn error string' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'pester' );
 
