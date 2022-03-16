@@ -2,7 +2,25 @@
 public inherited sharing class SearchOrderByTest
 {
 	@isTest
-	private static void configure_whenGivenProperties_mapsTheFieldNameAndSetsTheDirection() // NOPMD: Test method name format
+	private static void configure_whenGivenPropertiesAndNoConfigType_doeNotMapTheFieldNameAndSetsTheDirection() // NOPMD: Test method name format
+	{
+		Map<String,Object> properties = new Map<String,Object>{
+			'fieldName' => 'sourceFieldName',
+			'direction' => 'asc'
+		};
+
+		Test.startTest();
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties );
+		Test.stopTest();
+
+		System.assertEquals( 'sourceFieldName', orderBy.fieldName, 'configure, when given properties with a fieldName and direction and no config type, will not map the fieldName, but set the member variable to the source field' );
+		System.assertEquals( 'asc', orderBy.direction, 'configure, when given properties with a fieldName and direction and no config type, will set the direction member variable' );
+
+		System.assert( orderBy.isConfigured(), 'configure, when given properties with a fieldName and direction and no config type, will set the orderBy to configured' );
+	}
+
+	@isTest
+	private static void configure_whenGivenPropertiesAndAConfigType_mapsTheFieldNameAndSetsTheDirection() // NOPMD: Test method name format
 	{
 		Map<String,Object> properties = new Map<String,Object>{
 			'fieldName' => 'sourceFieldName',
