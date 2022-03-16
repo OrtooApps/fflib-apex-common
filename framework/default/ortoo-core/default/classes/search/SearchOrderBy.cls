@@ -13,8 +13,19 @@ public inherited sharing class SearchOrderBy
 	public String fieldName {get; private set;}
 	public String direction {get; private set;}
 
+	public SearchOrderBy configure( Map<String,Object> properties )
+	{
+		Contract.requires( properties != null, 'configure called with a null properties' );
+
+		return configure( properties, NullSearchConfiguration.class );
+	}
+
+	// TODO: add the interface IToSobjectFieldMapper
+	// TODO: Have ISearchConfiguration extend that
+	// TODO: Simplify NullSearchConfiguration and change to NullToSobjectFieldMapper
+
 	/**
-	 * Configures the order by, defining its properties.
+	 * Configures the order by, defining its properties and the search configuration that defines the mappability
 	 *
 	 * @param	Map<String,Object>	The properties of the window.  Should contain 'fieldName' and 'offset' properties as Strings
 	 * @param   Type				The type of the SearchConfiguration object that should be used to determine the field mappings
@@ -66,5 +77,31 @@ public inherited sharing class SearchOrderBy
 	public Boolean isConfigured()
 	{
 		return String.isNotBlank( fieldName );
+	}
+
+	/**
+	 * Null object implementation of the SearchConfiguration which allows unmapped Sobject fields to be used.
+	 */
+	public class NullSearchConfiguration implements ISearchConfiguration
+	{
+		public String getMappedSobjectField( String resultField )
+		{
+			return resultField;
+		}
+
+		public List<String> getRequiredFields()
+		{
+			return new List<String>();
+		}
+
+		public List<String> getSortableFields()
+		{
+			return new List<String>();
+		}
+
+		public SobjectType getBaseSobjectType()
+		{
+			return null;
+		}
 	}
 }
