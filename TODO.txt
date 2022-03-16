@@ -10,7 +10,6 @@ Look at the use of 'MockDatabase' in fflib
 Look at:
     SobjectUtils.getSobjectName
 
-This is updated
 * Look at implementing ordering in the datatable example, so you can define the standards more clearly
 
 * Build a filter + results page for Contacts, allowing search on
