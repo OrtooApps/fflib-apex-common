@@ -172,6 +172,7 @@ public virtual inherited sharing class DmlRecord
 	 * @param	String			The 'Type' that will identify the child relationship for which to return
 	 * @return	List<Sobject>	The List representing the child records currently on this DmlRecord
 	 */
+	@testVisible
 	protected List<Sobject> getChildSobjects( String childRecordType )
 	{
 		Contract.requires( childRecordType != null, 'getChildSobjects called with a null childRecordType' );
