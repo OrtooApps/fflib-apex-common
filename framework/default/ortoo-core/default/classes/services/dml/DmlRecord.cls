@@ -163,6 +163,11 @@ public virtual inherited sharing class DmlRecord
 		return this.childRecordsByType.get( childRecordType );
 	}
 
+	protected List<Sobject> getChildren( String childRecordType )
+	{
+		return getChildDefiner( childRecordType ).getSobjects();
+	}
+
 	/**
 	 * Sets the DmlDefinerOptions for the given child relationship.
 	 *
