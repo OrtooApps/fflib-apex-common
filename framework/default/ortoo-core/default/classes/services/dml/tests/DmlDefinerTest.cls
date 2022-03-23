@@ -311,4 +311,24 @@ private without sharing class DmlDefinerTest
 
         ortoo_Asserts.assertContains( 'addPreSaveAction called with a null action', exceptionMessage, 'addPreSaveAction, when given null, will throw an exception' );
     }
+
+	@isTest
+    private static void getWillDeleteOtherRecords_willReturnTheValueFromTheDefiner() // NOPMD: Test method name format
+    {
+        DmlDefiner dmlDefiner = new DmlDefiner();
+
+		Amoss_Instance optionsController = new Amoss_Instance( DmlDefinerOptions.class );
+		optionsController
+			.expects( 'getWillDeleteOtherRecords' )
+			.returning( true );
+
+        Test.startTest();
+            dmlDefiner.setOptions( (DmlDefinerOptions)optionsController.generateDouble() );
+			Boolean got = dmlDefiner.getWillDeleteOtherRecords();
+        Test.stopTest();
+
+		optionsController.verify();
+
+        System.assertEquals( true, got, 'getWillDeleteOtherRecords, will call getWillDeleteOtherRecords on the options and return the result' );
+    }
 }

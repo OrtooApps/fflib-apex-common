@@ -283,4 +283,10 @@ public virtual inherited sharing class DmlRecord
 		checkTypeIsValid( childRecordType );
 		return childContextsByType.get( childRecordType );
 	}
+
+	@testVisible
+	private Boolean getWillDeleteOtherRecords( String childRecordType )
+	{
+		return getChildDefiner( childRecordType )?.getWillDeleteOtherRecords();
+	}
 }

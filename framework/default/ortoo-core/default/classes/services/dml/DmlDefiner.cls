@@ -188,6 +188,16 @@ public inherited sharing class DmlDefiner
 		return sobjects;
 	}
 
+	/**
+	 * States if this definer is configured to ensure that other records are deleted
+	 *
+	 * @return	Boolean	Will other records be deleted
+	 */
+	public Boolean getWillDeleteOtherRecords() {
+		Contract.assert( options != null, 'getWillDeleteOtherRecords was called when options was null' );
+		return options.getWillDeleteOtherRecords();
+	}
+
 	@testVisible
 	private List<DmlRecord> getDmlRecords() {
 		return recordsToDml;

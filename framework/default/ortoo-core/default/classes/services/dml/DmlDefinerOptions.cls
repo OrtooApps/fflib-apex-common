@@ -43,4 +43,14 @@ public inherited sharing class DmlDefinerOptions
 		return new DmlDefinerOptions()
 						.setOtherRecordsMode( OtherRecordsOption.IGNORE_RECORDS );
 	}
+
+	/**
+	 * States if this definer will instruct to delete other records
+	 *
+	 * @return	Boolean	Should other records be deleted?
+	 */
+	public Boolean getWillDeleteOtherRecords()
+	{
+		return getOtherRecordsMode() == OtherRecordsOption.DELETE_RECORDS;
+	}
 }
