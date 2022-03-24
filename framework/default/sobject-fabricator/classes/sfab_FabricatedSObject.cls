@@ -25,6 +25,8 @@ public virtual class sfab_FabricatedSObject {
 
     public class NodeNotSetException extends Exception {}
 
+	Sobject persistedSobject;
+
     /**
     * Constructs a FabricatedSObject of the given type.
     *
@@ -34,6 +36,12 @@ public virtual class sfab_FabricatedSObject {
         this.sType = sType;
         ortoo_FabricatedSObjectRegister.registerObject( this );
     }
+
+	public Id persistedId {
+		get {
+			return persistedSobject?.Id;
+		}
+	}
 
     /**
     * Constructs a FabricatedSObject of the given type, and then sets the fields specified in the given map.
@@ -306,9 +314,9 @@ public virtual class sfab_FabricatedSObject {
     *
     * @return SObject - The built SObject
     */
-    public SObject toPersistableSobject()
-    {
-        return internalToSobject( true );
+    public SObject toPersistableSobject() {
+		persistedSobject = internalToSobject( true );
+		return persistedSobject;
     }
 
     private Sobject internalToSobject( Boolean persistable )
