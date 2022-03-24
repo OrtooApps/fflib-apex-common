@@ -463,6 +463,23 @@ private with sharing class fflib_CriteriaTest
 	}
 
 	@IsTest
+	static void itShouldEvaluateAddCondition_First()
+	{
+		System.assert(
+				new fflib_Criteria()
+						.orCriteria()
+						.equalTo(Account.Name, A_STRING)
+						.equalTo(Account.Name, ANOTHER_STRING)
+						.addCriteria(
+						new fflib_Criteria()
+								.equalTo(Account.Name, HELLO_WORLD)
+								.equalTo(Account.AccountNumber, '002')
+				)
+						.evaluate(new Account(Name = ANOTHER_STRING))
+		);
+	}
+
+	@IsTest
 	static void itShouldEvaluateAddAndCondition_First()
 	{
 		System.assert(

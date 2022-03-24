@@ -95,6 +95,48 @@ private without sharing class ortoo_CriteriaTest
     }
 
     @isTest
+    private static void andCriteria_whenGivenSubCriteria_addsTheSubCriteriaSetAsOriginalSpec() // NOPMD: Test method name format
+    {
+        ortoo_Criteria criteria = new ortoo_Criteria();
+
+        Test.startTest();
+            String got = criteria
+                            .equalTo(Account.Name, 'Example')
+                            .addCriteria(
+                                new ortoo_Criteria()
+										.andCriteria()
+                                        .equalTo(Account.AccountNumber, '0001')
+                                        .equalTo(Account.AccountNumber, '0002'))
+                            .toSoql();
+        Test.stopTest();
+
+        String expected = 'Name=\'Example\' AND (AccountNumber=\'0001\' AND AccountNumber=\'0002\')';
+
+        System.assertEquals( expected, got, 'andCriteria, when given sub criteria, will add the subcriteria set as originally configured (was and)' );
+    }
+
+    @isTest
+    private static void andCriteria_whenGivenSubCriteria_addsTheSubCriteriaSetAsOriginalSpec_2() // NOPMD: Test method name format
+    {
+        ortoo_Criteria criteria = new ortoo_Criteria();
+
+        Test.startTest();
+            String got = criteria
+                            .equalTo(Account.Name, 'Example')
+                            .addCriteria(
+                                new ortoo_Criteria()
+										.orCriteria()
+                                        .equalTo(Account.AccountNumber, '0001')
+                                        .equalTo(Account.AccountNumber, '0002'))
+                            .toSoql();
+        Test.stopTest();
+
+        String expected = 'Name=\'Example\' AND (AccountNumber=\'0001\' OR AccountNumber=\'0002\')';
+
+        System.assertEquals( expected, got, 'andCriteria, when given sub criteria, will add the subcriteria set as originally configured (was or)' );
+    }
+
+    @isTest
     private static void formulaCriteria_whenGivenCriteria_addsTheCriteriaInLineWithTheFormula() // NOPMD: Test method name format
     {
         ortoo_Criteria criteria = new ortoo_Criteria();

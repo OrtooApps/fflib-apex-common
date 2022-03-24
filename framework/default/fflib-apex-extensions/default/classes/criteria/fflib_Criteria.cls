@@ -125,8 +125,7 @@ public virtual with sharing class fflib_Criteria
 	public virtual fflib_Criteria addOrCriteria(fflib_Criteria subCriteria)
 	{
 		subCriteria.orCriteria();
-		subCriteria.setEmbraced(true);
-		evaluators.add(subCriteria);
+		addCriteria( subCriteria );
 		return this;
 	}
 
@@ -152,6 +151,31 @@ public virtual with sharing class fflib_Criteria
 	public virtual fflib_Criteria addAndCriteria(fflib_Criteria subCriteria)
 	{
 		subCriteria.andCriteria();
+		addCriteria( subCriteria );
+		return this;
+	}
+
+	/**
+	 * Adds a sub criteria, not altering the join (AND / OR)
+	 *
+	 * @param subCriteria The condition of the sub criteria
+	 *
+	 * @return An instance of itself to enable method chaining
+	 *
+	 * @example
+	 * new fflib_Criteria()
+	 *          .orCriteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *          .addCriteria(
+	 *              new fflib_Criteria()
+	 *              		.equalTo(Account.AccountNumber, '0001')
+	 *              		.equalTo(Account.ShippingCountry, 'USA'))
+	 *
+	 *  Evaluates:
+	 *      Name = 'Example' OR (AccountNumber = '0001' AND ShippingCountry = 'USA')
+	 */
+	public fflib_Criteria addCriteria(fflib_Criteria subCriteria)
+	{
 		subCriteria.setEmbraced(true);
 		evaluators.add(subCriteria);
 		return this;
