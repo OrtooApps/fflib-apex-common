@@ -159,8 +159,25 @@ public virtual inherited sharing class DmlRecord
 	@testVisible
 	protected DmlDefiner getChildDefiner( String childRecordType )
 	{
+		Contract.requires( childRecordType != null, 'getChildDefiner called with a null childRecordType' );
+
 		checkTypeIsValid( childRecordType );
 		return this.childRecordsByType.get( childRecordType );
+	}
+
+
+	/**
+	 * Returns the Sobjects that represent the child records for the given relationship
+	 *
+	 * @param	String			The 'Type' that will identify the child relationship for which to return
+	 * @return	List<Sobject>	The List representing the child records currently on this DmlRecord
+	 */
+	@testVisible
+	protected List<Sobject> getChildSobjects( String childRecordType )
+	{
+		Contract.requires( childRecordType != null, 'getChildSobjects called with a null childRecordType' );
+
+		return getChildDefiner( childRecordType ).getSobjects();
 	}
 
 	/**
@@ -265,5 +282,11 @@ public virtual inherited sharing class DmlRecord
 	{
 		checkTypeIsValid( childRecordType );
 		return childContextsByType.get( childRecordType );
+	}
+
+	@testVisible
+	private Boolean getWillDeleteOtherRecords( String childRecordType )
+	{
+		return getChildDefiner( childRecordType )?.getWillDeleteOtherRecords();
 	}
 }

@@ -105,4 +105,10 @@ public inherited sharing class DmlChildContext
 			uow.registerRelationship( child, relatedByField, parent );
 		}
 	}
+
+	@testVisible
+	private SobjectField getRelatedByField()
+	{
+		return relatedByField;
+	}
 }

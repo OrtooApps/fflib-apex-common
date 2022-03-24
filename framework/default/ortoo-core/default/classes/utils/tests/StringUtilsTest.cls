@@ -377,6 +377,74 @@ private without sharing class StringUtilsTest
 		ortoo_Asserts.assertContains( 'convertListToDelimitedString called with an empty delimiter', exceptionMessage, 'convertListToDelimitedString, when passed an empty delimiter, will throw an exception' );
 	}
 
+	@isTest
+	private static void cut_whenGivenALongString_cutsItToTheDesiredLength() // NOPMD: Test method name format
+	{
+		String got = StringUtils.cut( 'theoriginalstring', 5 );
+		System.assertEquals( 'theor', got, 'cut, when given a string longer than the desired length, will cut it to the specified length' );
+	}
+
+	@isTest
+	private static void cut_whenGivenAShortString_returnsTheOriginal() // NOPMD: Test method name format
+	{
+		String got = StringUtils.cut( 'short', 10 );
+		System.assertEquals( 'short', got, 'cut, when given a string shorter than the desired length, will return the original string' );
+	}
+
+	@isTest
+	private static void cut_whenPassedANullString_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				StringUtils.cut( null, 5 );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'cut called with a null originalString', exceptionMessage, 'cut, when passed a null string, will throw an exception' );
+	}
+
+	@isTest
+	private static void cut_whenPassedANullLength_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				StringUtils.cut( 'string', null );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'cut called with a null length', exceptionMessage, 'cut, when passed a null length, will throw an exception' );
+	}
+
+	@isTest
+	private static void cut_whenPassedANegativeLength_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				StringUtils.cut( 'string', -3 );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'cut called with a negative length', exceptionMessage, 'cut, when passed a negative length, will throw an exception' );
+	}
+
 	private inherited sharing class StringableThing {
 		String name;
 		public StringableThing( String name )
