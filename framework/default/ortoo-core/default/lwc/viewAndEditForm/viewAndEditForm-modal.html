@@ -26,6 +26,9 @@
         </lightning-button-group>
 
         <div slot="contents">
+
+			<slot name="info"></slot>
+
             <template if:false={inEditMode}>
                 <slot name="view-form"></slot>
             </template>
@@ -37,7 +40,9 @@
 
         <div slot="footer" if:true={inEditMode}>
 
-            <c-save-buttons
+			<c-save-buttons
+				cancel-label={cancelLabel}
+				save-label={saveLabel}
                 onsave={handleSaveClick}
                 oncancel={handleCancelClick}
             >

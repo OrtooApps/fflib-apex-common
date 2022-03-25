@@ -30,7 +30,7 @@ describe('c-view-and-edit-form', () => {
         expect( additionalEditButtons ).not.toBe( null );
     });
 
-    it('When visible card and not inEditMode, has an edit button, but no  save or cancel', () => {
+    it('When visible card and not inEditMode, has an edit button, but no save or cancel', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
@@ -51,7 +51,7 @@ describe('c-view-and-edit-form', () => {
         expect( additionalEditButtons ).toBe( null );
     });
 
-    it('When visible card and inEditMode, has an editForm slot but no viewForm slot', () => {
+    it('When visible card and inEditMode, has an editForm, title and info slot but no viewForm slot', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
@@ -64,9 +64,15 @@ describe('c-view-and-edit-form', () => {
 
         const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).not.toBe( null );
-    });
 
-    it('When visible card and not inEditMode, has a viewForm slot but no editForm slot', () => {
+        const title = element.shadowRoot.querySelector( 'slot[name="title"]' );
+        expect( title ).not.toBe( null );
+
+        const info = element.shadowRoot.querySelector( 'slot[name="info"]' );
+        expect( info ).not.toBe( null );
+	});
+
+    it('When visible card and not inEditMode, has a viewForm, title and info slot but no editForm slot', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
@@ -79,6 +85,12 @@ describe('c-view-and-edit-form', () => {
 
         const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).toBe( null );
+
+        const title = element.shadowRoot.querySelector( 'slot[name="title"]' );
+        expect( title ).not.toBe( null );
+
+        const info = element.shadowRoot.querySelector( 'slot[name="info"]' );
+        expect( info ).not.toBe( null );
     });
 
     it('When visible card, and inEditMode, clicking save will issue a save event', () => {
@@ -144,6 +156,21 @@ describe('c-view-and-edit-form', () => {
             })
     });
 
+    it('When visible card, inEditMode, and save and cancel button labels specified, will display those labels', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.visible = true;
+        element.inEditMode = true;
+		element.saveLabel = 'overridden-save';
+		element.cancelLabel = 'overridden-cancel';
+        document.body.appendChild(element);
+
+        const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
+        expect( saveButtons.saveLabel ).toBe( 'overridden-save' );
+        expect( saveButtons.cancelLabel ).toBe( 'overridden-cancel' );
+    });
+
     it('When visible modal and inEditMode, has a save and cancel button, but no edit', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
@@ -188,7 +215,7 @@ describe('c-view-and-edit-form', () => {
         expect( additionalEditButtons ).toBe( null );
     });
 
-    it('When visible modal and inEditMode, has an editForm slot but no viewForm slot', () => {
+    it('When visible modal and inEditMode, has an editForm, title and info slot but no viewForm slot', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
@@ -202,9 +229,15 @@ describe('c-view-and-edit-form', () => {
 
         const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).not.toBe( null );
-    });
 
-    it('When visible modal and not inEditMode, has a viewForm slot but no editForm slot', () => {
+        const title = element.shadowRoot.querySelector( 'slot[name="title"]' );
+        expect( title ).not.toBe( null );
+
+        const info = element.shadowRoot.querySelector( 'slot[name="info"]' );
+        expect( info ).not.toBe( null );
+	});
+
+    it('When visible modal and not inEditMode, has a viewForm, title and info slot but no editForm slot', () => {
         const element = createElement('c-view-and-edit-form', {
             is: ViewAndEditForm
         });
@@ -218,6 +251,12 @@ describe('c-view-and-edit-form', () => {
 
         const editForm = element.shadowRoot.querySelector( 'slot[name="edit-form"]' );
         expect( editForm ).toBe( null );
+
+        const title = element.shadowRoot.querySelector( 'slot[name="title"]' );
+        expect( title ).not.toBe( null );
+
+        const info = element.shadowRoot.querySelector( 'slot[name="info"]' );
+        expect( info ).not.toBe( null );
     });
 
     it('When visible modal, and inEditMode, clicking save will issue a save event', () => {
@@ -284,6 +323,22 @@ describe('c-view-and-edit-form', () => {
             .then( () => {
                 expect( eventHandler ).toBeCalled();
             })
+    });
+
+    it('When visible modal, inEditMode, and save and cancel button labels specified, will display those labels', () => {
+        const element = createElement('c-view-and-edit-form', {
+            is: ViewAndEditForm
+        });
+        element.mode = 'modal';
+        element.visible = true;
+        element.inEditMode = true;
+		element.saveLabel = 'overridden-save';
+		element.cancelLabel = 'overridden-cancel';
+        document.body.appendChild(element);
+
+        const saveButtons = element.shadowRoot.querySelector( 'c-save-buttons' );
+        expect( saveButtons.saveLabel ).toBe( 'overridden-save' );
+        expect( saveButtons.cancelLabel ).toBe( 'overridden-cancel' );
     });
 
     it('When configured with an invalid mode, will throw an error', () => {
