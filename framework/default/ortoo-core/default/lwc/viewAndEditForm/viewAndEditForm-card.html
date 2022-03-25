@@ -21,6 +21,7 @@
             </div>
 
             <div class="slds-p-around_small">
+				<slot name="info"></slot>
                 <slot name="view-form"></slot>
             </div>
         </lightning-card>
@@ -32,7 +33,9 @@
             </div>
 
             <div class="slds-p-around_small">
-                <lightning-messages></lightning-messages>
+				<slot name="info"></slot>
+
+				<lightning-messages></lightning-messages>
 
                 <slot name="edit-form"></slot>
             </div>
@@ -40,7 +43,9 @@
             <div slot="footer">
 
                 <c-save-buttons
-                    onsave={handleSaveClick}
+					save-label={saveLabel}
+					cancel-label={cancelLabel}
+					onsave={handleSaveClick}
                     oncancel={handleCancelClick}
                 >
                     <span slot="additional-buttons">
