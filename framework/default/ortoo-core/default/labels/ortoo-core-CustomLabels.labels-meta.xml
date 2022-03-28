@@ -113,6 +113,20 @@
         <value>Edit</value>
     </labels>
     <labels>
+        <fullName>ortoo_core_delete</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Delete', capitalised.</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_ok</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'OK'.</shortDescription>
+        <value>OK</value>
+    </labels>
+    <labels>
         <fullName>ortoo_core_loading</fullName>
         <language>en_US</language>
         <protected>false</protected>
