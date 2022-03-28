@@ -12,5 +12,5 @@ const generateId = function() {
 }
 
 export default {
-    generateRowId : generateRowId
+    generateId : generateId
 };
