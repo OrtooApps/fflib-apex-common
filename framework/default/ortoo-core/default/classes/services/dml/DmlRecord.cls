@@ -39,6 +39,12 @@ public virtual inherited sharing class DmlRecord
 		return this.recordToDml;
 	}
 
+	// TODO: document / test
+	public Id getSobjectId()
+	{
+		return this.recordToDml.Id;
+	}
+
 	/**
 	 * Defines the context of a 'type' of child, thus allowing children of that type to be added
 	 *
