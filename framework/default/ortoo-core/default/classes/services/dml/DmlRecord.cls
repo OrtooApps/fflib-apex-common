@@ -39,7 +39,12 @@ public virtual inherited sharing class DmlRecord
 		return this.recordToDml;
 	}
 
-	// TODO: document / test
+	/**
+	 * Returns the Id that is on the SObject this will perform the DML against.
+	 * Is populated after an insert has been performed
+	 *
+	 * @return	Id	The Id on the SObject
+	 */
 	public Id getSobjectId()
 	{
 		return this.recordToDml.Id;

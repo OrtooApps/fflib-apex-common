@@ -204,7 +204,6 @@ public inherited sharing class ApplicationMockRegistrar
 	 * @param	Type			The type (interface) for which the mock app logic class should be registered
 	 * @return	Amoss_Instance	The controller for the mock Service
 	 */
-	// TODO: test
 	public static Amoss_Instance registerMockAppLogic( Type appLogicType )
 	{
 		Amoss_Instance mockAppLogicController = new Amoss_Instance( appLogicType );
