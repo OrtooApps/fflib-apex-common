@@ -41,6 +41,7 @@
         <div slot="footer" if:true={inEditMode}>
 
 			<c-save-buttons
+				data-ortoo-elem-id={saveButtonsId}
 				cancel-label={cancelLabel}
 				save-label={saveLabel}
                 onsave={handleSaveClick}

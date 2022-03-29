@@ -46,7 +46,8 @@ export default class ViewAndEditForm extends LightningElement {
 
     ortooIdConfiguration = {
         modalId: '',
-        editId: 'edit'
+        editId: 'edit',
+		saveButtonsId: 'savebuttons',
     }
 
     connectedCallback() {
