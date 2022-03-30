@@ -617,8 +617,9 @@ public inherited sharing virtual class SecureDml extends fflib_SobjectUnitOfWork
 			String label = Label.ortoo_core_fls_violation;
 			String modeDescription = descriptionByMode.get( mode );
 			String sobjectTypeName = SobjectUtils.getSobjectName( sobjectType );
+			String fieldsInViolationString = String.join( ListUtils.convertToListOfStrings( fieldsInViolation ), ', ' );
 
-			throw new SecureDmlException( StringUtils.formatLabel( label, new List<String>{ modeDescription, sobjectTypeName, fieldsInViolation.toString() } ) )
+			throw new SecureDmlException( StringUtils.formatLabel( label, new List<String>{ modeDescription, sobjectTypeName, fieldsInViolationString } ) )
 						.setErrorCode( FrameworkErrorCodes.DML_ON_INACCESSIBLE_FIELDS )
 						.addContext( 'sobjectTypeName', sobjectTypeName )
 						.addContext( 'fieldsInViolation', fieldsInViolation )
