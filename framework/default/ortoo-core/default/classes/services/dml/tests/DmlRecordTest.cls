@@ -31,6 +31,20 @@ private without sharing class DmlRecordTest
     }
 
     @isTest
+    private static void getSobjectId_willReturnTheIdOfTheSobject() // NOPMD: Test method name format
+    {
+		Id accountId = TestIdUtils.generateId( Account.sobjectType );
+
+		DmlRecord dmlRecord = new DmlRecord( new Account( Id = accountId ) );
+
+        Test.startTest();
+			Id got = dmlRecord.getSobjectId();
+        Test.stopTest();
+
+        System.assertEquals( accountId, got, 'getSobjectId, will return the Id of the SObject' );
+    }
+
+    @isTest
     private static void addChildContect_whenCalled_willInitialiseADefinerForThatType() // NOPMD: Test method name format
     {
         DmlRecord dmlRecord = new DmlRecord( new Account() );

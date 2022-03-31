@@ -33,7 +33,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Message when FLS violation occurs on a DML operation.</shortDescription>
-        <value>Attempted to {0} {1} with fields that are not accessible: {2}</value>
+        <value>Attempted to {0} {1} with fields that are not accessible / updateable: {2}</value>
     </labels>
     <labels>
         <fullName>ortoo_core_crud_insert_violation</fullName>
@@ -111,6 +111,20 @@
         <protected>false</protected>
         <shortDescription>The word 'Edit', capitalised.</shortDescription>
         <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_delete</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'Delete', capitalised.</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ortoo_core_ok</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The word 'OK'.</shortDescription>
+        <value>OK</value>
     </labels>
     <labels>
         <fullName>ortoo_core_loading</fullName>

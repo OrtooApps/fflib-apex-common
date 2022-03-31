@@ -16,7 +16,6 @@ const checkColumnProperty = function( functionName, object, columnsPropertyName 
     }
 }
 
-
 const refreshConfiguration = function( columnsPropertyName ) {
 
     checkColumnProperty( 'refreshConfiguration', this, columnsPropertyName );
@@ -53,7 +52,21 @@ const configureSortableFields = function( columnsPropertyName, fields, error ) {
     }
 }
 
+const configureLabelsBasedOnSobjectDefinition = function( columnsPropertyName, sobjectDefinition )
+{
+	checkColumnProperty( 'configureLabelsBasedOnSobjectDefinition', this, columnsPropertyName );
+
+	if ( sobjectDefinition ) {
+		this[columnsPropertyName].forEach( thisColumn => {
+			( thisColumn.labelSobject == sobjectDefinition.apiName )
+				&& ( sobjectDefinition.fields[ thisColumn.labelSobjectField ] )
+				&& ( thisColumn.label = sobjectDefinition.fields[ thisColumn.labelSobjectField ].label );
+		});
+	}
+}
+
 export default {
     refreshConfiguration : refreshConfiguration,
-    configureSortableFields : configureSortableFields
+    configureSortableFields : configureSortableFields,
+	configureLabelsBasedOnSobjectDefinition : configureLabelsBasedOnSobjectDefinition,
 };

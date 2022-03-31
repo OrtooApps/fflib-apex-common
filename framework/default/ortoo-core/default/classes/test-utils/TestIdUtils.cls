@@ -4,7 +4,7 @@
  * @group Utils
  */
 @isTest
-public with sharing class TestIdUtils
+public inherited sharing class TestIdUtils
 {
 	private static Integer highestGeneratedId = 0;
 	private static Map<SobjectType,String> objectPrefixesBySobjectType = new Map<SobjectType,String>();

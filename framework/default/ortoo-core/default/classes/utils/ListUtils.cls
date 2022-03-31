@@ -137,4 +137,19 @@ public inherited sharing class ListUtils
 		}
 		return returnList;
 	}
+
+	/**
+	 * Given a Set of any Strings, will return a List of those Strings
+	 *
+	 * @param	Set<String>		The set of strings to convert
+	 * @return	List<String>	The converted list
+	 */
+	public static List<String> convertToListOfStrings( Set<String> setOfStrings )
+	{
+		if ( setOfStrings == null )
+		{
+			return new List<String>();
+		}
+		return new List<String>( setOfStrings );
+	}
 }
