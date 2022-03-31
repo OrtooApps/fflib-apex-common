@@ -31,7 +31,6 @@ const displayError = function( error, options ) {
 			messages.push( error.body.message );
 		}
 
-		// TODO: test
 		if ( error.body.pageErrors?.length ) {
 			error.body.pageErrors.forEach( thisError => messages.push( thisError.message ) );
 		}
