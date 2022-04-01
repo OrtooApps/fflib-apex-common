@@ -40,6 +40,17 @@ public virtual inherited sharing class DmlRecord
 	}
 
 	/**
+	 * Returns the Id that is on the SObject this will perform the DML against.
+	 * Is populated after an insert has been performed
+	 *
+	 * @return	Id	The Id on the SObject
+	 */
+	public Id getSobjectId()
+	{
+		return this.recordToDml.Id;
+	}
+
+	/**
 	 * Defines the context of a 'type' of child, thus allowing children of that type to be added
 	 *
 	 * @param	String			The 'Type' that will identify this child relationship

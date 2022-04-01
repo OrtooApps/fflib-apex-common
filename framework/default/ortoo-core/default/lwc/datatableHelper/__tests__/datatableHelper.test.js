@@ -246,3 +246,223 @@ describe( 'configureSortableFields', () => {
         expect( displayError.mock.calls[0][1]?.title ).toBe( 'Sorting configuration error' );
     });
 });
+
+describe( 'configureLabelsBasedOnSobjectDefinition', () => {
+
+    it( 'when bound to an object with a columns definition, the name of the right property and a definition with some fields that have labels', () => {
+
+        const columns = [
+            { label: 'original', fieldName: 'contact-firstname', labelSobject: 'Contact', labelSobjectField: 'FirstName' },
+            { label: 'original', fieldName: 'contact-lastname', labelSobject: 'Contact', labelSobjectField: 'LastName' },
+            { label: 'original', fieldName: 'account-name', labelSobject: 'Account', labelSobjectField: 'Name' },
+            { label: 'original', fieldName: 'contact-name', labelSobject: 'Contact', labelSobjectField: 'Name' },
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+        const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				FirstName: {
+					label: 'First Name Label'
+				},
+				LastName: {
+					label: 'Last Name Label'
+				},
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( objectToRunAgainst.columnsProperty[0].label ).toBe( 'First Name Label' );
+        expect( objectToRunAgainst.columnsProperty[1].label ).toBe( 'Last Name Label' );
+        expect( objectToRunAgainst.columnsProperty[2].label ).toBe( 'original' );
+        expect( objectToRunAgainst.columnsProperty[3].label ).toBe( 'Name Label' );
+    });
+
+	it( 'when columns include labelSobject and labelSobjectField combinations that do not exist, will ignore them', () => {
+
+        const columns = [
+            { label: 'original', fieldName: 'contact-firstname', labelSobject: 'Contact', labelSobjectField: 'FirstName' },
+            { label: 'original', fieldName: 'contact-lastname', labelSobject: 'Contact', labelSobjectField: 'LastName' },
+            { label: 'original', fieldName: 'account-name', labelSobject: 'Account', labelSobjectField: 'Name' },
+            { label: 'original', fieldName: 'contact-name', labelSobject: 'Contact', labelSobjectField: 'Name' },
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+        const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				LastName: {
+					label: 'Last Name Label'
+				},
+			}
+		}
+
+        DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( objectToRunAgainst.columnsProperty[0].label ).toBe( 'original' );
+        expect( objectToRunAgainst.columnsProperty[1].label ).toBe( 'Last Name Label' );
+        expect( objectToRunAgainst.columnsProperty[2].label ).toBe( 'original' );
+        expect( objectToRunAgainst.columnsProperty[3].label ).toBe( 'original' );
+    });
+
+	it( 'when columns include entries with no labelSobject or labelSobjectField, will ignore them', () => {
+
+        const columns = [
+            { label: 'original', fieldName: 'ignore-no-properties' },
+            { label: 'original', fieldName: 'ignore-noobject',labelSobjectField: 'LastName' },
+            { label: 'original', fieldName: 'ignore-nofield', labelSobject: 'Contact' },
+            { label: 'original', fieldName: 'contact-name', labelSobject: 'Contact', labelSobjectField: 'Name' },
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+        const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( objectToRunAgainst.columnsProperty[0].label ).toBe( 'original' );
+        expect( objectToRunAgainst.columnsProperty[1].label ).toBe( 'original' );
+        expect( objectToRunAgainst.columnsProperty[2].label ).toBe( 'original' );
+        expect( objectToRunAgainst.columnsProperty[3].label ).toBe( 'Name Label' );
+    });
+
+    it( 'when the sobjectDefinition is null', () => {
+
+        const columns = [
+            { label: 'alabel', fieldName: 'afield' },
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+        DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', null );
+
+        expect( objectToRunAgainst.columnsProperty.length ).toBe( 1 );
+    });
+
+    it( 'when the column property is empty, will not throw', () => {
+
+        const columns = [
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+        const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( objectToRunAgainst.columnsProperty.length ).toBe( 0 );
+    });
+
+	it( 'when called without being bound to an object, will throw', () => {
+
+        const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        const call = () => DatatableHelper.configureLabelsBasedOnSobjectDefinition( 'columnsProperty', sobjectDefinition );
+
+        expect( call ).toThrow( 'configureLabelsBasedOnSobjectDefinition called with a property (columnsProperty) that does not exist.  Have you bound your instance by using "bind" or "call"?' );
+    });
+
+    it( 'when the passed column property does not exist on the bound object, will throw', () => {
+
+        const objectToRunAgainst = {};
+
+        const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        const call = () => DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( call ).toThrow( 'configureLabelsBasedOnSobjectDefinition called with a property (columnsProperty) that does not exist.' );
+    });
+
+    it( 'when the passed column property is not an array, will throw', () => {
+
+        const columns = 'this is not an array';
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+		const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        const call = () => DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( call ).toThrow( 'configureLabelsBasedOnSobjectDefinition called with a property (columnsProperty) that is not an Array.' );
+    });
+
+    it( 'when the passed column property is not an array of objects, will throw', () => {
+
+        const columns = [
+            {},
+            'this is not an object',
+            {}
+        ];
+
+        const objectToRunAgainst = {
+            columnsProperty: columns
+        };
+
+		const sobjectDefinition = {
+			apiName: 'Contact',
+			fields: {
+				Name: {
+					label: 'Name Label'
+				},
+			}
+		}
+
+        const call = () => DatatableHelper.configureLabelsBasedOnSobjectDefinition.call( objectToRunAgainst, 'columnsProperty', sobjectDefinition );
+
+        expect( call ).toThrow( 'configureLabelsBasedOnSobjectDefinition called with a property (columnsProperty) that is not an Array of Objects.' );
+    });
+
+});

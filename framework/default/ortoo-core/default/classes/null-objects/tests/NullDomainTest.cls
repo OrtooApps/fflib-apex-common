@@ -7,7 +7,7 @@ private without sharing class NullDomainTest
 	private static void constructorClass_buildsANullDomain() // NOPMD: Test method name format
 	{
 		NullDomain nullDomain = (NullDomain)new NullDomain.Constructor().construct( LIST_OF_SOBJECTS );
-		System.assertNotEquals( null, nullDomain, 'constructor, when called, does not throw an exception' );
+		System.assertNotEquals( null, nullDomain, 'constructor method, when called, will not throw an exception and returns a non null NullDomain' );
 	}
 
 	@isTest
