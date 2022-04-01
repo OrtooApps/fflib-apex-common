@@ -158,22 +158,29 @@ public virtual class fflib_Application
 		public virtual Object newInstance(Type serviceInterfaceType)
 		{
 			// Mock implementation?
-			if(m_serviceInterfaceTypeByMockService.containsKey(serviceInterfaceType))
+			if( m_serviceInterfaceTypeByMockService.containsKey( serviceInterfaceType ) )
 			{
-				return m_serviceInterfaceTypeByMockService.get(serviceInterfaceType);
-			}
-
-			// Create an instance of the type implementing the given interface
-			Type serviceImpl = m_serviceInterfaceTypeByServiceImplType.get(serviceInterfaceType);
-			if ( serviceImpl != null ) {
-				return serviceImpl.newInstance();
+				return m_serviceInterfaceTypeByMockService.get( serviceInterfaceType );
 			}
 
 			String serviceInterfaceName = serviceInterfaceType.getName();
 
+			// Check if a configured implementation exists in the Custom Metadata
+			Type serviceImpl = m_serviceInterfaceTypeByServiceImplType.get(serviceInterfaceType);
+			if ( serviceImpl != null )
+			{
+				try {
+					return serviceImpl.newInstance();
+				}
+				catch ( Exception e ) {
+					throw new DeveloperException( 'Implementation for service interface ' + serviceInterfaceName + ' (' + serviceImpl.getName() + ') could not be constructed', e );
+				}
+			}
+
+			// Check if we can use a default service instead, based on the name IServiceInterface => ServiceInterfaceImpl
 			if ( ! isAServiceInterfaceName( serviceInterfaceName ) )
 			{
-				throw new DeveloperException( 'No implementation registered for service interface ' + serviceInterfaceName + ' and default implementation cannot be determined from the name (not an interface in the standard naming convention' );
+				throw new DeveloperException( 'No implementation registered for service interface ' + serviceInterfaceName + ' and default implementation cannot be determined from the name (not an interface in the standard naming convention (Ixxxx)' );
 			}
 
 			String defaultServiceName = buildDefaultServiceName( serviceInterfaceName );

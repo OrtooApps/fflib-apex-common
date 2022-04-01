@@ -235,23 +235,134 @@ private class fflib_ApplicationTest
 	}
 
 	@IsTest
-	private static void callingServiceFactoryShouldGiveRegisteredImplsAndMockImpls()
+	private static void callingServiceFactoryShouldGiveRegisteredImplementationAndMockOnes()
 	{
 		// Standard behaviour
-		System.assert(Service.newInstance(IAccountService.class) instanceof AccountsServiceImpl);
-		System.assert(Service.newInstance(IOpportunitiesService.class) instanceof OpportunitiesServiceImpl);
-		try {
-			Service.newInstance(IContactService.class);
-			System.assert(false, 'Expected exception');
-		} catch (fflib_Application.DeveloperException e) {
-			System.assertEquals('No implementation registered for service interface ' + IContactService.class.getName(), e.getMessage());
-		}
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName1.class) instanceof RegisteredServiceWithStandardName1Impl, 'ServiceFactory.newInstance will return registered implementations' ) ;
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName2.class) instanceof RegisteredServiceWithStandardName2Impl, 'ServiceFactory.newInstance will return registered implementations (2)' );
+		System.assert(Service.newInstance(IRegisteredServiceWithNonStandardImplName.class) instanceof RegisteredServiceWithNonStandardNameImplName, 'ServiceFactory.newInstance will return registered implementations (3)' );
+		System.assert(Service.newInstance(RegisteredServiceWithNonStandardName.class) instanceof RegisteredServiceWithNonStandardNameImpl, 'ServiceFactory.newInstance will return registered implementations (4)' );
 
-		// Mocking behaviour		
-		Service.setMock(IAccountService.class, new AccountsServiceMock());
-		System.assert(Service.newInstance(IOpportunitiesService.class) instanceof OpportunitiesServiceImpl);
-		System.assert(Service.newInstance(IAccountService.class) instanceof AccountsServiceMock);
+		// Mocking behaviour
+		Service.setMock(IRegisteredServiceWithStandardName1.class, new ServiceMock());
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName1.class) instanceof ServiceMock,'ServiceFactory.newInstance, when a mock is registered, will return the mock for that type');
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName2.class) instanceof RegisteredServiceWithStandardName2Impl, 'ServiceFactory.newInstance, when a mock is registered, will still return the standard one for other types (1)');
+		System.assert(Service.newInstance(IRegisteredServiceWithNonStandardImplName.class) instanceof RegisteredServiceWithNonStandardNameImplName, 'ServiceFactory.newInstance, when a mock is registered, will still return the standard one for other types (2)');
+		System.assert(Service.newInstance(RegisteredServiceWithNonStandardName.class) instanceof RegisteredServiceWithNonStandardNameImpl, 'ServiceFactory.newInstance, when a mock is registered, will still return the standard one for other types (3)');
 	}
+
+	@IsTest
+	private static void callingServiceFactoryShouldGiveDefaultImplementation()
+	{
+		// Standard behaviour
+		System.assert(Service.newInstance(IUnregisteredServiceWithStandardName.class) instanceof UnregisteredServiceWithStandardNameImpl, 'ServiceFactory.newInstance, when given a standard format interface that is not registered, and a standard implentation that exists, will return the standard service' ) ;
+
+		// Mocking behaviour
+		Service.setMock(IUnregisteredServiceWithStandardName.class, new ServiceMock());
+		System.assert(Service.newInstance(IUnregisteredServiceWithStandardName.class) instanceof ServiceMock, 'ServiceFactory.newInstance, when given a standard format interface that is not registered and a mock is set, will return the mock for that type');
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceWithNoDefaultImpl_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Service.newInstance(IUnregisteredServiceWithNonStandardImpl.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'No implementation registered for service interface' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'and no default implementation found with the name' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceWithNoImpl_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Service.newInstance(IUnregisteredServiceWithNoImplementation.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'No implementation registered for service interface' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'and no default implementation found with the name' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceWithNonStandardName_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Service.newInstance(UnregisteredServiceWithNonStandardName.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'No implementation registered for service interface' ), 'serviceFactory, when given a non standard format interface that is not registered, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'and default implementation cannot be determined from the name (not an interface in the standard naming convention (Ixxxx)' ), 'serviceFactory, when given a standard format interface that is not registered, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenARegisteredInterfaceCannotBeConstructed_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage = '';
+			try
+			{
+				Service.newInstance(IRegisteredServiceUnconstructable.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'Implementation for service interface' ), 'serviceFactory, when given registered service that cannot be constructed, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'could not be constructed' ), 'serviceFactory, when given registered service that cannot be constructed, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceCannotBeConstructed_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage = '';
+			try
+			{
+				Service.newInstance(IUnregisteredServiceUnconstructable.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'Default implementation for service interface' ), 'serviceFactory, when given unregistered service that cannot be constructed, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'could not be constructed' ), 'serviceFactory, when given unregistered service that cannot be constructed, will throw an exception' );
+	}
+
+	// TODO: test isAServiceInterfaceName directly
+		// top level interface with no namespace
+		// top level interface with a namespace
+		// inner interface with no namespace
+		// inner interface with a namespace
+	// TODO: test buildDefaultServiceName
 
 	@IsTest
 	private static void callingSelectorFactoryShouldGiveRegisteredImpls()
