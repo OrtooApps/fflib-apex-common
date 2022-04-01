@@ -159,13 +159,53 @@ public virtual class fflib_Application
 		{
 			// Mock implementation?
 			if(m_serviceInterfaceTypeByMockService.containsKey(serviceInterfaceType))
+			{
 				return m_serviceInterfaceTypeByMockService.get(serviceInterfaceType);
+			}
 
 			// Create an instance of the type implementing the given interface
 			Type serviceImpl = m_serviceInterfaceTypeByServiceImplType.get(serviceInterfaceType);
-			if(serviceImpl==null)
-				throw new DeveloperException('No implementation registered for service interface ' + serviceInterfaceType.getName());	
-			return serviceImpl.newInstance();
+			if ( serviceImpl != null ) {
+				return serviceImpl.newInstance();
+			}
+
+			String serviceInterfaceName = serviceInterfaceType.getName();
+
+			if ( ! isAServiceInterfaceName( serviceInterfaceName ) )
+			{
+				throw new DeveloperException( 'No implementation registered for service interface ' + serviceInterfaceName + ' and default implementation cannot be determined from the name (not an interface in the standard naming convention' );
+			}
+
+			String defaultServiceName = buildDefaultServiceName( serviceInterfaceName );
+
+			Type defaultServiceType = Type.forName( defaultServiceName );
+
+			if ( defaultServiceType == null ) {
+				throw new DeveloperException( 'No implementation registered for service interface ' + serviceInterfaceName + ' and no default implementation found with the name ' + defaultServiceName );
+			}
+
+			try {
+				System.debug( System.LoggingLevel.INFO, 'Using default implementation ' + defaultServiceName + ' for ' + serviceInterfaceName );
+				return defaultServiceType.newInstance();
+			}
+			catch ( Exception e ) {
+				throw new DeveloperException( 'Default implementation for service interface ' + serviceInterfaceName + ' (' + defaultServiceName + ') could not be constructed', e );
+			}
+		}
+
+		private Boolean isAServiceInterfaceName( String serviceName )
+		{
+			return ( ( ! serviceName.contains( '.' ) && serviceName.startsWith( 'I' ) ) || serviceName.substringAfterLast( '.' ).startsWith( 'I' ) );
+		}
+
+		private String buildDefaultServiceName( String serviceInterfaceName )
+		{
+			String[] serviceInterfaceNameParts = serviceInterfaceName.split( '\\.' );
+			String serviceInterfaceNameLastPart = serviceInterfaceNameParts[ serviceInterfaceNameParts.size() - 1 ];
+			String defaultServiceImpl = serviceInterfaceNameLastPart.substringAfter( 'I' ) + 'Impl';
+			serviceInterfaceNameParts[ serviceInterfaceNameParts.size() - 1 ] = defaultServiceImpl;
+
+			return String.join( serviceInterfaceNameParts, '.' );
 		}
 
 		@TestVisible
