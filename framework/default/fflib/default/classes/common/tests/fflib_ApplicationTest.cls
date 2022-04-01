@@ -357,12 +357,83 @@ private class fflib_ApplicationTest
 		System.assert( exceptionMessage.contains( 'could not be constructed' ), 'serviceFactory, when given unregistered service that cannot be constructed, will throw an exception' );
 	}
 
-	// TODO: test isAServiceInterfaceName directly
-		// top level interface with no namespace
-		// top level interface with a namespace
-		// inner interface with no namespace
-		// inner interface with a namespace
-	// TODO: test buildDefaultServiceName
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInterfaceNameWithNoNs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'IIsAnInterface' ), 'isAServiceInterfaceName, when given a top level interface name with no namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInterfaceNameWithANs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'namespace.IIsAnInterface' ), 'isAServiceInterfaceName, when given a top level interface name with a namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerInterfaceNameWithNoNs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'TopLevelClass.IIsAnInterface' ), 'isAServiceInterfaceName, when given an inner interface name with no namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerInterfaceNameWithANs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'namespace.TopLevelClass.IIsAnInterface' ), 'isAServiceInterfaceName, when given an inner interface name with a namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInterfaceNameWithNoNs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'NotAnInterface' ), 'isAServiceInterfaceName, when given a top level non interface name (does not start with I) with no namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenNotInterfaceNameWithANs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'namespace.NotAnInterface' ), 'isAServiceInterfaceName, when given a top level non interface name (does not start with I) with a namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerInterfaceNameWithNoNs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'TopLevelClass.NotAnInterface' ), 'isAServiceInterfaceName, when given an inner non interface name (does not start with I) with no namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerNonInterfaceNameWithANs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'namespace.TopLevelClass.NotAnInterface' ), 'isAServiceInterfaceName, when given an inner non interface name (does not start with I) with a namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerNonInterfaceNameWithANsAndRestLooksLikeInterface_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'Inamespace.ITopLevelClass.NotAnInterface' ), 'isAServiceInterfaceName, when given an inner non interface name (does not start with I) with a namespace, and the other levels look like an interface, returns false' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenNameWithNoNamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'ServiceNameImpl', Service.buildDefaultServiceName( 'IServiceName'), 'buildDefaultServiceName, when given an outer class with no namespace, will return a default service name' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenNameWithANamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'namespace.ServiceNameImpl', Service.buildDefaultServiceName( 'namespace.IServiceName'), 'buildDefaultServiceName, when given an outer class with a namespace, will return a default service name' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenInnerClassWithNoNamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'ParentClass.ServiceNameImpl', Service.buildDefaultServiceName( 'ParentClass.IServiceName'), 'buildDefaultServiceName, when given an inner class with no namespace, will return a default service name' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenInnerClassWithANamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'namespace.ParentClass.ServiceNameImpl', Service.buildDefaultServiceName( 'namespace.ParentClass.IServiceName'), 'buildDefaultServiceName, when given an inner class with a namespace, will return a default service name' );
+	}
 
 	@IsTest
 	private static void callingSelectorFactoryShouldGiveRegisteredImpls()

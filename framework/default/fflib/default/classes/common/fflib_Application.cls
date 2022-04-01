@@ -200,11 +200,13 @@ public virtual class fflib_Application
 			}
 		}
 
+		@testVisible
 		private Boolean isAServiceInterfaceName( String serviceName )
 		{
 			return ( ( ! serviceName.contains( '.' ) && serviceName.startsWith( 'I' ) ) || serviceName.substringAfterLast( '.' ).startsWith( 'I' ) );
 		}
 
+		@testVisible
 		private String buildDefaultServiceName( String serviceInterfaceName )
 		{
 			String[] serviceInterfaceNameParts = serviceInterfaceName.split( '\\.' );
