@@ -235,22 +235,204 @@ private class fflib_ApplicationTest
 	}
 
 	@IsTest
-	private static void callingServiceFactoryShouldGiveRegisteredImplsAndMockImpls()
+	private static void callingServiceFactoryShouldGiveRegisteredImplementationAndMockOnes()
 	{
 		// Standard behaviour
-		System.assert(Service.newInstance(IAccountService.class) instanceof AccountsServiceImpl);
-		System.assert(Service.newInstance(IOpportunitiesService.class) instanceof OpportunitiesServiceImpl);
-		try {
-			Service.newInstance(IContactService.class);
-			System.assert(false, 'Expected exception');
-		} catch (fflib_Application.DeveloperException e) {
-			System.assertEquals('No implementation registered for service interface ' + IContactService.class.getName(), e.getMessage());
-		}
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName1.class) instanceof RegisteredServiceWithStandardName1Impl, 'ServiceFactory.newInstance will return registered implementations' ) ;
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName2.class) instanceof RegisteredServiceWithStandardName2Impl, 'ServiceFactory.newInstance will return registered implementations (2)' );
+		System.assert(Service.newInstance(IRegisteredServiceWithNonStandardImplName.class) instanceof RegisteredServiceWithNonStandardNameImplName, 'ServiceFactory.newInstance will return registered implementations (3)' );
+		System.assert(Service.newInstance(RegisteredServiceWithNonStandardName.class) instanceof RegisteredServiceWithNonStandardNameImpl, 'ServiceFactory.newInstance will return registered implementations (4)' );
 
-		// Mocking behaviour		
-		Service.setMock(IAccountService.class, new AccountsServiceMock());
-		System.assert(Service.newInstance(IOpportunitiesService.class) instanceof OpportunitiesServiceImpl);
-		System.assert(Service.newInstance(IAccountService.class) instanceof AccountsServiceMock);
+		// Mocking behaviour
+		Service.setMock(IRegisteredServiceWithStandardName1.class, new ServiceMock());
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName1.class) instanceof ServiceMock,'ServiceFactory.newInstance, when a mock is registered, will return the mock for that type');
+		System.assert(Service.newInstance(IRegisteredServiceWithStandardName2.class) instanceof RegisteredServiceWithStandardName2Impl, 'ServiceFactory.newInstance, when a mock is registered, will still return the standard one for other types (1)');
+		System.assert(Service.newInstance(IRegisteredServiceWithNonStandardImplName.class) instanceof RegisteredServiceWithNonStandardNameImplName, 'ServiceFactory.newInstance, when a mock is registered, will still return the standard one for other types (2)');
+		System.assert(Service.newInstance(RegisteredServiceWithNonStandardName.class) instanceof RegisteredServiceWithNonStandardNameImpl, 'ServiceFactory.newInstance, when a mock is registered, will still return the standard one for other types (3)');
+	}
+
+	@IsTest
+	private static void callingServiceFactoryShouldGiveDefaultImplementation()
+	{
+		// Standard behaviour
+		System.assert(Service.newInstance(IUnregisteredServiceWithStandardName.class) instanceof UnregisteredServiceWithStandardNameImpl, 'ServiceFactory.newInstance, when given a standard format interface that is not registered, and a standard implentation that exists, will return the standard service' ) ;
+
+		// Mocking behaviour
+		Service.setMock(IUnregisteredServiceWithStandardName.class, new ServiceMock());
+		System.assert(Service.newInstance(IUnregisteredServiceWithStandardName.class) instanceof ServiceMock, 'ServiceFactory.newInstance, when given a standard format interface that is not registered and a mock is set, will return the mock for that type');
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceWithNoDefaultImpl_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Service.newInstance(IUnregisteredServiceWithNonStandardImpl.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'No implementation registered for service interface' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'and no default implementation found with the name' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceWithNoImpl_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Service.newInstance(IUnregisteredServiceWithNoImplementation.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'No implementation registered for service interface' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'and no default implementation found with the name' ), 'serviceFactory, when given a standard format interface that has no default implementation, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceWithNonStandardName_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Service.newInstance(UnregisteredServiceWithNonStandardName.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'No implementation registered for service interface' ), 'serviceFactory, when given a non standard format interface that is not registered, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'and default implementation cannot be determined from the name (not an interface in the standard naming convention (Ixxxx)' ), 'serviceFactory, when given a standard format interface that is not registered, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenARegisteredInterfaceCannotBeConstructed_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage = '';
+			try
+			{
+				Service.newInstance(IRegisteredServiceUnconstructable.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'Implementation for service interface' ), 'serviceFactory, when given registered service that cannot be constructed, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'could not be constructed' ), 'serviceFactory, when given registered service that cannot be constructed, will throw an exception' );
+	}
+
+	@isTest
+	private static void serviceFactory_whenAnUnregisteredInterfaceCannotBeConstructed_throwsAnException() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String exceptionMessage = '';
+			try
+			{
+				Service.newInstance(IUnregisteredServiceUnconstructable.class);
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		System.assert( exceptionMessage.contains( 'Default implementation for service interface' ), 'serviceFactory, when given unregistered service that cannot be constructed, will throw an exception' );
+		System.assert( exceptionMessage.contains( 'could not be constructed' ), 'serviceFactory, when given unregistered service that cannot be constructed, will throw an exception' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInterfaceNameWithNoNs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'IIsAnInterface' ), 'isAServiceInterfaceName, when given a top level interface name with no namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInterfaceNameWithANs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'namespace.IIsAnInterface' ), 'isAServiceInterfaceName, when given a top level interface name with a namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerInterfaceNameWithNoNs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'TopLevelClass.IIsAnInterface' ), 'isAServiceInterfaceName, when given an inner interface name with no namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerInterfaceNameWithANs_returnsTrue() // NOPMD: Test method name format
+	{
+		System.assertEquals( true, Service.isAServiceInterfaceName( 'namespace.TopLevelClass.IIsAnInterface' ), 'isAServiceInterfaceName, when given an inner interface name with a namespace, returns true' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInterfaceNameWithNoNs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'NotAnInterface' ), 'isAServiceInterfaceName, when given a top level non interface name (does not start with I) with no namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenNotInterfaceNameWithANs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'namespace.NotAnInterface' ), 'isAServiceInterfaceName, when given a top level non interface name (does not start with I) with a namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerInterfaceNameWithNoNs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'TopLevelClass.NotAnInterface' ), 'isAServiceInterfaceName, when given an inner non interface name (does not start with I) with no namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerNonInterfaceNameWithANs_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'namespace.TopLevelClass.NotAnInterface' ), 'isAServiceInterfaceName, when given an inner non interface name (does not start with I) with a namespace, returns false' );
+	}
+
+	@isTest
+	private static void isAServiceInterfaceName_whenGivenInnerNonInterfaceNameWithANsAndRestLooksLikeInterface_returnsFalse() // NOPMD: Test method name format
+	{
+		System.assertEquals( false, Service.isAServiceInterfaceName( 'Inamespace.ITopLevelClass.NotAnInterface' ), 'isAServiceInterfaceName, when given an inner non interface name (does not start with I) with a namespace, and the other levels look like an interface, returns false' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenNameWithNoNamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'ServiceNameImpl', Service.buildDefaultServiceName( 'IServiceName'), 'buildDefaultServiceName, when given an outer class with no namespace, will return a default service name' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenNameWithANamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'namespace.ServiceNameImpl', Service.buildDefaultServiceName( 'namespace.IServiceName'), 'buildDefaultServiceName, when given an outer class with a namespace, will return a default service name' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenInnerClassWithNoNamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'ParentClass.ServiceNameImpl', Service.buildDefaultServiceName( 'ParentClass.IServiceName'), 'buildDefaultServiceName, when given an inner class with no namespace, will return a default service name' );
+	}
+
+	@isTest
+	private static void buildDefaultServiceName_whenGivenInnerClassWithANamespace_returnsTheDefaultServiceName() // NOPMD: Test method name format
+	{
+		System.assertEquals( 'namespace.ParentClass.ServiceNameImpl', Service.buildDefaultServiceName( 'namespace.ParentClass.IServiceName'), 'buildDefaultServiceName, when given an inner class with a namespace, will return a default service name' );
 	}
 
 	@IsTest
@@ -472,11 +654,15 @@ private class fflib_ApplicationTest
 	}
 
 	// Configure and create the ServiceFactory for this Application
-	public static final fflib_Application.ServiceFactory Service = 
-		new fflib_Application.ServiceFactory( 
-			new Map<Type, Type> {
-					IOpportunitiesService.class => OpportunitiesServiceImpl.class,
-					IAccountService.class => AccountsServiceImpl.class });
+	public static final fflib_Application.ServiceFactory Service =
+	new fflib_Application.ServiceFactory(
+		new Map<Type, Type> {
+			IRegisteredServiceWithStandardName1.class => RegisteredServiceWithStandardName1Impl.class,
+			IRegisteredServiceWithStandardName2.class => RegisteredServiceWithStandardName2Impl.class,
+			IRegisteredServiceWithNonStandardImplName.class => RegisteredServiceWithNonStandardNameImplName.class,
+			RegisteredServiceWithNonStandardName.class => RegisteredServiceWithNonStandardNameImpl.class,
+			IRegisteredServiceUnconstructable.class => RegisteredServiceUnconstructableImpl.class
+		 });
 
 	// Configure and create the UnitOfWorkFactory for this Application
 	public static final fflib_Application.UnitOfWorkFactory UnitOfWork = 
@@ -607,15 +793,37 @@ private class fflib_ApplicationTest
 		}
 	}
 
-	public interface IContactService { }
+	public interface IUnregisteredServiceWithStandardName {}
+	public class UnregisteredServiceWithStandardNameImpl implements IUnregisteredServiceWithStandardName {}
 
-	public interface IOpportunitiesService { }
+	public interface IUnregisteredServiceWithNoImplementation { }
 
-	public interface IAccountService { }
+	public interface UnregisteredServiceWithNonStandardName { }
 
-	public class OpportunitiesServiceImpl implements IOpportunitiesService { }
+	public interface IUnregisteredServiceWithNonStandardImpl { }
+	public class UnregisteredServiceWithNonStandardImplName implements IUnregisteredServiceWithNonStandardImpl {}
 
-	public class AccountsServiceImpl implements IAccountService { }
+	public interface IRegisteredServiceWithStandardName1 {}
+	public class RegisteredServiceWithStandardName1Impl implements IRegisteredServiceWithStandardName1 {}
+	public class ServiceMock implements IRegisteredServiceWithStandardName1 {}
 
-	public class AccountsServiceMock implements IAccountService { }
+	public interface IRegisteredServiceWithStandardName2 {}
+	public class RegisteredServiceWithStandardName2Impl implements IRegisteredServiceWithStandardName2 {}
+
+	public interface IRegisteredServiceWithNonStandardImplName {}
+	public class RegisteredServiceWithNonStandardNameImplName implements IRegisteredServiceWithNonStandardImplName {}
+
+	public interface RegisteredServiceWithNonStandardName {}
+	public class RegisteredServiceWithNonStandardNameImpl implements RegisteredServiceWithNonStandardName {}
+
+	public interface IRegisteredServiceUnconstructable {}
+	public class RegisteredServiceUnconstructableImpl implements IRegisteredServiceUnconstructable {
+		public RegisteredServiceUnconstructableImpl( String parameter ) {}
+	}
+
+	public interface IUnregisteredServiceUnconstructable {}
+	public class UnregisteredServiceUnconstructableImpl implements IUnregisteredServiceUnconstructable {
+		public UnregisteredServiceUnconstructableImpl( String parameter ) {}
+	}
+
 }
