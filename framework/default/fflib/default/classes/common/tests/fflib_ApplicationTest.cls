@@ -583,11 +583,15 @@ private class fflib_ApplicationTest
 	}
 
 	// Configure and create the ServiceFactory for this Application
-	public static final fflib_Application.ServiceFactory Service = 
-		new fflib_Application.ServiceFactory( 
-			new Map<Type, Type> {
-					IOpportunitiesService.class => OpportunitiesServiceImpl.class,
-					IAccountService.class => AccountsServiceImpl.class });
+	public static final fflib_Application.ServiceFactory Service =
+	new fflib_Application.ServiceFactory(
+		new Map<Type, Type> {
+			IRegisteredServiceWithStandardName1.class => RegisteredServiceWithStandardName1Impl.class,
+			IRegisteredServiceWithStandardName2.class => RegisteredServiceWithStandardName2Impl.class,
+			IRegisteredServiceWithNonStandardImplName.class => RegisteredServiceWithNonStandardNameImplName.class,
+			RegisteredServiceWithNonStandardName.class => RegisteredServiceWithNonStandardNameImpl.class,
+			IRegisteredServiceUnconstructable.class => RegisteredServiceUnconstructableImpl.class
+		 });
 
 	// Configure and create the UnitOfWorkFactory for this Application
 	public static final fflib_Application.UnitOfWorkFactory UnitOfWork = 
@@ -718,15 +722,37 @@ private class fflib_ApplicationTest
 		}
 	}
 
-	public interface IContactService { }
+	public interface IUnregisteredServiceWithStandardName {}
+	public class UnregisteredServiceWithStandardNameImpl implements IUnregisteredServiceWithStandardName {}
 
-	public interface IOpportunitiesService { }
+	public interface IUnregisteredServiceWithNoImplementation { }
 
-	public interface IAccountService { }
+	public interface UnregisteredServiceWithNonStandardName { }
 
-	public class OpportunitiesServiceImpl implements IOpportunitiesService { }
+	public interface IUnregisteredServiceWithNonStandardImpl { }
+	public class UnregisteredServiceWithNonStandardImplName implements IUnregisteredServiceWithNonStandardImpl {}
 
-	public class AccountsServiceImpl implements IAccountService { }
+	public interface IRegisteredServiceWithStandardName1 {}
+	public class RegisteredServiceWithStandardName1Impl implements IRegisteredServiceWithStandardName1 {}
+	public class ServiceMock implements IRegisteredServiceWithStandardName1 {}
 
-	public class AccountsServiceMock implements IAccountService { }
+	public interface IRegisteredServiceWithStandardName2 {}
+	public class RegisteredServiceWithStandardName2Impl implements IRegisteredServiceWithStandardName2 {}
+
+	public interface IRegisteredServiceWithNonStandardImplName {}
+	public class RegisteredServiceWithNonStandardNameImplName implements IRegisteredServiceWithNonStandardImplName {}
+
+	public interface RegisteredServiceWithNonStandardName {}
+	public class RegisteredServiceWithNonStandardNameImpl implements RegisteredServiceWithNonStandardName {}
+
+	public interface IRegisteredServiceUnconstructable {}
+	public class RegisteredServiceUnconstructableImpl implements IRegisteredServiceUnconstructable {
+		public RegisteredServiceUnconstructableImpl( String parameter ) {}
+	}
+
+	public interface IUnregisteredServiceUnconstructable {}
+	public class UnregisteredServiceUnconstructableImpl implements IUnregisteredServiceUnconstructable {
+		public UnregisteredServiceUnconstructableImpl( String parameter ) {}
+	}
+
 }
