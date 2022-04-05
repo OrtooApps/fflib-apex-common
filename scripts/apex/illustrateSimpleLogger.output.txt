@@ -1,0 +1,94 @@
+07:37:58.792 (792250951)|EXECUTION_STARTED
+07:37:58.792 (792269343)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex
+07:37:58.792 (793005398)|USER_DEBUG|[1]|DEBUG|Simple log messages
+07:37:58.792 (793029213)|USER_DEBUG|[2]|DEBUG|
+07:37:58.792 (1357137408)|USER_DEBUG|[61]|DEBUG|Info - SimpleLog: This is an info message
+07:37:58.792 (1357405084)|USER_DEBUG|[61]|DEBUG|Warning - SimpleLog: This is a warning message
+07:37:58.792 (1357666644)|USER_DEBUG|[61]|DEBUG|Error - SimpleLog: This is an error message
+07:37:58.792 (1357705721)|USER_DEBUG|[7]|DEBUG|
+07:37:58.792 (1357777750)|USER_DEBUG|[8]|DEBUG|Log messages with a related SObject
+07:37:58.792 (1357791745)|USER_DEBUG|[9]|DEBUG|
+07:37:58.792 (1358102423)|USER_DEBUG|[66]|DEBUG|Info - LogWSobj: 0032D00000WOOuxQAH - This is an info message
+07:37:58.792 (1358368932)|USER_DEBUG|[66]|DEBUG|Warning - LogWSobj: 0032D00000WOOuxQAH - This is a warning message
+07:37:58.792 (1358595770)|USER_DEBUG|[66]|DEBUG|Error - LogWSobj: 0032D00000WOOuxQAH - This is an error message
+07:37:58.792 (1358624841)|USER_DEBUG|[14]|DEBUG|
+07:37:58.792 (1358639858)|USER_DEBUG|[15]|DEBUG|Log of DML Exception with an Id
+07:37:58.792 (1358650589)|USER_DEBUG|[16]|DEBUG|
+07:37:58.792 (1373715725)|EXCEPTION_THROWN|[19]|System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuxQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+07:37:58.792 (1384048292)|USER_DEBUG|[22]|DEBUG|If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object
+07:37:58.792 (1384148259)|EXCEPTION_THROWN|[23]|System.TypeException: Invalid conversion from runtime type System.DmlException to Datetime
+07:37:58.792 (1384409368)|USER_DEBUG|[66]|DEBUG|Error - DmlExLog: System.DmlException: 0032D00000WOOuxQAH - Update failed. First exception on row 0 with id 0032D00000WOOuxQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+07:37:58.792 (1384495424)|USER_DEBUG|[71]|DEBUG|Error - DmlExLog.stackTrace: AnonymousBlock: line 19, column 1
+07:37:58.792 (1384523183)|USER_DEBUG|[26]|DEBUG|
+07:37:58.792 (1384536103)|USER_DEBUG|[27]|DEBUG|Log of DML Exception without an Id
+07:37:58.792 (1384546474)|USER_DEBUG|[28]|DEBUG|
+07:37:58.792 (1414314159)|CODE_UNIT_STARTED|[EXTERNAL]|DuplicateDetector
+07:37:58.792 (1468818143)|CODE_UNIT_FINISHED|DuplicateDetector
+07:37:58.792 (1470490110)|EXCEPTION_THROWN|[31]|System.DmlException: Insert failed. First exception on row 0; first error: REQUIRED_FIELD_MISSING, Required fields are missing: [LastName]: [LastName]
+07:37:58.792 (1471355126)|USER_DEBUG|[22]|DEBUG|If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object
+07:37:58.792 (1471393602)|EXCEPTION_THROWN|[23]|System.TypeException: Invalid conversion from runtime type System.DmlException to Datetime
+07:37:58.792 (1471506562)|USER_DEBUG|[66]|DEBUG|Error - DmlExLogNoId: System.DmlException: null - Insert failed. First exception on row 0; first error: REQUIRED_FIELD_MISSING, Required fields are missing: [LastName]: [LastName]
+07:37:58.792 (1471552795)|USER_DEBUG|[71]|DEBUG|Error - DmlExLogNoId.stackTrace: AnonymousBlock: line 31, column 1
+07:37:58.792 (1471583368)|USER_DEBUG|[38]|DEBUG|
+07:37:58.792 (1471598880)|USER_DEBUG|[39]|DEBUG|Log of System Exception without an Id
+07:37:58.792 (1471612309)|USER_DEBUG|[40]|DEBUG|
+07:37:58.792 (1471946644)|USER_DEBUG|[22]|DEBUG|If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object
+07:37:58.792 (1471970888)|EXCEPTION_THROWN|[23]|System.TypeException: Invalid conversion from runtime type System.ListException to Datetime
+07:37:58.792 (1472053321)|USER_DEBUG|[61]|DEBUG|Error - SystemEx: System.ListException: List index out of bounds: 1
+07:37:58.792 (1472100555)|USER_DEBUG|[71]|DEBUG|Error - SystemEx.stackTrace: AnonymousBlock: line 43, column 1
+07:37:58.792 (1472123985)|USER_DEBUG|[50]|DEBUG|
+07:37:58.792 (1472137035)|USER_DEBUG|[51]|DEBUG|Log of System Exception with an Id
+07:37:58.792 (1472147395)|USER_DEBUG|[52]|DEBUG|
+07:37:58.792 (1472437738)|USER_DEBUG|[22]|DEBUG|If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object
+07:37:58.792 (1472461975)|EXCEPTION_THROWN|[23]|System.TypeException: Invalid conversion from runtime type System.ListException to Datetime
+07:37:58.792 (1472537298)|USER_DEBUG|[66]|DEBUG|Error - SystemExWithId: 0032D00000WOOuxQAH - System.ListException - List index out of bounds: 1
+07:37:58.792 (1472582921)|USER_DEBUG|[71]|DEBUG|Error - SystemExWithId.stackTrace: AnonymousBlock: line 55, column 1
+07:37:58.792 (1472605558)|USER_DEBUG|[62]|DEBUG|
+07:37:58.792 (1472619633)|USER_DEBUG|[63]|DEBUG|Log of Ortoo Exception
+07:37:58.792 (1472632123)|USER_DEBUG|[64]|DEBUG|
+07:37:58.792 (1547819499)|EXCEPTION_THROWN|[82]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+07:37:58.792 (1547855921)|EXCEPTION_THROWN|[68]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+07:37:58.792 (1548335506)|USER_DEBUG|[22]|DEBUG|If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object
+07:37:58.792 (1548393154)|EXCEPTION_THROWN|[23]|System.TypeException: Invalid conversion from runtime type ortoo_qra.Exceptions.DeveloperException to Datetime
+07:37:58.792 (1548509289)|USER_DEBUG|[61]|DEBUG|Error - OrtooEx: ortoo_qra.Exceptions.DeveloperException - DEV-12345: This is a developer exception
+07:37:58.792 (1549074562)|USER_DEBUG|[61]|DEBUG|Error - OrtooEx.context: id = 0032D00000WOOux @ OrtooExceptionThrower.throwException on Line: 84, Column 1
+07:37:58.792 (1549286154)|USER_DEBUG|[61]|DEBUG|Error - OrtooEx.context: otherThing = thingvalue @ OrtooExceptionThrower.throwException on Line: 85, Column 1
+07:37:58.792 (1549618869)|USER_DEBUG|[61]|DEBUG|Error - OrtooEx.messageDetail: LastName => "The last name went wrong" on Contact:{LastName=thingthatwentwrong}
+07:37:58.792 (1549684851)|USER_DEBUG|[71]|DEBUG|Error - OrtooEx.stackTrace: Class.OrtooExceptionThrower.throwException: line 82, column 1
+AnonymousBlock: line 68, column 1
+AnonymousBlock: line 68, column 1
+07:37:59.555 (1555534001)|CUMULATIVE_LIMIT_USAGE
+07:37:59.555 (1555534001)|LIMIT_USAGE_FOR_NS|(default)|
+  Number of SOQL queries: 0 out of 100
+  Number of query rows: 0 out of 50000
+  Number of SOSL queries: 0 out of 20
+  Number of DML statements: 0 out of 150
+  Number of Publish Immediate DML: 0 out of 150
+  Number of DML rows: 0 out of 10000
+  Maximum CPU time: 0 out of 10000
+  Maximum heap size: 0 out of 6000000
+  Number of callouts: 0 out of 100
+  Number of Email Invocations: 0 out of 10
+  Number of future calls: 0 out of 50
+  Number of queueable jobs added to the queue: 0 out of 50
+  Number of Mobile Apex push calls: 0 out of 10
+
+07:37:59.555 (1555534001)|LIMIT_USAGE_FOR_NS|ortoo_qra|
+  Number of SOQL queries: 0 out of 100
+  Number of query rows: 0 out of 50000
+  Number of SOSL queries: 0 out of 20
+  Number of DML statements: 2 out of 150
+  Number of Publish Immediate DML: 0 out of 150
+  Number of DML rows: 2 out of 10000
+  Maximum CPU time: 49 out of 10000
+  Maximum heap size: 0 out of 6000000
+  Number of callouts: 0 out of 100
+  Number of Email Invocations: 0 out of 10
+  Number of future calls: 0 out of 50
+  Number of queueable jobs added to the queue: 0 out of 50
+  Number of Mobile Apex push calls: 0 out of 10
+
+07:37:59.555 (1555534001)|CUMULATIVE_LIMIT_USAGE_END
+
+07:37:58.792 (1555592068)|CODE_UNIT_FINISHED|execute_anonymous_apex
+07:37:58.792 (1555610173)|EXECUTION_FINISHED

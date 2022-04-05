@@ -306,6 +306,11 @@ public class StackTrace {
 			return Integer.valueOf( stackTraceLine.substringAfter( ', column ') );
 		}
 
+		// TODO: test
+		public override String toString() {
+			return getClassName() + '.' + getMethodName() + ' on Line: ' + getLineNumber() + ', Column ' + getColumnNumber();
+		}
+
 		public Boolean getIsCallingAService()
 		{
 			return Application.SERVICE.isRegisteredAsAnImplementation( getClassName() );

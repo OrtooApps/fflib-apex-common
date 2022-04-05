@@ -19,6 +19,7 @@ public inherited sharing class ObjectUtils
 		String result = 'DateTime';
 		try
 		{
+			System.debug( 'If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object' );
 			DateTime typeCheck = (DateTime)obj;
 		}
 		catch ( System.TypeException te )
