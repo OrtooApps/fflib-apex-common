@@ -193,15 +193,23 @@ public inherited sharing class LoggerService
 
     private static ILoggerService service()
 	{
+		ILoggerService service;
 		try
 		{
-	        return (ILoggerService)Application.SERVICE.newInstance( ILoggerService.class );
+	        service = (ILoggerService)Application.SERVICE?.newInstance( ILoggerService.class );
 		}
 		catch ( Exception e )
 		{
 			System.debug( LoggingLevel.ERROR, 'Exception when trying to instantiate the logger - ' + e ); // Logger failure should not stop the system,
-																							// so with nothing else available, instantiate a logger that does nothing
-			return new NullLoggerServiceImpl();
+																										// so with nothing else available, instantiate a logger that does nothing
 		}
+
+		if ( service == null )
+		{
+			System.debug( LoggingLevel.WARN, 'Service factory did not build a logger, so NullLoggerServiceImpl is being used - this will not output any logs' );
+			service = new NullLoggerServiceImpl();
+		}
+
+		return service;
     }
 }

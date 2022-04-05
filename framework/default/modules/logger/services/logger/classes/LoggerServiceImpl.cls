@@ -8,6 +8,8 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 {
 	// TODO: should we output more from the standard exceptions?
 	// TODO: what can we output in the UI?  Flag on custom settings to decide
+	// TODO: search for any System.debug in the code
+	// TODO: notes on testing if the logger is used - you have to set up the custom metadata first - create a test utils for it
 
 	public void log( LoggerService.Level logLevel, String message )
 	{

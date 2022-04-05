@@ -192,7 +192,17 @@ public virtual class fflib_Application
 			}
 
 			try {
-				System.debug( System.LoggingLevel.INFO, 'Using default implementation ' + defaultServiceName + ' for ' + serviceInterfaceName );
+				// TODO: test?
+				String message = 'Using default implementation ' + defaultServiceName + ' for ' + serviceInterfaceName;
+				if ( !serviceInterfaceName.endsWith( 'ILoggerService' ) )
+				{
+					LoggerService.log( LoggerService.LEVEL.INFO, message );
+				}
+				else
+				{
+					System.debug( System.LoggingLevel.INFO, message );
+				}
+
 				return defaultServiceType.newInstance();
 			}
 			catch ( Exception e ) {
