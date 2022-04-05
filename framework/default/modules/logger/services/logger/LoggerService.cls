@@ -1,43 +1,43 @@
 public inherited sharing class LoggerService
 {
-	public enum LEVEL { Info, Warning, Error }
+	public enum Level { INFO, WARNING, ERROR }
 
-    public static void log( LoggerService.LEVEL logLevel, String reference, String message )
+    public static void log( LoggerService.Level logLevel, String message )
 	{
-		service().log( logLevel, reference, message );
+		service().log( logLevel, message );
 	}
 
-    public static void log( LoggerService.LEVEL logLevel, String reference, Id relatedSobjectId, String message )
+    public static void log( LoggerService.Level logLevel, String message, Id relatedSobjectId )
 	{
-		service().log( logLevel, reference, relatedSobjectId, message );
+		service().log( logLevel, message, relatedSobjectId );
 	}
 
-	public static void log( String reference, Exception exceptionToLog )
+	public static void log( Exception exceptionToLog )
 	{
 		if ( exceptionToLog instanceOf DmlException )
 		{
-			service().log( reference, (DmlException) exceptionToLog );
+			service().log( (DmlException)exceptionToLog );
 		}
 		if ( exceptionToLog instanceOf ortoo_Exception )
 		{
-			service().log( reference, (ortoo_Exception)exceptionToLog );
+			service().log( (ortoo_Exception)exceptionToLog );
 		}
-		service().log( reference, exceptionToLog );
+		service().log( exceptionToLog );
 	}
 
-	public static void log( String reference, DmlException exceptionToLog )
+	public static void log( DmlException exceptionToLog )
 	{
-		service().log( reference, exceptionToLog );
+		service().log( exceptionToLog );
 	}
 
-	public static void log( String reference, ortoo_Exception exceptionToLog )
+	public static void log( ortoo_Exception exceptionToLog )
 	{
-		service().log( reference, exceptionToLog );
+		service().log( exceptionToLog );
 	}
 
-	public static void log( String reference, Id relatedSobjectId, Exception exceptionToLog )
+	public static void log( Exception exceptionToLog, Id relatedSobjectId )
 	{
-		service().log( reference, relatedSobjectId, exceptionToLog );
+		service().log( exceptionToLog, relatedSobjectId );
 	}
 
     private static ILoggerService service()

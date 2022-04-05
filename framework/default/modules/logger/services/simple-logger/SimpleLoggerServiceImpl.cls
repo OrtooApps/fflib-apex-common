@@ -4,74 +4,104 @@
  */
 public with sharing class SimpleLoggerServiceImpl implements ILoggerService
 {
-	// TODO: add a stack trace in there
 	// TODO: add logging level to custom settings - implement choice of log into static methods
 	// TODO: should we have a custom metadata record?  Or should this be LoggerServiceImpl?
-	// TODO: add resolving of the correct method to call in the static methods?
 	// TODO: should we output more from the standard exceptions?
 	// TODO: what can we output in the UI?  Flag on custom settings to decide
 	//
-    public void log( LoggerService.LEVEL logLevel, String reference, String message )
+    public void log( LoggerService.Level logLevel, String message )
 	{
-		logMessage( logLevel, reference, message );
+		logMessage( logLevel, message );
 	}
 
-    public void log( LoggerService.LEVEL logLevel, String reference, Id relatedSobjectId, String message )
+    public void log( LoggerService.Level logLevel, String message, Id relatedSobjectId )
 	{
-		logMessage( logLevel, reference, relatedSobjectId, message );
+		logMessage( logLevel, relatedSObjectId, message );
 	}
 
-	public void log( String reference, Exception exceptionToLog )
+	public void log( Exception exceptionToLog )
 	{
-		logMessage( LoggerService.LEVEL.Error, reference, ObjectUtils.getClassName( exceptionToLog ) + ': ' + exceptionToLog.getMessage() );
-		logStackTrace( LoggerService.LEVEL.Error, reference, exceptionToLog.getStackTraceString() );
+		String exceptionName = ObjectUtils.getClassName( exceptionToLog );
+		logMessage( LoggerService.Level.ERROR, exceptionName, exceptionToLog.getMessage() );
+		logMessage( LoggerService.Level.ERROR, exceptionName + '.stackTrace', exceptionToLog.getStackTraceString() );
 	}
 
-	public void log( String reference, DmlException exceptionToLog )
+	public void log( DmlException exceptionToLog )
 	{
-		logMessage( LoggerService.LEVEL.Error, reference, ObjectUtils.getClassName( exceptionToLog ) + ': ' + exceptionToLog.getDmlId(0), exceptionToLog.getMessage() );
-		logStackTrace( LoggerService.LEVEL.Error, reference, exceptionToLog.getStackTraceString() );
+		String exceptionName = ObjectUtils.getClassName( exceptionToLog );
+		logMessage( LoggerService.Level.ERROR, exceptionName, exceptionToLog.getDmlId(0), exceptionToLog.getMessage() );
+		logMessage( LoggerService.Level.ERROR, exceptionName + '.stackTrace', exceptionToLog.getStackTraceString() );
 	}
 
-	public void log( String reference, ortoo_Exception exceptionToLog )
+	public void log( ortoo_Exception exceptionToLog )
 	{
-		logMessage( LoggerService.LEVEL.Error, reference, ObjectUtils.getClassName( exceptionToLog ) + ' - ' + exceptionToLog.getErrorCode() + ': ' + exceptionToLog.getMessage() );
+		String exceptionName = ObjectUtils.getClassName( exceptionToLog ) + ' (' + exceptionToLog.getErrorCode() + ')';
+		logMessage( LoggerService.Level.ERROR, exceptionName, exceptionToLog.getMessage() );
 
 		ortoo_Exception.Contexts contexts = exceptionToLog.getContexts();
 		while ( contexts.hasNext() )
 		{
 			ortoo_Exception.Context thisContext = contexts.next();
 			// Put this into toString on Context?
-			logMessage( LoggerService.LEVEL.Error, reference + '.context', thisContext.getName() + ' = ' + thisContext.getValue() + ' @ ' + thisContext.getRecordPoint() );
+			logMessage( LoggerService.Level.ERROR, exceptionName + '.context', thisContext.getName() + ' = ' + thisContext.getValue() + ' @ ' + thisContext.getRecordPoint() );
 		}
 
 		for ( MessageDetail thisMessageDetail : exceptionToLog.getMessageDetails() )
 		{
 			// Put this into toString on MessageDetail?
-			logMessage( LoggerService.LEVEL.Error, reference + '.messageDetail', thisMessageDetail.getFieldContext() + ' => "' + thisMessageDetail.getContent() + '" on ' + thisMessageDetail.getObjectContext() );
+			logMessage( LoggerService.Level.ERROR, exceptionName + '.messageDetail', thisMessageDetail.getFieldContext() + ' => "' + thisMessageDetail.getContent() + '" on ' + thisMessageDetail.getObjectContext() );
 		}
 
-		logStackTrace( LoggerService.LEVEL.Error, reference, exceptionToLog.getStackTraceString() );
+		logMessage( LoggerService.Level.ERROR, exceptionName + '.stackTrace', exceptionToLog.getStackTraceString() );
 	}
 
-	public void log( String reference, Id relatedSobjectId, Exception exceptionToLog )
+	public void log( Exception exceptionToLog, Id relatedSobjectId )
 	{
-		logMessage( LoggerService.LEVEL.Error, reference, relatedSobjectId, ObjectUtils.getClassName( exceptionToLog ) + ' - ' + exceptionToLog.getMessage() );
-		logStackTrace( LoggerService.LEVEL.Error, reference, exceptionToLog.getStackTraceString() );
+		String exceptionName = ObjectUtils.getClassName( exceptionToLog );
+		logMessage( LoggerService.Level.ERROR, exceptionName, relatedSobjectId, exceptionToLog.getMessage() );
+		logMessage( LoggerService.Level.ERROR, exceptionName + '.stackTrace', exceptionToLog.getStackTraceString() );
 	}
 
-	private void logMessage( LoggerService.LEVEL logLevel, String reference, String message )
+	private void logMessage( LoggerService.Level logLevel, String message )
 	{
-		System.debug( logLevel + ' - ' + reference + ': ' + message );
+		System.debug( translateDebugLevel( logLevel ), message );
 	}
 
-	private void logMessage( LoggerService.LEVEL logLevel, String reference, String relatedSobjectId, String message )
+	private void logMessage( LoggerService.Level logLevel, Id relatedSobjectId, String message )
 	{
-		System.debug( logLevel + ' - ' + reference + ': ' + relatedSobjectId + ' - ' + message );
+		logMessage( logLevel, 'On ' + relatedSobjectId, message );
 	}
 
-	private void logStackTrace( LoggerService.LEVEL logLevel, String reference, String stackTraceString )
+	private void logMessage( LoggerService.Level logLevel, String reference, String message )
 	{
-		System.debug( logLevel + ' - ' + reference + '.stackTrace: ' + stackTraceString );
+		logMessage( logLevel, reference + ': ' + message );
+	}
+
+	private void logMessage( LoggerService.Level logLevel, String reference, Id relatedSobjectId, String message )
+	{
+		if ( relatedSobjectId != null )
+		{
+			logMessage( logLevel, reference +  ' on ' + relatedSobjectId, message );
+		}
+		else
+		{
+			logMessage( logLevel, reference, message );
+		}
+	}
+
+	private LoggingLevel translateDebugLevel( LoggerService.Level logLevel )
+	{
+		switch on logLevel
+		{
+			when INFO
+			{
+				return LoggingLevel.INFO;
+			}
+			when WARNING
+			{
+				return LoggingLevel.WARN;
+			}
+		}
+		return LoggingLevel.ERROR;
 	}
 }

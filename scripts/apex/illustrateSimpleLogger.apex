@@ -1,26 +1,28 @@
+Id id = '0032D00000WOOux';
+
 System.debug( 'Simple log messages' );
 System.debug( '' );
-LoggerService.log( LoggerService.LEVEL.Info, 'SimpleLog', 'This is an info message' );
-LoggerService.log( LoggerService.LEVEL.Warning, 'SimpleLog', 'This is a warning message' );
-LoggerService.log( LoggerService.LEVEL.Error, 'SimpleLog', 'This is an error message' );
+LoggerService.log( LoggerService.Level.INFO, 'This is an info message' );
+LoggerService.log( LoggerService.Level.WARNING, 'This is a warning message' );
+LoggerService.log( LoggerService.Level.ERROR, 'This is an error message' );
 
 System.debug( '' );
 System.debug( 'Log messages with a related SObject' );
 System.debug( '' );
-LoggerService.log( LoggerService.LEVEL.Info, 'LogWSobj', '0032D00000WOOux', 'This is an info message' );
-LoggerService.log( LoggerService.LEVEL.Warning, 'LogWSobj', '0032D00000WOOux', 'This is a warning message' );
-LoggerService.log( LoggerService.LEVEL.Error, 'LogWSobj', '0032D00000WOOux', 'This is an error message' );
+LoggerService.log( LoggerService.Level.INFO, 'This is an info message', id );
+LoggerService.log( LoggerService.Level.WARNING, 'This is a warning message', id );
+LoggerService.log( LoggerService.Level.ERROR, 'This is an error message', id );
 
 System.debug( '' );
 System.debug( 'Log of DML Exception with an Id' );
 System.debug( '' );
 try
 {
-	update new Contact( Id = '0032D00000WOOux' );
+	update new Contact( Id = id );
 }
 catch ( DmlException e )
 {
-	LoggerService.log( 'DmlExLog', e );
+	LoggerService.log( e );
 }
 
 System.debug( '' );
@@ -28,11 +30,11 @@ System.debug( 'Log of DML Exceptionm, handled with Exception with an Id' );
 System.debug( '' );
 try
 {
-	update new Contact( Id = '0032D00000WOOux' );
+	update new Contact( Id = id );
 }
 catch ( Exception e )
 {
-	LoggerService.log( 'DmlExAsExLog', e );
+	LoggerService.log( e );
 }
 
 System.debug( '' );
@@ -44,7 +46,7 @@ try
 }
 catch ( DmlException e )
 {
-	LoggerService.log( 'DmlExLogNoId', e );
+	LoggerService.log( e );
 }
 
 System.debug( '' );
@@ -56,7 +58,7 @@ try
 }
 catch ( Exception e )
 {
-	LoggerService.log( 'DmlExAsExLogNoId', e );
+	LoggerService.log( e );
 }
 
 System.debug( '' );
@@ -68,7 +70,7 @@ try
 }
 catch ( Exception e )
 {
-	LoggerService.log( 'SystemEx', e );
+	LoggerService.log( e );
 }
 
 System.debug( '' );
@@ -80,7 +82,7 @@ try
 }
 catch ( Exception e )
 {
-	LoggerService.log( 'SystemExWithId', '0032D00000WOOux', e );
+	LoggerService.log( e, id );
 }
 
 System.debug( '' );
@@ -93,7 +95,7 @@ try
 }
 catch ( ortoo_Exception e )
 {
-	LoggerService.log( 'OrtooEx', e );
+	LoggerService.log( e );
 }
 
 System.debug( '' );
@@ -106,7 +108,7 @@ try
 }
 catch ( Exception e )
 {
-	LoggerService.log( 'OrtooExAsEx', e );
+	LoggerService.log( e );
 }
 
 class OrtooExceptionThrower
@@ -115,7 +117,7 @@ class OrtooExceptionThrower
 	{
 		throw new Exceptions.DeveloperException( 'This is a developer exception' )
 			.setErrorCode( '12345' )
-			.addContext( 'id', '0032D00000WOOux' )
+			.addContext( 'id', id )
 			.addContext( 'otherThing', 'thingvalue' )
 			.setMessageDetails( new List<MessageDetail>{
 				new MessageDetail( new Contact( LastName = 'thingthatwentwrong' ), Contact.LastName, 'The last name went wrong' )
