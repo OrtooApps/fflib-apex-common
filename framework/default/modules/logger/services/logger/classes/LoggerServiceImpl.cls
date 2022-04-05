@@ -1,15 +1,15 @@
 /**
- * Provides a mechanism for performing a windowed, ordered search against an object as
- * defined by the passed searchConfigurationType.
+ * A simple logger that output all logs to System.debug.
+ *
+ * Provides a more thorough and structured output in the log.
+ *
  */
-public with sharing class SimpleLoggerServiceImpl implements ILoggerService
+public with sharing class LoggerServiceImpl implements ILoggerService
 {
-	// TODO: should we have a custom metadata record?  Or should this be LoggerServiceImpl?
 	// TODO: should we output more from the standard exceptions?
 	// TODO: what can we output in the UI?  Flag on custom settings to decide
-	// TODO: check limits for shipping custom settings in managed package
-	//
-    public void log( LoggerService.Level logLevel, String message )
+
+	public void log( LoggerService.Level logLevel, String message )
 	{
 		logMessage( logLevel, message );
 	}
