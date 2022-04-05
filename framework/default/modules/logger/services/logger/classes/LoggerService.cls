@@ -2,6 +2,8 @@ public inherited sharing class LoggerService
 {
 	public enum Level { INFO, WARNING, ERROR }
 
+	public static final Level EXCEPTION_LOG_LEVEL = Level.ERROR;
+
     public static void log( LoggerService.Level logLevel, String message )
 	{
 		if ( ! shouldLog( logLevel ) )
@@ -87,7 +89,7 @@ public inherited sharing class LoggerService
 
 	private static Boolean shouldLogExceptions()
 	{
-		return shouldLog( LoggerService.Level.ERROR );
+		return shouldLog( EXCEPTION_LOG_LEVEL );
 	}
 
     private static ILoggerService service()

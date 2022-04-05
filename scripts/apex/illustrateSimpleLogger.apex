@@ -111,11 +111,36 @@ catch ( Exception e )
 	LoggerService.log( e );
 }
 
+
+System.debug( '' );
+System.debug( 'Log of Ortoo Exception with causedBy' );
+System.debug( '' );
+try
+{
+	OrtooExceptionThrower thrower = new OrtooExceptionThrower();
+	thrower.throwExceptionWithCausedBy();
+}
+catch ( ortoo_Exception e )
+{
+	LoggerService.log( e );
+}
+
 class OrtooExceptionThrower
 {
 	public void throwException()
 	{
 		throw new Exceptions.DeveloperException( 'This is a developer exception' )
+			.setErrorCode( '12345' )
+			.addContext( 'id', id )
+			.addContext( 'otherThing', 'thingvalue' )
+			.setMessageDetails( new List<MessageDetail>{
+				new MessageDetail( new Contact( LastName = 'thingthatwentwrong' ), Contact.LastName, 'The last name went wrong' )
+			});
+	}
+
+	public void throwExceptionWithCausedBy()
+	{
+		throw new Exceptions.DeveloperException( 'This is a developer exception', new DmlException( 'The cause of the exception' ) )
 			.setErrorCode( '12345' )
 			.addContext( 'id', id )
 			.addContext( 'otherThing', 'thingvalue' )
