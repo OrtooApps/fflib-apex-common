@@ -4,7 +4,10 @@ Licenses that are needed with the source code and binary:
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
-Remove the rest of the custom metadata for services
+Docs for Logger:
+* Custom Setting - if it doesn't exist, will log everything.
+
+
 
 * Move all the Jest LWc tests over to create the component in the before
 

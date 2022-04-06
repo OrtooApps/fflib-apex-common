@@ -3,14 +3,14 @@ Id id = '0032D00000WOOux';
 System.debug( 'Simple log messages' );
 System.debug( '' );
 LoggerService.log( LoggerService.Level.INFO, 'This is an info message' );
-LoggerService.log( LoggerService.Level.WARNING, 'This is a warning message' );
+LoggerService.log( LoggerService.Level.WARN, 'This is a warning message' );
 LoggerService.log( LoggerService.Level.ERROR, 'This is an error message' );
 
 System.debug( '' );
 System.debug( 'Log messages with a related SObject' );
 System.debug( '' );
 LoggerService.log( LoggerService.Level.INFO, 'This is an info message', id );
-LoggerService.log( LoggerService.Level.WARNING, 'This is a warning message', id );
+LoggerService.log( LoggerService.Level.WARN, 'This is a warning message', id );
 LoggerService.log( LoggerService.Level.ERROR, 'This is an error message', id );
 
 System.debug( '' );

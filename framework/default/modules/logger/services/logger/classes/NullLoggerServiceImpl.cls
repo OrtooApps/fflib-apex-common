@@ -4,6 +4,10 @@
  */
 public inherited sharing class NullLoggerServiceImpl implements ILoggerService
 {
+	public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
+	{
+		return false;
+	}
     public void log( LoggerService.Level logLevel, String message ) {} // NOPMD: is a null implementation
     public void log( LoggerService.Level logLevel, String message, Id relatedSobjectId ) {} // NOPMD: is a null implementation
 	public void log( Exception exceptionToLog ) {} // NOPMD: is a null implementation

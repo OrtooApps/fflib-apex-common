@@ -10,7 +10,7 @@
  */
 public inherited sharing class LoggerService
 {
-	public enum Level { INFO, WARNING, ERROR }
+	public enum Level { INFO, WARN, ERROR }
 
 	public static final Level EXCEPTION_LOG_LEVEL = Level.ERROR;
 
@@ -175,15 +175,16 @@ public inherited sharing class LoggerService
 
 	private static Boolean shouldLog( LoggerService.Level logLevel )
 	{
+		// If no config record exists, then get the whether the logging should be on from the service
 		switch on logLevel {
 			when INFO {
-				return config.Name != null ? config.Log_INFO_Level_Messages__c : false; // if no config record exists, do not log INFO
+				return config.Name != null ? config.Log_INFO_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
 			}
-			when WARNING {
-				return config.Name != null ? config.Log_WARNING_Level_Messages__c : false; // if no config record exists, do not log WARNING
+			when WARN {
+				return config.Name != null ? config.Log_WARN_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
 			}
 		}
-		return config.Name != null ? config.Log_ERROR_Level_Messages__c : true; // if no config record exists, still log ERROR
+		return config.Name != null ? config.Log_ERROR_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
 	}
 
 	private static Boolean shouldLogExceptions()

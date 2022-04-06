@@ -1,5 +1,10 @@
 public with sharing class PermissionsServiceImpl implements IPermissionsService
 {
+	/**
+    * States if the user has the custom permission required to acces the core platform cache
+    *
+    * @return	Boolean	Does the current user have the platform cache
+    */
 	public Boolean hasAccessToCorePlatformCache()
 	{
 		return hasCustomPermission( 'ProcessesCanAccessCache' );

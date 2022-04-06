@@ -11,6 +11,11 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 	// TODO: search for any System.debug in the code
 	// TODO: notes on testing if the logger is used - you have to set up the custom metadata first - create a test utils for it
 
+	public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
+	{
+		return true;
+	}
+
 	public void log( LoggerService.Level logLevel, String message )
 	{
 		logMessage( logLevel, message );
@@ -113,7 +118,7 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 			{
 				return LoggingLevel.INFO;
 			}
-			when WARNING
+			when WARN
 			{
 				return LoggingLevel.WARN;
 			}
