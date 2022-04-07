@@ -6,10 +6,9 @@
  */
 public with sharing class LoggerServiceImpl implements ILoggerService
 {
-	// TODO: Test the static wrapper and references to the custom setting / defaults
 	// TODO: what can we output in the UI?  Flag on custom settings to decide
-	// TODO: search for any System.debug in the code
 	// TODO: notes on testing if the logger is used - you have to set up the custom metadata first - create a test utils for it
+	// TODO: implement Exception.clearContext
 
 	private static final String BLANK_LINE = '';
 

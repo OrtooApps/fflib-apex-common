@@ -192,7 +192,6 @@ public virtual class fflib_Application
 			}
 
 			try {
-				// TODO: test?
 				if ( !serviceInterfaceName.endsWith( 'ILoggerService' ) )
 				{
 					LoggerService.log( LoggerService.LEVEL.INFO, 'Using default implementation ' + defaultServiceName + ' for ' + serviceInterfaceName );
