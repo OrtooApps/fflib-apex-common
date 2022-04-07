@@ -84,56 +84,16 @@ public inherited sharing class LoggerService
 	}
 
 	/**
-	 * Log the given exception
+	 * Log the given exception.
+	 *
+	 * Will produce output specific to different types:
+	 * 		DmlException
+	 * 		ortoo_Exception
+	 * 		all other Exceptions
 	 *
 	 * @param	Exception	The exception to log
 	 */
 	public static void log( Exception exceptionToLog )
-	{
-		if ( ! shouldLogExceptions() )
-		{
-			return;
-		}
-
-		if ( exceptionToLog instanceOf DmlException )
-		{
-			service().log( (DmlException)exceptionToLog );
-		}
-		if ( exceptionToLog instanceOf ortoo_Exception )
-		{
-			service().log( (ortoo_Exception)exceptionToLog );
-		}
-		service().log( exceptionToLog );
-	}
-
-	/**
-	 * Log the given DmlException
-	 *
-	 * @param	DmlException	The exception to log
-	 */
-	public static void log( DmlException exceptionToLog )
-	{
-		if ( ! shouldLogExceptions() )
-		{
-			return;
-		}
-
-		try
-		{
-			service().log( exceptionToLog );
-		}
-		catch ( Exception e )
-		{
-			System.debug( LoggingLevel.ERROR, 'Exception when attempting to log ' + exceptionToLog + ' - ' + e );
-		}
-	}
-
-	/**
-	 * Log the given ortoo_Exception
-	 *
-	 * @param	ortoo_Exception	The exception to log
-	 */
-	public static void log( ortoo_Exception exceptionToLog )
 	{
 		if ( ! shouldLogExceptions() )
 		{
@@ -175,7 +135,7 @@ public inherited sharing class LoggerService
 
 	private static Boolean shouldLog( LoggerService.Level logLevel )
 	{
-		// If no config record exists, then get the whether the logging should be on from the service
+		// If no config record exists, then get the whether the logging should be on from the service implementation
 		switch on logLevel {
 			when INFO {
 				return config.Name != null ? config.Log_INFO_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
