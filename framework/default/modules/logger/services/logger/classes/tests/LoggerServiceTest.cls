@@ -12,7 +12,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO } );
 
 		Test.startTest();
 			LoggerService.log( level, message );
@@ -31,7 +31,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = false );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR, LoggerService.Level.WARN } );
 
 		Test.startTest();
 			LoggerService.log( level, message );
@@ -49,7 +49,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
+		TestLoggerUtils.setConfigurationMissing();
 
 		Test.startTest();
 			LoggerService.log( level, message );
@@ -70,7 +70,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO } );
 
 		Test.startTest();
 			LoggerService.log( level, message );
@@ -89,7 +89,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_WARN_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.WARN } );
 
 		Test.startTest();
 			LoggerService.log( level, message, relatedSobjectId );
@@ -109,7 +109,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_WARN_Level_Messages__c = false );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR, LoggerService.Level.INFO } );
 
 		Test.startTest();
 			LoggerService.log( level, message, relatedSobjectId );
@@ -128,7 +128,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
+		TestLoggerUtils.setConfigurationMissing();
 
 		Test.startTest();
 			LoggerService.log( level, message, relatedSobjectId );
@@ -150,7 +150,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_WARN_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.WARN } );
 
 		Test.startTest();
 			LoggerService.log( level, message, relatedSobjectId );
@@ -167,7 +167,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog );
@@ -184,7 +184,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = false );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO, LoggerService.Level.WARN } );
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog );
@@ -201,7 +201,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
+		TestLoggerUtils.setConfigurationMissing();
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog );
@@ -221,7 +221,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog );
@@ -239,7 +239,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog, relatedSobjectId );
@@ -257,7 +257,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = false );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO, LoggerService.Level.WARN } );
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog, relatedSobjectId );
@@ -275,7 +275,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
+		TestLoggerUtils.setConfigurationMissing();
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog, relatedSobjectId );
@@ -296,7 +296,7 @@ private without sharing class LoggerServiceTest
 		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
 		Test.startTest();
 			LoggerService.log( exceptionToLog, relatedSobjectId );
@@ -309,7 +309,7 @@ private without sharing class LoggerServiceTest
 	private static void log_whenTheLoggerCannotBeFound_usesANullLogger() // NOPMD: Test method name format
 	{
 		Application.SERVICE.setMock( ILoggerService.class, null );
-		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = true );
+		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
 		Test.startTest();
 			LoggerService.log( LoggerService.Level.INFO, 'message' );

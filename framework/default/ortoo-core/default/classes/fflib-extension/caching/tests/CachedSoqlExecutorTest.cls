@@ -1,6 +1,7 @@
 @isTest
 private without sharing class CachedSoqlExecutorTest
 {
+	// TODO: CachedSoqlExecutor does logging now - it should be tested.
 	@isTest
 	private static void query_whenCalledTwiceByAUserWithAccessToTheCache_onlyIssuesOneSoqlStatement() // NOPMD: Test method name format
 	{
