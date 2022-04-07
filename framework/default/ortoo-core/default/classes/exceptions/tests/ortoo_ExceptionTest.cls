@@ -187,6 +187,22 @@ public with sharing class ortoo_ExceptionTest {
     }
 
     @isTest
+    private static void stripContexts_whenCalled_willRemoveAllContextInfo() // NOPMD: Test method name format
+    {
+        ortoo_Exception e = new ortoo_Exception( 'message' )
+								.addContext( 'ParameterName1', 'ParameterValue1' )
+								.addContext( 'ParameterName2', 'ParameterValue2' );
+
+        Test.startTest();
+			e.stripContexts();
+        Test.stopTest();
+
+        ortoo_Exception.Contexts contexts = e.getContexts();
+
+        System.assertEquals( 0, contexts.size(), 'stripContexts, when called, will remove all contexts' );
+    }
+
+    @isTest
     private static void addContext_whenCalledInInnerClass_willAddIncludeInStack() // NOPMD: Test method name format
     {
         ortoo_Exception e = new ortoo_Exception( 'message' );

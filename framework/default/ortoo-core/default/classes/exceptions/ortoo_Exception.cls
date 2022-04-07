@@ -128,6 +128,18 @@ public virtual class ortoo_Exception extends Exception implements IRenderableMes
 	}
 
 	/**
+	 * Removes the context from the current exception, ensuring that no
+	 * sensitive information remains in it.
+	 *
+	 * @return	ortoo_Exception	Itself, allowing for a fluent interface
+	 */
+	public ortoo_Exception stripContexts()
+	{
+		contexts = new Contexts();
+		return this;
+	}
+
+	/**
 	 * Sets the message details for this exception (e.g. validation errors)
 	 *
 	 * @param	List<MessageDetail>	The list of message details for this exception
