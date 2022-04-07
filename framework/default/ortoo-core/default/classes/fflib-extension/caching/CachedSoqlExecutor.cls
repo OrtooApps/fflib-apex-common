@@ -70,7 +70,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 			{
 				if ( cacheWrapper.isACache() )
 				{
-					LoggerService.log( LoggerService.Level.ERROR, 'Opportunity to use Platform Cache skipped since user does not have required permission' ); // TODO: can we get the permission name into this?
+					LoggerService.log( LoggerService.Level.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission' ); // TODO: can we get the permission name into this?
 				}
 			}
 		}

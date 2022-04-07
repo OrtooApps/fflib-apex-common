@@ -25,4 +25,11 @@ public with sharing class TestLoggerUtils
 	{
 		LoggerService.config = new Logging_Configuration__c();
 	}
+
+	public static TestLoggerService registerTestLoggerService()
+	{
+		TestLoggerService testLogger = new TestLoggerService();
+		Application.SERVICE.setMock( ILoggerService.class, testLogger );
+		return testLogger;
+	}
 }

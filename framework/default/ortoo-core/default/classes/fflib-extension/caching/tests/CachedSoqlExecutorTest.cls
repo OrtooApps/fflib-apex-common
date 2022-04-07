@@ -5,6 +5,9 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_whenCalledTwiceByAUserWithAccessToTheCache_onlyIssuesOneSoqlStatement() // NOPMD: Test method name format
 	{
+		TestLoggerUtils.switchLoggingOn();
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
 		String soqlStatement = 'SELECT Id FROM Account';
 
 		setupAccessToSoqlCache( true );
@@ -19,11 +22,20 @@ private without sharing class CachedSoqlExecutorTest
 
 		System.assertEquals( 1, soqlCalls, 'query, when called twice by a user with access to the cache, will only issue one SOQL statement' );
 		System.assertEquals( originalResults, secondResults, 'query, when called twice by a user with access to the cache, returns the same results in both calls' );
+
+		System.assertEquals( 1, logger.methods.size(), 'query, when called twice by a user with access to the cache, will log once' );
+		System.assertEquals( 'log', logger.methods[0], 'query, when called twice by a user with access to the cache, will log once' );
+		System.assertEquals( LoggerService.Level.INFO, (LoggerService.Level)logger.parameters[0][0], 'query, when called twice by a user with access to the cache, will log once with an info message' );
+		ortoo_Asserts.assertContains( 'Platform Cache miss when running the SOQL', (String)logger.parameters[0][1], 'query, when called twice by a user with access to the cache, will log once to say there was a cache miss' );
+		ortoo_Asserts.assertContains( soqlStatement, (String)logger.parameters[0][1], 'query, when called twice by a user with access to the cache, will log once to say there was a cache miss and reference the SOQL statement' );
 	}
 
 	@isTest
 	private static void query_org_whenCalledTwiceByAUserWithAccessToTheCache_onlyIssuesOneSoqlStatement() // NOPMD: Test method name format
 	{
+		TestLoggerUtils.switchLoggingOn();
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
 		String soqlStatement = 'SELECT Id FROM Account';
 
 		setupAccessToSoqlCache( true );
@@ -38,11 +50,21 @@ private without sharing class CachedSoqlExecutorTest
 
 		System.assertEquals( 1, soqlCalls, 'query, when called twice by a user with access to the cache, will only issue one SOQL statement' );
 		System.assertEquals( originalResults, secondResults, 'query, when called twice by a user with access to the cache, returns the same results in both calls' );
+
+		System.assertEquals( 1, logger.methods.size(), 'query against an org cache, when called twice by a user with access to the cache, will log once' );
+		System.assertEquals( 'log', logger.methods[0], 'query against an org cache, when called twice by a user with access to the cache, will log once' );
+		System.assertEquals( LoggerService.Level.INFO, (LoggerService.Level)logger.parameters[0][0], 'query against an org cache, when called twice by a user with access to the cache, will log once with an info message' );
+		ortoo_Asserts.assertContains( 'Platform Cache miss when running the SOQL', (String)logger.parameters[0][1], 'query against an org cache, when called twice by a user with access to the cache, will log once to say there was a cache miss' );
+		ortoo_Asserts.assertContains( soqlStatement, (String)logger.parameters[0][1], 'query against an org cache, when called twice by a user with access to the cache, will log once to say there was a cache miss and reference the SOQL statement' );
+
 	}
 
 	@isTest
 	private static void query_whenCalledTwiceByAUserWithoutAccessToTheCache_issuesTwoSoqlStatements() // NOPMD: Test method name format
 	{
+		TestLoggerUtils.switchLoggingOn();
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
 		String soqlStatement = 'SELECT Id FROM Account';
 
 		setupAccessToSoqlCache( false );
@@ -57,6 +79,11 @@ private without sharing class CachedSoqlExecutorTest
 
 		System.assertEquals( 2, soqlCalls, 'query, when called twice by a user with no access to the cache, will issue two SOQL statements' );
 		System.assertEquals( originalResults, secondResults, 'query, when called twice by a user with not access to the cache, returns the same results in both calls' );
+
+		System.assertEquals( 2, logger.methods.size(), 'query, when called twice by a user with access to the cache, will log once' );
+
+//TODO: continue here:
+
 	}
 
 	@isTest
