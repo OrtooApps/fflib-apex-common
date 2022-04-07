@@ -1,13 +1,15 @@
 @isTest
 private without sharing class LoggerServiceTest
 {
+	private class TestException extends Exception {}
+
 	@isTest
 	private static void log_whenGivenALevelAndAMessageAndLoggingIsEnabledForThatLevel_callsToLog() // NOPMD: Test method name format
 	{
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = true );
@@ -26,7 +28,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = false );
@@ -44,7 +46,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		FakeLogger fakeLogger = new FakeLogger().setDefaultLoggingEnabledReturns( true );
+		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
@@ -65,7 +67,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		FakeLogger fakeLogger = new FakeLogger().loggingThrowsException();
+		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_INFO_Level_Messages__c = true );
@@ -84,7 +86,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_WARN_Level_Messages__c = true );
@@ -104,7 +106,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_WARN_Level_Messages__c = false );
@@ -123,7 +125,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger().setDefaultLoggingEnabledReturns( true );
+		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
@@ -145,7 +147,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger().loggingThrowsException();
+		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_WARN_Level_Messages__c = true );
@@ -160,9 +162,9 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndLoggingIsEnabledForThatLevel_callsToLog() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
@@ -177,9 +179,9 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndLoggingIsDisabledForErrors_doesNotCallToLog() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = false );
@@ -194,9 +196,9 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndLoggingAndNoConfig_asksServiceIfItShouldLog() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 
-		FakeLogger fakeLogger = new FakeLogger().setDefaultLoggingEnabledReturns( true );
+		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
@@ -214,9 +216,9 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndLoggerThrowsException_doesNotThrow() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 
-		FakeLogger fakeLogger = new FakeLogger().loggingThrowsException();
+		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
@@ -231,10 +233,10 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndIdAndLoggingIsEnabledForThatLevel_callsToLog() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
@@ -249,10 +251,10 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndIdAndLoggingIsDisabledForErrors_doesNotCallToLog() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger();
+		TestLoggerService fakeLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = false );
@@ -267,10 +269,10 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndIdAndLoggingAndNoConfig_asksServiceIfItShouldLog() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger().setDefaultLoggingEnabledReturns( true );
+		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c(); // nameless config means there's no config
@@ -288,10 +290,10 @@ private without sharing class LoggerServiceTest
 	@isTest
 	private static void log_whenGivenExceptionAndIdAndLoggerThrowsException_doesNotThrow() // NOPMD: Test method name format
 	{
-		Exception exceptionToLog = new LocalException( 'message' );
+		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		FakeLogger fakeLogger = new FakeLogger().loggingThrowsException();
+		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
 		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
 
 		LoggerService.config = new Logging_Configuration__c( Name = 'Name', Log_ERROR_Level_Messages__c = true );
@@ -314,69 +316,5 @@ private without sharing class LoggerServiceTest
 		Test.stopTest();
 
 		System.assert( true, 'log, when the logger service implementation cannot be found, will use a null logger and no exception is thrown' );
-	}
-
-	class LocalException extends Exception {}
-	// This exists because StubProvider has difficulty creating a stub for ILoggerService
-	// Potentially it's a problem with overloaded methods defined in an interface.
-	class FakeLogger implements ILoggerService
-	{
-		public List<String> methods = new List<String>();
-		public List<List<Object>> parameters = new List<List<Object>>();
-		Boolean defaultLoggingEnabledReturns = false;
-		Boolean loggingThrowsException = false;
-
-		public FakeLogger loggingThrowsException()
-		{
-			loggingThrowsException = true;
-			return this;
-		}
-		public FakeLogger setDefaultLoggingEnabledReturns( Boolean returns )
-		{
-			defaultLoggingEnabledReturns = returns;
-			return this;
-		}
-		public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
-		{
-			methods.add( 'getDefaultLoggingEnabled' );
-			parameters.add( new List<Object>{ logLevel } );
-			return defaultLoggingEnabledReturns;
-		}
-		public void log( LoggerService.Level logLevel, String message )
-		{
-			methods.add( 'log' );
-			parameters.add( new List<Object>{ logLevel, message } );
-			if ( loggingThrowsException )
-			{
-				throw new LocalException( 'a message' );
-			}
-		}
-		public void log( LoggerService.Level logLevel, String message, Id relatedSobjectId )
-		{
-			methods.add( 'log' );
-			parameters.add( new List<Object>{ logLevel, message, relatedSobjectId } );
-			if ( loggingThrowsException )
-			{
-				throw new LocalException( 'a message' );
-			}
-		}
-		public void log( Exception exceptionToLog )
-		{
-			methods.add( 'log' );
-			parameters.add( new List<Object>{ exceptionToLog } );
-			if ( loggingThrowsException )
-			{
-				throw new LocalException( 'a message' );
-			}
-		}
-		public void log( Exception exceptionToLog, Id relatedSobject )
-		{
-			methods.add( 'log' );
-			parameters.add( new List<Object>{ exceptionToLog, relatedSobject });
-			if ( loggingThrowsException )
-			{
-				throw new LocalException( 'a message' );
-			}
-		}
 	}
 }
