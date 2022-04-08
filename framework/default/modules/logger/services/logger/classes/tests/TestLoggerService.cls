@@ -1,6 +1,10 @@
 @isTest
-// This exists because StubProvider has difficulty creating a stub for ILoggerService
-// Potentially it's a problem with overloaded methods defined in an interface.
+/**
+ * This exists because StubProvider has difficulty creating a stub for ILoggerService
+ * Potentially it's a problem with overloaded methods defined in an interface.
+ * However, since it needs to exist, it gives us the opportunity to provide useful methods
+ * for supporting testing.
+ */
 public class TestLoggerService implements ILoggerService
 {
 	class LoggerException extends Exception {}
@@ -22,17 +26,20 @@ public class TestLoggerService implements ILoggerService
 		loggingThrowsException = true;
 		return this;
 	}
+
 	public TestLoggerService setDefaultLoggingEnabledReturns( Boolean returns )
 	{
 		defaultLoggingEnabledReturns = returns;
 		return this;
 	}
+
 	public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
 	{
 		methods.add( 'getDefaultLoggingEnabled' );
 		parameters.add( new List<Object>{ logLevel } );
 		return defaultLoggingEnabledReturns;
 	}
+
 	public void log( LoggerService.Level logLevel, String message )
 	{
 		methods.add( 'log' );
@@ -42,6 +49,7 @@ public class TestLoggerService implements ILoggerService
 			throw new LoggerException( 'a message' );
 		}
 	}
+
 	public void log( LoggerService.Level logLevel, String message, Id relatedSobjectId )
 	{
 		methods.add( 'log' );
@@ -51,6 +59,7 @@ public class TestLoggerService implements ILoggerService
 			throw new LoggerException( 'a message' );
 		}
 	}
+
 	public void log( Exception exceptionToLog )
 	{
 		methods.add( 'log' );
@@ -60,6 +69,7 @@ public class TestLoggerService implements ILoggerService
 			throw new LoggerException( 'a message' );
 		}
 	}
+
 	public void log( Exception exceptionToLog, Id relatedSobject )
 	{
 		methods.add( 'log' );

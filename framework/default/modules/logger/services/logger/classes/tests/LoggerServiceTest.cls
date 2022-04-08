@@ -9,8 +9,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO } );
 
@@ -28,8 +27,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR, LoggerService.Level.WARN } );
 
@@ -46,8 +44,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().setDefaultLoggingEnabledReturns( true );
 
 		TestLoggerUtils.setConfigurationMissing();
 
@@ -67,8 +64,7 @@ private without sharing class LoggerServiceTest
 		LoggerService.Level level = LoggerService.Level.INFO;
 		String message = 'the message';
 
-		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().loggingThrowsException();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO } );
 
@@ -86,8 +82,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.WARN } );
 
@@ -106,8 +101,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR, LoggerService.Level.INFO } );
 
@@ -125,8 +119,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().setDefaultLoggingEnabledReturns( true );
 
 		TestLoggerUtils.setConfigurationMissing();
 
@@ -147,8 +140,7 @@ private without sharing class LoggerServiceTest
 		String message = 'the message';
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().loggingThrowsException();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.WARN } );
 
@@ -164,8 +156,7 @@ private without sharing class LoggerServiceTest
 	{
 		Exception exceptionToLog = new TestException( 'message' );
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
@@ -181,8 +172,7 @@ private without sharing class LoggerServiceTest
 	{
 		Exception exceptionToLog = new TestException( 'message' );
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO, LoggerService.Level.WARN } );
 
@@ -198,8 +188,7 @@ private without sharing class LoggerServiceTest
 	{
 		Exception exceptionToLog = new TestException( 'message' );
 
-		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().setDefaultLoggingEnabledReturns( true );
 
 		TestLoggerUtils.setConfigurationMissing();
 
@@ -218,8 +207,7 @@ private without sharing class LoggerServiceTest
 	{
 		Exception exceptionToLog = new TestException( 'message' );
 
-		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().loggingThrowsException();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
@@ -236,8 +224,7 @@ private without sharing class LoggerServiceTest
 		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 
@@ -254,8 +241,7 @@ private without sharing class LoggerServiceTest
 		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.INFO, LoggerService.Level.WARN } );
 
@@ -272,8 +258,7 @@ private without sharing class LoggerServiceTest
 		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService().setDefaultLoggingEnabledReturns( true );
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().setDefaultLoggingEnabledReturns( true );
 
 		TestLoggerUtils.setConfigurationMissing();
 
@@ -293,8 +278,7 @@ private without sharing class LoggerServiceTest
 		Exception exceptionToLog = new TestException( 'message' );
 		Id relatedSobjectId = TestIdUtils.generateId( Contact.SobjectType );
 
-		TestLoggerService fakeLogger = new TestLoggerService().loggingThrowsException();
-		Application.SERVICE.setMock( ILoggerService.class, fakeLogger );
+		TestLoggerService fakeLogger = TestLoggerUtils.registerTestLoggerService().loggingThrowsException();
 
 		TestLoggerUtils.setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
 

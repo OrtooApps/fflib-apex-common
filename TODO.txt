@@ -1,11 +1,27 @@
+Framework Catch-up
+* Start-up performance might need looking at - looks like it has a linear startup time based on the number of services / domains / etc configured.
+* Simple Logging module is pretty much done - just need to finish of its usage and increase in testing (e.g. CachedSoqlExecutor issues logs - these can now be tested)
+* Docs to write up:
+	* Exception standards
+	* Logging standards
+	* How to test logging
+	* Potentially ServiceUtils.logAndRethrow( e )
+
+Logger
+* Write up standards
+
+Docs for Logger:
+* Custom Setting - if it doesn't exist, will log everything.
+* TestLoggerService
+* ortoo_Exception - stripContext
+
+
 Licenses that are needed with the source code and binary:
 * fflib - https://github.com/apex-enterprise-patterns/fflib-apex-common/blob/master/LICENSE
 * fflib apex extensions - https://github.com/wimvelzeboer/fflib-apex-extensions/blob/main/LICENSE
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
-Docs for Logger:
-* Custom Setting - if it doesn't exist, will log everything.
 
 
 

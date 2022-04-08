@@ -6,13 +6,6 @@
  */
 public with sharing class LoggerServiceImpl implements ILoggerService
 {
-	// TODO: what can we output in the UI?  Flag on custom settings to decide
-	// TODO: notes on testing if the logger is used - you have to set up the custom metadata first - create a test utils for it
-	// TODO: implement Exception.clearContext
-	// TODO: add entry point to the ortoo_Exception log
-	// TODO: and use the new registerTestLoggerService in the logger test
-
-
 	private static final String BLANK_LINE = '';
 
 	public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
@@ -125,6 +118,22 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 		}
 
 		ortoo_Exception.Contexts contexts = exceptionToLog.getContexts();
+
+		StackTrace stackTrace = exceptionToLog.getStackTrace();
+
+		StackTrace.StackTraceEntry entryPoint = stackTrace.getEntryStackTraceEntry();
+
+		if ( entryPoint.isValid() )
+		{
+			messages.add( 'Apex Entry Point: ' + String.valueOf( entryPoint ) );
+		}
+
+		StackTrace.StackTraceEntry serviceEntryPoint = stackTrace.getEntryServiceStackTraceEntry();
+
+		if ( serviceEntryPoint.isValid() )
+		{
+			messages.add( 'Service Entry Point: ' + String.valueOf( serviceEntryPoint ) );
+		}
 
 		Boolean first = true;
 		while ( contexts.hasNext() )
