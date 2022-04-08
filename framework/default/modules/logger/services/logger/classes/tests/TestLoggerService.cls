@@ -10,6 +10,13 @@ public class TestLoggerService implements ILoggerService
 	Boolean defaultLoggingEnabledReturns = false;
 	Boolean loggingThrowsException = false;
 
+	public TestLoggerService clearLogHistory()
+	{
+		methods = new List<String>();
+		parameters = new List<List<Object>>();
+		return this;
+	}
+
 	public TestLoggerService loggingThrowsException()
 	{
 		loggingThrowsException = true;
@@ -61,6 +68,31 @@ public class TestLoggerService implements ILoggerService
 		{
 			throw new LoggerException( 'a message' );
 		}
+	}
+
+	public void assertCallIsLog( Integer logCallNumber,  String assertionText )
+	{
+		System.assertEquals( 'log', methods[ logCallNumber ], assertionText );
+	}
+
+	public void assertNumberOfLogCalls( Integer expected, String assertionText )
+	{
+		Integer numberOfLogCalls = 0;
+		for ( String methodCalled : methods )
+		{
+			numberOfLogCalls += ( methodCalled == 'log' ? 1 : 0 );
+		}
+		System.assertEquals( expected, numberOfLogCalls, assertionText );
+	}
+
+	public void assertLogLevelIs( Integer logCallNumber, LoggerService.Level expected, String assertionText )
+	{
+		System.assertEquals( expected, (LoggerService.Level)parameters[ logCallNumber ][0], assertionText );
+	}
+
+	public void assertLogEntryContains( Integer logCallNumber, String expected, String assertionText )
+	{
+		ortoo_Asserts.assertContains( expected, (String)parameters[ logCallNumber ][1], assertionText );
 	}
 }
 

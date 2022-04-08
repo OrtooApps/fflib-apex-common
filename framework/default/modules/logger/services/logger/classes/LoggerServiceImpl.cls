@@ -9,6 +9,9 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 	// TODO: what can we output in the UI?  Flag on custom settings to decide
 	// TODO: notes on testing if the logger is used - you have to set up the custom metadata first - create a test utils for it
 	// TODO: implement Exception.clearContext
+	// TODO: add entry point to the ortoo_Exception log
+	// TODO: and use the new registerTestLoggerService in the logger test
+
 
 	private static final String BLANK_LINE = '';
 
