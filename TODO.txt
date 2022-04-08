@@ -1,6 +1,5 @@
 Framework Catch-up
 * Start-up performance might need looking at - looks like it has a linear startup time based on the number of services / domains / etc configured.
-* Simple Logging module is pretty much done - just need to finish of its usage and increase in testing (e.g. CachedSoqlExecutor issues logs - these can now be tested)
 * Docs to write up:
 	* Exception standards
 	* Logging standards
