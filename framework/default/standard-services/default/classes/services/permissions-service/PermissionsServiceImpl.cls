@@ -7,7 +7,18 @@ public with sharing class PermissionsServiceImpl implements IPermissionsService
     */
 	public Boolean hasAccessToCorePlatformCache()
 	{
-		return hasCustomPermission( 'ProcessesCanAccessCache' );
+		Boolean hasAccessToCorePlatformCache = false;
+
+		try
+		{
+			hasAccessToCorePlatformCache = hasCustomPermission( 'ProcessesCanAccessCache' );
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+
+		return hasAccessToCorePlatformCache;
 	}
 
 	/**
@@ -18,6 +29,17 @@ public with sharing class PermissionsServiceImpl implements IPermissionsService
 	 */
 	private Boolean hasCustomPermission( String customPermissionName )
 	{
-		return FeatureManagement.checkPermission( customPermissionName );
+		Boolean hasCustomPermission = false;
+
+		try
+		{
+			hasCustomPermission = FeatureManagement.checkPermission( customPermissionName );
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+
+		return hasCustomPermission;
 	}
 }

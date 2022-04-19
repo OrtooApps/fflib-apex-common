@@ -1,10 +1,5 @@
 Framework Catch-up
 * Start-up performance might need looking at - looks like it has a linear startup time based on the number of services / domains / etc configured.
-* Docs to write up:
-	* Exception standards
-	* Logging standards
-	* How to test logging
-	* Potentially ServiceUtils.logAndRethrow( e )
 
 Logger
 * Write up standards
@@ -13,6 +8,14 @@ Docs for Logger:
 * Custom Setting - if it doesn't exist, will log everything.
 * TestLoggerService
 * ortoo_Exception - stripContext
+* ServiceUtils.logAndRethrow
+	* All code other than the Contracts
+	* If you are returning a value, ensure you instantiate and set to a resonable default.  Generally, it will never be used without being set.
+	* Logging standards
+	* How to test logging
+
+Tests:
+* Each of the services need a test for the try / catch - where possible
 
 
 Licenses that are needed with the source code and binary:

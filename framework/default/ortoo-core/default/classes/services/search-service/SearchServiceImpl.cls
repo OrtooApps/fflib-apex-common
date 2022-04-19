@@ -24,17 +24,25 @@ public with sharing class SearchServiceImpl implements ISearchService
 		Contract.requires( window != null, 'search called with a null window' );
 		Contract.requires( orderBy != null, 'search called with a null orderBy' );
 
-		ISearchConfiguration searchConfiguration = buildSearchConfiguration( searchConfigurationType );
-
-		SobjectType sobjectType = searchConfiguration.getBaseSobjectType();
-
-		SearchResults searchResults = ((ISearchSelector)Application.SELECTOR.newInstance( sObjectType ) )
-															.selectBySearchCriteria( searchConfiguration, criteria, window, orderBy );
-
-		if ( searchResults.hasRecords() )
+		SearchResults searchResults = null;
+		try
 		{
-			ISearchResultBuilder searchResultsBuilder = ((ISearchResultBuilder)Application.DOMAIN.newInstance( (List<Sobject>)searchResults.records ) );
-			searchResults.records = searchResultsBuilder.buildSearchResults( searchConfiguration );
+			ISearchConfiguration searchConfiguration = buildSearchConfiguration( searchConfigurationType );
+
+			SobjectType sobjectType = searchConfiguration.getBaseSobjectType();
+
+			searchResults = ((ISearchSelector)Application.SELECTOR.newInstance( sObjectType ) )
+													.selectBySearchCriteria( searchConfiguration, criteria, window, orderBy );
+
+			if ( searchResults.hasRecords() )
+			{
+				ISearchResultBuilder searchResultsBuilder = ((ISearchResultBuilder)Application.DOMAIN.newInstance( (List<Sobject>)searchResults.records ) );
+				searchResults.records = searchResultsBuilder.buildSearchResults( searchConfiguration );
+			}
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
 		}
 
 		Contract.ensures( searchResults != null, 'search attempted to return with a null searchResults' );
@@ -47,7 +55,17 @@ public with sharing class SearchServiceImpl implements ISearchService
 	public List<String> getSortableFields( Type searchConfigurationType )
 	{
 		Contract.requires( searchConfigurationType != null, 'getSortableFields called with a null searchConfigurationType' );
-		return buildSearchConfiguration( searchConfigurationType ).getSortableFields();
+
+		List<String> sortableFields = new List<String>();
+		try
+		{
+			return buildSearchConfiguration( searchConfigurationType ).getSortableFields();
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+		return sortableFields;
 	}
 
 	private ISearchConfiguration buildSearchConfiguration( Type searchConfigurationType )
