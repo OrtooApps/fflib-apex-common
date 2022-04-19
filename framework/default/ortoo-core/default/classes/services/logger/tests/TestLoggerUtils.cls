@@ -26,8 +26,15 @@ public with sharing class TestLoggerUtils
 		LoggerService.config = new Logging_Configuration__c();
 	}
 
+	/**
+	 * Registers the test logger service and returns it.
+	 *
+	 * Also switches on logging at all levels.  If you require a different logging level, you can set it
+	 * *after* registering the test logger
+	 */
 	public static TestLoggerService registerTestLoggerService()
 	{
+		switchLoggingOn();
 		TestLoggerService testLogger = new TestLoggerService();
 		Application.SERVICE.setMock( ILoggerService.class, testLogger );
 		return testLogger;
