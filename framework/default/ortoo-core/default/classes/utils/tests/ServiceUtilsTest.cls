@@ -4,7 +4,6 @@ private without sharing class ServiceUtilsTest
 	@isTest
 	private static void logAndRethrow_whenGivenAStandardException_logsItAndRethrowsIt() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		DmlException exceptionToLog = new DmlException( 'The exception to log' );
@@ -28,7 +27,6 @@ private without sharing class ServiceUtilsTest
 	@isTest
 	private static void logAndRethrow_whenGivenAnOrtooException_logsItStripsItAndRethrowsIt() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		Amoss_Instance exceptionController = new Amoss_Instance( ortoo_Exception.class );
@@ -58,7 +56,6 @@ private without sharing class ServiceUtilsTest
 	@isTest
 	private static void logAndRethrow_whenGivenAValidationException_willNotLogIt() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		Exception exceptionToLog = new Exceptions.ValidationException( 'ValidationFailed' );

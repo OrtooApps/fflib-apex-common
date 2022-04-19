@@ -11,7 +11,7 @@ public class TestLoggerService implements ILoggerService
 
 	public List<String> methods = new List<String>();
 	public List<List<Object>> parameters = new List<List<Object>>();
-	Boolean defaultLoggingEnabledReturns = false;
+	Boolean defaultLoggingEnabledReturns = true;
 	Boolean loggingThrowsException = false;
 
 	public TestLoggerService clearLogHistory()

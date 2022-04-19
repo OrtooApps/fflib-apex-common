@@ -7,7 +7,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_whenCalledTwiceByUserWithAccessToCache_onlyIssuesOneSoql() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -36,7 +35,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_org_whenCalledTwiceByUserWithAccessToCache_onlyIssuesOneSoql() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -66,7 +64,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_whenCalledTwiceByUserWithoutAccessToCache_issuesTwoSoqls() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -93,7 +90,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_whenGivenSoqlThatWasExecuted_clearsCacheForThatStatement() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -124,7 +120,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_whenGivenSoqlThatWasExecuted_willNotClearCacheForOthers() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement1 = 'SELECT Id FROM Account';
@@ -152,7 +147,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_whenGivenSoqlThatHasNotBeenExecuted_willNotThrow() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -173,7 +167,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_whenTheUserDoesNotHaveAccessToCache_throwsAnException() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -202,7 +195,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_whenRanFor100Queries_willNotThrow()
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		List<String> soqlStatements = new List<String>();
@@ -241,7 +233,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_session_whenCalledTwiceByUserWithAccessToCache_onlyIssuesOneSoql() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -267,7 +258,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_session_whenCalledTwiceByUserWithoutAccessToCache_issuesOneSoql() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -289,7 +279,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_session_whenGivenSoqlThatWasExecuted_clearsCacheForThatStatement() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -317,7 +306,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_session_whenGivenSoqlThatWasExecuted_willNotClearCacheForOthers() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement1 = 'SELECT Id FROM Account';
@@ -346,7 +334,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_session_whenGivenSoqlThatHasNotBeenExecuted_willNotThrow() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -367,7 +354,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_session_whenTheUserDoesNotHaveAccessToTheOrgCache_willNotThrow() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -388,7 +374,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_session_whenRanFor100Queries_willNotThrow()
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		List<String> soqlStatements = new List<String>();
@@ -427,7 +412,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_none_whenCalledTwiceByUserWithAccessToCache_issuesTwoSoqls() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -450,7 +434,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_none_whenCalledTwiceByUserWithoutAccessToCache_issuesTwoSoqls() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -473,7 +456,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_none_doesNotAffectTheNumberOfSoqlsIssued() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -498,7 +480,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void clearCacheFor_none_whenTheUserDoesNotHaveAccessToCache_throwsAnException() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		String soqlStatement = 'SELECT Id FROM Account';
@@ -519,7 +500,6 @@ private without sharing class CachedSoqlExecutorTest
 	@isTest
 	private static void query_none_whenRanFor100Queries_willNotThrow() // NOPMD: Test method name format
 	{
-		TestLoggerUtils.switchLoggingOn();
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
 
 		List<String> soqlStatements = new List<String>();
