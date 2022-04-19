@@ -494,7 +494,7 @@ private without sharing class StackTraceTest
 	{
 		Test.startTest();
 			StackTrace.StackTraceEntry trace = new StackTrace.StackTraceEntry( 'Class.AClass.aMethod: line 7, column 1' );
-			String got = String.valueOf( trace );
+			String got = trace.toString();
 		Test.stopTest();
 
 		System.assertEquals( 'Class.AClass.aMethod: line 7, column 1', got, 'isValid, when the stack entry has text, will return true' );
