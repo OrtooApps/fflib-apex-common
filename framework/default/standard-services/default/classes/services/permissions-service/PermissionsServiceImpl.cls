@@ -1,8 +1,24 @@
 public with sharing class PermissionsServiceImpl implements IPermissionsService
 {
+	/**
+    * States if the user has the custom permission required to acces the core platform cache
+    *
+    * @return	Boolean	Does the current user have the platform cache
+    */
 	public Boolean hasAccessToCorePlatformCache()
 	{
-		return hasCustomPermission( 'ProcessesCanAccessCache' );
+		Boolean hasAccessToCorePlatformCache = false;
+
+		try
+		{
+			hasAccessToCorePlatformCache = hasCustomPermission( 'ProcessesCanAccessCache' );
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+
+		return hasAccessToCorePlatformCache;
 	}
 
 	/**
@@ -13,6 +29,17 @@ public with sharing class PermissionsServiceImpl implements IPermissionsService
 	 */
 	private Boolean hasCustomPermission( String customPermissionName )
 	{
-		return FeatureManagement.checkPermission( customPermissionName );
+		Boolean hasCustomPermission = false;
+
+		try
+		{
+			hasCustomPermission = FeatureManagement.checkPermission( customPermissionName );
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+
+		return hasCustomPermission;
 	}
 }

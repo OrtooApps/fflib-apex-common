@@ -2,17 +2,44 @@ public with sharing class OrganizationServiceImpl implements IOrganizationServic
 {
 	public Boolean inDevOrg()
 	{
-		return org.OrganizationType == 'Developer Edition';
+		Boolean inDevOrg = false;
+		try
+		{
+			inDevOrg = org.OrganizationType == 'Developer Edition';
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+		return inDevOrg;
 	}
 
 	public Boolean inSandbox()
 	{
-		return org.IsSandbox;
+		Boolean inSandbox = false;
+		try
+		{
+			inSandbox = org.IsSandbox;
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+		return inSandbox;
 	}
 
 	public String getOrgEdition()
 	{
-		return org.OrganizationType;
+		String orgEdition;
+		try
+		{
+			orgEdition = org.OrganizationType;
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+		return orgEdition;
 	}
 
 	private static Organization org

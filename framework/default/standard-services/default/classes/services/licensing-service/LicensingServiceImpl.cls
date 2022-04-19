@@ -6,7 +6,18 @@ public with sharing class LicensingServiceImpl implements ILicensingService
 {
     public Boolean productIsLicensed()
     {
-		return ( licenseDetails != null || OrganizationService.inDevOrg() || OrganizationService.inSandbox() );
+		Boolean productIsLicensed = false;
+
+		try
+		{
+			productIsLicensed = ( licenseDetails != null || OrganizationService.inDevOrg() || OrganizationService.inSandbox() );
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+
+		return productIsLicensed;
 	}
 
     private static PackageLicense licenseDetails

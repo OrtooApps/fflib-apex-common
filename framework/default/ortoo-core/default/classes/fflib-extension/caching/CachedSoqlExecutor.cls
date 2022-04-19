@@ -48,7 +48,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	 * If so, the cached versions are returned.
 	 * If not, the query is executed against the database and the result cached.
 	 * If, for any reason, a cache read or write cannot be performed, the method will continue without an exception.
-	 * Errors can be seen in the System.debug log.
+	 * Errors can be seen in the configured log destination (uses LoggerService)
 	 *
 	 * @param   String			The SOQL to return the results for
 	 * @return	List<Sobject>	The records that match
@@ -70,21 +70,21 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 			{
 				if ( cacheWrapper.isACache() )
 				{
-					System.debug( LoggingLevel.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission' ); // TODO: can we get the permission name into this?
+					LoggerService.log( LoggerService.Level.INFO, 'Opportunity to use Platform Cache skipped since user does not have required permission' ); // TODO: can we get the permission name into this?
 				}
 			}
 		}
 		catch ( Exception e )
 		{
-			System.debug( LoggingLevel.ERROR, 'Attempt to read from the Platform Cache failed for the SOQL: ' + soql );
-			System.debug( LoggingLevel.ERROR, e );
+			LoggerService.log( LoggerService.Level.ERROR, 'Attempt to read from the Platform Cache failed for the SOQL: ' + soql );
+			LoggerService.log( e );
 		}
 
 		if ( returnValues == null )
 		{
 			if ( cacheWrapper.hasAccessToCache() && cacheWrapper.isACache() )
 			{
-				System.debug( LoggingLevel.INFO, 'Platform Cache miss when running the SOQL: ' + soql );
+				LoggerService.log( LoggerService.Level.INFO,  'Platform Cache miss when running the SOQL: ' + soql );
 			}
 
 			returnValues = Database.query( soql );
@@ -98,8 +98,8 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 			}
 			catch ( Exception e )
 			{
-				System.debug( LoggingLevel.ERROR, 'Attempt to write into the Platform Cache failed for the SOQL: ' + soql );
-				System.debug( LoggingLevel.ERROR, e );
+				LoggerService.log( LoggerService.Level.ERROR, 'Attempt to write into the Platform Cache failed for the SOQL: ' + soql );
+				LoggerService.log( e );
 			}
 		}
 

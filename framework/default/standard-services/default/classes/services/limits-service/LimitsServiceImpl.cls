@@ -2,17 +2,31 @@ public with sharing class LimitsServiceImpl implements ILimitsService {
 
     private static final Integer DML_ROWS_PERCENTAGE_LIMIT = 90;
 
-    public static Integer getAvailableDmlRecordsHeadroom( ortoo_SobjectUnitOfWork uow  ) {
+    public static Integer getAvailableDmlRecordsHeadroom( ortoo_SobjectUnitOfWork uow  )
+	{
+		Contract.requires( uow != null, 'getAvailableDmlRecordsHeadroom called with a null uow' );
 
-        Integer futureDmlRows  = uow.getNumberOfPendingDmlRows();
-        Integer currentDmlRows = Limits.getDmlRows();
+		Integer headroom = 0;
 
-        Integer dmlRowsLimit   = getEffectiveDmlRowsLimit();
+		try
+		{
+			Integer futureDmlRows  = uow.getNumberOfPendingDmlRows();
+			Integer currentDmlRows = Limits.getDmlRows();
 
-        return dmlRowsLimit - ( currentDmlRows + futureDmlRows );
+			Integer dmlRowsLimit   = getEffectiveDmlRowsLimit();
+
+			headroom = dmlRowsLimit - ( currentDmlRows + futureDmlRows );
+		}
+		catch ( Exception e )
+		{
+			ServiceUtils.logAndRethrow( e );
+		}
+
+		return headroom;
     }
 
-    private static Integer getEffectiveDmlRowsLimit() {
-        return Integer.valueOf( Limits.getLimitDmlRows() * DML_ROWS_PERCENTAGE_LIMIT / 100 );
+    private static Integer getEffectiveDmlRowsLimit()
+	{
+		return Integer.valueOf( Limits.getLimitDmlRows() * DML_ROWS_PERCENTAGE_LIMIT / 100 );
     }
 }

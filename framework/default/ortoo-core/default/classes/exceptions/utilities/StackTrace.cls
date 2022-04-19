@@ -176,8 +176,13 @@ public class StackTrace {
 		return stackTraceEntries[0];
 	}
 
-	@testVisible
-	private StackTraceEntry getEntryStackTraceEntry()
+	/**
+	 * Returns the stack trace entry for the outermost method call on the call stack.
+	 * AKA, the entry point into Apex
+	 *
+	 * @return	StackTraceEntry	The Stack Trace Entry
+	 */
+	public StackTraceEntry getEntryStackTraceEntry()
 	{
 		if ( stackTraceEntries.isEmpty() )
 		{
@@ -186,7 +191,14 @@ public class StackTrace {
 		return stackTraceEntries[ stackTraceEntries.size() - 1 ];
 	}
 
-	private StackTraceEntry getEntryServiceStackTraceEntry()
+
+	/**
+	 * Returns the stack trace entry for the outermost Service method call on the call stack.
+	 * AKA, the entry point into the Services layer
+	 *
+	 * @return	StackTraceEntry	The Stack Trace Entry
+	 */
+	public StackTraceEntry getEntryServiceStackTraceEntry()
 	{
 		for ( Integer i = stackTraceEntries.size()-1; i>=0; i-- )
 		{
@@ -265,6 +277,11 @@ public class StackTrace {
 			this( null );
 		}
 
+		public Boolean isValid()
+		{
+			return String.isNotBlank( stackTraceLine );
+		}
+
 		public StackTraceEntry( String stackTraceLine )
 		{
 			this.stackTraceLine = stackTraceLine;
@@ -304,6 +321,15 @@ public class StackTrace {
 				return null;
 			}
 			return Integer.valueOf( stackTraceLine.substringAfter( ', column ') );
+		}
+
+		public override String toString()
+		{
+			if ( !isValid() )
+			{
+				return 'Unknown';
+			}
+			return stackTraceLine;
 		}
 
 		public Boolean getIsCallingAService()
