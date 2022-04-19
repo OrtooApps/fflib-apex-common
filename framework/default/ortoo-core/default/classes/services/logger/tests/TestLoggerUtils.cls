@@ -11,6 +11,11 @@ public with sharing class TestLoggerUtils
 		);
 	}
 
+	public static void switchLoggingToErrorOnly()
+	{
+		setLoggingLevels( new List<LoggerService.Level>{ LoggerService.Level.ERROR } );
+	}
+
 	public static void switchLoggingOff()
 	{
 		setLoggingLevels( new List<LoggerService.Level>() );

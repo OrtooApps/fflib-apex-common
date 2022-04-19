@@ -59,7 +59,7 @@ public with sharing class SearchServiceImpl implements ISearchService
 		List<String> sortableFields = new List<String>();
 		try
 		{
-			return buildSearchConfiguration( searchConfigurationType ).getSortableFields();
+			sortableFields = buildSearchConfiguration( searchConfigurationType ).getSortableFields();
 		}
 		catch ( Exception e )
 		{

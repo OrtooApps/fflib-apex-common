@@ -96,4 +96,37 @@ private with sharing class LicensingServiceImplTest
 
         System.assert( productIsLicensed, 'productIsLicensed, when no license details exist in a sandbox, will return true' );
     }
+
+	@isTest
+	private static void productIsLicensed_whenAServiceThrowsAnException_logsAndRethrowsIt() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+		TestLoggerUtils.switchLoggingToErrorOnly();
+
+        Amoss_Instance mockOrganizationServiceController = ApplicationMockRegistrar.registerMockService( IOrganizationService.class );
+        Amoss_Instance mockLicenseSelectorController = ApplicationMockRegistrar.registerMockSelector( PackageLicense.sobjectType );
+
+		Exception expected = new Exceptions.DeveloperException( 'An exception' );
+
+        mockLicenseSelectorController
+            .when( 'selectSingleRow' )
+            .throws( expected );
+
+		Test.startTest();
+			Boolean productIsLicensed;
+			Exception got;
+			try
+			{
+				productIsLicensed = LicensingService.productIsLicensed();
+			}
+			catch( Exception e )
+			{
+				got = e;
+			}
+		Test.stopTest();
+
+		logger.assertNumberOfLogCalls( 1, 'productIsLicensed, when a called service throws an exception, will log it' );
+		logger.assertExceptionWasLogged( 0, expected, 'productIsLicensed, when a called service throws an exception, will log it' );
+		ortoo_Asserts.assertEquals( expected, got, 'productIsLicensed, when a called service throws an exception, will rethrow it' );
+	}
 }

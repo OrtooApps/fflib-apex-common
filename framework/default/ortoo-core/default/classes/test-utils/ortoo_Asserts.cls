@@ -123,4 +123,18 @@ public with sharing class ortoo_Asserts
 		Boolean inRange = actual >= earliestExpected && actual <= latestExpected;
 		System.assert( inRange, assertionMessage + ' (looking for ' + earliestExpected + ' to ' + latestExpected + ', got ' + actual + ')' );
 	}
+
+	/**
+	 * Assert that the given exceptions are the same.
+	 *
+	 * Takes care of the fact that exceptions can change object hash when they are rethrown
+	 *
+	 * @param	Exception - The expected Exception
+	 * @param	Exception - The actual Exception
+	 * @param	String	- The assertion message
+	 */
+	public static void assertEquals( Exception expected, Exception got, String assertionMessage )
+	{
+		System.assertEquals( String.valueOf( expected ), String.valueOf( got ), assertionMessage );
+	}
 }

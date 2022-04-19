@@ -80,7 +80,7 @@ public class TestLoggerService implements ILoggerService
 		}
 	}
 
-	public void assertCallIsLog( Integer logCallNumber,  String assertionText )
+	public void assertCallIsLog( Integer logCallNumber, String assertionText )
 	{
 		System.assertEquals( 'log', methods[ logCallNumber ], assertionText );
 	}
@@ -93,6 +93,11 @@ public class TestLoggerService implements ILoggerService
 			numberOfLogCalls += ( methodCalled == 'log' ? 1 : 0 );
 		}
 		System.assertEquals( expected, numberOfLogCalls, assertionText );
+	}
+
+	public void assertExceptionWasLogged( Integer logCallNumber, Exception expected, String assertionText )
+	{
+		ortoo_Asserts.assertEquals( expected, (Exception)parameters[ logCallNumber ][0], assertionText );
 	}
 
 	public void assertLogLevelIs( Integer logCallNumber, LoggerService.Level expected, String assertionText )

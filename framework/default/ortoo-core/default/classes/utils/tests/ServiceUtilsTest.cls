@@ -48,7 +48,7 @@ private without sharing class ServiceUtilsTest
 		Test.stopTest();
 
 		logger.assertNumberOfLogCalls( 1, 'logAndRethrow, when given an ortoo exception, will log it with the logger service' );
-		System.assertEquals( String.valueOf( exceptionCaught ), String.valueOf( exceptionToLog ), 'logAndRethrow, when given an ortoo exception, will rethrow it' );
+		ortoo_Asserts.assertEquals( exceptionCaught, exceptionToLog, 'logAndRethrow, when given an ortoo exception, will rethrow it' );
 
 		exceptionController.verify();
 	}
@@ -73,6 +73,6 @@ private without sharing class ServiceUtilsTest
 		Test.stopTest();
 
 		logger.assertNumberOfLogCalls( 0, 'logAndRethrow, when given an ortoo validation exception, will not log it' );
-		System.assertEquals( String.valueOf( exceptionCaught ), String.valueOf( exceptionToLog ), 'logAndRethrow, when given an ortoo validation exception, will rethrow it' );
+		ortoo_Asserts.assertEquals( exceptionCaught, exceptionToLog, 'logAndRethrow, when given an ortoo validation exception, will rethrow it' );
 	}
 }
