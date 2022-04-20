@@ -132,9 +132,10 @@ public inherited sharing class Application {
 		}
 	}
 
-
 	/**
-	 * Provides a default mechanism for defining a 'Class Type Configuration', being a mapping between two Classes (or an interface and a class).
+	 * Provides a default mechanism for defining a 'Raw Type Configuration', being a mapping between two String names
+	 *
+	 * Can be used by a factory to map between Class and Sobject, or Class and Class, for example.
 	 */
 	private abstract inherited sharing class RawTypeConfiguration implements TypeConfiguration
 	{
@@ -223,7 +224,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the App Logic Configuration
 	 */
-	private inherited sharing class AppLogicConfiguration extends ClassTypeConfiguration
+	private inherited sharing class AppLogicConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{
@@ -234,7 +235,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the Child Record Finders Configuration
 	 */
-	private inherited sharing class ChildRecordFinderConfiguration extends ClassTypeConfiguration
+	private inherited sharing class ChildRecordFinderConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{
@@ -245,7 +246,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the Child Record Finders Configuration
 	 */
-	private inherited sharing class MessageRendererConfiguration extends ClassTypeConfiguration
+	private inherited sharing class MessageRendererConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{
