@@ -7,7 +7,16 @@ public inherited sharing class Application {
 
 	public class InvalidApplicationConfigurationException extends Exceptions.DeveloperException {}
 
-	public final static ortoo_UnitOfWorkFactory UNIT_OF_WORK = new ortoo_UnitOfWorkFactory(); // is created with no default since that needs to be defined by the consumer
+	public final static ortoo_UnitOfWorkFactory UNIT_OF_WORK {
+		get {
+			if ( UNIT_OF_WORK == null )
+			{
+				UNIT_OF_WORK = new ortoo_UnitOfWorkFactory(); // is created with no default since that needs to be defined by the consumer
+			}
+			return UNIT_OF_WORK;
+		}
+		set;
+	}
 
 	public static ortoo_SelectorFactory				SELECTOR; // NOPMD: want to give the impression that this is final, even though it isn't.
 	public static ortoo_DomainFactory				DOMAIN; // NOPMD: want to give the impression that this is final, even though it isn't.
