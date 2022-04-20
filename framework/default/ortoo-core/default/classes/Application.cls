@@ -132,6 +132,25 @@ public inherited sharing class Application {
 		}
 	}
 
+
+	/**
+	 * Provides a default mechanism for defining a 'Class Type Configuration', being a mapping between two Classes (or an interface and a class).
+	 */
+	private abstract inherited sharing class RawTypeConfiguration implements TypeConfiguration
+	{
+		Map<String,String> configuration = new Map<String,String>();
+
+		public void put( Application_Configuration__mdt thisConfiguration )
+		{
+			configuration.put( thisConfiguration.Object_Type__c, thisConfiguration.Implementation__c );
+		}
+
+		public Map<String,String> getConfiguration()
+		{
+			return configuration;
+		}
+	}
+
 	/**
 	 * Provides a default mechanism for defining an 'SObject Type Configuration', being a mapping between an SObject Type and a Class.
 	 */
@@ -193,7 +212,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the Selectors Configuration
 	 */
-	private inherited sharing class SelectorConfiguration extends SobjectTypeConfiguration
+	private inherited sharing class SelectorConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{

@@ -51,7 +51,7 @@ public inherited sharing class LoggerService
 
 		try
 		{
-			service().log( logLevel, message );
+			service.log( logLevel, message );
 		}
 		catch ( Exception e )
 		{
@@ -75,7 +75,7 @@ public inherited sharing class LoggerService
 
 		try
 		{
-			service().log( logLevel, message, relatedSobjectId );
+			service.log( logLevel, message, relatedSobjectId );
 		}
 		catch ( Exception e )
 		{
@@ -102,7 +102,7 @@ public inherited sharing class LoggerService
 
 		try
 		{
-			service().log( exceptionToLog );
+			service.log( exceptionToLog );
 		}
 		catch ( Exception e )
 		{
@@ -125,7 +125,7 @@ public inherited sharing class LoggerService
 
 		try
 		{
-			service().log( exceptionToLog, relatedSobjectId );
+			service.log( exceptionToLog, relatedSobjectId );
 		}
 		catch ( Exception e )
 		{
@@ -138,13 +138,13 @@ public inherited sharing class LoggerService
 		// If no config record exists, then get the whether the logging should be on from the service implementation
 		switch on logLevel {
 			when INFO {
-				return config.Name != null ? config.Log_INFO_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
+				return config.Name != null ? config.Log_INFO_Level_Messages__c : service.getDefaultLoggingEnabled( logLevel );
 			}
 			when WARN {
-				return config.Name != null ? config.Log_WARN_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
+				return config.Name != null ? config.Log_WARN_Level_Messages__c : service.getDefaultLoggingEnabled( logLevel );
 			}
 		}
-		return config.Name != null ? config.Log_ERROR_Level_Messages__c : service().getDefaultLoggingEnabled( logLevel );
+		return config.Name != null ? config.Log_ERROR_Level_Messages__c : service.getDefaultLoggingEnabled( logLevel );
 	}
 
 	private static Boolean shouldLogExceptions()
@@ -152,25 +152,31 @@ public inherited sharing class LoggerService
 		return shouldLog( EXCEPTION_LOG_LEVEL );
 	}
 
-    private static ILoggerService service()
+    private static ILoggerService service
 	{
-		ILoggerService service;
-		try
+		get
 		{
-	        service = (ILoggerService)Application.SERVICE?.newInstance( ILoggerService.class );
-		}
-		catch ( Exception e )
-		{
-			System.debug( LoggingLevel.ERROR, 'Exception when trying to instantiate the logger - ' + e ); // Logger failure should not stop the system,
-																										// so with nothing else available, instantiate a logger that does nothing
-		}
+			if ( service == null )
+			{
+				try
+				{
+					service = (ILoggerService)Application.SERVICE?.newInstance( ILoggerService.class );
+				}
+				catch ( Exception e )
+				{
+					System.debug( LoggingLevel.ERROR, 'Exception when trying to instantiate the logger - ' + e ); // Logger failure should not stop the system,
+																												// so with nothing else available, instantiate a logger that does nothing
+				}
 
-		if ( service == null )
-		{
-			System.debug( LoggingLevel.WARN, 'Service factory did not build a logger, so NullLoggerServiceImpl is being used - this will not output any logs' );
-			service = new NullLoggerServiceImpl();
-		}
+				if ( service == null )
+				{
+					System.debug( LoggingLevel.WARN, 'Service factory did not build a logger, so NullLoggerServiceImpl is being used - this will not output any logs' );
+					service = new NullLoggerServiceImpl();
+				}
+			}
 
-		return service;
+			return service;
+		}
+		set;
     }
 }

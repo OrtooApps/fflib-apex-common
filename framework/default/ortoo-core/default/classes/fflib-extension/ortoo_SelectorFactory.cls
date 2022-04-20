@@ -6,18 +6,57 @@
  * the selector type for a given Sobject type.  This is useful for the generic registration
  * of mocks.
  *
+ * In addition, this implementation does not require that the types be setup fully prior to
+ * the request of the instance.  This improves the startup performance of the framework
+ * where lots of Selectors are defined and few are used for a given request.
+ *
  * @group fflib Extension
  */
 public inherited sharing class ortoo_SelectorFactory extends fflib_Application.SelectorFactory // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
+	Map<String,String> selectorNameBySobjectName = new Map<String,String>();
+
 	/**
-	 * Constructor, allowing the definition of the Sobject to Selector Type mappings
+	 * Constructor, allowing the definition of the Sobject to Domain Type mappings
 	 *
-	 * @param	Map<SObjectType,Type>	The mapping of Sobject to Selector Type
+	 * @param	Map<SObjectType,Type>	The mapping of Sobject to Domain Type
 	 */
-	public ortoo_SelectorFactory( Map<SObjectType,Type> sObjectBySelectorType )
+	public ortoo_SelectorFactory( Map<String,String> selectorNameBySobjectName )
 	{
-		super( sObjectBySelectorType );
+		// Construct an FFLIB Selector Factory with no initial configuration
+		super( new Map<SObjectType,Type>() );
+		this.selectorNameBySobjectName = selectorNameBySobjectName;
+	}
+
+	public virtual override fflib_ISObjectSelector newInstance( SObjectType sObjectType )
+	{
+		// Attempt to let the FFLIB Selector Factory build the instance.
+		// If it can't, then it may be because the configuration for the selector hasn't been loaded yet
+		try
+		{
+			return super.newInstance( sobjectType );
+		}
+		catch ( fflib_Application.DeveloperException e )
+		{
+			// if the base factory didn't manage to get a type, then try to build a new one from *our* config
+			String selectorClassName = selectorNameBySobjectName.get( sObjectType.getDescribe().getName() );
+
+			if ( selectorClassName == null )
+			{
+				throw e;
+			}
+
+			Type selectorClass = Type.forName( selectorClassName );
+			if ( selectorClass == null )
+			{
+				throw new fflib_Application.DeveloperException( 'Invalid selector class defined for SObjectType ' + sObjectType + ' - ' + selectorClassName );
+			}
+
+			//
+			// Put the config into the FFLIB Selector Factory so that we don't have to do this again for this selector type
+			m_sObjectBySelectorType.put( sObjectType, selectorClass );
+			return (fflib_ISObjectSelector)selectorClass.newInstance();
+		}
 	}
 
 	/**
@@ -31,6 +70,11 @@ public inherited sharing class ortoo_SelectorFactory extends fflib_Application.S
 	{
 		Contract.requires( sobjectType != null, 'getSelectorType called with a null sobjectType' );
 
-		return m_sObjectBySelectorType.get( sObjectType );
+		String typeName = selectorNameBySobjectName.get( SobjectUtils.getSobjectName( sObjectType ) );
+		if ( typeName == null )
+		{
+			return null;
+		}
+		return Type.forName( typeName );
 	}
 }
