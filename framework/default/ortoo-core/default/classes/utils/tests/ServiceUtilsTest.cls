@@ -9,6 +9,7 @@ private without sharing class ServiceUtilsTest
 		DmlException exceptionToLog = new DmlException( 'The exception to log' );
 		Exception exceptionCaught;
 
+		logger.clearLogHistory();
 		Test.startTest();
 			try
 			{
@@ -21,7 +22,9 @@ private without sharing class ServiceUtilsTest
 		Test.stopTest();
 
 		logger.assertNumberOfLogCalls( 1, 'logAndRethrow, when given an exception, will log it with the logger service' );
-		System.assertEquals( exceptionCaught, exceptionToLog, 'logAndRethrow, when given an exception, will rethrow it' );
+		logger.assertExceptionWasLogged( 0, exceptionToLog, 'logAndRethrow, when given an exception, will log it with the logger service' );
+
+		System.assertEquals( exceptionToLog, exceptionCaught, 'logAndRethrow, when given an exception, will rethrow it' );
 	}
 
 	@isTest
@@ -36,6 +39,7 @@ private without sharing class ServiceUtilsTest
 		Exception exceptionToLog = (Exception)exceptionController.getDouble();
 		Exception exceptionCaught;
 
+		logger.clearLogHistory();
 		Test.startTest();
 			try
 			{
@@ -48,7 +52,8 @@ private without sharing class ServiceUtilsTest
 		Test.stopTest();
 
 		logger.assertNumberOfLogCalls( 1, 'logAndRethrow, when given an ortoo exception, will log it with the logger service' );
-		ortoo_Asserts.assertEquals( exceptionCaught, exceptionToLog, 'logAndRethrow, when given an ortoo exception, will rethrow it' );
+		logger.assertExceptionWasLogged( 0, exceptionToLog, 'logAndRethrow, when given an ortoo exception, will log it with the logger service' );
+		ortoo_Asserts.assertEquals( exceptionToLog, exceptionCaught, 'logAndRethrow, when given an ortoo exception, will rethrow it' );
 
 		exceptionController.verify();
 	}
@@ -61,6 +66,7 @@ private without sharing class ServiceUtilsTest
 		Exception exceptionToLog = new Exceptions.ValidationException( 'ValidationFailed' );
 		Exception exceptionCaught;
 
+		logger.clearLogHistory();
 		Test.startTest();
 			try
 			{
