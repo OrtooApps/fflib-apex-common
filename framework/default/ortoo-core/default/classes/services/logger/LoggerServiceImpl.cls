@@ -11,7 +11,8 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 	Map<LoggerService.Level,LoggingLevel> debugLogLevels = new Map<LoggerService.Level,LoggingLevel>{
 		LoggerService.Level.INFO => LoggingLevel.INFO,
 		LoggerService.Level.WARN => LoggingLevel.WARN,
-		LoggerService.Level.ERROR => LoggingLevel.ERROR
+		LoggerService.Level.ERROR => LoggingLevel.ERROR,
+		null => LoggingLevel.ERROR
 	};
 
 	public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
