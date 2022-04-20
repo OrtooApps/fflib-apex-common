@@ -9,6 +9,11 @@ Licenses that are needed with the source code and binary:
 
 * Move all the Jest LWc tests over to create the component in the before
 
+
+Documentation - using lazy loader for service instantiation
+
+
+
 Look at the use of 'MockDatabase' in fflib
 Look at:
     SobjectUtils.getSobjectName
