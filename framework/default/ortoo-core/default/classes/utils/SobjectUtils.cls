@@ -96,6 +96,22 @@ public inherited sharing class SobjectUtils
 	}
 
 	/**
+	 * Given an SObjectType, will return the Local version of the developer / API name of the SObject (e.g. Contact)
+	 *
+	 * @param	SobjectType	The SObjectType to return the Name for
+	 * @return	String		The Local API Name of the SObjectType
+	 */
+	public static String getSobjectLocalName( SobjectType sobjectType )
+	{
+		Contract.requires( sobjectType != null, 'Attempted to get the local name of a null SObjectType' );
+
+		String sobjectName = sobjectType.getDescribe().getLocalName();
+
+		Contract.ensures( sobjectName != null, 'getSobjectLocalName returned with a null sobjectName' );
+		return sobjectName;
+	}
+
+	/**
 	 * States if the given SObject is of a type that the current user is allowed to insert
 	 *
 	 * @param	SObject	The SObject to check 'isCreatable' of

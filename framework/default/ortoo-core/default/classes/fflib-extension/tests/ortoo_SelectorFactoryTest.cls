@@ -21,7 +21,7 @@ private without sharing class ortoo_SelectorFactoryTest
     {
         ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<String,String>
         {
-            PackageUtils.NAMESPACE_PREFIX + '__Application_Configuration__mdt' => 'ortoo_SelectorFactoryTest.RegisterableType'
+            'Application_Configuration__mdt' => 'ortoo_SelectorFactoryTest.RegisterableType'
         });
 
         Test.startTest();

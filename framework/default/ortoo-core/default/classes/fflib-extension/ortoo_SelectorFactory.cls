@@ -17,9 +17,9 @@ public inherited sharing class ortoo_SelectorFactory extends fflib_Application.S
 	Map<String,String> selectorNameBySobjectName = new Map<String,String>();
 
 	/**
-	 * Constructor, allowing the definition of the Sobject to Domain Type mappings
+	 * Constructor, allowing the definition of the Sobject to Domain Type mappings based on their names
 	 *
-	 * @param	Map<SObjectType,Type>	The mapping of Sobject to Domain Type
+	 * @param	Map<String,String>	The mapping of Sobject Name to Domain Type Name
 	 */
 	public ortoo_SelectorFactory( Map<String,String> selectorNameBySobjectName )
 	{
@@ -38,7 +38,7 @@ public inherited sharing class ortoo_SelectorFactory extends fflib_Application.S
 		}
 		catch ( fflib_Application.DeveloperException e )
 		{
-			String sobjectTypeName = sObjectType.getDescribe().getLocalName();
+			String sobjectTypeName = SobjectUtils.getSobjectLocalName( sobjectType );
 			// if the base factory didn't manage to get a type, then try to build a new one from *our* config
 			String selectorClassName = selectorNameBySobjectName.get( sobjectTypeName );
 
@@ -71,7 +71,7 @@ public inherited sharing class ortoo_SelectorFactory extends fflib_Application.S
 	{
 		Contract.requires( sobjectType != null, 'getSelectorType called with a null sobjectType' );
 
-		String typeName = selectorNameBySobjectName.get( SobjectUtils.getSobjectName( sObjectType ) );
+		String typeName = selectorNameBySobjectName.get( SobjectUtils.getSobjectLocalName( sObjectType ) );
 		if ( typeName == null )
 		{
 			return null;
