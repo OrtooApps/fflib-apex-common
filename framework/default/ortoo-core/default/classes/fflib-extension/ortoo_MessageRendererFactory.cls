@@ -15,18 +15,19 @@ public inherited sharing class ortoo_MessageRendererFactory    // NOPMD: specifi
 	 */
     public ortoo_MessageRendererFactory()
     {
-        this( new Map<Type,Type>() );
+        this( new Map<String,String>() );
     }
 
 	/**
 	 * Construct an instance using the given type to implementation mapping
 	 *
-	 * @param	Map<Type,Type>	The Type to Implementation mapping
+	 * @param	Map<String,String>	The Type to Implementation mapping
 	 */
-    public ortoo_MessageRendererFactory( Map<Type,Type> implementationPerType )
+    public ortoo_MessageRendererFactory( Map<String,String> implementationPerType )
     {
         Contract.requires( implementationPerType != null, 'ortoo_MessageRendererFactory instantiated with a null implementationPerType' );
-        factory = new ortoo_SimpleObjectFactory( implementationPerType )
+
+		factory = new ortoo_SimpleObjectFactory( implementationPerType )
                         .setTypeName( 'Message Renderer' )
                         .setErrorOnUnmappedType( false );
     }
@@ -50,7 +51,7 @@ public inherited sharing class ortoo_MessageRendererFactory    // NOPMD: specifi
         }
         catch ( TypeException e )
         {
-            throw new Exceptions.DeveloperException( 'Implementation registered for Message Renderer ' + requestedType + ' does not implement MessageRendererEngine.IMessageRenderer', e )
+            throw new Exceptions.DeveloperException( 'Implementation registered for Message Renderer ' + requestedType + ' ('+ ObjectUtils.getClassName( rawRenderer ) +') does not implement MessageRendererEngine.IMessageRenderer', e )
                                                             .setErrorCode( FrameworkErrorCodes.MR_IMPLEMENTATION_IS_NOT_MR )
                                                             .addContext( 'requestedType', requestedType );
         }

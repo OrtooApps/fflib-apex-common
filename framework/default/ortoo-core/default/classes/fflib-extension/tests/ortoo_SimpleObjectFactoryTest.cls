@@ -8,13 +8,13 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     private static void newInstance_whenCalledWithARegisteredTypeViaType_willReturnTheMappedType() // NOPMD: Test method name format
     {
         Map<Type,Type> implementationByType = new Map<Type,Type>{
-            Object.class => RegisterableType.class
+            ClassToRetrieveVia.class => RegisterableType.class
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationByType );
 
         Test.startTest();
-            Object returnedInstance = factory.newInstance( Object.class );
+            Object returnedInstance = factory.newInstance( ClassToRetrieveVia.class );
         Test.stopTest();
 
         System.assertNotEquals( null, returnedInstance, 'newInstance, when called with a registered type, will return an instance' );
@@ -25,13 +25,13 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     private static void newInstance_whenCalledWithARegisteredTypeViaString_willReturnTheMappedType() // NOPMD: Test method name format
     {
         Map<String,String> implementationNameByTypeName = new Map<String,String>{
-            'Object' => 'ortoo_SimpleObjectFactoryTest.RegisterableType'
+            'ortoo_SimpleObjectFactoryTest.ClassToRetrieveVia' => 'ortoo_SimpleObjectFactoryTest.RegisterableType'
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationNameByTypeName );
 
         Test.startTest();
-            Object returnedInstance = factory.newInstance( Object.class );
+            Object returnedInstance = factory.newInstance( ClassToRetrieveVia.class );
         Test.stopTest();
 
         System.assertNotEquals( null, returnedInstance, 'newInstance, when called with a registered type, will return an instance' );
@@ -43,7 +43,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     {
 
         Map<Type,Type> implementationByType = new Map<Type,Type>{
-            Object.class => NonConstructableType.class
+            ClassToRetrieveVia.class => NonConstructableType.class
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationByType );
@@ -52,7 +52,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             String exceptionMessage;
             try
             {
-                factory.newInstance( Object.class );
+                factory.newInstance( ClassToRetrieveVia.class );
             }
             catch ( Exceptions.DeveloperException e )
             {
@@ -66,9 +66,8 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     @isTest
     private static void newInstance_whenCalledWithATypeViaStringThatCannotBeConstructed_throwsException() // NOPMD: Test method name format
     {
-
         Map<String,String> implementationNameByTypeName = new Map<String,String>{
-            'Object' => 'ortoo_SimpleObjectFactoryTest.NonConstructableType'
+            'ortoo_SimpleObjectFactoryTest.ClassToRetrieveVia' => 'ortoo_SimpleObjectFactoryTest.NonConstructableType'
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationNameByTypeName );
@@ -77,7 +76,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             String exceptionMessage;
             try
             {
-                factory.newInstance( Object.class );
+                factory.newInstance( ClassToRetrieveVia.class );
             }
             catch ( Exceptions.DeveloperException e )
             {
@@ -93,7 +92,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     {
 
         Map<String,String> implementationNameByTypeName = new Map<String,String>{
-            'Object' => 'NotAValidClass'
+            'ortoo_SimpleObjectFactoryTest.ClassToRetrieveVia' => 'NotAValidClass'
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationNameByTypeName );
@@ -102,7 +101,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             String exceptionMessage;
             try
             {
-                factory.newInstance( Object.class );
+                factory.newInstance( ClassToRetrieveVia.class );
             }
             catch ( Exceptions.DeveloperException e )
             {
@@ -110,7 +109,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
             }
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( 'Invalid implementation registered for Unknown Object: The class does not exist, or is not visible', exceptionMessage, 'newInstance, when called with a type that has an invalid type, will throw an exception' );
+        ortoo_Asserts.assertContains( 'Invalid implementation registered for Unknown ortoo_SimpleObjectFactoryTest.ClassToRetrieveVia: NotAValidClass does not exist, or is not visible', exceptionMessage, 'newInstance, when called with a type that has an invalid type, will throw an exception' );
     }
 
     @isTest
@@ -145,7 +144,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     private static void newInstance_whenSetToAllowUnmappedAndCalledWithAnUnmappedViaType_willReturnAnInstance() // NOPMD: Test method name format
     {
         Map<Type,Type> implementationByType = new Map<Type,Type>{
-            Object.class => Object.class
+            ClassToRetrieveVia.class => ClassToRetrieveVia.class
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationByType );
@@ -163,7 +162,7 @@ private without sharing class ortoo_SimpleObjectFactoryTest
     private static void newInstance_whenSetToAllowUnmappedAndCalledWithAnUnmappedViaString_willReturnAnInstance() // NOPMD: Test method name format
     {
         Map<String,String> implementationNameByTypeName = new Map<String,String>{
-            'Unknown' => 'Unknown'
+            'ortoo_SimpleObjectFactoryTest.ClassToRetrieveVia' => 'ortoo_SimpleObjectFactoryTest.ClassToRetrieveVia'
         };
 
         ortoo_SimpleObjectFactory factory = new ortoo_SimpleObjectFactory( implementationNameByTypeName );
@@ -412,6 +411,8 @@ private without sharing class ortoo_SimpleObjectFactoryTest
 
         ortoo_Asserts.assertContains( 'ortoo_SimpleObjectFactory instantiated with a null implementationNameByTypeName', exceptionMessage, 'constructor with types, when called with null, will throw an exception' );
     }
+
+    public without sharing class ClassToRetrieveVia {}
 
     public without sharing class RegisterableType
     {

@@ -18,14 +18,14 @@ private without sharing class ortoo_AppLogicFactoryTest
     private static void newInstance_whenMappingsAreDefined_willReturnTheMappedType() // NOPMD: Test method name format
     {
         ortoo_AppLogicFactory factory = new ortoo_AppLogicFactory(
-            new Map<Type,Type>
+            new Map<String,String>
             {
-                Object.class => RegisterableType.class
+                'ortoo_AppLogicFactoryTest.ClassToRetrieveVia' => 'ortoo_AppLogicFactoryTest.RegisterableType'
             }
         );
 
         Test.startTest();
-            Object returnedInstance = factory.newInstance( Object.class );
+            Object returnedInstance = factory.newInstance( ClassToRetrieveVia.class );
         Test.stopTest();
 
         System.assertNotEquals( null, returnedInstance, 'newInstance, when mappings are defined and a mapped type is mapped, will return an instantiated object' );
@@ -40,8 +40,8 @@ private without sharing class ortoo_AppLogicFactoryTest
         RegisterableType mockInstance = new RegisterableType( 'mockone' );
 
         Test.startTest();
-            factory.setMock( Object.class, mockInstance );
-            Object returnedInstance = factory.newInstance( Object.class );
+            factory.setMock( ClassToRetrieveVia.class, mockInstance );
+            Object returnedInstance = factory.newInstance( ClassToRetrieveVia.class );
         Test.stopTest();
 
         System.assertEquals( mockInstance, returnedInstance, 'newInstance, when called for a type that has a mock set, will return the registered mock' );
@@ -85,7 +85,9 @@ private without sharing class ortoo_AppLogicFactoryTest
         ortoo_Asserts.assertContains( 'ortoo_AppLogicFactory instantiated with a null appLogicPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
-    private without sharing class RegisterableType
+	public without sharing class ClassToRetrieveVia {}
+
+    public without sharing class RegisterableType
     {
         String name;
         public RegisterableType()

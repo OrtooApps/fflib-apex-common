@@ -93,7 +93,7 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 			return mockByType.get( requestedType );
 		}
 
-		String requestedTypeName = requestedType.getName();
+		String requestedTypeName = ObjectUtils.stripLocalNamespace( requestedType.getName() );
 
 		if ( errorOnUnmappedType && ! implementationByType.containsKey( requestedType ) && ! implementationNameByTypeName.containsKey( requestedTypeName ) )
 		{
@@ -110,10 +110,11 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 		}
 		else if ( implementationNameByTypeName.containsKey( requestedTypeName ) )
 		{
-			typeToConstruct = Type.forName( implementationNameByTypeName.get( requestedTypeName ) );
+			String typeToConstructName = implementationNameByTypeName.get( requestedTypeName );
+			typeToConstruct = Type.forName( typeToConstructName );
 			if ( typeToConstruct == null )
 			{
-				throw new Exceptions.DeveloperException( 'Invalid implementation registered for ' + typeName + ' ' + requestedTypeName + ': The class does not exist, or is not visible' )
+				throw new Exceptions.DeveloperException( 'Invalid implementation registered for ' + typeName + ' ' + requestedTypeName + ': ' + typeToConstructName + ' does not exist, or is not visible' )
 					.setErrorCode( FrameworkErrorCodes.FACTORY_INVALID_IMPLEMENTATION_REGISTERED )
 					.addContext( 'typeName', typeName )
 					.addContext( 'requestedType', requestedType );
@@ -128,7 +129,7 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 		}
 		catch ( Exception e )
 		{
-			throw new Exceptions.DeveloperException( 'Implementation registered for ' + typeName + ' ' + requestedType + ':' + typeToConstruct + ' does not have parameterless constructor', e )
+			throw new Exceptions.DeveloperException( 'Implementation registered for ' + typeName + ' ' + requestedType + ':' + typeToConstruct + ' does not have parameterless constructor or cannot be constructed', e )
 							.setErrorCode( FrameworkErrorCodes.FACTORY_NO_PARAMETERLESS_CONSTRUCTOR )
 							.addContext( 'typeName', typeName )
 							.addContext( 'requestedType', requestedType )

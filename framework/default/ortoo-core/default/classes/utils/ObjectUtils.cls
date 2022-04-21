@@ -86,4 +86,17 @@ public inherited sharing class ObjectUtils
 
 		return returnType;
 	}
+
+	// TODO: test
+	// TODO: document
+	public static String stripLocalNamespace( String className )
+	{
+		Contract.requires( String.isNotBlank( className ), 'stripLocalNamespace called with a blank className' );
+
+		if ( className.startsWithIgnoreCase( PackageUtils.NAMESPACE_PREFIX + '.' ) )
+		{
+			return className.substringAfter( PackageUtils.NAMESPACE_PREFIX + '.' );
+		}
+		return className;
+	}
 }

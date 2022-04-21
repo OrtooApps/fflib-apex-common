@@ -25,14 +25,14 @@ private without sharing class ortoo_MessageRendererFactoryTest
         IRenderableMessageHeader message = (IRenderableMessageHeader)messageController.generateDouble();
 
         ortoo_MessageRendererFactory factory = new ortoo_MessageRendererFactory(
-            new Map<Type,Type>
+            new Map<String,String>
             {
-                Object.class => RegisterableType.class
+                'ortoo_MessageRendererFactoryTest.ClassToRetrieveVia' => 'ortoo_MessageRendererFactoryTest.RegisterableType'
             }
         );
 
         Test.startTest();
-            MessageRendererEngine returnedInstance = factory.newInstance( Object.class, message );
+            MessageRendererEngine returnedInstance = factory.newInstance( ClassToRetrieveVia.class, message );
         Test.stopTest();
 
         System.assertNotEquals( null, returnedInstance, 'newInstance, when mappings are defined and a mapped type is passed, will return an instantiated object' );
@@ -95,9 +95,9 @@ private without sharing class ortoo_MessageRendererFactoryTest
         IRenderableMessageHeader message = (IRenderableMessageHeader)messageController.generateDouble();
 
         ortoo_MessageRendererFactory factory = new ortoo_MessageRendererFactory(
-            new Map<Type,Type>
+            new Map<String,String>
             {
-                Object.class => NonRegisterableType.class
+                'ortoo_MessageRendererFactoryTest.ClassToRetrieveVia' => 'ortoo_MessageRendererFactoryTest.NonRegisterableType'
             }
         );
 
@@ -105,7 +105,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             String exceptionMessage;
             try
             {
-                factory.newInstance( Object.class, message );
+                factory.newInstance( ClassToRetrieveVia.class, message );
             }
             catch ( Exception e )
             {
@@ -113,7 +113,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( 'Object does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for a mapped type that does not implement IMessageRenderer, will throw an exception' );
+        ortoo_Asserts.assertContains( 'NonRegisterableType) does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for a mapped type that does not implement IMessageRenderer, will throw an exception' );
     }
 
     @isTest
@@ -179,7 +179,9 @@ private without sharing class ortoo_MessageRendererFactoryTest
         ortoo_Asserts.assertContains( 'ortoo_MessageRendererFactory instantiated with a null implementationPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
-    private without sharing class RegisterableType implements IMessageRenderer
+	public without sharing class ClassToRetrieveVia {}
+
+    public without sharing class RegisterableType implements IMessageRenderer
     {
         public Boolean render( IRenderableMessageHeader message )
         {
@@ -187,5 +189,5 @@ private without sharing class ortoo_MessageRendererFactoryTest
         }
     }
 
-    private without sharing class NonRegisterableType {}
+    public without sharing class NonRegisterableType {}
 }
