@@ -22,6 +22,7 @@ public inherited sharing class FrameworkErrorCodes {
 	public final static String CONFIGURATION_WITH_INVALID_TYPE            = 'APP-00001';
 	public final static String CONFIGURATION_WITH_INVALID_CLASS           = 'APP-00002';
 	public final static String CONFIGURATION_WITH_INVALID_SOBJECT_TYPE    = 'APP-00003';
+	public final static String CONFIGURATION_WITH_DUPLICATE_TYPE          = 'APP-00004';
 
 	public final static String NON_EVALUATABLE_CRITERIA		= 'CRI-00000';
 

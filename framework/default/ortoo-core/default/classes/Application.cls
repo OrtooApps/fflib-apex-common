@@ -123,7 +123,18 @@ public inherited sharing class Application {
 
 		public void put( Application_Configuration__mdt thisConfiguration )
 		{
-			configuration.put( classTypeBuilder.build( thisConfiguration.Object_Type__c ), classTypeBuilder.build( thisConfiguration.Implementation__c ) );
+			Type objectType = classTypeBuilder.build( thisConfiguration.Object_Type__c );
+			Type implementation = classTypeBuilder.build( thisConfiguration.Implementation__c );
+
+			if ( configuration.containsKey( objectType ) )
+			{
+				throw new InvalidApplicationConfigurationException( 'Duplicate configuration exists for ' + thisConfiguration.Type__c + ' - ' + thisConfiguration.Object_Type__c )
+							.setErrorCode( FrameworkErrorCodes.CONFIGURATION_WITH_DUPLICATE_TYPE )
+							.addContext( 'typeName', thisConfiguration.Type__c )
+							.addContext( 'objectType', thisConfiguration.Object_Type__c );
+			}
+
+			configuration.put( objectType, implementation );
 		}
 
 		public Map<Type,Type> getConfiguration()
@@ -143,6 +154,14 @@ public inherited sharing class Application {
 
 		public void put( Application_Configuration__mdt thisConfiguration )
 		{
+			if ( configuration.containsKey( thisConfiguration.Object_Type__c ) )
+			{
+				throw new InvalidApplicationConfigurationException( 'Duplicate configuration exists for ' + thisConfiguration.Type__c + ' - ' + thisConfiguration.Object_Type__c )
+							.setErrorCode( FrameworkErrorCodes.CONFIGURATION_WITH_DUPLICATE_TYPE )
+							.addContext( 'typeName', thisConfiguration.Type__c )
+							.addContext( 'objectType', thisConfiguration.Object_Type__c );
+			}
+
 			configuration.put( thisConfiguration.Object_Type__c, thisConfiguration.Implementation__c );
 		}
 
@@ -163,7 +182,18 @@ public inherited sharing class Application {
 
 		public void put( Application_Configuration__mdt thisConfiguration )
 		{
-			configuration.put( sobjectTypeBuilder.build( thisConfiguration.Object_Type__c ), classTypeBuilder.build( thisConfiguration.Implementation__c ) );
+			SobjectType objectType = sobjectTypeBuilder.build( thisConfiguration.Object_Type__c );
+			Type implementation = classTypeBuilder.build( thisConfiguration.Implementation__c );
+
+			if ( configuration.containsKey( objectType ) )
+			{
+				throw new InvalidApplicationConfigurationException( 'Duplicate configuration exists for ' + thisConfiguration.Type__c + ' - ' + thisConfiguration.Object_Type__c )
+							.setErrorCode( FrameworkErrorCodes.CONFIGURATION_WITH_DUPLICATE_TYPE )
+							.addContext( 'typeName', thisConfiguration.Type__c )
+							.addContext( 'objectType', thisConfiguration.Object_Type__c );
+			}
+
+			configuration.put( objectType, implementation );
 		}
 
 		public Map<SobjectType,Type> getConfiguration()
