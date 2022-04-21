@@ -85,7 +85,7 @@ private without sharing class ortoo_MessageRendererFactoryTest
             }
         Test.stopTest();
 
-        ortoo_Asserts.assertContains( 'ortoo_MessageRendererFactoryTest.NonRegisterableType does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for an unmapped type that does not implement IMessageRenderer, will throw an exception' );
+        ortoo_Asserts.assertContains( 'ortoo_MessageRendererFactoryTest.NonRegisterableType) does not implement MessageRendererEngine.IMessageRenderer', exceptionMessage, 'newInstance, when called for an unmapped type that does not implement IMessageRenderer, will throw an exception' );
     }
 
     @isTest
