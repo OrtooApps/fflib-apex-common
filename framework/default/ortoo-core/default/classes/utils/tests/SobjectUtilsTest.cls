@@ -117,6 +117,13 @@ private without sharing class SobjectUtilsTest
 	}
 
 	@isTest
+	private static void getSobjectName_whenGivenAnSobjectTypeInLocalNamespace_willReturnTheFullApiNameOfIt() // NOPMD: Test method name format
+	{
+		String returnedName = SobjectUtils.getSobjectName( Application_Configuration__mdt.sobjectType );
+		ortoo_Asserts.assertEndsWith( '__Application_Configuration__mdt', returnedName, 'getSobjectName, when given an SObjectType in the local namespace, will return the fully qualified API name of it' );
+	}
+
+	@isTest
 	private static void getSobjectName_whenGivenANullSobjectType_willThrowAnException() // NOPMD: Test method name format
 	{
 		SobjectType nullType = null;
@@ -134,6 +141,33 @@ private without sharing class SobjectUtilsTest
 		Test.stopTest();
 
 		ortoo_Asserts.assertContains( 'Attempted to get the name of a null SObjectType', exceptionMessage, 'getSobjectName, when given a null SobjectType, will throw an exception' );
+	}
+
+	@isTest
+	private static void getSobjectLocalName_whenGivenAnSobjectTypeInLocalNamespace_willReturnTheShortApiNameOfIt() // NOPMD: Test method name format
+	{
+		String returnedName = SobjectUtils.getSobjectLocalName( Application_Configuration__mdt.sobjectType );
+		System.assertEquals( 'Application_Configuration__mdt', returnedName, 'getSobjectLocalName, when given an SObjectType in the local namespace, will return the local API name of it' );
+	}
+
+	@isTest
+	private static void getSobjectLocalName_whenGivenANullSobjectType_willThrowAnException() // NOPMD: Test method name format
+	{
+		SobjectType nullType = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectLocalName( nullType );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Attempted to get the local name of a null SObjectType', exceptionMessage, 'getSobjectLocalName, when given a null SobjectType, will throw an exception' );
 	}
 
 	@isTest

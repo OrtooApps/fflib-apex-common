@@ -8,6 +8,13 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 {
 	private static final String BLANK_LINE = '';
 
+	Map<LoggerService.Level,LoggingLevel> debugLogLevels = new Map<LoggerService.Level,LoggingLevel>{
+		LoggerService.Level.INFO => LoggingLevel.INFO,
+		LoggerService.Level.WARN => LoggingLevel.WARN,
+		LoggerService.Level.ERROR => LoggingLevel.ERROR,
+		null => LoggingLevel.ERROR
+	};
+
 	public Boolean getDefaultLoggingEnabled( LoggerService.Level logLevel )
 	{
 		return true;
@@ -15,12 +22,12 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 
 	public void log( LoggerService.Level logLevel, String message )
 	{
-		logMessage( logLevel, message );
+		System.debug( debugLogLevels.get( logLevel ), message );
 	}
 
     public void log( LoggerService.Level logLevel, String message, Id relatedSobjectId )
 	{
-		logMessage( logLevel, 'On ' + relatedSobjectId + ': ' + message );
+		System.debug( debugLogLevels.get( logLevel ), 'On ' + relatedSobjectId + ': ' + message );
 	}
 
 	public void log( Exception exceptionToLog )
@@ -37,7 +44,7 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 
 		String message = String.join( genericBuildExceptionMessages( exceptionToLog, relatedSobjectId ), '\n' );
 
-		logMessage( LoggerService.EXCEPTION_LOG_LEVEL, message );
+		System.debug( debugLogLevels.get( LoggerService.EXCEPTION_LOG_LEVEL ), message );
 	}
 
 	private List<String> genericBuildExceptionMessages( Exception exceptionToLog )
@@ -188,26 +195,5 @@ public with sharing class LoggerServiceImpl implements ILoggerService
 			'Stack Trace:',
 			exceptionToLog.getStackTraceString()
 		};
-	}
-
-	private void logMessage( LoggerService.Level logLevel, String message )
-	{
-		System.debug( translateDebugLevel( logLevel ), message );
-	}
-
-	private LoggingLevel translateDebugLevel( LoggerService.Level logLevel )
-	{
-		switch on logLevel
-		{
-			when INFO
-			{
-				return LoggingLevel.INFO;
-			}
-			when WARN
-			{
-				return LoggingLevel.WARN;
-			}
-		}
-		return LoggingLevel.ERROR;
 	}
 }

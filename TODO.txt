@@ -1,33 +1,18 @@
 Framework Catch-up
 * Start-up performance might need looking at - looks like it has a linear startup time based on the number of services / domains / etc configured.
 
-Logger
-* Write up standards
-
-Docs for Logger:
-* Custom Setting - if it doesn't exist, will log everything.
-* TestLoggerService
-* ortoo_Exception - stripContext
-* ServiceUtils.logAndRethrow
-	* All code other than the Contracts
-	* If you are returning a value, ensure you instantiate and set to a resonable default.  Generally, it will never be used without being set.
-	* Logging standards
-	* How to test logging
-
-Tests:
-* Each of the services need a test for the try / catch - where possible
-
-
 Licenses that are needed with the source code and binary:
 * fflib - https://github.com/apex-enterprise-patterns/fflib-apex-common/blob/master/LICENSE
 * fflib apex extensions - https://github.com/wimvelzeboer/fflib-apex-extensions/blob/main/LICENSE
 * Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
 
-
-
-
 * Move all the Jest LWc tests over to create the component in the before
+
+
+Documentation - using lazy loader for service instantiation
+
+
 
 Look at the use of 'MockDatabase' in fflib
 Look at:

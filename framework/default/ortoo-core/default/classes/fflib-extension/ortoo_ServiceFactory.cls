@@ -6,7 +6,6 @@
  */
 public inherited sharing class ortoo_ServiceFactory extends fflib_Application.ServiceFactory // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
-
 	Set<String> mockRegisteredImplementations = new Set<String>();
 
 	/**

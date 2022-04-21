@@ -2,6 +2,50 @@
 public without sharing class PublicObjectUtilsTest
 {
 	@isTest
+	private static void stripLocalNamespace_whenGivenANameWithTheNamespace_stripsIt() // NOPMD: Test method name format
+	{
+		String originalClassName = PackageUtils.NAMESPACE_PREFIX + '.' + 'theouterclass.theinnerclass';
+		Test.startTest();
+			String got = ObjectUtils.stripLocalNamespace( originalClassName );
+		Test.stopTest();
+
+		System.assertEquals( 'theouterclass.theinnerclass', got, 'stripLocalNamespace, when given a class name with the local namespace prefix, will strip it' );
+	}
+
+	@isTest
+	private static void stripLocalNamespace_whenGivenANameWithTheNamespaceInUppercase_stripsIt() // NOPMD: Test method name format
+	{
+		String originalClassName = PackageUtils.NAMESPACE_PREFIX.toUppercase() + '.' + 'theouterclass.theinnerclass';
+		Test.startTest();
+			String got = ObjectUtils.stripLocalNamespace( originalClassName );
+		Test.stopTest();
+
+		System.assertEquals( 'theouterclass.theinnerclass', got, 'stripLocalNamespace, when given a class name with the local namespace prefix in uppercase, will strip it' );
+	}
+
+	@isTest
+	private static void stripLocalNamespace_whenGivenANameWithTheNamespaceInTheMiddle_doesNotStripIt() // NOPMD: Test method name format
+	{
+		String originalClassName = 'anotherbit.' + PackageUtils.NAMESPACE_PREFIX + '.' + 'theouterclass.theinnerclass';
+		Test.startTest();
+			String got = ObjectUtils.stripLocalNamespace( originalClassName );
+		Test.stopTest();
+
+		System.assertEquals( originalClassName, got, 'stripLocalNamespace, when given a class name with the local namespace prefix in the middle, will not strip it' );
+	}
+
+	@isTest
+	private static void stripLocalNamespace_whenGivenANameWithNoLocalNamespace_doesNotStripIt() // NOPMD: Test method name format
+	{
+		String originalClassName = 'adifferentnamespace.theouterclass.theinnerclass';
+		Test.startTest();
+			String got = ObjectUtils.stripLocalNamespace( originalClassName );
+		Test.stopTest();
+
+		System.assertEquals( originalClassName, got, 'stripLocalNamespace, when given a class name with a different namespace, will not strip it' );
+	}
+
+	@isTest
 	private static void getParentClassType_whenGivenATypeForAnInnerClassInAPublicParent_willReturnTheTypeForTheContainingClass() // NOPMD: Test method name format
 	{
 		Type parentType = ObjectUtils.getParentClassType( PublicObjectUtilsTest.PublicInnerClass.class );

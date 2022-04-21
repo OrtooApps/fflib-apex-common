@@ -47,9 +47,9 @@ private without sharing class ApplicationMockRegistrarTest
     private static void registerMockSelector_whenGivenAnSobjectThatIsRegistered_willGenerateAMockAndReturnIt() // NOPMD: Test method name format
     {
         Application.SELECTOR = new ortoo_SelectorFactory(
-            new Map<SobjectType,Type>
+            new Map<String,String>
             {
-                Contact.SobjectType => fflib_ISObjectSelector.class
+                'Contact' => 'fflib_ISObjectSelector'
             }
         );
 
@@ -64,7 +64,7 @@ private without sharing class ApplicationMockRegistrarTest
     @isTest
     private static void registerMockSelector_whenGivenAnSobjectThatIsNotRegistered_willGenerateAGenericMockAndReturnIt() // NOPMD: Test method name format
     {
-        Application.SELECTOR = new ortoo_SelectorFactory( new Map<SobjectType,Type>() );
+        Application.SELECTOR = new ortoo_SelectorFactory( new Map<String,String>() );
 
         Test.startTest();
             Amoss_Instance mockController = ApplicationMockRegistrar.registerMockSelector( Contact.sobjectType );

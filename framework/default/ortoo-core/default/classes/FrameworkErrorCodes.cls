@@ -5,8 +5,9 @@ public inherited sharing class FrameworkErrorCodes {
 
 	public final static String OBJECT_UTILS_GET_CLASS_TYPE_UNABLE = 'UTILS-0000000';
 
-	public final static String FACTORY_NO_IMPLEMENTATION_REGISTERED	= 'FACTORY-00000';
-	public final static String FACTORY_NO_PARAMETERLESS_CONSTRUCTOR	= 'FACTORY-00002';
+	public final static String FACTORY_NO_IMPLEMENTATION_REGISTERED      = 'FACTORY-00000';
+	public final static String FACTORY_INVALID_IMPLEMENTATION_REGISTERED = 'FACTORY-00001';
+	public final static String FACTORY_NO_PARAMETERLESS_CONSTRUCTOR      = 'FACTORY-00002';
 
 	public final static String VALIDATOR_NO_IMPLEMENTATION_REGISTERED_FOR_SINGLE = 'FACTORY-V-00000';
 	public final static String VALIDATOR_NO_IMPLEMENTATION_REGISTERED_FOR_LIST   = 'FACTORY-V-00001';

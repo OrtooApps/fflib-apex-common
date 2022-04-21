@@ -18,14 +18,14 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
     private static void newInstance_whenMappingsAreDefined_willReturnTheMappedType() // NOPMD: Test method name format
     {
         ortoo_ChildRecordFinderFactory factory = new ortoo_ChildRecordFinderFactory(
-            new Map<Type,Type>
+            new Map<String,String>
             {
-                Object.class => RegisterableType.class
+                'ortoo_ChildRecordFinderFactoryTest.ClassToRetrieveVia' => 'ortoo_ChildRecordFinderFactoryTest.RegisterableType'
             }
         );
 
         Test.startTest();
-            IChildRecordFinder returnedInstance = factory.newInstance( Object.class );
+            IChildRecordFinder returnedInstance = factory.newInstance( ClassToRetrieveVia.class );
         Test.stopTest();
 
         System.assertNotEquals( null, returnedInstance, 'newInstance, when mappings are defined and a mapped type is mapped, will return an instantiated object' );
@@ -40,8 +40,8 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
         RegisterableType mockInstance = new RegisterableType( 'mockone' );
 
         Test.startTest();
-            factory.setMock( Object.class, mockInstance );
-            IChildRecordFinder returnedInstance = factory.newInstance( Object.class );
+            factory.setMock( ClassToRetrieveVia.class, mockInstance );
+            IChildRecordFinder returnedInstance = factory.newInstance( ClassToRetrieveVia.class );
         Test.stopTest();
 
         System.assertEquals( mockInstance, returnedInstance, 'newInstance, when called for a type that has a mock set, will return the registered mock' );
@@ -71,9 +71,9 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
     private static void newInstance_whenCalledForAnMappedTypeThatIsNotAChildFinder_willThrowAnException() // NOPMD: Test method name format
     {
         ortoo_ChildRecordFinderFactory factory = new ortoo_ChildRecordFinderFactory(
-            new Map<Type,Type>
+            new Map<String,String>
             {
-                Object.class => NonRegisterableType.class
+                'Object' => 'ortoo_ChildRecordFinderFactoryTest.NonRegisterableType'
             }
         );
 
@@ -130,7 +130,9 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
         ortoo_Asserts.assertContains( 'ortoo_ChildRecordFinderFactory instantiated with a null childRecordFinderPerType', exceptionMessage, 'constructor, when called with null, will throw an exception' );
     }
 
-    private without sharing class RegisterableType implements IChildRecordFinder
+	public without sharing class ClassToRetrieveVia {}
+
+    public without sharing class RegisterableType implements IChildRecordFinder
     {
         String name;
         public RegisterableType()
@@ -149,5 +151,5 @@ private without sharing class ortoo_ChildRecordFinderFactoryTest
         }
     }
 
-    private without sharing class NonRegisterableType {}
+    public without sharing class NonRegisterableType {}
 }

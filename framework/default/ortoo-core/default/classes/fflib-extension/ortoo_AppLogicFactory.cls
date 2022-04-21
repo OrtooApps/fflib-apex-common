@@ -15,18 +15,19 @@ public inherited sharing class ortoo_AppLogicFactory    // NOPMD: specified a mi
 	 */
     public ortoo_AppLogicFactory()
     {
-        this( new Map<Type,Type>() );
+        this( new Map<String,String>() );
     }
 
 	/**
 	 * Construct an instance using the given type to implementation mapping
 	 *
-	 * @param	Map<Type,Type>	The Type to Implementation mapping
+	 * @param	Map<String,String>	The Type to Implementation mapping
 	 */
-    public ortoo_AppLogicFactory( Map<Type,Type> appLogicPerType )
+    public ortoo_AppLogicFactory( Map<String,String> appLogicPerType )
     {
         Contract.requires( appLogicPerType != null, 'ortoo_AppLogicFactory instantiated with a null appLogicPerType' );
-        factory = new ortoo_SimpleObjectFactory( appLogicPerType )
+
+		factory = new ortoo_SimpleObjectFactory( appLogicPerType )
                         .setTypeName( 'App Logic' )
                         .setErrorOnUnmappedType( false );
     }

@@ -86,4 +86,22 @@ public inherited sharing class ObjectUtils
 
 		return returnType;
 	}
+
+	/**
+	 * Given the name of a class, will strip the local namespace prefix from it,
+	 * if that namespace is present.
+	 *
+	 * @param	String	The className to strip the namespace from
+	 * @return	String	The className with the namespace stripped
+	 */
+	public static String stripLocalNamespace( String className )
+	{
+		Contract.requires( String.isNotBlank( className ), 'stripLocalNamespace called with a blank className' );
+
+		if ( className.startsWithIgnoreCase( PackageUtils.NAMESPACE_PREFIX + '.' ) )
+		{
+			return className.substringAfter( '.' );
+		}
+		return className;
+	}
 }
