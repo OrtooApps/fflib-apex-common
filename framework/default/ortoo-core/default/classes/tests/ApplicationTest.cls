@@ -40,6 +40,40 @@ private without sharing class ApplicationTest
 	}
 
 	@isTest
+	private static void selector_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Selector',
+				Object_Type__c 		= 'Contact',
+				Implementation__c 	= 'fflib_ISObjectSelector'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c				= 'Selector',
+				Object_Type__c 		= 'Contact',
+				Implementation__c 	= 'fflib_ISObjectSelector'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for Selector - Contact', exceptionMessage, 'selector, when configured with duplicates, will throw an exception' );
+	}
+
+	@isTest
 	private static void domain_whenReferenced_willBeConfiguredBasedOnMetadata() // NOPMD: Test method name format
 	{
 		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
@@ -63,6 +97,40 @@ private without sharing class ApplicationTest
 		Test.stopTest();
 
 		System.assert( true, 'domain, when referenced, will be configured based on metadata - unfortunately it is too much hassle to actually test it returns the right thing, so we do not' );
+	}
+
+	@isTest
+	private static void domain_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Domain',
+				Object_Type__c 		= 'Contact',
+				Implementation__c 	= 'fflib_ISObjectSelector'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c				= 'Domain',
+				Object_Type__c 		= 'Contact',
+				Implementation__c 	= 'fflib_ISObjectSelector'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for Domain - Contact', exceptionMessage, 'domain, when configured with duplicates, will throw an exception' );
 	}
 
 	@isTest
@@ -93,6 +161,40 @@ private without sharing class ApplicationTest
 	}
 
 	@isTest
+	private static void service_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Service',
+				Object_Type__c 		= 'ApplicationTest.IServiceInterface',
+				Implementation__c 	= 'ApplicationTest.ServiceClass'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c				= 'Service',
+				Object_Type__c 		= 'ApplicationTest.IServiceInterface',
+				Implementation__c 	= 'ApplicationTest.ServiceClass'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for Service - ApplicationTest.IServiceInterface', exceptionMessage, 'service, when configured with duplicates, will throw an exception' );
+	}
+
+	@isTest
 	private static void validator_whenReferenced_willBeConfiguredBasedOnMetadata() // NOPMD: Test method name format
 	{
 		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
@@ -105,7 +207,7 @@ private without sharing class ApplicationTest
 			),
 			new Application_Configuration__mdt
 			(
-				Type__c				= 'Service',
+				Type__c				= 'Validator',
 				Object_Type__c 		= 'Account',
 				Implementation__c 	= 'ApplicationTest.AccountValidator'
 			)
@@ -117,6 +219,40 @@ private without sharing class ApplicationTest
 		Test.stopTest();
 
 		System.assert( validator instanceOf ContactValidator , 'Validator, when referenced, will be configured based on metadata' );
+	}
+
+	@isTest
+	private static void validator_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Validator',
+				Object_Type__c 		= 'Contact',
+				Implementation__c 	= 'ApplicationTest.ContactValidator'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Validator',
+				Object_Type__c 		= 'Contact',
+				Implementation__c 	= 'ApplicationTest.ContactValidator'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for Validator - Contact', exceptionMessage, 'validator, when configured with duplicates, will throw an exception' );
 	}
 
 	@isTest
@@ -147,6 +283,40 @@ private without sharing class ApplicationTest
 	}
 
 	@isTest
+	private static void appLogic_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'App Logic',
+				Object_Type__c 		= 'ApplicationTest.IAppLogicInterface',
+				Implementation__c 	= 'ApplicationTest.AppLogicClass'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'App Logic',
+				Object_Type__c 		= 'ApplicationTest.IAppLogicInterface',
+				Implementation__c 	= 'ApplicationTest.AppLogicClass'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for App Logic - ApplicationTest.IAppLogicInterface', exceptionMessage, 'app logic, when configured with duplicates, will throw an exception' );
+	}
+
+	@isTest
 	private static void childRecordFinder_whenReferenced_willBeConfiguredBasedOnMetadata() // NOPMD: Test method name format
 	{
 		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
@@ -174,6 +344,40 @@ private without sharing class ApplicationTest
 	}
 
 	@isTest
+	private static void childRecordFinder_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Child Record Finder',
+				Object_Type__c 		= 'ApplicationTest.IChildRecordFinderInterface',
+				Implementation__c 	= 'ApplicationTest.ChildRecordFinderClass'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Child Record Finder',
+				Object_Type__c 		= 'ApplicationTest.IChildRecordFinderInterface',
+				Implementation__c 	= 'ApplicationTest.ChildRecordFinderClass'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for Child Record Finder - ApplicationTest.IChildRecordFinderInterface', exceptionMessage, 'child record finder, when configured with duplicates, will throw an exception' );
+	}
+
+	@isTest
 	private static void messageRenderer_whenReferenced_willBeConfiguredBasedOnMetadata() // NOPMD: Test method name format
 	{
 		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
@@ -198,6 +402,40 @@ private without sharing class ApplicationTest
 		Test.stopTest();
 
 		System.assert( messageRenderer.getRenderer() instanceOf MessageRendererEngine.SobjectMessageAdder , 'messageRenderer, when referenced, will be configured based on metadata' );
+	}
+
+	@isTest
+	private static void messageRenderer_whenConfiguredWithDuplicates_throwsAnException() // NOPMD: Test method name format
+	{
+		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
+		{
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Message Renderer',
+				Object_Type__c 		= 'MessageRendererEngine.VisualforceMessageRenderer',
+				Implementation__c 	= 'MessageRendererEngine.SobjectMessageAdder'
+			),
+			new Application_Configuration__mdt
+			(
+				Type__c 			= 'Message Renderer',
+				Object_Type__c 		= 'MessageRendererEngine.VisualforceMessageRenderer',
+				Implementation__c 	= 'MessageRendererEngine.SobjectMessageAdder'
+			)
+		};
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				Application.applyConfiguration( configurations );
+			}
+			catch ( Application.InvalidApplicationConfigurationException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Duplicate configuration exists for Message Renderer - MessageRendererEngine.VisualforceMessageRenderer', exceptionMessage, 'messageRenderer, when configured with duplicates, will throw an exception' );
 	}
 
 	@isTest
