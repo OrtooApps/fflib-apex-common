@@ -38,8 +38,9 @@ public inherited sharing class ortoo_SelectorFactory extends fflib_Application.S
 		}
 		catch ( fflib_Application.DeveloperException e )
 		{
+			String sobjectTypeName = sObjectType.getDescribe().getLocalName();
 			// if the base factory didn't manage to get a type, then try to build a new one from *our* config
-			String selectorClassName = selectorNameBySobjectName.get( sObjectType.getDescribe().getName() );
+			String selectorClassName = selectorNameBySobjectName.get( sobjectTypeName );
 
 			if ( selectorClassName == null )
 			{
