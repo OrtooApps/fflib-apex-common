@@ -139,6 +139,30 @@ public inherited sharing class ListUtils
 	}
 
 	/**
+	 * Given a Set of Objects, will return a List of those Strings
+	 *
+	 * Note this will only work for sets defined as Set<Object>
+	 *
+	 * @param	Set<Object>		The set of Obejcts to convert
+	 * @return	List<String>	The converted list
+	 */
+	public static List<String> convertToListOfStrings( Set<Object> setOfObjects )
+	{
+		if ( setOfObjects == null )
+		{
+			return new List<String>();
+		}
+
+		List<String> returnList = new List<String>();
+		for ( Object thisObject : setOfObjects )
+		{
+			returnList.add( thisObject.toString() );
+		}
+
+		return returnList;
+	}
+
+	/**
 	 * Given a Set of any Strings, will return a List of those Strings
 	 *
 	 * @param	Set<String>		The set of strings to convert

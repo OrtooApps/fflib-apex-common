@@ -523,8 +523,32 @@ private without sharing class ortoo_DynamicSobjectUnitOfWorkTest
 		ortoo_Asserts.assertContains( 'SObject type Contact is invalid for publishing within this unit of work', exceptionMessage, 'registerPublishAfterFailureTransaction, when called with a non event, will throw an exception' );
 	}
 
+	@isTest
+	private static void commitWork_whenGivenCircularReferences_throwsAnException() // NOPMD: Test method name format
+	{
+		Contact childContact = new Contact( LastName = 'Child' );
+		Contact parentContact = new Contact( LastName = 'Parent' );
+		MockDml dml = new MockDml();
 
-	// TODO: when given a circular reference
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				ortoo_DynamicSobjectUnitOfWork uow = new ortoo_DynamicSobjectUnitOfWork( dml );
+				uow.registerNew( childContact );
+				uow.registerNew( parentContact );
+				uow.registerRelationship( childContact, Contact.ReportsToId, parentContact );
+				uow.commitWork();
+			}
+			catch ( Exception e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Cannot resolve the order of work to be done for the commit, there is a circular reference in the data', exceptionMessage, 'commitWork, when given circular references, will throw an exception' );
+		ortoo_Asserts.assertContains( 'Contact is a child of Contact', exceptionMessage, 'commitWork, when given circular references, will throw an exception detailing the relationships' );
+	}
 
 	// IDml is defined as an inner class, and so cannot be mocked using Amoss at time of writing
 	private class MockDml implements fflib_SObjectUnitOfWork.IDml

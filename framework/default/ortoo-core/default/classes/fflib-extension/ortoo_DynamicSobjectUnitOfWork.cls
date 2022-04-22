@@ -362,7 +362,16 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
 
 	private List<SobjectType> generateOrderOfOperations()
 	{
-		List<Object> childToParentTypes = graph.generateSorted();
+		List<Object> childToParentTypes;
+		try
+		{
+			childToParentTypes = graph.generateSorted();
+		}
+		catch ( DirectedGraph.GraphContainsCircularReferenceException e )
+		{
+
+			throw new Exceptions.ConfigurationException( 'Cannot resolve the order of work to be done for the commit, there is a circular reference in the data\n' + graph.toString(), e );
+		}
 
 		List<SobjectType> parentToChildTypes = new List<SobjectType>();
 		for( Integer i = childToParentTypes.size() - 1; i >= 0; i-- )

@@ -93,6 +93,38 @@ public inherited sharing class DirectedGraph
 	}
 
 	/**
+	 * Produces a String representation of the graph
+	 *
+	 * @return	String	The graph
+	 */
+	public override String toString()
+	{
+		if ( parentsByChildren.isEmpty() )
+		{
+			return 'Empty Graph';
+		}
+
+		List<String> relationships = new List<String>();
+
+		for ( Object thisChild : parentsByChildren.keySet() )
+		{
+			List<String> parents = ListUtils.convertToListOfStrings( parentsByChildren.get( thisChild ) );
+
+			String description;
+			if ( parents.size() == 0 )
+			{
+				description = String.valueOf( thisChild ) + ' is not a child';
+			}
+			else
+			{
+				description = String.valueOf( thisChild ) + ' is a child of ' + String.join( parents, ', ' );
+			}
+			relationships.add( description );
+		}
+		return String.join( relationships, '\n' );
+	}
+
+	/**
 	 * A reference to the full list of nodes registered on this graph.
 	 */
 	private Set<Object> allNodes

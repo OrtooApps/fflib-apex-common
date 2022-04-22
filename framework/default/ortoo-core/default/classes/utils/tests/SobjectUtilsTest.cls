@@ -83,6 +83,56 @@ private without sharing class SobjectUtilsTest
 	}
 
 	@isTest
+	private static void getSobjectTypes_whenGivenRecords_willReturnTheirTypes() // NOPMD: Test method name format
+	{
+		Set<SobjectType> actualTypes = SobjectUtils.getSobjectTypes( new List<Sobject>{ new Contact(), new Account() } );
+
+		System.assertEquals( 2, actualTypes.size(), 'getSobjectType, when given SObject records, will return their types' );
+		System.assert( actualTypes.contains( Contact.sobjectType ), 'getSobjectType, when given SObject records, will return their types - 1' );
+		System.assert( actualTypes.contains( Account.sobjectType ), 'getSobjectType, when given SObject records, will return their types - 2' );
+	}
+
+	@isTest
+	private static void getSobjectTypes_whenPassedANullRecord_willThrowAnException() // NOPMD: Test method name format
+	{
+		Sobject nullRecord = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectTypes( new List<Sobject>{ new Contact(), new Account(), null }  );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'getSobjectType called with a null record', exceptionMessage, 'getSobjectType, when passed a null record, will throw an exception' );
+	}
+
+	@isTest
+	private static void getSobjectTypes_whenPassedANullList_willThrowAnException() // NOPMD: Test method name format
+	{
+		List<Sobject> nullList = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectTypes( nullList );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'getSobjectTypes called with a null records', exceptionMessage, 'getSobjectTypes, when passed a null list, will throw an exception' );
+	}
+
+	@isTest
 	private static void getSobjectName_whenGivenAnSobject_willReturnTheApiNameOfIt() // NOPMD: Test method name format
 	{
 		String returnedName = SobjectUtils.getSobjectName( new Contact() );

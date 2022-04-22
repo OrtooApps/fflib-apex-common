@@ -62,11 +62,15 @@ public inherited sharing class SobjectUtils
 		return record.getSObjectType();
 	}
 
-	// TODO: document
-	// TODO: test
+	/**
+	 * Given a list of instances of SObjects, will return their SobjectTypes
+	 *
+	 * @param	List<Sobject>		The SObjects for which to return the SobjectTypes
+	 * @return	Set<SobjectType>	The SobjectTypes of the SObjects
+	 */
 	public static Set<SobjectType> getSobjectTypes( List<Sobject> records )
 	{
-		Contract.requires( records != null, 'getSobjectType called with a null records' );
+		Contract.requires( records != null, 'getSobjectTypes called with a null records' );
 
 		Set<SobjectType> types = new Set<SobjectType>();
 		for ( Sobject thisRecord : records )
