@@ -62,6 +62,20 @@ public inherited sharing class SobjectUtils
 		return record.getSObjectType();
 	}
 
+	// TODO: document
+	// TODO: test
+	public static Set<SobjectType> getSobjectTypes( List<Sobject> records )
+	{
+		Contract.requires( records != null, 'getSobjectType called with a null records' );
+
+		Set<SobjectType> types = new Set<SobjectType>();
+		for ( Sobject thisRecord : records )
+		{
+			types.add( getSobjectType( thisRecord ) );
+		}
+		return types;
+	}
+
 	// TODO: use the describe on the object?
 	/**
 	 * Given an instance of an SObject, will return the developer / API name of the SObject (e.g. Contact)
