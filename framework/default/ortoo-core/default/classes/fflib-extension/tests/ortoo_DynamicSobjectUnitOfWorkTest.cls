@@ -524,6 +524,35 @@ private without sharing class ortoo_DynamicSobjectUnitOfWorkTest
 	}
 
 	@isTest
+	private static void onCommitWorkStarting_whenCalled_setsTheOrderOfTheOperations() // NOPMD: Test method name format
+	{
+		Opportunity opportunityRecord = new Opportunity( Name = 'test' );
+		Contact contactRecord = new Contact( LastName = 'test' );
+		Account accountRecord = new Account( Name = 'test' );
+
+		Test.startTest();
+
+			ortoo_DynamicSobjectUnitOfWork uow = new ortoo_DynamicSobjectUnitOfWork();
+
+			uow.registerNew( opportunityRecord );
+			uow.registerNew( contactRecord );
+			uow.registerNew( accountRecord );
+
+			uow.registerRelationship( contactRecord, Contact.AccountId, accountRecord );
+			uow.registerRelationship( opportunityRecord, Opportunity.AccountId, accountRecord );
+
+			uow.onCommitWorkStarting();
+
+		Test.stopTest();
+
+		List<SobjectType> expected = new List<SobjectType>{
+			Account.sobjectType, Contact.sobjectType, Opportunity.sobjectType
+		};
+
+		System.assertEquals( expected, uow.m_sObjectTypes, 'onCommitWorkStarting, when called, will set the order of operations' );
+	}
+
+	@isTest
 	private static void commitWork_whenGivenCircularReferences_throwsAnException() // NOPMD: Test method name format
 	{
 		Contact childContact = new Contact( LastName = 'Child' );
