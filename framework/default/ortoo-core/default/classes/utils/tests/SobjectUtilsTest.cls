@@ -171,6 +171,72 @@ private without sharing class SobjectUtilsTest
 	}
 
 	@isTest
+	private static void hasFieldPopulated_whenTheFieldIsPopulatedByApex_returnsTrue() // NOPMD: Test method name format
+	{
+		Contact con = new Contact( LastName = 'lastname' );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Contact.LastName );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given an sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenTheFieldIsPopulatedByApexToNull_returnsTrue() // NOPMD: Test method name format
+	{
+		Contact con = new Contact( LastName = null );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Contact.LastName );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given an sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenTheFieldIsNotPopulatedByApex_returnsFalse() // NOPMD: Test method name format
+	{
+		Contact con = new Contact();
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Contact.LastName );
+		Test.stopTest();
+
+		System.assertEquals( false, got, 'hasFieldPopulated, when given an sobject object with the specified field not populated, will return false' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenNamespacedFieldIsPopulatedByApex_returnsTrue() // NOPMD: Test method name format
+	{
+		Application_Configuration__mdt con = new Application_Configuration__mdt( Type__c = 'Service' );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Application_Configuration__mdt.Type__c );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given a namespaced sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenNamespacedFieldIsPopulatedByApexToNull_returnsTrue() // NOPMD: Test method name format
+	{
+		Application_Configuration__mdt con = new Application_Configuration__mdt( Type__c = null );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Application_Configuration__mdt.Type__c );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given a namespaced sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenNamespacedFieldIsNotPopulatedByApex_returnsFalse() // NOPMD: Test method name format
+	{
+		Application_Configuration__mdt con = new Application_Configuration__mdt();
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Application_Configuration__mdt.Type__c );
+		Test.stopTest();
+
+		System.assertEquals( false, got, 'hasFieldPopulated, when given a namespaced sobject object with the specified field not populated, will return false' );
+	}
+
+	@isTest
 	private static void isCreateable_whenCalled_willReturnIsCreatableOfThatSobject() // NOPMD: Test method name format
 	{
 		SObject record = new Contact();

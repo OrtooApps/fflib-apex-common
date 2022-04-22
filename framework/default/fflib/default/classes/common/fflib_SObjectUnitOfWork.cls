@@ -54,6 +54,11 @@
 public virtual class fflib_SObjectUnitOfWork
     implements fflib_ISObjectUnitOfWork
 {
+	// NOTE:
+	//		If registration methods are added to this class, then they should probably also be added
+	//		to ortoo_DynamicSobjectUnitOfWork
+	//
+	@testVisible
     protected List<Schema.SObjectType> m_sObjectTypes = new List<Schema.SObjectType>();
 
     protected Map<String, List<SObject>> m_newListByType = new Map<String, List<SObject>>();

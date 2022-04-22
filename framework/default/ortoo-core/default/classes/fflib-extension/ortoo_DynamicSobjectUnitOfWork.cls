@@ -1,5 +1,18 @@
-// TODO: lots of null checks
-
+/**
+ * An extension of ortoo fflib SobjectUnitOfWork, adding the ability to dynamically work out the
+ * order in which the operations should take place.
+ *
+ * I.E. the construction does not require the specification of the supported SObjects and the order in
+ * which they are sent to the database.  As the work is queued, the instance will register the types
+ * and then calculate the order of operations based on a directed graph.
+ *
+ * Does not support circular references and will throw an exception if one is detected.
+ *
+ * Note: this will not perform as well as a pre-configured ortoo_SobjectUnitOfWork and so should only
+ * be used when the order of operations is not known at compile time.
+ *
+ * @group fflib Extension
+ */
 public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_SobjectUnitOfWork
 {
 	DirectedGraph graph = new DirectedGraph();
@@ -76,7 +89,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      * @param relatedToParentField A SObjectField reference to the child field that associates the child record with its parent
      * @param relatedToParentRecord A SObject instance of the parent record (should also be registered as new separately)
      **/
-    public override void registerNew(SObject record, Schema.SObjectField relatedToParentField, SObject relatedToParentRecord)
+    public override void registerNew( SObject record, Schema.SObjectField relatedToParentField, SObject relatedToParentRecord )
     {
 		registerType( record );
 		if ( relatedToParentRecord != null )
@@ -94,33 +107,14 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      * @param relatedToField A SObjectField reference to the lookup field that relates the two records together
      * @param relatedTo A SObject instance (yet to be committed to the database)
      */
-    public override void registerRelationship(SObject record, Schema.SObjectField relatedToField, SObject relatedTo)
+    public override void registerRelationship( SObject record, Schema.SObjectField relatedToField, SObject relatedTo )
     {
-		registerTypeRelationship( record, relatedTo );
+		if ( relatedTo != null )
+		{
+			registerTypeRelationship( record, relatedTo );
+		}
+
 		super.registerRelationship( record, relatedToField, relatedTo );
-	}
-
-    /**
-     * Registers a relationship between a record and a lookup value using an external ID field and a provided value. This
-     * information will be used during the commitWork phase to make the lookup reference requested when inserted to the database.
-     *
-     * @param record An existing or newly created record
-     * @param relatedToField A SObjectField reference to the lookup field that relates the two records together
-     * @param externalIdField A SObjectField reference to a field on the target SObject that is marked as isExternalId
-     * @param externalId A Object representing the targeted value of the externalIdField in said lookup
-     *
-     * Usage Example: uow.registerRelationship(recordSObject, record_sobject__c.relationship_field__c, lookup_sobject__c.external_id__c, 'abc123');
-     *
-     * Wraps putSObject, creating a new instance of the lookup sobject using the external id field and value.
-     */
-    public override void registerRelationship(SObject record, Schema.SObjectField relatedToField, Schema.SObjectField externalIdField, Object externalId)
-    {
-		List<Schema.SObjectType> relatedObjects = relatedToField.getDescribe().getReferenceTo();
-		Schema.SObjectType relatedObject = relatedObjects[0];
-
-		registerTypeRelationship( SObjectUtils.getSobjectType( record ), relatedObject );
-
-		super.registerRelationship( record, relatedToField, externalIdField, externalId );
 	}
 
     /**
@@ -128,7 +122,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record An existing record
      **/
-    public override void registerDirty(SObject record)
+    public override void registerDirty( SObject record )
     {
 		registerType( record );
         super.registerDirty( record );
@@ -140,7 +134,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      * @param records SObjects to register as dirty
      * @param dirtyFields A list of modified fields
      */
-    public override void registerDirty(List<SObject> records, List<SObjectField> dirtyFields)
+    public override void registerDirty( List<SObject> records, List<SObjectField> dirtyFields )
     {
 		registerTypes( records );
         super.registerDirty( records, dirtyFields );
@@ -152,7 +146,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
 	 * @param record SObject to register as dirty
 	 * @param dirtyFields A list of modified fields
 	 */
-    public override void registerDirty(SObject record, List<SObjectField> dirtyFields)
+    public override void registerDirty( SObject record, List<SObjectField> dirtyFields )
     {
 		registerType( record );
         super.registerDirty( record, dirtyFields );
@@ -166,7 +160,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      * @param relatedToParentField A SObjectField reference to the child field that associates the child record with its parent
      * @param relatedToParentRecord A SObject instance of the parent record (should also be registered as new separately)
      **/
-    public override void registerDirty(SObject record, Schema.SObjectField relatedToParentField, SObject relatedToParentRecord)
+    public override void registerDirty( SObject record, Schema.SObjectField relatedToParentField, SObject relatedToParentRecord )
     {
 		registerType( record );
 
@@ -183,7 +177,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of existing records
      **/
-    public override void registerDirty(List<SObject> records)
+    public override void registerDirty( List<SObject> records )
     {
 		registerTypes( records );
         super.registerDirty( records );
@@ -194,7 +188,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record A new or existing record
      **/
-    public override void registerUpsert(SObject record)
+    public override void registerUpsert( SObject record )
     {
 		registerType( record );
 		super.registerUpsert( record );
@@ -205,7 +199,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of mix of new and existing records
      **/
-    public override void registerUpsert(List<SObject> records)
+    public override void registerUpsert( List<SObject> records )
     {
 		registerTypes( records );
 		super.registerUpsert( records );
@@ -216,7 +210,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record An existing record
      **/
-    public override void registerDeleted(SObject record)
+    public override void registerDeleted( SObject record )
     {
 		registerType( record );
 		super.registerDeleted( record );
@@ -227,7 +221,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of existing records
      **/
-    public override void registerDeleted(List<SObject> records)
+    public override void registerDeleted( List<SObject> records )
     {
 		registerTypes( records );
 		super.registerDeleted( records );
@@ -238,7 +232,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of existing records
      **/
-    public override void registerPermanentlyDeleted(List<SObject> records)
+    public override void registerPermanentlyDeleted( List<SObject> records )
     {
 		registerTypes( records );
 		super.registerPermanentlyDeleted( records );
@@ -249,7 +243,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record A list of existing records
      **/
-    public override void registerPermanentlyDeleted(SObject record)
+    public override void registerPermanentlyDeleted( SObject record )
     {
 		registerType( record );
 		super.registerPermanentlyDeleted( record );
@@ -260,7 +254,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record A newly created SObject (Platform Event) instance to be inserted during commitWork
      **/
-    public override void registerPublishBeforeTransaction(SObject record)
+    public override void registerPublishBeforeTransaction( SObject record )
     {
 		registerType( record );
 		super.registerPublishBeforeTransaction( record );
@@ -271,7 +265,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of existing records
      **/
-    public override void registerPublishBeforeTransaction(List<SObject> records)
+    public override void registerPublishBeforeTransaction( List<SObject> records )
     {
 		registerTypes( records );
 		super.registerPublishBeforeTransaction( records );
@@ -282,7 +276,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record A newly created SObject (Platform Event) instance to be inserted during commitWork
      **/
-    public override void registerPublishAfterSuccessTransaction(SObject record)
+    public override void registerPublishAfterSuccessTransaction( SObject record )
     {
 		registerType( record );
 		super.registerPublishAfterSuccessTransaction( record );
@@ -293,7 +287,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of existing records
      **/
-    public override void registerPublishAfterSuccessTransaction(List<SObject> records)
+    public override void registerPublishAfterSuccessTransaction( List<SObject> records )
     {
 		registerTypes( records );
 		super.registerPublishAfterSuccessTransaction( records );
@@ -303,7 +297,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param record A newly created SObject (Platform Event) instance to be inserted during commitWork
      **/
-    public override void registerPublishAfterFailureTransaction(SObject record)
+    public override void registerPublishAfterFailureTransaction( SObject record )
     {
 		registerType( record );
 		super.registerPublishAfterFailureTransaction( record );
@@ -314,7 +308,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
      *
      * @param records A list of existing records
      **/
-    public override void registerPublishAfterFailureTransaction(List<SObject> records)
+    public override void registerPublishAfterFailureTransaction( List<SObject> records )
     {
 		registerTypes( records );
 		super.registerPublishAfterFailureTransaction( records );
@@ -327,7 +321,6 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
 
 	private void setOrderOfOperations( List<Schema.SObjectType> orderOfOperations )
 	{
-		system.debug( orderOfOperations );
 		m_sObjectTypes = orderOfOperations.clone();
 	}
 
@@ -338,7 +331,7 @@ public inherited sharing class ortoo_DynamicSobjectUnitOfWork extends ortoo_Sobj
 
 	private void registerTypes( List<Sobject> records )
 	{
-		Set<Schema.SObjectType> types = SobjectUtils.getSobjectTypes(records);
+		Set<Schema.SObjectType> types = SobjectUtils.getSobjectTypes( records );
 		for ( Schema.SObjectType thisType : types )
 		{
 			registerType( thisType );

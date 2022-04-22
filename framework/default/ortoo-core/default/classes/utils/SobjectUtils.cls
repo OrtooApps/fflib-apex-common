@@ -126,6 +126,20 @@ public inherited sharing class SobjectUtils
 	}
 
 	/**
+	 * States if the given record has the specified field 'populated' as defined by the behaviour
+	 * of 'getPopulatedFieldsAsMap', being either:
+	 * 		Retrieved in a SOQL statement, or
+	 * 		Explicitly set in Apex
+	 *
+	 * @param	Sobject			The record to check
+	 * @return	SobjectField	The field to look for
+	 */
+	public static Boolean hasFieldPopulated( Sobject record, SobjectField field )
+	{
+		return record.getPopulatedFieldsAsMap().keySet().contains( field.getDescribe().getName() );
+	}
+
+	/**
 	 * States if the given SObject is of a type that the current user is allowed to insert
 	 *
 	 * @param	SObject	The SObject to check 'isCreatable' of
