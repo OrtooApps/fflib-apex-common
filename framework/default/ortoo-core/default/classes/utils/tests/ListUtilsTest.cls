@@ -498,6 +498,44 @@ private without sharing class ListUtilsTest
 		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given null set of strings, will return an empty list' );
 	}
 
+	@isTest
+	private static void convertToListOfStrings_setObject_whenGivenASetOfStrings_returnsAListOfString() // NOPMD: Test method name format
+	{
+		Set<Object> setOfStrings = new Set<Object>{ 'one', 'two', 'three' };
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( setOfStrings );
+		Test.stopTest();
+
+		List<String> expectedList = new List<String>{ 'one', 'two', 'three' };
+
+		System.assertEquals( expectedList, returnedList, 'convertToListOfStrings, when given a set of Object, will return a list of the strings' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setObject_whenGivenAnEmptySet_returnsAnEmptySet() // NOPMD: Test method name format
+	{
+		Set<Object> emptySetOfStrings = new Set<Object>();
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( emptySetOfStrings );
+		Test.stopTest();
+
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given an empty set of Object, will return an empty list' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setObject_whenGivenNull_returnsAnEmptyList() // NOPMD: Test method name format
+	{
+		Set<Object> nullSetOfObjects = null;
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( nullSetOfObjects );
+		Test.stopTest();
+
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given null set of Object, will return an empty list' );
+	}
+
 	private inherited sharing class StringableThing {
 		String name;
 		public StringableThing( String name )

@@ -4,8 +4,12 @@
  *
  * @group fflib Extension
  */
-public inherited sharing class ortoo_SobjectUnitOfWork extends fflib_SObjectUnitOfWork // NOPMD: specified a mini-namespace to differentiate from fflib versions
+public virtual inherited sharing class ortoo_SobjectUnitOfWork extends fflib_SObjectUnitOfWork // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
+	// NOTE:
+	//		If registration methods are added to this class, then they should probably also be added
+	//		to ortoo_DynamicSobjectUnitOfWork
+	//
 	private static final Integer ROWS_OFFSET_FOR_LIBRARY		= 1; // exists because a call to commitWork will issue a savepoint, and this counds as a DML row
 	private static final Integer STATEMENT_OFFSET_FOR_LIBRARY	= 1; // and a DML statement
 

@@ -181,4 +181,47 @@ private without sharing class DirectedGraphTest
 
 		ortoo_Asserts.assertContains( 'addRelationship called with a parent that has not been added as a node (UnregisteredParent)', exceptionMessage, 'addRelationship, when given a parent that has not previously been added, will throw an exception' );
 	}
+
+	@isTest
+	private static void toString_whenCalledAgainstAnGraph_returnsADescriptionOfTheGraph() // NOPMD: Test method name format
+	{
+		DirectedGraph graph = new DirectedGraph()
+									.addNode( 'Grandparent' )
+									.addNode( 'Parent1' )
+									.addNode( 'Parent2' )
+									.addNode( 'Child1' )
+									.addNode( 'Child2' )
+									.addNode( 'Child3' )
+									.addRelationship( 'Child1', 'Parent1' )
+									.addRelationship( 'Child1', 'Parent2' )
+									.addRelationship( 'Child2', 'Parent1' )
+									.addRelationship( 'Child3', 'Parent2' )
+									.addRelationship( 'Parent1', 'Grandparent' );
+
+		String expected = ''
+		+ 'Grandparent is not a child\n'
+		+ 'Parent1 is a child of Grandparent\n'
+		+ 'Parent2 is not a child\n'
+		+ 'Child1 is a child of Parent1, Parent2\n'
+		+ 'Child2 is a child of Parent1\n'
+		+ 'Child3 is a child of Parent2';
+
+		Test.startTest();
+			String got = graph.toString();
+		Test.stopTest();
+
+		System.assertEquals( expected, got, 'toString, when called, will return a description of the graph' );
+	}
+
+	@isTest
+	private static void toString_whenCalledAgainstAnEmptyGraph_returnsEmpty() // NOPMD: Test method name format
+	{
+		DirectedGraph graph = new DirectedGraph();
+
+		Test.startTest();
+			String got = graph.toString();
+		Test.stopTest();
+
+		System.assertEquals( 'Empty Graph', got, 'toString, when called against an empty graph, will return empty' );
+	}
 }

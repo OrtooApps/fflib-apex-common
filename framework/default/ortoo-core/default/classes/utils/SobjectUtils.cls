@@ -62,6 +62,24 @@ public inherited sharing class SobjectUtils
 		return record.getSObjectType();
 	}
 
+	/**
+	 * Given a list of instances of SObjects, will return their SobjectTypes
+	 *
+	 * @param	List<Sobject>		The SObjects for which to return the SobjectTypes
+	 * @return	Set<SobjectType>	The SobjectTypes of the SObjects
+	 */
+	public static Set<SobjectType> getSobjectTypes( List<Sobject> records )
+	{
+		Contract.requires( records != null, 'getSobjectTypes called with a null records' );
+
+		Set<SobjectType> types = new Set<SobjectType>();
+		for ( Sobject thisRecord : records )
+		{
+			types.add( getSobjectType( thisRecord ) );
+		}
+		return types;
+	}
+
 	// TODO: use the describe on the object?
 	/**
 	 * Given an instance of an SObject, will return the developer / API name of the SObject (e.g. Contact)
@@ -109,6 +127,20 @@ public inherited sharing class SobjectUtils
 
 		Contract.ensures( sobjectName != null, 'getSobjectLocalName returned with a null sobjectName' );
 		return sobjectName;
+	}
+
+	/**
+	 * States if the given record has the specified field 'populated' as defined by the behaviour
+	 * of 'getPopulatedFieldsAsMap', being either:
+	 * 		Retrieved in a SOQL statement, or
+	 * 		Explicitly set in Apex
+	 *
+	 * @param	Sobject			The record to check
+	 * @return	SobjectField	The field to look for
+	 */
+	public static Boolean hasFieldPopulated( Sobject record, SobjectField field )
+	{
+		return record.getPopulatedFieldsAsMap().keySet().contains( field.getDescribe().getName() );
 	}
 
 	/**
