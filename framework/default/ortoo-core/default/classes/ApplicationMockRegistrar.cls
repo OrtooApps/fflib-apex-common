@@ -17,6 +17,19 @@ public inherited sharing class ApplicationMockRegistrar
 	}
 
 	/**
+	 * Generates a mock Dynamic Unit of Work controller and registers its double against the Application
+	 * Then returns the controller for the mock so that expectations can be set against it
+	 *
+	 * @return	Amoss_Instance	The controller for the mock Unit of Work
+	 */
+	public static Amoss_Instance registerMockDynamicUnitOfWork()
+	{
+		Amoss_Instance mockUowController = new Amoss_Instance( ortoo_DynamicSObjectUnitOfWork.class );
+		Application.DYNAMIC_UNIT_OF_WORK.setMock( (ortoo_DynamicSObjectUnitOfWork)mockUowController.generateDouble() );
+		return mockUowController;
+	}
+
+	/**
 	 * Generates a mock Service controller and registers its double against the Application
 	 * Then returns the controller for the mock so that expectations can be set against it
 	 *

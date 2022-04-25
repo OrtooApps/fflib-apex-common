@@ -14,6 +14,18 @@ private without sharing class ApplicationTest
 	}
 
 	@isTest
+	private static void unitOfWork_whenReferenced_isAUnitOfWorkFactory() // NOPMD: Test method name format
+	{
+		System.assertNotEquals(null, Application.UNIT_OF_WORK, 'unitOfWork, when referenced, will be a unit of work factory' );
+	}
+
+	@isTest
+	private static void dynamicUnitOfWork_whenReferenced_isAUnitOfWorkFactory() // NOPMD: Test method name format
+	{
+		System.assertNotEquals(null, Application.DYNAMIC_UNIT_OF_WORK, 'dynamicUnitOfWork, when referenced, will be a dynamic unit of work factory' );
+	}
+
+	@isTest
 	private static void selector_whenReferenced_willBeConfiguredBasedOnMetadata() // NOPMD: Test method name format
 	{
 		List<Application_Configuration__mdt> configurations = new List<Application_Configuration__mdt>
