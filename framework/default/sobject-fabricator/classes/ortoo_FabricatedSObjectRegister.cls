@@ -75,10 +75,15 @@ public class ortoo_FabricatedSObjectRegister {
 	@testVisible
 	private inherited sharing class RegisterInstance
 	{
-		private List<sfab_FabricatedSObject> objectRegister = new List<sfab_FabricatedSObject>();
-		private List<Relationship> relationships = new List<Relationship>();
+		private List<sfab_FabricatedSObject> objectRegister;
+		private List<Relationship> relationships;
 		private Map<sfab_FabricatedSObject,Sobject> sobjectsByFabricated;
-		private DirectedGraph graph = new DirectedGraph();
+		private DirectedGraph graph;
+
+		public RegisterInstance()
+		{
+			initialise();
+		}
 
 		public void registerObject( sfab_FabricatedSObject objectToRegister )
 		{
@@ -110,6 +115,15 @@ public class ortoo_FabricatedSObjectRegister {
 			registerInserts( uow );
 			registerRelationships( uow );
 			uow.commitWork();
+
+			initialise();
+		}
+
+		private void initialise()
+		{
+			objectRegister = new List<sfab_FabricatedSObject>();
+			relationships = new List<Relationship>();
+			graph = new DirectedGraph();
 		}
 
 		@testVisible

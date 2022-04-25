@@ -101,6 +101,33 @@ public inherited sharing virtual class ortoo_Criteria implements ISearchCriteria
 	}
 
 	/**
+	 * Adds a sub-criteria
+	 *
+	 * @param	ortoo_Criteria	The condition of the sub criteria
+	 * @return	ortoo_Criteria	Itself, allowing for a fluent interface
+	 *
+	 * @example
+	 * new ortoo_Criteria()
+	 *          .orCriteria()
+	 *          .equalTo(Account.Name, 'Example')
+	 *          .addCriteria(
+	 *              new ortoo_Criteria()
+	 *              		.equalTo(Account.AccountNumber, '0001')
+	 *              		.equalTo(Account.ShippingCountry, 'USA'))
+	 *
+	 *  Evaluates:
+	 *      Name = 'Example' OR (AccountNumber = '0001' AND ShippingCountry = 'USA')
+	 */
+	public ortoo_Criteria addCriteria( ortoo_Criteria subCriteria )
+	{
+		Contract.requires( subCriteria != null, 'addCriteria called with a null subCriteria' );
+		Contract.requires( subCriteria.criteria != null, 'addCriteria called with a subCriteria that has no criteria defined' );
+
+		criteria.addCriteria( subCriteria.criteria );
+		return this;
+	}
+
+	/**
 	 * Adds a sub-criteria with AND comparator
 	 *
 	 * @param	ortoo_Criteria	The condition of the sub criteria

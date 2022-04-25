@@ -234,6 +234,35 @@ private without sharing class StackTraceTest
 	}
 
 	@isTest
+	private static void getEntryStackTraceEntry_whenThereIsAStack_willReturnTheOutermostEntryFromTheStack() // NOPMD: Test method name format
+	{
+		String stackTraceString =
+			'Class.InnerClass.innerMethod: line 7, column 1\n'
+			+ 'Class.OuterClass.innerMethod: line 7, column 1\n'
+			+ 'Class.OuterClass.outerMethod: line 7, column 1\n';
+
+		Test.startTest();
+			StackTrace trace = new StackTrace( stackTraceString, 0 );
+			StackTrace.StackTraceEntry entry = trace.getEntryStackTraceEntry();
+		Test.stopTest();
+
+		System.assertEquals( 'Class.OuterClass.outerMethod: line 7, column 1', String.valueOf( entry ), 'getEntryStackTraceEntry, when there is a stack with a method call, will return the entry for the outermost service method call' );
+	}
+
+	@isTest
+	private static void getEntryStackTraceEntry_whenThereIsNoStack_willReturnAnEmptyEntry() // NOPMD: Test method name format
+	{
+		String stackTraceString = '';
+
+		Test.startTest();
+			StackTrace trace = new StackTrace( stackTraceString, 0 );
+			StackTrace.StackTraceEntry entry = trace.getEntryStackTraceEntry();
+		Test.stopTest();
+
+		System.assertEquals( 'Unknown', String.valueOf( entry ), 'getEntryStackTraceEntry, when there is no stack with a method call, will return the an empty entry' );
+	}
+
+	@isTest
 	private static void getEntryClassName_whenThereIsAStack_willReturnTheOutermostmostClassNameFromTheStack() // NOPMD: Test method name format
 	{
 		Test.startTest();
@@ -271,6 +300,57 @@ private without sharing class StackTraceTest
 		Test.stopTest();
 
 		System.assertEquals( 'Unknown', trace.getEntryMethodName(), 'getEntryMethodName, when called against an empty stack, will return Unknown' );
+	}
+
+	@isTest
+	private static void getEntryServiceStackTraceEntry_whenThereIsAStackWithAServiceCall_willReturnTheOutermostServiceEntryFromTheStack() // NOPMD: Test method name format
+	{
+		String stackTraceString =
+			'Class.NotAServiceClass.notAServiceMethod: line 7, column 1\n'
+			+ 'Class.InnerServiceClass.innerServiceMethod: line 7, column 1\n'
+			+ 'Class.NotAServiceClass.notAServiceMethod: line 7, column 1\n'
+			+ 'Class.OuterServiceClass.innerServiceMethod: line 7, column 1\n'
+			+ 'Class.OuterServiceClass.outerServiceMethod: line 7, column 1\n'
+			+ 'Class.NotAServiceClass.notAServiceMethod: line 7, column 1\n';
+
+		Application.SERVICE
+			.mockRegisterAsImplementation( 'InnerServiceClass' )
+			.mockRegisterAsImplementation( 'OuterServiceClass' );
+
+		Test.startTest();
+			StackTrace trace = new StackTrace( stackTraceString, 0 );
+			StackTrace.StackTraceEntry entry = trace.getEntryServiceStackTraceEntry();
+		Test.stopTest();
+
+		System.assertEquals( 'Class.OuterServiceClass.outerServiceMethod: line 7, column 1', String.valueOf( entry ), 'getEntryServiceStackTraceEntry, when there is a stack with a service call, will return the entry for the outermost service method call' );
+	}
+
+	@isTest
+	private static void getEntryServiceStackTraceEntry_whenThereIsAStackWithNoServiceCalls_willReturnAnEmptyStackEntry() // NOPMD: Test method name format
+	{
+		String stackTraceString =
+			'Class.NotAServiceClass1.notAServiceMethod: line 7, column 1\n'
+			+ 'Class.NotAServiceClass2.notAServiceMethod: line 7, column 1\n'
+			+ 'Class.NotAServiceClass3.notAServiceMethod: line 7, column 1\n'
+			+ 'Class.NotAServiceClass4.notAServiceMethod: line 7, column 1\n';
+
+		Test.startTest();
+			StackTrace trace = new StackTrace( stackTraceString, 0 );
+			StackTrace.StackTraceEntry entry = trace.getEntryServiceStackTraceEntry();
+		Test.stopTest();
+
+		System.assertEquals( 'Unknown', String.valueOf( entry ), 'getEntryServiceStackTraceEntry, when there is a stack with no service call, will return the an empty entry' );
+	}
+
+	@isTest
+	private static void getEntryServiceStackTraceEntry_whenThereIsNoStack_willReturnAnEmptyStackEntry() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			StackTrace trace = new StackTrace( '', 0 );
+			StackTrace.StackTraceEntry entry = trace.getEntryServiceStackTraceEntry();
+		Test.stopTest();
+
+		System.assertEquals( 'Unknown', String.valueOf( entry ), 'getEntryServiceStackTraceEntry, when there is not stach, will return the an empty entry' );
 	}
 
 	@isTest
@@ -385,6 +465,39 @@ private without sharing class StackTraceTest
 		Test.stopTest();
 
 		System.assertEquals( 'Unknown', trace.getEntryServiceMethodName(), 'getEntryServiceMethodName, when called with an empty stack, will return Unknown' );
+	}
+
+	@isTest
+	private static void stackTraceEntry_isValid_whenTheStackHasNoText_returnsFalse() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			StackTrace.StackTraceEntry trace = new StackTrace.StackTraceEntry( '	 	 ' );
+			Boolean got = trace.isValid();
+		Test.stopTest();
+
+		System.assertEquals( false, got, 'isValid, when the stack entry has no text, will return false' );
+	}
+
+	@isTest
+	private static void stackTraceEntry_isValid_whenTheStackHasText_returnsTrue() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			StackTrace.StackTraceEntry trace = new StackTrace.StackTraceEntry( 'some stack' );
+			Boolean got = trace.isValid();
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'isValid, when the stack entry has text, will return true' );
+	}
+
+	@isTest
+	private static void stackTraceEntry_toString_whenTheStackIsValid_returnsTheOriginalText() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			StackTrace.StackTraceEntry trace = new StackTrace.StackTraceEntry( 'Class.AClass.aMethod: line 7, column 1' );
+			String got = trace.toString();
+		Test.stopTest();
+
+		System.assertEquals( 'Class.AClass.aMethod: line 7, column 1', got, 'isValid, when the stack entry has text, will return true' );
 	}
 
 	private String className() {

@@ -31,6 +31,20 @@ private without sharing class DmlRecordTest
     }
 
     @isTest
+    private static void getSobjectId_willReturnTheIdOfTheSobject() // NOPMD: Test method name format
+    {
+		Id accountId = TestIdUtils.generateId( Account.sobjectType );
+
+		DmlRecord dmlRecord = new DmlRecord( new Account( Id = accountId ) );
+
+        Test.startTest();
+			Id got = dmlRecord.getSobjectId();
+        Test.stopTest();
+
+        System.assertEquals( accountId, got, 'getSobjectId, will return the Id of the SObject' );
+    }
+
+    @isTest
     private static void addChildContect_whenCalled_willInitialiseADefinerForThatType() // NOPMD: Test method name format
     {
         DmlRecord dmlRecord = new DmlRecord( new Account() );
@@ -518,6 +532,61 @@ private without sharing class DmlRecordTest
         Test.stopTest();
 
         ortoo_Asserts.assertContains( 'Invalid', exceptionMessage, 'getChildDefiner, when given a child type that does not exist, will throw an exception' );
+    }
+
+    @isTest
+    private static void getChildSobjects_whenGivenAValidChildType_willReturnTheChildrenForThatType() // NOPMD: Test method name format
+    {
+        DmlRecord dmlRecord = new DmlRecord( new Account() );
+        dmlRecord.addChildContext( 'Contacts', new DmlChildContext( Contact.AccountId, IChildRecordFinder.class ) );
+
+        List<Contact> contacts = new List<Contact>{
+            new Contact( LastName = 'name1' ),
+            new Contact( LastName = 'name2' )
+        };
+
+        Test.startTest();
+            dmlRecord
+                .addChild( 'Contacts', new DmlRecord( contacts[0] ) )
+                .addChild( 'Contacts', new DmlRecord( contacts[1] ) );
+
+            List<Contact> got = dmlRecord.getChildSobjects( 'Contacts' );
+        Test.stopTest();
+
+        System.assertEquals( contacts, got, 'getChildSobjects, when given a valid child type, will return the sobjects registered for that type' );
+    }
+
+    @isTest
+    private static void getChildSobjects_whenGivenAValidChildTypeThatHasNoChildren_willReturnAnEmptyList() // NOPMD: Test method name format
+    {
+        DmlRecord dmlRecord = new DmlRecord( new Account() );
+        dmlRecord.addChildContext( 'Contacts', new DmlChildContext( Contact.AccountId, IChildRecordFinder.class ) );
+
+        Test.startTest();
+            List<Contact> got = dmlRecord.getChildSobjects( 'Contacts' );
+        Test.stopTest();
+
+        System.assertEquals( new List<Contact>(), got, 'getChildSobjects, when given a valid child type that has no children, will return an empty list' );
+    }
+
+    @isTest
+    private static void getChildSobjects_whenGivenAChildTypeThatDoesNotExist_willThrowAnException() // NOPMD: Test method name format
+    {
+        DmlRecord dmlRecord = new DmlRecord( new Account() );
+
+        Test.startTest();
+            String exceptionMessage;
+            try
+            {
+                dmlRecord.getChildSobjects( 'Invalid' );
+            }
+            catch ( Contract.AssertException e )
+            {
+                exceptionMessage = e.getMessage();
+            }
+        Test.stopTest();
+
+        ortoo_Asserts.assertContains( 'Invalid', exceptionMessage, 'getChildSobjects, when given a child type that does not exist, will throw an exception' );
     }
 
     @isTest

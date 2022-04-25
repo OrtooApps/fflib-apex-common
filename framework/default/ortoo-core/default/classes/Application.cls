@@ -7,7 +7,31 @@ public inherited sharing class Application {
 
 	public class InvalidApplicationConfigurationException extends Exceptions.DeveloperException {}
 
-	public final static ortoo_UnitOfWorkFactory UNIT_OF_WORK = new ortoo_UnitOfWorkFactory(); // is created with no default since that needs to be defined by the consumer
+	public final static ortoo_UnitOfWorkFactory UNIT_OF_WORK
+	{
+		get
+		{
+			if ( UNIT_OF_WORK == null )
+			{
+				UNIT_OF_WORK = new ortoo_UnitOfWorkFactory(); // is created with no default since that needs to be defined by the consumer
+			}
+			return UNIT_OF_WORK;
+		}
+		set;
+	}
+
+	public final static ortoo_DynamicUnitOfWorkFactory DYNAMIC_UNIT_OF_WORK
+	{
+		get
+		{
+			if ( DYNAMIC_UNIT_OF_WORK == null )
+			{
+				DYNAMIC_UNIT_OF_WORK = new ortoo_DynamicUnitOfWorkFactory();
+			}
+			return DYNAMIC_UNIT_OF_WORK;
+		}
+		set;
+	}
 
 	public static ortoo_SelectorFactory				SELECTOR; // NOPMD: want to give the impression that this is final, even though it isn't.
 	public static ortoo_DomainFactory				DOMAIN; // NOPMD: want to give the impression that this is final, even though it isn't.
@@ -114,10 +138,49 @@ public inherited sharing class Application {
 
 		public void put( Application_Configuration__mdt thisConfiguration )
 		{
-			configuration.put( classTypeBuilder.build( thisConfiguration.Object_Type__c ), classTypeBuilder.build( thisConfiguration.Implementation__c ) );
+			Type objectType = classTypeBuilder.build( thisConfiguration.Object_Type__c );
+			Type implementation = classTypeBuilder.build( thisConfiguration.Implementation__c );
+
+			if ( configuration.containsKey( objectType ) )
+			{
+				throw new InvalidApplicationConfigurationException( 'Duplicate configuration exists for ' + thisConfiguration.Type__c + ' - ' + thisConfiguration.Object_Type__c )
+							.setErrorCode( FrameworkErrorCodes.CONFIGURATION_WITH_DUPLICATE_TYPE )
+							.addContext( 'typeName', thisConfiguration.Type__c )
+							.addContext( 'objectType', thisConfiguration.Object_Type__c );
+			}
+
+			configuration.put( objectType, implementation );
 		}
 
 		public Map<Type,Type> getConfiguration()
+		{
+			return configuration;
+		}
+	}
+
+	/**
+	 * Provides a default mechanism for defining a 'Raw Type Configuration', being a mapping between two String names
+	 *
+	 * Can be used by a factory to map between Class and Sobject, or Class and Class, for example.
+	 */
+	private abstract inherited sharing class RawTypeConfiguration implements TypeConfiguration
+	{
+		Map<String,String> configuration = new Map<String,String>();
+
+		public void put( Application_Configuration__mdt thisConfiguration )
+		{
+			if ( configuration.containsKey( thisConfiguration.Object_Type__c ) )
+			{
+				throw new InvalidApplicationConfigurationException( 'Duplicate configuration exists for ' + thisConfiguration.Type__c + ' - ' + thisConfiguration.Object_Type__c )
+							.setErrorCode( FrameworkErrorCodes.CONFIGURATION_WITH_DUPLICATE_TYPE )
+							.addContext( 'typeName', thisConfiguration.Type__c )
+							.addContext( 'objectType', thisConfiguration.Object_Type__c );
+			}
+
+			configuration.put( thisConfiguration.Object_Type__c, thisConfiguration.Implementation__c );
+		}
+
+		public Map<String,String> getConfiguration()
 		{
 			return configuration;
 		}
@@ -134,7 +197,18 @@ public inherited sharing class Application {
 
 		public void put( Application_Configuration__mdt thisConfiguration )
 		{
-			configuration.put( sobjectTypeBuilder.build( thisConfiguration.Object_Type__c ), classTypeBuilder.build( thisConfiguration.Implementation__c ) );
+			SobjectType objectType = sobjectTypeBuilder.build( thisConfiguration.Object_Type__c );
+			Type implementation = classTypeBuilder.build( thisConfiguration.Implementation__c );
+
+			if ( configuration.containsKey( objectType ) )
+			{
+				throw new InvalidApplicationConfigurationException( 'Duplicate configuration exists for ' + thisConfiguration.Type__c + ' - ' + thisConfiguration.Object_Type__c )
+							.setErrorCode( FrameworkErrorCodes.CONFIGURATION_WITH_DUPLICATE_TYPE )
+							.addContext( 'typeName', thisConfiguration.Type__c )
+							.addContext( 'objectType', thisConfiguration.Object_Type__c );
+			}
+
+			configuration.put( objectType, implementation );
 		}
 
 		public Map<SobjectType,Type> getConfiguration()
@@ -184,7 +258,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the Selectors Configuration
 	 */
-	private inherited sharing class SelectorConfiguration extends SobjectTypeConfiguration
+	private inherited sharing class SelectorConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{
@@ -195,7 +269,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the App Logic Configuration
 	 */
-	private inherited sharing class AppLogicConfiguration extends ClassTypeConfiguration
+	private inherited sharing class AppLogicConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{
@@ -206,7 +280,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the Child Record Finders Configuration
 	 */
-	private inherited sharing class ChildRecordFinderConfiguration extends ClassTypeConfiguration
+	private inherited sharing class ChildRecordFinderConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{
@@ -217,7 +291,7 @@ public inherited sharing class Application {
 	/**
 	 * Provides a mechanism for configuring and registering the Child Record Finders Configuration
 	 */
-	private inherited sharing class MessageRendererConfiguration extends ClassTypeConfiguration
+	private inherited sharing class MessageRendererConfiguration extends RawTypeConfiguration
 	{
 		public void register()
 		{

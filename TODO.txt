@@ -1,23 +1,6 @@
-Licenses that are needed with the source code and binary:
-* fflib - https://github.com/apex-enterprise-patterns/fflib-apex-common/blob/master/LICENSE
-* fflib apex extensions - https://github.com/wimvelzeboer/fflib-apex-extensions/blob/main/LICENSE
-* Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
-* SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
-
 * Move all the Jest LWc tests over to create the component in the before
 
 Look at the use of 'MockDatabase' in fflib
-Look at:
-    SobjectUtils.getSobjectName
-
-* Look at implementing ordering in the datatable example, so you can define the standards more clearly
-
-* Build a filter + results page for Contacts, allowing search on
-    * Salutation
-    * Name
-    * Account Name
-    * Account Rating
-
 
 * LWCs
     * Standards for:
@@ -31,14 +14,7 @@ Look at:
         * Edit Forms / Validation
         * Edit Forms with Child Records
 
-    * Try parent and datatable referencing a DML Service
-
-
-* To finalise the core architecture:
-    * Do we need to have a non all-or-nothing version of commitWork?
-
 Add to documentation
-    * Wrapping exceptions on the way out of services
     * Query builder - add it to the architectural diagram - after more investigation
 
     DmlServices documentation:
@@ -48,7 +24,8 @@ Add to documentation
         * Cannot reference SOQL - they are excuted in a loop
         * Do not do domain logic in them
 
-    * Using the Mock Registarar
+    * Using the Mock Registrar
+
 
 From Utilities, things that may be useful:
     * getReferenceObjectAPIName
@@ -75,25 +52,16 @@ New Amoss_Asserts into the OS Lib
 Bring in Stack from Q-assign?
 Review Utilities in q-assign - is anything else useful?
 
-
-
 * Document a few of the oddities on the Assignment Group and Action that need to be resolved.
-
 
 Bad Smells - strung out calls to describe methods - put them into SobjectUtils
 
-
-* Build some example unit tests...
 * Criteria extension
     * Build a simple SearchFilter SOQL generator / Selector
 
 * Question: How do we generically tie in the QueryHandler?  Should we?  How often is this currently used?
-* Question: Standard - never instantiate a Domain within a loop
 
 * Question: How do we handle Constants - where are they defined?
-* Question: How do we handle Exceptions:
-    * Do we handle individual types of exception in the Service?
-    * Do we pass any of the domain exceptions back
 
 * Question: Multiple Apps...  maybe
 
@@ -105,8 +73,6 @@ Bad Smells - strung out calls to describe methods - put them into SobjectUtils
 * Produce test-case for lack of clickthrough and raise bug on VSCode
 
 * How do we handle constants?
-
-* Dynamic building of the Unit Of Work for processing data
 
 Notes:
 * Services should always be designed by seniors - at least which services exist

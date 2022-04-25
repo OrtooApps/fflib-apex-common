@@ -83,6 +83,56 @@ private without sharing class SobjectUtilsTest
 	}
 
 	@isTest
+	private static void getSobjectTypes_whenGivenRecords_willReturnTheirTypes() // NOPMD: Test method name format
+	{
+		Set<SobjectType> actualTypes = SobjectUtils.getSobjectTypes( new List<Sobject>{ new Contact(), new Account() } );
+
+		System.assertEquals( 2, actualTypes.size(), 'getSobjectType, when given SObject records, will return their types' );
+		System.assert( actualTypes.contains( Contact.sobjectType ), 'getSobjectType, when given SObject records, will return their types - 1' );
+		System.assert( actualTypes.contains( Account.sobjectType ), 'getSobjectType, when given SObject records, will return their types - 2' );
+	}
+
+	@isTest
+	private static void getSobjectTypes_whenPassedANullRecord_willThrowAnException() // NOPMD: Test method name format
+	{
+		Sobject nullRecord = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectTypes( new List<Sobject>{ new Contact(), new Account(), null }  );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'getSobjectType called with a null record', exceptionMessage, 'getSobjectType, when passed a null record, will throw an exception' );
+	}
+
+	@isTest
+	private static void getSobjectTypes_whenPassedANullList_willThrowAnException() // NOPMD: Test method name format
+	{
+		List<Sobject> nullList = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectTypes( nullList );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'getSobjectTypes called with a null records', exceptionMessage, 'getSobjectTypes, when passed a null list, will throw an exception' );
+	}
+
+	@isTest
 	private static void getSobjectName_whenGivenAnSobject_willReturnTheApiNameOfIt() // NOPMD: Test method name format
 	{
 		String returnedName = SobjectUtils.getSobjectName( new Contact() );
@@ -117,6 +167,13 @@ private without sharing class SobjectUtilsTest
 	}
 
 	@isTest
+	private static void getSobjectName_whenGivenAnSobjectTypeInLocalNamespace_willReturnTheFullApiNameOfIt() // NOPMD: Test method name format
+	{
+		String returnedName = SobjectUtils.getSobjectName( Application_Configuration__mdt.sobjectType );
+		ortoo_Asserts.assertEndsWith( '__Application_Configuration__mdt', returnedName, 'getSobjectName, when given an SObjectType in the local namespace, will return the fully qualified API name of it' );
+	}
+
+	@isTest
 	private static void getSobjectName_whenGivenANullSobjectType_willThrowAnException() // NOPMD: Test method name format
 	{
 		SobjectType nullType = null;
@@ -134,6 +191,99 @@ private without sharing class SobjectUtilsTest
 		Test.stopTest();
 
 		ortoo_Asserts.assertContains( 'Attempted to get the name of a null SObjectType', exceptionMessage, 'getSobjectName, when given a null SobjectType, will throw an exception' );
+	}
+
+	@isTest
+	private static void getSobjectLocalName_whenGivenAnSobjectTypeInLocalNamespace_willReturnTheShortApiNameOfIt() // NOPMD: Test method name format
+	{
+		String returnedName = SobjectUtils.getSobjectLocalName( Application_Configuration__mdt.sobjectType );
+		System.assertEquals( 'Application_Configuration__mdt', returnedName, 'getSobjectLocalName, when given an SObjectType in the local namespace, will return the local API name of it' );
+	}
+
+	@isTest
+	private static void getSobjectLocalName_whenGivenANullSobjectType_willThrowAnException() // NOPMD: Test method name format
+	{
+		SobjectType nullType = null;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				SobjectUtils.getSobjectLocalName( nullType );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'Attempted to get the local name of a null SObjectType', exceptionMessage, 'getSobjectLocalName, when given a null SobjectType, will throw an exception' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenTheFieldIsPopulatedByApex_returnsTrue() // NOPMD: Test method name format
+	{
+		Contact con = new Contact( LastName = 'lastname' );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Contact.LastName );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given an sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenTheFieldIsPopulatedByApexToNull_returnsTrue() // NOPMD: Test method name format
+	{
+		Contact con = new Contact( LastName = null );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Contact.LastName );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given an sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenTheFieldIsNotPopulatedByApex_returnsFalse() // NOPMD: Test method name format
+	{
+		Contact con = new Contact();
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Contact.LastName );
+		Test.stopTest();
+
+		System.assertEquals( false, got, 'hasFieldPopulated, when given an sobject object with the specified field not populated, will return false' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenNamespacedFieldIsPopulatedByApex_returnsTrue() // NOPMD: Test method name format
+	{
+		Application_Configuration__mdt con = new Application_Configuration__mdt( Type__c = 'Service' );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Application_Configuration__mdt.Type__c );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given a namespaced sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenNamespacedFieldIsPopulatedByApexToNull_returnsTrue() // NOPMD: Test method name format
+	{
+		Application_Configuration__mdt con = new Application_Configuration__mdt( Type__c = null );
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Application_Configuration__mdt.Type__c );
+		Test.stopTest();
+
+		System.assertEquals( true, got, 'hasFieldPopulated, when given a namespaced sobject object with the specified field populated by Apex, will return true' );
+	}
+
+	@isTest
+	private static void hasFieldPopulated_whenNamespacedFieldIsNotPopulatedByApex_returnsFalse() // NOPMD: Test method name format
+	{
+		Application_Configuration__mdt con = new Application_Configuration__mdt();
+		Test.startTest();
+			Boolean got = SObjectUtils.hasFieldPopulated( con, Application_Configuration__mdt.Type__c );
+		Test.stopTest();
+
+		System.assertEquals( false, got, 'hasFieldPopulated, when given a namespaced sobject object with the specified field not populated, will return false' );
 	}
 
 	@isTest

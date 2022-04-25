@@ -1,7 +1,7 @@
 /**
  * Is a Domain object that does nothing other than track that certain overridden methods have been called
  */
-public class NullDomain extends ortoo_SobjectDomain
+public inherited sharing class NullDomain extends ortoo_SobjectDomain
 {
     public static Set<String> methodsCalled = new Set<String>();
 

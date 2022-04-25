@@ -39,4 +39,30 @@ private without sharing class DmlDefinerOptionsTest
 
         ortoo_Asserts.assertContains( 'setOtherRecordsMode called with a null otherRecordsMode', exceptionMessage, 'setOtherRecordsMode, when called with null, will throw an exception' );
     }
+
+	@isTest
+	private static void getWillDeleteOtherRecords_whenRecordModeIsDelete_returnsTrue() // NOPMD: Test method name format
+	{
+        DmlDefinerOptions options = new DmlDefinerOptions();
+
+        Test.startTest();
+            options.setOtherRecordsMode( DmlDefinerOptions.OtherRecordsOption.DELETE_RECORDS );
+			Boolean got = options.getWillDeleteOtherRecords();
+		Test.stopTest();
+	 
+		System.assertEquals( true, got, 'getWillDeleteOtherRecords, when the record mode is DELETE_RECORDS, will return true' );
+	}
+
+	@isTest
+	private static void getWillDeleteOtherRecords_whenRecordModeIsIgnore_returnsFalse() // NOPMD: Test method name format
+	{
+        DmlDefinerOptions options = new DmlDefinerOptions();
+
+        Test.startTest();
+            options.setOtherRecordsMode( DmlDefinerOptions.OtherRecordsOption.IGNORE_RECORDS );
+			Boolean got = options.getWillDeleteOtherRecords();
+		Test.stopTest();
+	 
+		System.assertEquals( false, got, 'getWillDeleteOtherRecords, when the record mode is IGNORE_RECORDS, will return false' );
+	}
 }

@@ -1,4 +1,4 @@
-// Directed Graph algorithm ased on the DirectedGraph implemented by Robert Sösemann: https://github.com/rsoesemann/apex-domainbuilder
+// Directed Graph algorithm based on the DirectedGraph implemented by Robert Sösemann: https://github.com/rsoesemann/apex-domainbuilder
 public inherited sharing class DirectedGraph
 {
 	public inherited sharing class GraphContainsCircularReferenceException extends ortoo_Exception {}
@@ -38,7 +38,7 @@ public inherited sharing class DirectedGraph
 	}
 
 	/**
-	 * Generates a list of nodes, sorted by their depdencies.
+	 * Generates a list of nodes, sorted by their dependencies.
 	 *
 	 * That is, the children first, resolving upwards to the parents.
 	 * No parent appears in the list prior to any of their children.
@@ -90,6 +90,38 @@ public inherited sharing class DirectedGraph
 			throw new GraphContainsCircularReferenceException( 'The graph contains a circular reference and therefore cannot be resolved.' );
 		}
 		return sortedObjects;
+	}
+
+	/**
+	 * Produces a String representation of the graph
+	 *
+	 * @return	String	The graph
+	 */
+	public override String toString()
+	{
+		if ( parentsByChildren.isEmpty() )
+		{
+			return 'Empty Graph';
+		}
+
+		List<String> relationships = new List<String>();
+
+		for ( Object thisChild : parentsByChildren.keySet() )
+		{
+			List<String> parents = ListUtils.convertToListOfStrings( parentsByChildren.get( thisChild ) );
+
+			String description;
+			if ( parents.size() == 0 )
+			{
+				description = String.valueOf( thisChild ) + ' is not a child';
+			}
+			else
+			{
+				description = String.valueOf( thisChild ) + ' is a child of ' + String.join( parents, ', ' );
+			}
+			relationships.add( description );
+		}
+		return String.join( relationships, '\n' );
 	}
 
 	/**

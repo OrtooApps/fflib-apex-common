@@ -1,7 +1,7 @@
 /**
  * Provides the ability to perform no action in a Process Builder built process
  */
-public class NullAction
+public inherited sharing class NullAction
 {
     /**
     * Allows a Process Builder or Flow action to 'Do Nothing'

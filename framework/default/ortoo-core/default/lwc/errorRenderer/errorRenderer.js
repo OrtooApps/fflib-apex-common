@@ -22,9 +22,29 @@ const displayError = function( error, options ) {
         message = error.message;
     }
 
-    // Apex Exceptions will have body.message set
+
+    // Apex Exceptions will have a body set
     if ( error.body ) {
-        message = error.body.message;
+
+		let messages = [];
+
+		if ( error.body.message ) {
+			messages.push( error.body.message );
+		}
+
+		if ( error.body.pageErrors?.length ) {
+			error.body.pageErrors.forEach( thisError => messages.push( thisError.message ) );
+		}
+
+		if ( error.body.fieldErrors?.length ) {
+			error.body.fieldErrors.forEach( thisError => messages.push( thisError.message ) );
+		}
+
+		if ( error.body.duplicateResults?.length ) {
+			error.body.duplicateResults.forEach( thisError => messages.push( thisError.message ) );
+		}
+
+		message = messages.length ? messages.join( ', ' ) : 'Unknown';
     }
 
     if ( this?.dispatchEvent == undefined ) {

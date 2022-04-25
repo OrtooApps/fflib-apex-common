@@ -2,7 +2,7 @@
 private without sharing class ListUtilsTest
 {
 	@isTest
-	private static void slice_whenGivenListAndPositiveStartAndEnd_willReturnASubsetList() // NOPMD: Test method name format
+	private static void slice_whenGivenListAndPositiveStartAndEnd_returnsASubsetList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -26,7 +26,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenListAndPositiveStartAndEndTheSame_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenListAndPositiveStartAndEndTheSame_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -50,7 +50,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenListAndNegativeStartAndEndTheSame_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenListAndNegativeStartAndEndTheSame_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -74,7 +74,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenStartBeyondTheEnd_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenStartBeyondTheEnd_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -86,7 +86,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenListAEndBeyondTheEnd_willReturnASubsetListToTheEnd() // NOPMD: Test method name format
+	private static void slice_whenGivenListAEndBeyondTheEnd_returnsASubsetListToTheEnd() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -98,7 +98,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenListAndNegativeStartBeyondTheStart_willReturnASubsetListFromTheStart() // NOPMD: Test method name format
+	private static void slice_whenGivenListAndNegativeStartBeyondTheStart_returnsASubsetListFromTheStart() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -110,7 +110,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenNegativeEndBeyondTheStartofTheList_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenNegativeEndBeyondTheStartofTheList_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -122,7 +122,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenAPositiveEndBeforeThePositiveStart_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenAPositiveEndBeforeThePositiveStart_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -134,7 +134,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenANegativeEndBeforeThePositiveStart_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenANegativeEndBeforeThePositiveStart_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -146,7 +146,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenAPositiveEndBeforeTheNegativeStart_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenAPositiveEndBeforeTheNegativeStart_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -158,7 +158,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void slice_whenGivenANegativeEndBeforeTheNegativeStart_willReturnAnEmptyList() // NOPMD: Test method name format
+	private static void slice_whenGivenANegativeEndBeforeTheNegativeStart_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -215,7 +215,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void trim_whenGivenListAndPositiveLength_willReturnASubsetList() // NOPMD: Test method name format
+	private static void trim_whenGivenListAndPositiveLength_returnsASubsetList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -227,7 +227,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void trim_whenGivenListAndNegativeLength_willReturnASubsetList() // NOPMD: Test method name format
+	private static void trim_whenGivenListAndNegativeLength_returnsASubsetList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -239,7 +239,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void trim_whenGivenListAndPositiveLengthGreaterThanTheLength_willReturnTheFullList() // NOPMD: Test method name format
+	private static void trim_whenGivenListAndPositiveLengthGreaterThanTheLength_returnsTheFullList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -249,7 +249,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void trim_whenGivenListAndNegativeLengthGreaterThanTheLength_willReturnTheFullList() // NOPMD: Test method name format
+	private static void trim_whenGivenListAndNegativeLengthGreaterThanTheLength_returnsTheFullList() // NOPMD: Test method name format
 	{
 		List<Integer> originalList = new List<Integer>{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -289,7 +289,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void getNumberOfUniqueIds_whenGivenAListAndIdField_willReturnACountOfTheUniqueIds() // NOPMD: Test method name format
+	private static void getNumberOfUniqueIds_whenGivenAListAndIdField_returnsACountOfTheUniqueIds() // NOPMD: Test method name format
 	{
 		List<Id> accountIds = new List<Id>{
 			TestIdUtils.generateId( Account.getSObjectType() ),
@@ -313,7 +313,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void getNumberOfUniqueIds_whenAFieldThatIsNotAnId_willReturnACountOfTheUniqueIds() // NOPMD: Test method name format
+	private static void getNumberOfUniqueIds_whenAFieldThatIsNotAnId_returnsACountOfTheUniqueIds() // NOPMD: Test method name format
 	{
 		List<Id> accountIds = new List<Id>{
 			TestIdUtils.generateId( Account.getSObjectType() ),
@@ -337,7 +337,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void getNumberOfUniqueIds_whenAFieldThatIsNotAnIdAndContainsNonIdData_willReturnACountOfTheUniqueIds() // NOPMD: Test method name format
+	private static void getNumberOfUniqueIds_whenAFieldThatIsNotAnIdAndContainsNonIdData_returnsACountOfTheUniqueIds() // NOPMD: Test method name format
 	{
 		List<Id> accountIds = new List<Id>{
 			TestIdUtils.generateId( Account.getSObjectType() ),
@@ -419,7 +419,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void convertToListOfStrings_whenGivenAListOfObjects_willReturnAListWithTheStringVersionsOfThem() // NOPMD: Test method name format
+	private static void convertToListOfStrings_listObject_whenGivenAListOfObjects_returnsAListOfStrings() // NOPMD: Test method name format
 	{
 		List<Object> listOfObjects = new List<Object>{
 			new StringableThing( 'one' ),
@@ -437,7 +437,7 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void convertToListOfStrings_whenGivenAnEmptyListOfObjects_willReturnAAnEmptyList() // NOPMD: Test method name format
+	private static void convertToListOfStrings_listObject_whenGivenAnEmptyListOfObjects_returnsAnEmptyList() // NOPMD: Test method name format
 	{
 		List<Object> emptyListOfObjects = new List<Object>();
 
@@ -449,13 +449,91 @@ private without sharing class ListUtilsTest
 	}
 
 	@isTest
-	private static void convertToListOfStrings_whenGivenNull_willReturnAAnEmptyList() // NOPMD: Test method name format
+	private static void convertToListOfStrings_listObject_whenGivenNull_returnsAnEmptyList() // NOPMD: Test method name format
 	{
+		List<Object> nullListOfObjects = null;
+
 		Test.startTest();
-			List<String> returnedList = ListUtils.convertToListOfStrings( null );
+			List<String> returnedList = ListUtils.convertToListOfStrings( nullListOfObjects );
 		Test.stopTest();
 
-		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given null, will return an empty list' );
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given null list of objects, will return an empty list' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setString_whenGivenASetOfStrings_returnsAListOfString() // NOPMD: Test method name format
+	{
+		Set<String> setOfStrings = new Set<String>{ 'one', 'two', 'three' };
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( setOfStrings );
+		Test.stopTest();
+
+		List<String> expectedList = new List<String>{ 'one', 'two', 'three' };
+
+		System.assertEquals( expectedList, returnedList, 'convertToListOfStrings, when given a set of strings, will return a list of the strings' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setString_whenGivenAnEmptySet_returnsAnEmptySet() // NOPMD: Test method name format
+	{
+		Set<String> emptySetOfStrings = new Set<String>();
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( emptySetOfStrings );
+		Test.stopTest();
+
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given an empty set of strings, will return an empty list' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setString_whenGivenNull_returnsAnEmptyList() // NOPMD: Test method name format
+	{
+		Set<String> nullSetOfStrings = null;
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( nullSetOfStrings );
+		Test.stopTest();
+
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given null set of strings, will return an empty list' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setObject_whenGivenASetOfStrings_returnsAListOfString() // NOPMD: Test method name format
+	{
+		Set<Object> setOfStrings = new Set<Object>{ 'one', 'two', 'three' };
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( setOfStrings );
+		Test.stopTest();
+
+		List<String> expectedList = new List<String>{ 'one', 'two', 'three' };
+
+		System.assertEquals( expectedList, returnedList, 'convertToListOfStrings, when given a set of Object, will return a list of the strings' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setObject_whenGivenAnEmptySet_returnsAnEmptySet() // NOPMD: Test method name format
+	{
+		Set<Object> emptySetOfStrings = new Set<Object>();
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( emptySetOfStrings );
+		Test.stopTest();
+
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given an empty set of Object, will return an empty list' );
+	}
+
+	@isTest
+	private static void convertToListOfStrings_setObject_whenGivenNull_returnsAnEmptyList() // NOPMD: Test method name format
+	{
+		Set<Object> nullSetOfObjects = null;
+
+		Test.startTest();
+			List<String> returnedList = ListUtils.convertToListOfStrings( nullSetOfObjects );
+		Test.stopTest();
+
+		System.assertEquals( new List<String>(), returnedList, 'convertToListOfStrings, when given null set of Object, will return an empty list' );
 	}
 
 	private inherited sharing class StringableThing {

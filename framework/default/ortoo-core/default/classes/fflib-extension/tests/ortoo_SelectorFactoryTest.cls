@@ -2,11 +2,11 @@
 private without sharing class ortoo_SelectorFactoryTest
 {
     @isTest
-    private static void getSelectorType_whenGivenARegisteredSobjectType_willReturnTheRegisteredClassTypeForIt() // NOPMD: Test method name format
+    private static void getSelectorType_whenGivenARegisteredSobjectType_returnsRegisteredTheClassType() // NOPMD: Test method name format
     {
-        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<SObjectType,Type>
+        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<String,String>
         {
-            Contact.SobjectType => RegisterableType.class
+            'Contact' => 'ortoo_SelectorFactoryTest.RegisterableType'
         });
 
         Test.startTest();
@@ -17,11 +17,26 @@ private without sharing class ortoo_SelectorFactoryTest
     }
 
     @isTest
+    private static void getSelectorType_whenGivenARegisteredLocalNamespacedSobjectType_returnsRegisteredTheClassType() // NOPMD: Test method name format
+    {
+        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<String,String>
+        {
+            'Application_Configuration__mdt' => 'ortoo_SelectorFactoryTest.RegisterableType'
+        });
+
+        Test.startTest();
+            Type registeredType = factory.getSelectorType( Application_Configuration__mdt.SobjectType );
+        Test.stopTest();
+
+        System.assertEquals( RegisterableType.class, registeredType, 'getSelectorType, when given a registered SObject type for the local namespace, will return the registered class type for it' );
+    }
+
+    @isTest
     private static void getSelectorType_whenGivenAnUnregisteredSobjectType_willReturnNull() // NOPMD: Test method name format
     {
-        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<SObjectType,Type>
+        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<String,String>
         {
-            Contact.SobjectType => RegisterableType.class
+            'Contact' => 'ortoo_SelectorFactoryTest.RegisterableType'
         });
 
         Test.startTest();
@@ -32,9 +47,9 @@ private without sharing class ortoo_SelectorFactoryTest
     }
 
     @isTest
-    private static void getDomainType_whenCalledWithNull_willThrowAnException() // NOPMD: Test method name format
+    private static void getSelectorType_whenCalledWithNull_willThrowAnException() // NOPMD: Test method name format
     {
-        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<SObjectType,Type>() );
+        ortoo_SelectorFactory factory = new ortoo_SelectorFactory( new Map<String,String>() );
 
         Test.startTest();
             String exceptionMessage;

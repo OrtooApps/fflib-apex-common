@@ -1,6 +1,8 @@
 /**
  * Provides the ability to create object factories that perform a simple Type to Type mapping with no constructor or configuration required.
  *
+ * Can be defined using either Type to Type or TypeName to TypeName (Strings)
+ *
  * Should not be referenced directly in code, but instead wrapped in another factory that defines the type name and whether the factory
  * should error when an unmapped type is passed in.
  *
@@ -10,11 +12,26 @@
  */
 public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified a mini-namespace to differentiate from fflib versions
 {
-	private Map<Type,Type>   implementationByType;
+	private Map<Type,Type> implementationByType;
+	private Map<String,String> implementationNameByTypeName;
 	private Map<Type,Object> mockByType;
 
 	private String typeName = 'Unknown';
 	private Boolean errorOnUnmappedType = true;
+
+	/**
+	 * Construct an instance using the given type ame to implementation name mapping
+	 *
+	 * @param	Map<String,String>	The Type name to Implementation name mapping
+	 */
+	public ortoo_SimpleObjectFactory( Map<String,String> implementationNameByTypeName )
+	{
+		Contract.requires( implementationNameByTypeName != null, 'ortoo_SimpleObjectFactory instantiated with a null implementationNameByTypeName' );
+
+		this.implementationNameByTypeName = implementationNameByTypeName;
+		this.implementationByType = new Map<Type,Type>();
+		this.mockByType = new Map<Type,Object>();
+	}
 
 	/**
 	 * Construct an instance using the given type to implementation mapping
@@ -25,6 +42,7 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 	{
 		Contract.requires( implementationByType != null, 'ortoo_SimpleObjectFactory instantiated with a null implementationByType' );
 
+		this.implementationNameByTypeName = new Map<String,String>();
 		this.implementationByType = implementationByType;
 		this.mockByType = new Map<Type,Object>();
 	}
@@ -75,7 +93,9 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 			return mockByType.get( requestedType );
 		}
 
-		if ( errorOnUnmappedType && ! implementationByType.containsKey( requestedType ) )
+		String requestedTypeName = ObjectUtils.stripLocalNamespace( requestedType.getName() );
+
+		if ( errorOnUnmappedType && ! implementationByType.containsKey( requestedType ) && ! implementationNameByTypeName.containsKey( requestedTypeName ) )
 		{
 			throw new Exceptions.DeveloperException( 'No implementation registered for ' + typeName + ' ' + requestedType )
 						.setErrorCode( FrameworkErrorCodes.FACTORY_NO_IMPLEMENTATION_REGISTERED )
@@ -88,6 +108,19 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 		{
 			typeToConstruct = implementationByType.get( requestedType );
 		}
+		else if ( implementationNameByTypeName.containsKey( requestedTypeName ) )
+		{
+			String typeToConstructName = implementationNameByTypeName.get( requestedTypeName );
+			typeToConstruct = Type.forName( typeToConstructName );
+			if ( typeToConstruct == null )
+			{
+				throw new Exceptions.DeveloperException( 'Invalid implementation registered for ' + typeName + ' ' + requestedTypeName + ': ' + typeToConstructName + ' does not exist, or is not visible' )
+					.setErrorCode( FrameworkErrorCodes.FACTORY_INVALID_IMPLEMENTATION_REGISTERED )
+					.addContext( 'typeName', typeName )
+					.addContext( 'requestedType', requestedType );
+			}
+			implementationByType.put( requestedType, typeToConstruct );
+		}
 
 		Object constructedObject;
 		try
@@ -96,7 +129,7 @@ public inherited sharing class ortoo_SimpleObjectFactory    // NOPMD: specified 
 		}
 		catch ( Exception e )
 		{
-			throw new Exceptions.DeveloperException( 'Implementation registered for ' + typeName + ' ' + requestedType + ':' + typeToConstruct + ' does not have parameterless constructor', e )
+			throw new Exceptions.DeveloperException( 'Implementation registered for ' + typeName + ' ' + requestedType + ':' + typeToConstruct + ' does not have parameterless constructor or cannot be constructed', e )
 							.setErrorCode( FrameworkErrorCodes.FACTORY_NO_PARAMETERLESS_CONSTRUCTOR )
 							.addContext( 'typeName', typeName )
 							.addContext( 'requestedType', requestedType )

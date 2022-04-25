@@ -115,4 +115,24 @@ public inherited sharing class StringUtils
 
 		return String.join( ListUtils.convertToListOfStrings( listOfObjects ), delimiter );
 	}
+
+	/**
+	 * Given a String, will safely cut it to the desired length, returning the original string if it is already shorter
+	 *
+	 * @param	String	The string to cut
+	 * @param	Integer	The length to cut the string to
+	 * @return	String	The cut string
+	 */
+	public static String cut( String originalString, Integer length )
+	{
+		Contract.requires( originalString != null, 'cut called with a null originalString' );
+		Contract.requires( length != null, 'cut called with a null length' );
+		Contract.requires( length >= 0, 'cut called with a negative length' );
+
+		if ( originalString.length() < length )
+		{
+			return originalString;
+		}
+		return originalString.substring( 0, length );
+	}
 }

@@ -19,6 +19,7 @@ public inherited sharing class ObjectUtils
 		String result = 'DateTime';
 		try
 		{
+			System.debug( 'If "System.TypeException: Invalid conversion ... to DateTime" is seen in the logs, this may be due to an attempt to find the class name of an object' );
 			DateTime typeCheck = (DateTime)obj;
 		}
 		catch ( System.TypeException te )
@@ -84,5 +85,23 @@ public inherited sharing class ObjectUtils
 		Contract.assert( returnType != null, 'getParentClassType called with a type that does not represent an inner class in a publically accessible class' );
 
 		return returnType;
+	}
+
+	/**
+	 * Given the name of a class, will strip the local namespace prefix from it,
+	 * if that namespace is present.
+	 *
+	 * @param	String	The className to strip the namespace from
+	 * @return	String	The className with the namespace stripped
+	 */
+	public static String stripLocalNamespace( String className )
+	{
+		Contract.requires( String.isNotBlank( className ), 'stripLocalNamespace called with a blank className' );
+
+		if ( className.startsWithIgnoreCase( PackageUtils.NAMESPACE_PREFIX + '.' ) )
+		{
+			return className.substringAfter( '.' );
+		}
+		return className;
 	}
 }

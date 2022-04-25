@@ -15,18 +15,17 @@ public inherited sharing class ortoo_ChildRecordFinderFactory    // NOPMD: speci
 	 */
 	public ortoo_ChildRecordFinderFactory()
 	{
-		this( new Map<Type,Type>() );
+		this( new Map<String,String>() );
 	}
 
 	/**
 	 * Construct an instance using the given type to implementation mapping
 	 *
-	 * @param	Map<Type,Type>	The Type to Implementation mapping
+	 * @param	Map<String,String>	The Type to Implementation mapping
 	 */
-	public ortoo_ChildRecordFinderFactory( Map<Type,Type> childRecordFinderPerType )
+	public ortoo_ChildRecordFinderFactory( Map<String,String> childRecordFinderPerType )
 	{
 		Contract.requires( childRecordFinderPerType != null, 'ortoo_ChildRecordFinderFactory instantiated with a null childRecordFinderPerType' );
-
 
 		factory = new ortoo_SimpleObjectFactory( childRecordFinderPerType )
 						.setTypeName( 'Child Finder' )

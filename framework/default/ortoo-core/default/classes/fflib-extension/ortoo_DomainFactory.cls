@@ -6,6 +6,11 @@
  * the domain type for a given Sobject type.  This is useful for the generic registration
  * of mocks.
  *
+ * Unlike the SelectorFactory, this factory requires that types be fully set up prior to instantiation
+ * of a single instance.  This is because of the inherent complexity involved in building the
+ * Domain configuration and instance.  If there is a start-up performance problem, then
+ * this can be changed.
+ *
  * @group fflib Extension
  */
 public inherited sharing class ortoo_DomainFactory extends fflib_Application.DomainFactory // NOPMD: specified a mini-namespace to differentiate from fflib versions
