@@ -7,7 +7,7 @@ The following Open Source libraries were utilised either wholly, or in part, in 
 * SObject Fabricator - https://github.com/bobalicious/SObjectFabricator
 
 
-* Amoss - https://github.com/bobalicious/amoss/blob/main/LICENSE
+* Amoss - https://github.com/bobalicious/amoss
 ------------------------------------------------------------------------------------------------
 MIT License
 
@@ -32,7 +32,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-* Apex Domain Builder - https://github.com/rsoesemann/apex-domainbuilder/blob/master/LICENSE
+* Apex Domain Builder - https://github.com/rsoesemann/apex-domainbuilder
 ------------------------------------------------------------------------------------------------
 MIT License
 
@@ -57,7 +57,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-* FFLib - https://github.com/apex-enterprise-patterns/fflib-apex-common/blob/master/LICENSE
+* FFLib - https://github.com/apex-enterprise-patterns/fflib-apex-common
 ------------------------------------------------------------------------------------------------
 Copyright (c), FinancialForce.com, inc
 All rights reserved.
@@ -84,7 +84,7 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGEN
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-* FFLib Apex Extensions - https://github.com/wimvelzeboer/fflib-apex-extensions/blob/main/LICENSE
+* FFLib Apex Extensions - https://github.com/wimvelzeboer/fflib-apex-extensions
 ------------------------------------------------------------------------------------------------
 BSD 3-Clause License
 
@@ -117,7 +117,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-SObject Fabricator - https://github.com/bobalicious/SObjectFabricator/blob/master/LICENSE
+SObject Fabricator - https://github.com/bobalicious/SObjectFabricator
 ------------------------------------------------------------------------------------------------
 MIT License
 
