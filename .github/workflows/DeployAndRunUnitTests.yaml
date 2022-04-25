@@ -67,8 +67,15 @@ jobs:
 
       # Run Apex Unit Tests
 
-      - name: Run Apex Unit Tests
-        run: sfdx force:apex:test:run -r human -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}" --wait 20 | grep -v ' Pass   '; test ${PIPESTATUS[0]} -eq 0
+      - name: Run All Unit Tests
+        run: ./scripts/std_batch/RunApexUnitTests.sh "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+        shell: bash
+
+      # Get Apex Code Coverage Numbers
+
+      - name: Get Apex Code Coverage
+        run: ./scripts/std_batch/GetApexCodeCoverage.sh "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+        shell: sh
 
       # Prepare Jest Modules
 
