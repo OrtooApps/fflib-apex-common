@@ -1,5 +1,6 @@
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import ERROR_TITLE from '@salesforce/label/c.ortoo_core_error_title';
+import DEFAULT_ERROR_PREFIX from '@salesforce/label/c.ortoo_core_default_error_prefix';
 
 /**
  * When bound to a Lightning Web Component, will render the given error object.
@@ -7,7 +8,7 @@ import ERROR_TITLE from '@salesforce/label/c.ortoo_core_error_title';
 const displayError = function( error, options ) {
 
     const title = options?.title ? options.title : ERROR_TITLE;
-    const messagePrefix = options?.messagePrefix ? options.messagePrefix + ': ' : '';
+    const messagePrefix = options?.messagePrefix ? options.messagePrefix + ': ' : DEFAULT_ERROR_PREFIX;
     const mode = options?.mode ? options.mode : 'sticky';
     const variant = options?.variant ? options.variant : 'error';
 

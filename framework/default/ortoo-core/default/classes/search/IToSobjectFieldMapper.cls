@@ -7,10 +7,7 @@
  *      * How to map from the result set fields to internal SObject fields
  *      * Which Base SObject is used to derive a record in the result set
  */
-public interface ISearchConfiguration extends IToSobjectFieldMapper
+public interface IToSobjectFieldMapper
 {
-    List<String> getRequiredFields();
-    List<String> getSortableFields();
     String getMappedSobjectField( String resultField );
-    SobjectType getBaseSobjectType();
 }

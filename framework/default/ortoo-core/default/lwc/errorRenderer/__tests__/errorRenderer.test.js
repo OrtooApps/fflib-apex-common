@@ -29,7 +29,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( error );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefix' + error );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -58,7 +58,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'javascript error format' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixjavascript error format' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -89,7 +89,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'An error message in the body' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixAn error message in the body' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -132,7 +132,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'body message 1, page error 1, page error 2, field error 1, field error 2, duplicate result 1, duplicate result 2' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixbody message 1, page error 1, page error 2, field error 1, field error 2, duplicate result 1, duplicate result 2' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -192,7 +192,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'An error string' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixAn error string' );
         expect( dispatchedEvent.detail.variant ).toBe( 'warning' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -222,7 +222,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( options.title );
-        expect( dispatchedEvent.detail.message ).toBe( error );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefix' + error );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'sticky' );
 
@@ -252,7 +252,7 @@ describe('displayError', () => {
         const dispatchedEvent = objectToRunAgainst.dispatchEvent.mock.calls[0][0];
 
         expect( dispatchedEvent.detail.title ).toBe( 'c.ortoo_core_error_title' );
-        expect( dispatchedEvent.detail.message ).toBe( 'An error string' );
+        expect( dispatchedEvent.detail.message ).toBe( 'c.ortoo_core_default_error_prefixAn error string' );
         expect( dispatchedEvent.detail.variant ).toBe( 'error' );
         expect( dispatchedEvent.detail.mode ).toBe( 'pester' );
 

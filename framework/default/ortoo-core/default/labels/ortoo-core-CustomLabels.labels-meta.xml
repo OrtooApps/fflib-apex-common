@@ -141,6 +141,13 @@
         <value>Error</value>
     </labels>
     <labels>
+        <fullName>ortoo_core_default_error_prefix</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The default prefix that is presented on errors in LWCs.</shortDescription>
+        <value>Your action could not be completed: </value>
+    </labels>
+    <labels>
         <fullName>ortoo_core_search_button_label</fullName>
         <language>en_US</language>
         <protected>false</protected>
