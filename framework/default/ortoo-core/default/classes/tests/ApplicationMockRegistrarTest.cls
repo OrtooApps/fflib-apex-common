@@ -2,6 +2,26 @@
 private without sharing class ApplicationMockRegistrarTest
 {
     @isTest
+    private static void registerMockUnitOfWork_willGenerateAMockAndReturnIt() // NOPMD: Test method name format
+    {
+        Test.startTest();
+            Amoss_Instance mockController = ApplicationMockRegistrar.registerMockUnitOfWork();
+        Test.stopTest();
+
+        System.assertEquals( mockController.getDouble(), Application.UNIT_OF_WORK.newInstance(), 'registerMockUnitOfWork, will register is as a mock UOW so that its double is returned by the factory' );
+    }
+
+    @isTest
+    private static void registerMockDynamicUnitOfWork_willGenerateAMockAndReturnIt() // NOPMD: Test method name format
+    {
+        Test.startTest();
+            Amoss_Instance mockController = ApplicationMockRegistrar.registerMockDynamicUnitOfWork();
+        Test.stopTest();
+
+        System.assertEquals( mockController.getDouble(), Application.DYNAMIC_UNIT_OF_WORK.newInstance(), 'registerMockDynamicUnitOfWork, will register is as a mock UOW so that its double is returned by the factory' );
+    }
+
+    @isTest
     private static void registerMockService_whenGivenAServiceType_willGenerateAMockAndReturnIt() // NOPMD: Test method name format
     {
         Test.startTest();

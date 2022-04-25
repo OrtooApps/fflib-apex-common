@@ -7,13 +7,28 @@ public inherited sharing class Application {
 
 	public class InvalidApplicationConfigurationException extends Exceptions.DeveloperException {}
 
-	public final static ortoo_UnitOfWorkFactory UNIT_OF_WORK {
-		get {
+	public final static ortoo_UnitOfWorkFactory UNIT_OF_WORK
+	{
+		get
+		{
 			if ( UNIT_OF_WORK == null )
 			{
 				UNIT_OF_WORK = new ortoo_UnitOfWorkFactory(); // is created with no default since that needs to be defined by the consumer
 			}
 			return UNIT_OF_WORK;
+		}
+		set;
+	}
+
+	public final static ortoo_DynamicUnitOfWorkFactory DYNAMIC_UNIT_OF_WORK
+	{
+		get
+		{
+			if ( DYNAMIC_UNIT_OF_WORK == null )
+			{
+				DYNAMIC_UNIT_OF_WORK = new ortoo_DynamicUnitOfWorkFactory();
+			}
+			return DYNAMIC_UNIT_OF_WORK;
 		}
 		set;
 	}
