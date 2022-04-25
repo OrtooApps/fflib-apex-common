@@ -26,16 +26,16 @@ public inherited sharing class SearchOrderByTest
 			'fieldName' => 'sourceFieldName',
 			'direction' => 'asc'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.expects( 'getMappedSobjectField' )
 			.withParameter( 'sourceFieldName' )
 			.returning( 'targetFieldName' );
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -52,14 +52,14 @@ public inherited sharing class SearchOrderByTest
 		Map<String,Object> properties = new Map<String,Object>{
 			'direction' => 'asc'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.expectsNoCalls();
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -77,14 +77,14 @@ public inherited sharing class SearchOrderByTest
 			'fieldName' => '',
 			'direction' => 'asc'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.expectsNoCalls();
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -102,15 +102,15 @@ public inherited sharing class SearchOrderByTest
 			'fieldName' => 'unmapped',
 			'direction' => 'asc'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.when( 'getMappedSobjectField' )
 			.returns( null );
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -127,15 +127,15 @@ public inherited sharing class SearchOrderByTest
 		Map<String,Object> properties = new Map<String,Object>{
 			'fieldName' => 'source'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.when( 'getMappedSobjectField' )
 			.returns( 'target' );
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -153,15 +153,15 @@ public inherited sharing class SearchOrderByTest
 			'fieldName' => 'source',
 			'direction' => 'asc'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.when( 'getMappedSobjectField' )
 			.returns( 'target' );
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -177,15 +177,15 @@ public inherited sharing class SearchOrderByTest
 			'fieldName' => 'source',
 			'direction' => 'desc'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.when( 'getMappedSobjectField' )
 			.returns( 'target' );
 
 		Test.startTest();
-			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, configurationType );
+			SearchOrderBy orderBy = new SearchOrderBy().configure( properties, fieldMapperType );
 		Test.stopTest();
 
 		configurationController.verify();
@@ -201,9 +201,9 @@ public inherited sharing class SearchOrderByTest
 			'fieldName' => 'source',
 			'direction' => 'invalid'
 		};
-		Type configurationType = ISearchConfiguration.class;
+		Type fieldMapperType = IToSobjectFieldMapper.class;
 
-		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( configurationType );
+		Amoss_Instance configurationController = ApplicationMockRegistrar.registerMockAppLogic( fieldMapperType );
 		configurationController
 			.when( 'getMappedSobjectField' )
 			.returns( 'target' );
@@ -212,7 +212,7 @@ public inherited sharing class SearchOrderByTest
 			String exceptionMessage;
 			try
 			{
-				new SearchOrderBy().configure( properties, configurationType );
+				new SearchOrderBy().configure( properties, fieldMapperType );
 			}
 			catch ( Contract.AssertException e )
 			{
@@ -230,7 +230,7 @@ public inherited sharing class SearchOrderByTest
 			String exceptionMessage;
 			try
 			{
-				new SearchOrderBy().configure( null, ISearchConfiguration.class );
+				new SearchOrderBy().configure( null, IToSobjectFieldMapper.class );
 			}
 			catch ( Contract.RequiresException e )
 			{
@@ -256,7 +256,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'configure called with a null searchConfigurationType', exceptionMessage, 'configure, when passed a null searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with a null toSobjectFieldMapperType', exceptionMessage, 'configure, when passed a null toSobjectFieldMapperType, will throw an exception' );
 	}
 
 	@isTest
@@ -274,7 +274,7 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'configure called with a searchConfigurationType ('+SearchOrderByTest.class+') that does not implement ISearchConfiguration or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with an Sobject Field Mapper ('+SearchOrderByTest.class+') that does not implement IToSobjectFieldMapper or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid toSobjectFieldMapperType, will throw an exception' );
 	}
 
 	@isTest
@@ -292,27 +292,24 @@ public inherited sharing class SearchOrderByTest
 			}
 		Test.stopTest();
 
-		ortoo_Asserts.assertContains( 'configure called with a searchConfigurationType ('+SearchOrderByTest.NoParameterlessConstructor.class+') that does not implement ISearchConfiguration or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid searchConfigurationType, will throw an exception' );
+		ortoo_Asserts.assertContains( 'configure called with an Sobject Field Mapper ('+SearchOrderByTest.NoParameterlessConstructor.class+') that does not implement IToSobjectFieldMapper or does not have a parameterless constructor', exceptionMessage, 'configure, when passed an invalid toSobjectFieldMapperType, will throw an exception' );
 	}
 
+	@isTest
+	private static void nullToSobjectFieldMapper_getMappedSobjectField_whenCalled_returnsWhatWasPassedIn() // NOPMD: Test method name format
+	{
+		Test.startTest();
+			String got = new SearchOrderBy.NullToSobjectFieldMapper().getMappedSobjectField( 'expected' );
+		Test.stopTest();
 
-	class NoParameterlessConstructor implements ISearchConfiguration
+		System.assertEquals( 'expected', got, 'NullToSobjectFieldMapper_getMappedSobjectField, when called, will return what was passed in' );
+	}
+
+	class NoParameterlessConstructor implements IToSobjectFieldMapper
 	{
 		public NoParameterlessConstructor( String parameter ) {}
 
-		public List<String> getRequiredFields()
-		{
-			return null;
-		}
-		public List<String> getSortableFields()
-		{
-			return null;
-		}
 		public String getMappedSobjectField( String resultField )
-		{
-			return null;
-		}
-		public SobjectType getBaseSobjectType()
 		{
 			return null;
 		}

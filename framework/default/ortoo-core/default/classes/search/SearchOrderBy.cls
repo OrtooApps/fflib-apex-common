@@ -17,32 +17,28 @@ public inherited sharing class SearchOrderBy
 	{
 		Contract.requires( properties != null, 'configure called with a null properties' );
 
-		return configure( properties, NullSearchConfiguration.class );
+		return configure( properties, NullToSobjectFieldMapper.class );
 	}
-
-	// TODO: add the interface IToSobjectFieldMapper
-	// TODO: Have ISearchConfiguration extend that
-	// TODO: Simplify NullSearchConfiguration and change to NullToSobjectFieldMapper
 
 	/**
 	 * Configures the order by, defining its properties and the search configuration that defines the mappability
 	 *
 	 * @param	Map<String,Object>	The properties of the window.  Should contain 'fieldName' and 'offset' properties as Strings
-	 * @param   Type				The type of the SearchConfiguration object that should be used to determine the field mappings
+	 * @param   Type				The type of the IToSobjectFieldMapper object that should be used to determine the field mappings
 	 * @return	SearchOrderBy		Itself, allowing for a fluent interface
 	 */
-	public SearchOrderBy configure( Map<String,Object> properties, Type searchConfigurationType )
+	public SearchOrderBy configure( Map<String,Object> properties, Type toSobjectFieldMapperType )
 	{
 		Contract.requires( properties != null, 'configure called with a null properties' );
-		Contract.requires( searchConfigurationType != null, 'configure called with a null searchConfigurationType' );
+		Contract.requires( toSobjectFieldMapperType != null, 'configure called with a null toSobjectFieldMapperType' );
 
-		ISearchConfiguration searchConfiguration;
+		IToSobjectFieldMapper toSobjectFieldMapper;
 
 		try
 		{
-			searchConfiguration = (ISearchConfiguration)Application.APP_LOGIC.newInstance( searchConfigurationType );
+			toSobjectFieldMapper = (IToSobjectFieldMapper)Application.APP_LOGIC.newInstance( toSobjectFieldMapperType );
 		} catch ( Exception e ) {
-			Contract.assert( false, 'configure called with a searchConfigurationType ('+searchConfigurationType+') that does not implement ISearchConfiguration or does not have a parameterless constructor' );
+			Contract.assert( false, 'configure called with an Sobject Field Mapper ('+toSobjectFieldMapperType+') that does not implement IToSobjectFieldMapper or does not have a parameterless constructor' );
 		}
 
 		String resultsFieldName = (String)properties.get( 'fieldName' );
@@ -58,7 +54,7 @@ public inherited sharing class SearchOrderBy
 
 		if ( String.isNotBlank( resultsFieldName ) )
 		{
-			String mappedFieldName = searchConfiguration.getMappedSobjectField( resultsFieldName );
+			String mappedFieldName = toSobjectFieldMapper.getMappedSobjectField( resultsFieldName );
 
 			if ( String.isNotBlank( mappedFieldName ) )
 			{
@@ -82,26 +78,11 @@ public inherited sharing class SearchOrderBy
 	/**
 	 * Null object implementation of the SearchConfiguration which allows unmapped Sobject fields to be used.
 	 */
-	public class NullSearchConfiguration implements ISearchConfiguration
+	public class NullToSobjectFieldMapper implements IToSobjectFieldMapper
 	{
 		public String getMappedSobjectField( String resultField )
 		{
 			return resultField;
-		}
-
-		public List<String> getRequiredFields()
-		{
-			return new List<String>();
-		}
-
-		public List<String> getSortableFields()
-		{
-			return new List<String>();
-		}
-
-		public SobjectType getBaseSobjectType()
-		{
-			return null;
 		}
 	}
 }
