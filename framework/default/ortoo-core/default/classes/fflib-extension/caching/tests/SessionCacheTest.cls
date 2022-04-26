@@ -120,4 +120,19 @@ private without sharing class SessionCacheTest
 		System.assertEquals( false, new SessionCache().contains( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking contains' );
 		System.assertEquals( null, new SessionCache().get( 'keythatneverexisted' ), 'remove, when called for a key that was put, will remove it - checking get' );
 	}
+
+	@isTest
+	private static void removeAll_whenCalled_removesEverythingFromTheCache() // NOPMD: Test method name format
+	{
+		new SessionCache().put( 'key1', '1', DEFAULT_LIFESPAN );
+		new SessionCache().put( 'key2', '2', DEFAULT_LIFESPAN );
+		new SessionCache().put( 'key3', '3', DEFAULT_LIFESPAN );
+
+		SessionCache cache = new SessionCache();
+		cache.removeAll();
+
+		System.assertEquals( false, new SessionCache().contains( 'key1' ), 'remove, when called for a key that was put, will remove it - checking contains' );
+		System.assertEquals( false, new SessionCache().contains( 'key2' ), 'remove, when called for a key that was put, will remove it - checking contains' );
+		System.assertEquals( false, new SessionCache().contains( 'key3' ), 'remove, when called for a key that was put, will remove it - checking contains' );
+	}
 }

@@ -93,6 +93,19 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 		Cache.Session.remove( key );
 	}
 
+	/**
+	 * Instructs the cache to remove all objects from the cache.
+	 *
+	 * Is useful for clearing the cache out completely when the majority of entries would otherwise be dirty.
+	 */
+    public void removeAll()
+    {
+        for ( String thisKey : Cache.Session.getKeys() )
+        {
+            Cache.Session.remove( thisKey );
+        }
+    }
+
 	private String createFullyQualifiedPartitionName()
 	{
 		return Cache.SessionPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME );
