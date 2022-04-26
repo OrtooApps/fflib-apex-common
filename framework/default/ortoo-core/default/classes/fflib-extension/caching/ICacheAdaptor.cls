@@ -12,6 +12,8 @@ public interface ICacheAdaptor
 	Boolean hasAccessToCache();
 	Boolean isACache();
 	Object get( String key );
+	Object get( String key, DateTime minimumDateTime );
+	Object get( String key, Long maximumAgeInSeconds );
 	void put( String key, Object value, Integer lifespan );
 	Boolean contains( String key );
 	void remove( String key );

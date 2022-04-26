@@ -1,10 +1,8 @@
 TODO:
 	* Combine the DateTimeUtils and DateLiterals where appropriate
 	* Document TestDateTimeUtils and how to set now and today
-	* Test ageing using dates on the OrgCache
-	* Implement ageing into the SessionCache
-	* Add the aged get definitions into ICacheAdaptor
 	* Add 'maximum age' into CachedSoqlExecutor
+	* Consider a superclass for OrgCache and SessionCache?
 
 
 

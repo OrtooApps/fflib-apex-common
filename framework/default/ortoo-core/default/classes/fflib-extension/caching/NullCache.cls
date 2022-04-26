@@ -22,6 +22,16 @@ public inherited sharing class NullCache implements ICacheAdaptor
 		return null;
 	}
 
+	public Object get( String key, DateTime minimumDateTime )
+	{
+		return null;
+	}
+
+	public Object get( String key, Long maximumAgeInSeconds )
+	{
+		return null;
+	}
+
 	public Set<String> getKeys()
 	{
 		return new Set<String>();

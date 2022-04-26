@@ -4,7 +4,7 @@ private without sharing class OrgCacheTest
 	private final static Integer DEFAULT_LIFESPAN = 1000;
 	private final static DateTime BASE_TIME = DateTime.newInstanceGmt( 1974, 08, 24, 22, 45, 00 );
 	private final static Long NULL_AGE = null;
-	private final static DateTime NULL_MAX_DATE_TIME = null;
+	private final static DateTime NULL_MIN_DATE_TIME = null;
 
 	@isTest
 	private static void hasAccessToCache_whenCalledByUserWithCacheAccess_returnsTrue() // NOPMD: Test method name format
@@ -314,7 +314,7 @@ private without sharing class OrgCacheTest
 		Cache.Org.put( cacheInstance.createFullyQualifiedKey( 'key' ), cachedObject );
 
 		Test.startTest();
-			Object got = cacheInstance.get( 'key', NULL_MAX_DATE_TIME );
+			Object got = cacheInstance.get( 'key', NULL_MIN_DATE_TIME );
 		Test.stopTest();
 
 		System.assertEquals( cachedObject, got, 'get, passing minimumDateTime, when no time is specified and the cached value has no age, will return the value' );
