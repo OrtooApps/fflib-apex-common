@@ -2,13 +2,9 @@
 private without sharing class OrgCacheTest
 {
 	private final static Integer DEFAULT_LIFESPAN = 1000;
-
-	// if age on retrieve is too old, returns null
-	// if age on retrieve is exactly the right age, returns value
-	// if age on retrieve is young enough, returns value
-	// retrieving does not reset the age
-	// if object is not a CacheEntry and no age specified, returns value
-	// if object is not a CacheEntry and an age specified, returns null
+	private final static DateTime BASE_TIME = DateTime.newInstanceGmt( 1974, 08, 24, 22, 45, 00 );
+	private final static Long NULL_AGE = null;
+	private final static DateTime NULL_MAX_DATE_TIME = null;
 
 	@isTest
 	private static void hasAccessToCache_whenCalledByUserWithCacheAccess_returnsTrue() // NOPMD: Test method name format
@@ -95,6 +91,251 @@ private without sharing class OrgCacheTest
 		System.assertEquals( expected, got, 'get, when called with a key that is in the cache, will return it' );
 	}
 
+	@isTest
+	private static void get_whenTheCachedValueHasNoAge_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cacheInstance = new OrgCache();
+
+		Cache.Org.put( cacheInstance.createFullyQualifiedKey( 'key' ), cachedObject );
+
+		Test.startTest();
+			Object got = cacheInstance.get( 'key' );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, when the cached value has no age, will return the value' );
+	}
+
+	@isTest
+	private static void get_maxAge_whenTheEntryIsTooOld_returnsNull() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			TestDateTimeUtils.addToCurrentTime( 100 );
+			Object got = cache.get( 'key', 50 );
+		Test.stopTest();
+
+		System.assertEquals( null, got, 'get, passing maximumAge, when the entry is older than the stated number of seconds, will return null' );
+	}
+
+	@isTest
+	private static void get_maxAge_whenTheEntryIsExactlyRight_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			TestDateTimeUtils.addToCurrentTime( 100 );
+			Object got = cache.get( 'key', 100 );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, passing maximumAge, when the entry is exactly the stated number of seconds, will return the cached value' );
+	}
+
+	@isTest
+	private static void get_maxAge_whenTheEntryIsYounger_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			Object got = cache.get( 'key', 100 );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, passing maximumAge, when the entry is younger than the stated number of seconds, will return the cached value' );
+	}
+
+	@isTest
+	private static void get_maxAge_doesNotResetTheAge() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			cache.get( 'key', 100 );
+
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			cache.get( 'key', 100 );
+
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			Object got = cache.get( 'key', 100 );
+		Test.stopTest();
+
+		System.assertEquals( null, got, 'get, passing maximumAge, does not reset the age of the cached entity, so when its too old it returns null' );
+	}
+
+	@isTest
+	private static void get_maxAge_whenNoAgeSpecifiedAndTheCachedValueHasNoAge_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cacheInstance = new OrgCache();
+
+		Cache.Org.put( cacheInstance.createFullyQualifiedKey( 'key' ), cachedObject );
+
+		Test.startTest();
+			Object got = cacheInstance.get( 'key', NULL_AGE );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, passing maximumAge, when no age is specified and the cached value has no age, will return the value' );
+	}
+
+	@isTest
+	private static void get_maxAge_whenAgeSpecifiedAndTheCachedValueHasNoAge_returnsNull() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cacheInstance = new OrgCache();
+
+		Cache.Org.put( cacheInstance.createFullyQualifiedKey( 'key' ), cachedObject );
+
+		Test.startTest();
+			Object got = cacheInstance.get( 'key', 100 );
+		Test.stopTest();
+
+		System.assertEquals( null, got, 'get, passing maximumAge, when an age is specified and the cached value has no age, will return null' );
+	}
+
+	@isTest
+	private static void get_minDateTime_whenTheEntryIsTooOld_returnsNull() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			Object got = cache.get( 'key', BASE_TIME.addSeconds( 50 ) );
+		Test.stopTest();
+
+		System.assertEquals( null, got, 'get, passing minimumDateTime, when the entry is older than the stated time, will return null' );
+	}
+
+	@isTest
+	private static void get_minDateTime_whenTheEntryIsExactlyRight_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			Object got = cache.get( 'key', BASE_TIME );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, passing minimumDateTime, when the entry is exactly the stated time, will return the cached value' );
+	}
+
+	@isTest
+	private static void get_minDateTime_whenTheEntryIsYounger_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			Object got = cache.get( 'key', BASE_TIME.addSeconds( -50 ) );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, passing minimumDateTime, when the entry is younger than the stated time, will return the cached value' );
+	}
+
+	@isTest
+	private static void get_minDateTime_doesNotResetTheAge() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cache = new OrgCache();
+
+		TestDateTimeUtils.setCurrentDateTime( BASE_TIME );
+		cache.put( 'key', cachedObject, DEFAULT_LIFESPAN );
+
+		Test.startTest();
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			cache.get( 'key', BASE_TIME.addSeconds( -50 ) );
+
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			cache.get( 'key', BASE_TIME.addSeconds( -100 ) );
+
+			TestDateTimeUtils.addToCurrentTime( 50 );
+			Object got = cache.get( 'key', BASE_TIME.addSeconds( 100 ) );
+		Test.stopTest();
+
+		System.assertEquals( null, got, 'get, passing minimumDateTime, does not reset the age of the cached entity, so when its too old it returns null' );
+	}
+
+	@isTest
+	private static void get_minDateTime_whenNoAgeSpecifiedAndTheCachedValueHasNoAge_returnsTheValue() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cacheInstance = new OrgCache();
+
+		Cache.Org.put( cacheInstance.createFullyQualifiedKey( 'key' ), cachedObject );
+
+		Test.startTest();
+			Object got = cacheInstance.get( 'key', NULL_MAX_DATE_TIME );
+		Test.stopTest();
+
+		System.assertEquals( cachedObject, got, 'get, passing minimumDateTime, when no time is specified and the cached value has no age, will return the value' );
+	}
+
+	@isTest
+	private static void get_minDateTime_whenAgeSpecifiedAndTheCachedValueHasNoAge_returnsNull() // NOPMD: Test method name format
+	{
+		setupAccessToSoqlCache( true );
+		String cachedObject = 'thecachedthing';
+
+		OrgCache cacheInstance = new OrgCache();
+
+		Cache.Org.put( cacheInstance.createFullyQualifiedKey( 'key' ), cachedObject );
+
+		Test.startTest();
+			Object got = cacheInstance.get( 'key', BASE_TIME.addSeconds( 100 ) );
+		Test.stopTest();
+
+		System.assertEquals( null, got, 'get, passing minimumDateTime, when a time is specified and the cached value has no age, will return null' );
+	}
 
 	@isTest
 	private static void put_whenTheUserDoesNotHaveAccessToTheCache_throwsAnException() // NOPMD: Test method name format

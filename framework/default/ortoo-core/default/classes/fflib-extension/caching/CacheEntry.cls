@@ -5,11 +5,11 @@ public inherited sharing class CacheEntry
 	Long   createdOnEpoch;
 	Object value;
 
-	private Long age
+	private Long ageInSeconds
 	{
 		get
 		{
-			return DateTimeUtils.getEpochTime() - this.createdOnEpoch ;
+			return DateTimeUtils.getEpochTime() - this.createdOnEpoch;
 		}
 	}
 
@@ -19,10 +19,11 @@ public inherited sharing class CacheEntry
 		this.createdOnEpoch = DateTimeUtils.getEpochTime();
 	}
 
-	public Boolean isYoungerThan( Integer compareAgeInSeconds )
+	public Boolean isYoungerThanOrEqualTo( Long compareAgeInSeconds )
 	{
-		Contract.requires( compareAgeInSeconds != null, 'isOlderThan called with a null compareAgeInSeconds' );
-		return age < compareAgeInSeconds;
+		Contract.requires( compareAgeInSeconds != null, 'isYoungerThanOrEqualTo called with a null compareAgeInSeconds' );
+
+		return ageInSeconds <= compareAgeInSeconds;
 	}
 
 	public Object getValue()

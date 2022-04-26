@@ -19,10 +19,36 @@ public inherited sharing class ortoo_DateLiterals
 	private interface Literal extends fflib_Criteria.Literal {}
 	private interface Comparable extends fflib_Comparator.Comparable {}
 
-	public static Date today = Date.today();
-
+	// TODO: document
 	// TODO: test
-	public static DateTime now = DateTime.now();
+	public static Date today
+	{
+		get
+		{
+			if ( today != null )
+			{
+				return today;
+			}
+			return Date.today();
+		}
+		set;
+	}
+
+	// TODO: document
+	// TODO: test
+	public static DateTime now
+	{
+		get
+		{
+			if ( now != null )
+			{
+				return now;
+			}
+			return DateTime.now();
+		}
+		set;
+	}
+
 	/**
 	 * Dynamic representation of the date 'tomorrow', based on the same class's representation of 'today'
 	 */

@@ -1,3 +1,13 @@
+TODO:
+	* Combine the DateTimeUtils and DateLiterals where appropriate
+	* Document TestDateTimeUtils and how to set now and today
+	* Test ageing using dates on the OrgCache
+	* Implement ageing into the SessionCache
+	* Add the aged get definitions into ICacheAdaptor
+	* Add 'maximum age' into CachedSoqlExecutor
+
+
+
 * Move all the Jest LWc tests over to create the component in the before
 
 Look at the use of 'MockDatabase' in fflib
