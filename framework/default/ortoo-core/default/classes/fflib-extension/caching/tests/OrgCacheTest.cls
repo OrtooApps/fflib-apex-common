@@ -3,6 +3,13 @@ private without sharing class OrgCacheTest
 {
 	private final static Integer DEFAULT_LIFESPAN = 1000;
 
+	// if age on retrieve is too old, returns null
+	// if age on retrieve is exactly the right age, returns value
+	// if age on retrieve is young enough, returns value
+	// retrieving does not reset the age
+	// if object is not a CacheEntry and no age specified, returns value
+	// if object is not a CacheEntry and an age specified, returns null
+
 	@isTest
 	private static void hasAccessToCache_whenCalledByUserWithCacheAccess_returnsTrue() // NOPMD: Test method name format
 	{

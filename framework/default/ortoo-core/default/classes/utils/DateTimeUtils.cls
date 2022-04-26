@@ -12,7 +12,14 @@ public inherited sharing class DateTimeUtils
 	 */
 	public static Long getEpochTime()
 	{
-		Long millisecondsNow = Datetime.now().getTime();
-		return millisecondsNow / 1000;
+		return getEpochTime( ortoo_DateLiterals.now );
+	}
+
+	// TODO: test
+	// TODO: document
+	public static Long getEpochTime( DateTime timeToConvert )
+	{
+		Long milliseconds = timeToConvert.getTime();
+		return milliseconds / 1000;
 	}
 }

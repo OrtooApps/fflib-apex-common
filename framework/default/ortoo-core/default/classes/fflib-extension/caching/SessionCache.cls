@@ -3,6 +3,7 @@
  *
  * All users are assumed to have access to the cache.
  */
+// TODO: add age capabilities
 public inherited sharing class SessionCache implements ICacheAdaptor
 {
 	private static final String PARTITION_NAME = 'core';

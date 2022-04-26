@@ -21,6 +21,8 @@ public inherited sharing class ortoo_DateLiterals
 
 	public static Date today = Date.today();
 
+	// TODO: test
+	public static DateTime now = DateTime.now();
 	/**
 	 * Dynamic representation of the date 'tomorrow', based on the same class's representation of 'today'
 	 */

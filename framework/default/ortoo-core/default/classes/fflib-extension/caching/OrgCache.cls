@@ -50,7 +50,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	 * Retrieve the cache entry with the given key.
 	 *
 	 * If the user does not have access to the cache, will throw an AccessViolationException.
-	 * If the entry does not exist in the cache, will return null
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
 	 *
 	 * @param	String	The key for the object to retrieve
 	 * @return	Object	The cached object, if it exists
@@ -67,7 +67,50 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 							.addContext( 'key', key );
 		}
 
-		return Cache.Org.get( createFullyQualifiedKey( key ) );
+		Object rawCacheValue = Cache.Org.get( createFullyQualifiedKey( key ) );
+
+		if ( rawCacheValue instanceOf CacheEntry )
+		{
+			return ((CacheEntry)rawCacheValue).getValue();
+		}
+		return rawCacheValue;
+	}
+
+	// TODO: document
+	// TODO: test
+	/**
+	 * Retrieve the cache entry with the given key.
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
+	 *
+	 * @param	String	The key for the object to retrieve
+	 * @return	Object	The cached object, if it exists
+	 */
+	public Object get( String key, Integer maximumAgeInSeconds )
+	{
+		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
+
+		if ( ! hasAccessToCache )
+		{
+			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
+							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
+							.addContext( 'method', 'get' )
+							.addContext( 'key', key )
+							.addContext( 'maximumAgeInSeconds', maximumAgeInSeconds );
+		}
+
+		Object rawCacheValue = Cache.Org.get( createFullyQualifiedKey( key ) );
+
+		if ( rawCacheValue instanceOf CacheEntry )
+		{
+			CacheEntry cacheValue = (CacheEntry)rawCacheValue;
+			if ( cacheValue.isYoungerThan( maximumAgeInSeconds ) )
+			{
+				return cacheValue.getValue();
+			}
+		}
+		return null; // if there is no age, or it is too old, regard it as a cache miss
 	}
 
 	/**
@@ -114,7 +157,9 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 							.addContext( 'value', value );
 		}
 
-		Cache.Org.put( createFullyQualifiedKey( key ), value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
+		CacheEntry cacheEntry = new CacheEntry( value );
+
+		Cache.Org.put( createFullyQualifiedKey( key ), cacheEntry, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
 	}
 
 	/**
