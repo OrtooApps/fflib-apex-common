@@ -6,6 +6,8 @@
  *      * Cache.Session / Cache.SessionPartition
  *
  * This allows for the types of cache to be used interchangably / and dynamically
+ *
+ * @group Cache
  */
 public interface ICacheAdaptor
 {

@@ -2,6 +2,8 @@
  * An implementation of the ICacheAdaptor that utilises the Session Level Platform Cache.
  *
  * All users are assumed to have access to the cache.
+ *
+ * @group Cache
  */
 public inherited sharing class SessionCache implements ICacheAdaptor
 {

@@ -5,6 +5,8 @@
  *
  * If used, it is recommended that triggers are added to those objects, or code added to the UI that updates the objects
  * referenced in the SOQL that invalidate the cache.
+ *
+ * @group Cache
  */
 public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of too many public methods caused by inner classes
 {

@@ -5,6 +5,8 @@
  * custom permission as defined in 'CAN_ACCESS_CACHE_PERMISSION'.
  *
  * Attempting to access the cache without this permission will result in an OrgCache.AccessViolationException
+ *
+ * @group Cache
  */
 public inherited sharing class OrgCache implements ICacheAdaptor
 {
