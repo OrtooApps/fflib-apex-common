@@ -5,6 +5,8 @@
  *
  * If used, it is recommended that triggers are added to those objects, or code added to the UI that updates the objects
  * referenced in the SOQL that invalidate the cache.
+ *
+ * @group Cache
  */
 public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of too many public methods caused by inner classes
 {
@@ -55,6 +57,48 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	 */
 	public List<Sobject> query( String soql )
 	{
+		return query( soql, new SimpleCacheRetriever( cacheWrapper ) );
+	}
+
+	/**
+	 * Perform the given query, first checking if the Org Platform Cache Partition contains results for that SOQL.
+	 * If so, the cached versions are returned.
+	 * If not, the query is executed against the database and the result cached.
+	 * If, for any reason, a cache read or write cannot be performed, the method will continue without an exception.
+	 * Errors can be seen in the configured log destination (uses LoggerService)
+	 *
+	 * @param   String			The SOQL to return the results for
+	 * @param	Long			The maximum age that the retrieved entry is allowed to be before a cache miss is recorded
+	 * @return	List<Sobject>	The records that match
+	 */
+	public List<Sobject> query( String soql, Long maximumAgeInSeconds )
+	{
+		Contract.requires( maximumAgeInSeconds != null, 'query called with a null maximumAgeInSeconds' );
+
+		return query( soql, new MaximumAgeCacheRetriever( cacheWrapper, maximumAgeInSeconds ) );
+	}
+
+	/**
+	 * Perform the given query, first checking if the Org Platform Cache Partition contains results for that SOQL.
+	 * If so, the cached versions are returned.
+	 * If not, the query is executed against the database and the result cached.
+	 * If, for any reason, a cache read or write cannot be performed, the method will continue without an exception.
+	 * Errors can be seen in the configured log destination (uses LoggerService)
+	 *
+	 * @param   String			The SOQL to return the results for
+	 * @param	DateTime		The minimum (most recent) datetime that the retrieved entry is allowed to have been created on
+	 * 							before it is registered as a cache miss
+	 * @return	List<Sobject>	The records that match
+	 */
+	public List<Sobject> query( String soql, DateTime minimumDateTimeAdded )
+	{
+		Contract.requires( minimumDateTimeAdded != null, 'query called with a null minimumDateTimeAdded' );
+
+		return query( soql, new MinimimDateAddedCacheRetriever( cacheWrapper, minimumDateTimeAdded ) );
+	}
+
+	private List<Sobject> query( String soql, ICacheRetriever cacheRetriever )
+	{
 		Contract.requires( soql != null, 'query called with a null soql' );
 
 		String key = generateKey( soql );
@@ -64,7 +108,7 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 		{
 			if ( cacheWrapper.hasAccessToCache() )
 			{
-				returnValues = (List<Sobject>)cacheWrapper.get( key );
+				returnValues = (List<Sobject>)cacheRetriever.get( key );
 			}
 			else
 			{
@@ -120,5 +164,58 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	private String generateKey( String soql )
 	{
 		return EncodingUtil.convertToHex( Crypto.generateDigest( 'SHA1', Blob.valueOf( soql ) ) );
+	}
+
+	private interface ICacheRetriever
+	{
+		List<Object> get( String key );
+	}
+
+	private inherited sharing class SimpleCacheRetriever implements ICacheRetriever
+	{
+		ICacheAdaptor cacheWrapper;
+
+		private SimpleCacheRetriever( ICacheAdaptor cacheWrapper )
+		{
+			this.cacheWrapper = cacheWrapper;
+		}
+
+		public List<Object> get( String key )
+		{
+			return (List<Object>)cacheWrapper.get( key );
+		}
+	}
+
+	private inherited sharing class MaximumAgeCacheRetriever implements ICacheRetriever
+	{
+		ICacheAdaptor cacheWrapper;
+		Long maximumAge;
+
+		private MaximumAgeCacheRetriever( ICacheAdaptor cacheWrapper, Long maximumAge )
+		{
+			this.cacheWrapper = cacheWrapper;
+			this.maximumAge = maximumAge;
+		}
+
+		public List<Object> get( String key )
+		{
+			return (List<Object>)cacheWrapper.get( key, maximumAge );
+		}
+	}
+
+	private inherited sharing class MinimimDateAddedCacheRetriever implements ICacheRetriever
+	{
+		ICacheAdaptor cacheWrapper;
+		DateTime minimumDateAdded;
+		private MinimimDateAddedCacheRetriever( ICacheAdaptor cacheWrapper, DateTime minimumDateAdded )
+		{
+			this.cacheWrapper = cacheWrapper;
+			this.minimumDateAdded = minimumDateAdded;
+		}
+
+		public List<Object> get( String key )
+		{
+			return (List<Object>)cacheWrapper.get( key, minimumDateAdded );
+		}
 	}
 }

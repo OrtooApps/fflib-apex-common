@@ -2,6 +2,8 @@
  * An implementation of the ICacheAdaptor that utilises the Session Level Platform Cache.
  *
  * All users are assumed to have access to the cache.
+ *
+ * @group Cache
  */
 public inherited sharing class SessionCache implements ICacheAdaptor
 {
@@ -35,8 +37,57 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 	 */
 	public Object get( String key )
 	{
+		Long maximumAgeInSeconds = null;
+		return get( key, maximumAgeInSeconds );
+	}
+
+	/**
+	 * Retrieve the cache entry with the given key, but only if it was created after the stated date time
+	 *
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
+	 *
+	 * @param	String	The key for the object to retrieve
+	 * @return	Object	The cached object, if it exists
+	 */
+	public Object get( String key, DateTime minimumDateTime )
+	{
+		Long maximumAgeInSeconds;
+		if ( minimumDateTime != null )
+		{
+			maximumAgeInSeconds = ortoo_DateLiterals.epochTime - DateTimeUtils.convertToEpochTime( minimumDateTime );
+		}
+		return get( key, maximumAgeInSeconds );
+	}
+
+	/**
+	 * Retrieve the cache entry with the given key, but only if it is younger than the stated number of seconds
+	 *
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
+	 *
+	 * @param	String	The key for the object to retrieve
+	 * @return	Object	The cached object, if it exists
+	 */
+	public Object get( String key, Long maximumAgeInSeconds )
+	{
 		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
-		return Cache.Session.get( key );
+
+		Object rawCacheValue = Cache.Session.get( createFullyQualifiedKey( key ) );
+
+		if ( rawCacheValue instanceOf CacheEntry )
+		{
+			CacheEntry cacheValue = (CacheEntry)rawCacheValue;
+			if ( maximumAgeInSeconds == null || cacheValue.isYoungerThanOrEqualTo( maximumAgeInSeconds ) )
+			{
+				return cacheValue.getValue();
+			}
+		}
+
+		if ( maximumAgeInSeconds == null ) // if we don't care about the age, then return it
+		{
+			return rawCacheValue;
+		}
+
+		return null; // if there is no age, or it is too old, regard it as a cache miss
 	}
 
 	/**
@@ -65,7 +116,9 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 		Contract.requires( lifespan >= 0, 'put called with a negative lifespan' );
 		// Note that the maximum is handled by Salesforce, just in case it increases
 
-		Cache.Session.put( key, value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
+		CacheEntry cacheEntry = new CacheEntry( value );
+
+		Cache.Session.put( key, cacheEntry, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
 	}
 
 	/**
@@ -111,6 +164,7 @@ public inherited sharing class SessionCache implements ICacheAdaptor
 		return Cache.SessionPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME );
 	}
 
+	@testVisible
 	private String createFullyQualifiedKey( String key )
 	{
 		return Cache.SessionPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, key );

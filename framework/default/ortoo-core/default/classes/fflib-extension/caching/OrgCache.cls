@@ -5,6 +5,8 @@
  * custom permission as defined in 'CAN_ACCESS_CACHE_PERMISSION'.
  *
  * Attempting to access the cache without this permission will result in an OrgCache.AccessViolationException
+ *
+ * @group Cache
  */
 public inherited sharing class OrgCache implements ICacheAdaptor
 {
@@ -50,12 +52,46 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 	 * Retrieve the cache entry with the given key.
 	 *
 	 * If the user does not have access to the cache, will throw an AccessViolationException.
-	 * If the entry does not exist in the cache, will return null
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
 	 *
 	 * @param	String	The key for the object to retrieve
 	 * @return	Object	The cached object, if it exists
 	 */
 	public Object get( String key )
+	{
+		Long maximumAgeInSeconds = null;
+		return get( key, maximumAgeInSeconds );
+	}
+
+	/**
+	 * Retrieve the cache entry with the given key, but only if it was created after the stated date time
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
+	 *
+	 * @param	String	The key for the object to retrieve
+	 * @return	Object	The cached object, if it exists
+	 */
+	public Object get( String key, DateTime minimumDateTime )
+	{
+		Long maximumAgeInSeconds;
+		if ( minimumDateTime != null )
+		{
+			maximumAgeInSeconds = ortoo_DateLiterals.epochTime - DateTimeUtils.convertToEpochTime( minimumDateTime );
+		}
+		return get( key, maximumAgeInSeconds );
+	}
+
+	/**
+	 * Retrieve the cache entry with the given key, but only if it is younger than the stated number of seconds
+	 *
+	 * If the user does not have access to the cache, will throw an AccessViolationException.
+	 * If the entry does not exist in the cache (I.E. is a "cache miss"), will return null
+	 *
+	 * @param	String	The key for the object to retrieve
+	 * @return	Object	The cached object, if it exists
+	 */
+	public Object get( String key, Long maximumAgeInSeconds )
 	{
 		Contract.requires( String.isNotBlank( key ), 'get called with a blank key' );
 
@@ -64,10 +100,27 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 			throw new AccessViolationException( Label.ortoo_core_org_cache_access_violation )
 							.setErrorCode( FrameworkErrorCodes.CACHE_ACCESS_VIOLATION )
 							.addContext( 'method', 'get' )
-							.addContext( 'key', key );
+							.addContext( 'key', key )
+							.addContext( 'maximumAgeInSeconds', maximumAgeInSeconds );
 		}
 
-		return Cache.Org.get( createFullyQualifiedKey( key ) );
+		Object rawCacheValue = Cache.Org.get( createFullyQualifiedKey( key ) );
+
+		if ( rawCacheValue instanceOf CacheEntry )
+		{
+			CacheEntry cacheValue = (CacheEntry)rawCacheValue;
+			if ( maximumAgeInSeconds == null || cacheValue.isYoungerThanOrEqualTo( maximumAgeInSeconds ) )
+			{
+				return cacheValue.getValue();
+			}
+		}
+
+		if ( maximumAgeInSeconds == null ) // if we don't care about the age, then return it
+		{
+			return rawCacheValue;
+		}
+
+		return null; // if there is no age, or it is too old, regard it as a cache miss
 	}
 
 	/**
@@ -114,7 +167,9 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 							.addContext( 'value', value );
 		}
 
-		Cache.Org.put( createFullyQualifiedKey( key ), value, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
+		CacheEntry cacheEntry = new CacheEntry( value );
+
+		Cache.Org.put( createFullyQualifiedKey( key ), cacheEntry, lifespan, Cache.Visibility.NAMESPACE, true ); // immutable outside of namespace
 	}
 
 	/**
@@ -187,6 +242,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 		return Cache.OrgPartition.createFullyQualifiedPartition( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME );
 	}
 
+	@testVisible
 	private String createFullyQualifiedKey( String key )
 	{
 		return Cache.OrgPartition.createFullyQualifiedKey( PackageUtils.NAMESPACE_PREFIX, PARTITION_NAME, key );

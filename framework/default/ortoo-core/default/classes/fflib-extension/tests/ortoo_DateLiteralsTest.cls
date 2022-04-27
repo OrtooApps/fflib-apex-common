@@ -1,4 +1,3 @@
-
 @isTest
 private without sharing class  ortoo_DateLiteralsTest
 {
@@ -7,6 +6,56 @@ private without sharing class  ortoo_DateLiteralsTest
     {
         Date got = ortoo_DateLiterals.today;
         System.assertEquals( Date.today(), got, 'today is set to today' );
+    }
+
+    @isTest
+    private static void today_whenSet_returnsThatDate() // NOPMD: Test method name format
+    {
+		Date expected = Date.newInstance( 2020, 5, 1 );
+		ortoo_DateLiterals.today = expected;
+
+        Date got = ortoo_DateLiterals.today;
+        System.assertEquals( expected, got, 'today, when set, will then be set to that value' );
+    }
+
+    @isTest
+    private static void now_returnsTheTimeForNow() // NOPMD: Test method name format
+    {
+        DateTime got = ortoo_DateLiterals.now;
+		DateTime expected = System.now();
+
+        System.assert( got > expected.addSeconds( -3 ) && got <= expected, 'now is set to now' );
+    }
+
+    @isTest
+    private static void now_whenSet_returnsThatDateTime() // NOPMD: Test method name format
+    {
+		DateTime expected = DateTime.newInstance( 2020, 5, 1, 13, 45, 0 );
+		ortoo_DateLiterals.now = expected;
+
+        DateTime got = ortoo_DateLiterals.now;
+        System.assertEquals( expected, got, 'now, when set, will then be set to that value' );
+    }
+
+	@isTest
+    private static void epochTime_returnsTheEpochTimeForNow() // NOPMD: Test method name format
+    {
+		Long expected = DateTimeUtils.convertToEpochTime( System.now() );
+
+        Long got = ortoo_DateLiterals.epochTime;
+        System.assert( got > expected - 3 && got <= expected, 'epochTime is set to now in seconds' );
+    }
+
+	@isTest
+    private static void epochTime_whenNowSet_returnsTheEpochForThatTime() // NOPMD: Test method name format
+    {
+		DateTime expectedDateTime = DateTime.newInstanceGmt( 2020, 5, 1, 13, 45, 0 );
+		Long expectedEpoch = 1588340700;
+
+		ortoo_DateLiterals.now = expectedDateTime;
+
+        Long got = ortoo_DateLiterals.epochTime;
+        System.assertEquals( expectedEpoch, got, 'epochTime, when now is set, will then be set to the epoch for that value' );
     }
 
     @isTest

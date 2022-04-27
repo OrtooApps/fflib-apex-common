@@ -498,6 +498,189 @@ private without sharing class CachedSoqlExecutorTest
 	}
 
 	@isTest
+	private static void query_maxAge_session_whenCalledTwiceWithinAge_onlyIssuesOneSoql() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
+		String soqlStatement = 'SELECT Id FROM Account';
+
+		setupAccessToSoqlCache( true );
+
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+
+		Test.startTest();
+			TestDateTimeUtils.setCurrentDateTime( 0 );
+			List<Sobject> originalResults = executor.query( soqlStatement, 100 );
+
+			TestDateTimeUtils.addToCurrentTime( 50 ); // it is now 50 seconds later
+			logger.clearLogHistory();
+			List<Sobject> secondResults   = executor.query( soqlStatement, 100 );  // so this should still return the results
+			Integer soqlCalls = Limits.getQueries();
+		Test.stopTest();
+
+		System.assertEquals( 1, soqlCalls, 'query with a maximum age on session cache, when called twice within the required age, will only issue one SOQL statement' );
+		System.assertEquals( originalResults, secondResults, 'query with a maximum age on session cache, when called twice within the required age, returns the same results in both calls' );
+
+		logger.assertNumberOfLogCalls( 0, 'query with a maximum age on session cache,when called twice within the required age, does not generate a log entry' );
+	}
+
+	@isTest
+	private static void query_maxAge_session_whenCalledTwiceOutsideAge_issuesTwoSoql() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
+		String soqlStatement = 'SELECT Id FROM Account';
+
+		setupAccessToSoqlCache( true );
+
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+
+		Test.startTest();
+			TestDateTimeUtils.setCurrentDateTime( 0 );
+			List<Sobject> originalResults = executor.query( soqlStatement, 100 );
+
+			TestDateTimeUtils.addToCurrentTime( 100 ); // it is now 50 seconds later
+			logger.clearLogHistory();
+			List<Sobject> secondResults   = executor.query( soqlStatement, 50 );  // so this should result in a new query because the previous results are too old
+			Integer soqlCalls = Limits.getQueries();
+		Test.stopTest();
+
+		System.assertEquals( 2, soqlCalls, 'query with a maximum age on session cache, when called twice with the second outside the required age, will issue two SOQL statements' );
+	}
+
+	@isTest
+	private static void query_maxAge_session_whenAgeMeansAQueryReruns_willPutBackIntoCache() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
+		String soqlStatement = 'SELECT Id FROM Account';
+
+		setupAccessToSoqlCache( true );
+
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+
+		Test.startTest();
+			TestDateTimeUtils.setCurrentDateTime( 0 );
+			executor.query( soqlStatement, 100 );
+
+			TestDateTimeUtils.addToCurrentTime( 100 ); // it is now 100 seconds later
+			executor.query( soqlStatement, 50 );  // so this should result in a new query
+
+			TestDateTimeUtils.addToCurrentTime( 100 ); // it is now another 100 seconds later
+			executor.query( soqlStatement, 150 );  // this should get the results from the second query
+
+			Integer soqlCalls = Limits.getQueries();
+		Test.stopTest();
+
+		System.assertEquals( 2, soqlCalls, 'query with a maximum age on session cache, when the call results in ageing results out, the new results will be cached' );
+	}
+
+	@isTest
+	private static void query_whenPassedANullMaxAge_throwsAnException() // NOPMD: Test method name format
+	{
+		String soqlStatement = 'SELECT Id FROM Account';
+		CachedSoqlExecutor executor = new CachedSoqlExecutor();
+
+		Long nullAge;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				executor.query( soqlStatement, nullAge );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'query called with a null maximumAgeInSeconds', exceptionMessage, 'query, when passed a null maximumAgeInSeconds, will throw an exception' );
+	}
+
+	@isTest
+	private static void query_minDate_session_whenCalledTwiceWithinDate_onlyIssuesOneSoql() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
+		DateTime earliestDate = DateTime.newInstance( 2020, 2, 4, 14, 00, 00 );
+		DateTime middleDate   = DateTime.newInstance( 2020, 2, 5, 14, 00, 00 );
+		DateTime latestDate   = DateTime.newInstance( 2020, 2, 6, 14, 00, 00 );
+
+		String soqlStatement = 'SELECT Id FROM Account';
+
+		setupAccessToSoqlCache( true );
+
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+
+		Test.startTest();
+			TestDateTimeUtils.setCurrentDateTime( middleDate );
+			List<Sobject> originalResults = executor.query( soqlStatement, middleDate );
+
+			TestDateTimeUtils.setCurrentDateTime( latestDate );
+			logger.clearLogHistory();
+			List<Sobject> secondResults   = executor.query( soqlStatement, earliestDate ); // this date is earlier than the first query ran, so the cache should be used
+			Integer soqlCalls = Limits.getQueries();
+		Test.stopTest();
+
+		System.assertEquals( 1, soqlCalls, 'query with a minimum date on session cache, when called twice within the required age, will only issue one SOQL statement' );
+		System.assertEquals( originalResults, secondResults, 'query with a minimum date  on session cache, when called twice within the required age, returns the same results in both calls' );
+
+		logger.assertNumberOfLogCalls( 0, 'query with a minimum date  on session cache,when called twice within the required age, does not generate a log entry' );
+	}
+
+	@isTest
+	private static void query_minDate_session_whenCalledTwiceOutsideDate_issuesTwoSoql() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
+		DateTime earliestDate = DateTime.newInstance( 2020, 2, 4, 14, 00, 00 );
+		DateTime middleDate   = DateTime.newInstance( 2020, 2, 5, 14, 00, 00 );
+		DateTime latestDate   = DateTime.newInstance( 2020, 2, 6, 14, 00, 00 );
+
+		String soqlStatement = 'SELECT Id FROM Account';
+
+		setupAccessToSoqlCache( true );
+
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+
+		Test.startTest();
+			TestDateTimeUtils.setCurrentDateTime( earliestDate );
+			List<Sobject> originalResults = executor.query( soqlStatement, earliestDate );
+
+			TestDateTimeUtils.setCurrentDateTime( latestDate );
+			logger.clearLogHistory();
+			List<Sobject> secondResults   = executor.query( soqlStatement, middleDate ); // this date is later than the first query ran, so the cache should not be used
+			Integer soqlCalls = Limits.getQueries();
+		Test.stopTest();
+
+		System.assertEquals( 2, soqlCalls, 'query with a maximum age on session cache, when called twice with the second outside the required age, will issue two SOQL statements' );
+	}
+
+	@isTest
+	private static void query_minDate_whenPassedANullMinDate_throwsAnException() // NOPMD: Test method name format
+	{
+		String soqlStatement = 'SELECT Id FROM Account';
+		CachedSoqlExecutor executor = new CachedSoqlExecutor();
+
+		DateTime nullDateTime;
+
+		Test.startTest();
+			String exceptionMessage;
+			try
+			{
+				executor.query( soqlStatement, nullDateTime );
+			}
+			catch ( Contract.RequiresException e )
+			{
+				exceptionMessage = e.getMessage();
+			}
+		Test.stopTest();
+
+		ortoo_Asserts.assertContains( 'query called with a null minimumDateTimeAdded', exceptionMessage, 'query, when passed a null minimumDateTimeAdded, will throw an exception' );
+	}
+
+	@isTest
 	private static void query_none_whenRanFor100Queries_willNotThrow() // NOPMD: Test method name format
 	{
 		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();

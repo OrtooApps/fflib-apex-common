@@ -7,6 +7,11 @@
  *
  * Note: The lifespan of a given object is reset whenever any object in that object's list is written.
  *       That is, either the whole of the list is aged out, or none of it is.
+ *
+ * Note: This implementation does not include age based stalesness on retrieval, but could be enhanced to, if required.
+ * 		 See the alternative 'get' options that are available on ICacheAdaptor
+ *
+ * @group Cache
  */
 public inherited sharing class ObjectCache
 {

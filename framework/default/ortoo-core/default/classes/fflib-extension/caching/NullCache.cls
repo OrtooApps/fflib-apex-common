@@ -4,6 +4,8 @@
  * Allows for the use of code that will automatically interact with a cache and be able to switch that off dynamically and simply.
  *
  * All users are assumed to be allowed to use the cache, but it describes itself as 'not a cache' and effectively does nothing.
+ *
+ * @group Cache
  */
 public inherited sharing class NullCache implements ICacheAdaptor
 {
@@ -18,6 +20,16 @@ public inherited sharing class NullCache implements ICacheAdaptor
 	}
 
 	public Object get( String key )
+	{
+		return null;
+	}
+
+	public Object get( String key, DateTime minimumDateTime )
+	{
+		return null;
+	}
+
+	public Object get( String key, Long maximumAgeInSeconds )
 	{
 		return null;
 	}

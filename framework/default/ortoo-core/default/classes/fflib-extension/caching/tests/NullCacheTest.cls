@@ -1,6 +1,9 @@
 @isTest
 private without sharing class NullCacheTest
 {
+	private final static Long NULL_AGE = null;
+	private final static DateTime NULL_MIN_DATE_TIME = null;
+
 	@isTest
 	private static void hasAccessToCache_whenCalled_returnsTrue() // NOPMD: Test method name format
 	{
@@ -23,6 +26,22 @@ private without sharing class NullCacheTest
 		NullCache cache = new NullCache();
 		Object got = cache.get( null );
 		System.assertEquals( null, got, 'get, when called, will return null' );
+	}
+
+	@isTest
+	private static void get_maxAge_whenCalled_returnsNull() // NOPMD: Test method name format
+	{
+		NullCache cache = new NullCache();
+		Object got = cache.get( null, NULL_AGE );
+		System.assertEquals( null, got, 'get, when called with a max age, will return null' );
+	}
+
+	@isTest
+	private static void get_minDate_whenCalled_returnsNull() // NOPMD: Test method name format
+	{
+		NullCache cache = new NullCache();
+		Object got = cache.get( null, NULL_MIN_DATE_TIME );
+		System.assertEquals( null, got, 'get, when called with a min datetime, will return null' );
 	}
 
 	@isTest
