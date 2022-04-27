@@ -71,7 +71,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	 * @param	Long			The maximum age that the retrieved entry is allowed to be before a cache miss is recorded
 	 * @return	List<Sobject>	The records that match
 	 */
-	// TODO: test
 	public List<Sobject> query( String soql, Long maximumAgeInSeconds )
 	{
 		Contract.requires( maximumAgeInSeconds != null, 'query called with a null maximumAgeInSeconds' );
@@ -91,7 +90,6 @@ public inherited sharing class CachedSoqlExecutor //NOPMD: incorrect report of t
 	 * 							before it is registered as a cache miss
 	 * @return	List<Sobject>	The records that match
 	 */
-	// TODO: test
 	public List<Sobject> query( String soql, DateTime minimumDateTimeAdded )
 	{
 		Contract.requires( minimumDateTimeAdded != null, 'query called with a null minimumDateTimeAdded' );
