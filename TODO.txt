@@ -1,7 +1,3 @@
-TODO:
-	* Document TestDateTimeUtils and how to set now and today
-	* Consider a superclass for OrgCache and SessionCache?
-
 * Move all the Jest LWc tests over to create the component in the before
 
 Look at the use of 'MockDatabase' in fflib
