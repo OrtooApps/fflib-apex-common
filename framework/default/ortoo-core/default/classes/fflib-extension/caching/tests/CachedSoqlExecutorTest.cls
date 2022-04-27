@@ -549,6 +549,33 @@ private without sharing class CachedSoqlExecutorTest
 	}
 
 	@isTest
+	private static void query_maxAge_session_whenAgeMeansAQueryReruns_willPutBackIntoCache() // NOPMD: Test method name format
+	{
+		TestLoggerService logger = TestLoggerUtils.registerTestLoggerService();
+
+		String soqlStatement = 'SELECT Id FROM Account';
+
+		setupAccessToSoqlCache( true );
+
+		CachedSoqlExecutor executor = new CachedSoqlExecutor().setScope( CachedSoqlExecutor.CacheScope.SESSION );
+
+		Test.startTest();
+			TestDateTimeUtils.setCurrentDateTime( 0 );
+			executor.query( soqlStatement, 100 );
+
+			TestDateTimeUtils.addToCurrentTime( 100 ); // it is now 100 seconds later
+			executor.query( soqlStatement, 50 );  // so this should result in a new query
+
+			TestDateTimeUtils.addToCurrentTime( 100 ); // it is now another 100 seconds later
+			executor.query( soqlStatement, 150 );  // this should get the results from the second query
+
+			Integer soqlCalls = Limits.getQueries();
+		Test.stopTest();
+
+		System.assertEquals( 2, soqlCalls, 'query with a maximum age on session cache, when the call results in ageing results out, the new results will be cached' );
+	}
+
+	@isTest
 	private static void query_whenPassedANullMaxAge_throwsAnException() // NOPMD: Test method name format
 	{
 		String soqlStatement = 'SELECT Id FROM Account';
