@@ -1,7 +1,5 @@
 TODO:
 	* Document TestDateTimeUtils and how to set now and today
-	* Add 'maximum age' into CachedSoqlExecutor
-	* Add 'maximum age' into DynamicSelector
 	* Consider a superclass for OrgCache and SessionCache?
 
 * Move all the Jest LWc tests over to create the component in the before

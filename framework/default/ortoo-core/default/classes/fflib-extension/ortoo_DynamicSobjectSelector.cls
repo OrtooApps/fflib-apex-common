@@ -71,11 +71,11 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 	}
 
 	/**
-	 * Retrieve the records that match the passed criteria, optionally via the Org Level SOQL Cache
+	 * Retrieve the records that match the passed criteria, utilising the specified level of cache.
 	 *
-	 * @param	ortoo_Criteria	The criteria that should be used to derive the records to return
-	 * @param	Boolean			Should the query go via the Org Level SOQL Cache?
-	 * @return	List<Sobject>	The result of the Selection
+	 * @param	ortoo_Criteria					The criteria that should be used to derive the records to return
+	 * @param	CachedSoqlExecutor.CacheScope	The scope of the cache that should be used
+	 * @return	List<Sobject>					The result of the Selection
 	 */
 	public List<Sobject> selectByCriteria( ortoo_Criteria criteria, CachedSoqlExecutor.CacheScope cacheScope )
 	{
@@ -88,6 +88,52 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 		return ((CachedSoqlExecutor)Application.APP_LOGIC.newInstance( CachedSoqlExecutor.class ))
 					.setScope( cacheScope )
 					.query( soql );
+	}
+
+	/**
+	 * Retrieve the records that match the passed criteria, utilising the specified level of cache,
+	 * only allowing data younger than the age specified to be retrieved from the cache.
+	 *
+	 * @param	ortoo_Criteria					The criteria that should be used to derive the records to return
+	 * @param	CachedSoqlExecutor.CacheScope	The scope of the cache that should be used
+	 * @param	Long							The maximum age, in seconds, that a cache entry is allowed to be before being discarded
+	 * @return	List<Sobject>					The result of the Selection
+	 */
+	public List<Sobject> selectByCriteria( ortoo_Criteria criteria, CachedSoqlExecutor.CacheScope cacheScope, Long maximumAgeInSeconds )
+	{
+		Contract.requires( criteria != null, 'selectByCriteria called with a null criteria' );
+		Contract.requires( cacheScope != null, 'selectByCriteria called with a null cacheScope' );
+		Contract.requires( maximumAgeInSeconds != null, 'selectByCriteria called with a null maximumAgeInSeconds' );
+		Contract.assert( sobjectType != null, 'selectByCriteria called when sobjectType has not been set' );
+
+		String soql = generateSoqlByCriteria( criteria );
+
+		return ((CachedSoqlExecutor)Application.APP_LOGIC.newInstance( CachedSoqlExecutor.class ))
+					.setScope( cacheScope )
+					.query( soql, maximumAgeInSeconds );
+	}
+
+	/**
+	 * Retrieve the records that match the passed criteria, utilising the specified level of cache,
+	 * only allowing data younger than the age specified to be retrieved from the cache.
+	 *
+	 * @param	ortoo_Criteria					The criteria that should be used to derive the records to return
+	 * @param	CachedSoqlExecutor.CacheScope	The scope of the cache that should be used
+	 * @param	DateTime						The minimum datetime (how recent) that a cache entry must have been created on to be used
+	 * @return	List<Sobject>					The result of the Selection
+	 */
+	public List<Sobject> selectByCriteria( ortoo_Criteria criteria, CachedSoqlExecutor.CacheScope cacheScope, DateTime minimumDateTimeAdded )
+	{
+		Contract.requires( criteria != null, 'selectByCriteria called with a null criteria' );
+		Contract.requires( cacheScope != null, 'selectByCriteria called with a null cacheScope' );
+		Contract.requires( minimumDateTimeAdded != null, 'selectByCriteria called with a null minimumDateTimeAdded' );
+		Contract.assert( sobjectType != null, 'selectByCriteria called when sobjectType has not been set' );
+
+		String soql = generateSoqlByCriteria( criteria );
+
+		return ((CachedSoqlExecutor)Application.APP_LOGIC.newInstance( CachedSoqlExecutor.class ))
+					.setScope( cacheScope )
+					.query( soql, minimumDateTimeAdded );
 	}
 
 	/**
