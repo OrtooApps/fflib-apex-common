@@ -6,28 +6,29 @@
 public inherited sharing class DateTimeUtils
 {
 	/**
-	 * Returns the current Epoch Time, in seconds
+	 * Given a date time, will convert it into the epoch time, in seconds
 	 *
-	 * @return	Long	The current Epoch Time, in seconds
+	 * @param	DateTime	The time to convert
+	 * @return	Long		The epoch time, in number of seconds
 	 */
-	// TODO: should this be on DateLiterals?
-	public static Long getEpochTime()
+	public static Long convertToEpochTime( DateTime timeToConvert )
 	{
-		return getEpochTime( ortoo_DateLiterals.now );
-	}
+		Contract.requires( timeToConvert != null, 'convertToEpochTime called with a null timeToConvert' );
 
-	// TODO: test
-	// TODO: document
-	public static Long getEpochTime( DateTime timeToConvert )
-	{
 		Long milliseconds = timeToConvert.getTime();
 		return milliseconds / 1000;
 	}
 
-	// TODO: test
-	// TODO: document
+	/**
+	 * Given an epoch time in seconds, will convert it into a DateTime
+	 *
+	 * @return	Long		The epoch time, in number of seconds
+	 * @param	DateTime	The resulting DateTime
+	 */
 	public static DateTime convertToDateTime( Long epochInSeconds )
 	{
+		Contract.requires( epochInSeconds != null, 'convertToDateTime called with a null epochInSeconds' );
+
 		return DateTime.newInstance( epochInSeconds * 1000 );
 	}
 }

@@ -12,6 +12,6 @@ public with sharing class TimeController
 	@AuraEnabled
 	public static Long getEpochTime()
 	{
-		return DateTimeUtils.getEpochTime();
+		return ortoo_DateLiterals.epochTime;
 	}
 }

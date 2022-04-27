@@ -9,14 +9,14 @@ public inherited sharing class CacheEntry
 	{
 		get
 		{
-			return DateTimeUtils.getEpochTime() - this.createdOnEpoch;
+			return ortoo_DateLiterals.epochTime - this.createdOnEpoch;
 		}
 	}
 
 	public CacheEntry( Object value )
 	{
 		this.value = value;
-		this.createdOnEpoch = DateTimeUtils.getEpochTime();
+		this.createdOnEpoch = ortoo_DateLiterals.epochTime;
 	}
 
 	public Boolean isYoungerThanOrEqualTo( Long compareAgeInSeconds )

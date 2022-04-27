@@ -19,8 +19,12 @@ public inherited sharing class ortoo_DateLiterals
 	private interface Literal extends fflib_Criteria.Literal {}
 	private interface Comparable extends fflib_Comparator.Comparable {}
 
-	// TODO: document
-	// TODO: test
+	/**
+	 * Representation of 'today' that is to be used whenever a reference is required.
+	 * Should be used in place of System.today or Date.today
+	 *
+	 * The existance allows for the calendar to be re-set in Unit Tests.
+	 */
 	public static Date today
 	{
 		get
@@ -34,8 +38,12 @@ public inherited sharing class ortoo_DateLiterals
 		set;
 	}
 
-	// TODO: document
-	// TODO: test
+	/**
+	 * Representation of 'now' that is to be used whenever a reference is required.
+	 * Should be used in place of System.now or DateTime.now
+	 *
+	 * The existance allows for the clock to be re-set in Unit Tests.
+	 */
 	public static DateTime now
 	{
 		get
@@ -47,6 +55,20 @@ public inherited sharing class ortoo_DateLiterals
 			return DateTime.now();
 		}
 		set;
+	}
+
+	/**
+	 * Representation of 'now' as an epoch time in seconds.
+	 *
+	 * Since this depends on 'now', can be re-set in unit tests by chaning
+	 * the underlying 'now'
+	 */
+	public static Long epochTime
+	{
+		get
+		{
+			return DateTimeUtils.convertToEpochTime( now );
+		}
 	}
 
 	/**

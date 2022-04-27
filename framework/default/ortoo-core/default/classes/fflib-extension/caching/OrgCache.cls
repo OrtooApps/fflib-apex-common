@@ -75,7 +75,7 @@ public inherited sharing class OrgCache implements ICacheAdaptor
 		Long maximumAgeInSeconds;
 		if ( minimumDateTime != null )
 		{
-			maximumAgeInSeconds = DateTimeUtils.getEpochTime() - DateTimeUtils.getEpochTime( minimumDateTime );
+			maximumAgeInSeconds = ortoo_DateLiterals.epochTime - DateTimeUtils.convertToEpochTime( minimumDateTime );
 		}
 		return get( key, maximumAgeInSeconds );
 	}

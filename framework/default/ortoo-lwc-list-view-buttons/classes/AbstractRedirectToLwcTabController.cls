@@ -64,7 +64,7 @@ public virtual with sharing class AbstractRedirectToLwcTabController
 	{
 		get
 		{
-			return String.valueOf( DateTimeUtils.getEpochTime() );
+			return String.valueOf( ortoo_DateLiterals.epochTime );
 		}
 	}
 

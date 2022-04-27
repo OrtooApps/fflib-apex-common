@@ -1,7 +1,7 @@
 TODO:
-	* Combine the DateTimeUtils and DateLiterals where appropriate
 	* Document TestDateTimeUtils and how to set now and today
 	* Add 'maximum age' into CachedSoqlExecutor
+	* Add 'maximum age' into DynamicSelector
 	* Consider a superclass for OrgCache and SessionCache?
 
 

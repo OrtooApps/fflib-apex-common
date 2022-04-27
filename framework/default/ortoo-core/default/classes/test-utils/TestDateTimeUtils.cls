@@ -23,6 +23,6 @@ public inherited sharing class TestDateTimeUtils
 
 	public static void addToCurrentTime( Integer numberOfSeconds )
 	{
-		ortoo_DateLiterals.now = DateTimeUtils.convertToDateTime( DateTimeUtils.getEpochTime( ortoo_DateLiterals.now ) + numberOfSeconds );
+		ortoo_DateLiterals.now = DateTimeUtils.convertToDateTime( ortoo_DateLiterals.epochTime + numberOfSeconds );
 	}
 }
