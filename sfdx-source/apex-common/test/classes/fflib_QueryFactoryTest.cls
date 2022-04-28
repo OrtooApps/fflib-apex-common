@@ -72,6 +72,97 @@ private class fflib_QueryFactoryTest {
 	}
 
 	@isTest
+	static void iSearchCriteriaCondition(){
+
+		String whereClause = 'name = \'test\'';
+
+		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
+		searchCriteriaController
+			.when( 'toSoql' )
+			.returns( whereClause );
+
+		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
+		qf.selectField('name');
+		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+
+		System.assertEquals( whereClause, qf.getCondition(), 'setCondition, when given an ISearchCriteria, will set the condition based on the criteria' );
+
+		String query = qf.toSOQL();
+		System.assert( query.endsWith('WHERE name = \'test\''),'Query should have ended with a filter on name, got: '+query);
+	}
+
+	@isTest
+	static void iSearchCriteriaCondition_notEvaluatedOnSet(){
+
+		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
+		searchCriteriaController
+			.expectsNoCalls();
+
+		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
+		qf.selectField('name');
+		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+
+		searchCriteriaController.verify();
+	}
+
+	@isTest
+	static void iSearchCriteriaCondition_isEvaluatedOnGet(){
+
+		String whereClause = 'name = \'test\'';
+
+		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
+		searchCriteriaController
+			.when( 'toSoql' )
+			.returns( whereClause );
+
+		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
+		qf.selectField('name');
+		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+
+		qf.getCondition();
+
+		searchCriteriaController.verify();
+	}
+
+	@isTest
+	static void conditionSetWithStringThenCriteria_usesTheCriteria(){
+
+		String stringWhereClause = 'name = \'string\'';
+		String criteriaWhereClause = 'name = \'criteria\'';
+
+		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
+		searchCriteriaController
+			.when( 'toSoql' )
+			.returns( criteriaWhereClause );
+
+		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
+		qf.selectField('name');
+		qf.setCondition( stringWhereClause );
+		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+
+		System.assertEquals( criteriaWhereClause, qf.getCondition(), 'setCondition, when given a string then a ISearchCriteria, will set the condition based on the last thing - the criteria' );
+	}
+
+	@isTest
+	static void conditionSetWithCriteriaThenString_usesTheString(){
+
+		String stringWhereClause = 'name = \'string\'';
+		String criteriaWhereClause = 'name = \'criteria\'';
+
+		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
+		searchCriteriaController
+			.when( 'toSoql' )
+			.returns( criteriaWhereClause );
+
+		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
+		qf.selectField('name');
+		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+		qf.setCondition( stringWhereClause );
+
+		System.assertEquals( stringWhereClause, qf.getCondition(), 'setCondition, when given a ISearchCriteria then string, will set the condition based on the last thing - the string' );
+	}
+
+	@isTest
 	static void duplicateFieldSelection() {
 		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
 		qf.selectField('NAMe').selectFields( new Set<String>{'naMe', 'email'});

@@ -433,6 +433,35 @@ private with sharing class fflib_SObjectUnitOfWorkTest
     }
 
     /**
+     * Try registering a single field as dirty on first call
+     *
+     *  Testing:
+     *
+     *      - only that field is updated
+     */
+    @IsTest
+    private static void testRegisterDirtyOnce_field() {
+        Opportunity opp = new Opportunity(
+                Id = fflib_IDGenerator.generate(Schema.Opportunity.SObjectType),
+                Name = 'test name',
+                StageName = 'Open',
+                CloseDate = System.today());
+
+        Opportunity amountUpdate = new Opportunity(Id = opp.Id, Name = 'ShouldNotAppear', Amount = 250);
+        MockDML mockDML = new MockDML();
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(MY_SOBJECTS, mockDML);
+        uow.registerDirty(amountUpdate, new List<SObjectField> { Opportunity.Amount } );
+        uow.commitWork();
+
+        System.assertEquals(1, mockDML.recordsForUpdate.size());
+
+		System.assertEquals(true, mockDML.recordsForUpdate.get(0).getPopulatedFieldsAsMap().containsKey( 'Amount' ));
+		System.assertEquals(false, mockDML.recordsForUpdate.get(0).getPopulatedFieldsAsMap().containsKey( 'Name' ));
+
+		System.assertEquals(amountUpdate.Amount, mockDML.recordsForUpdate.get(0).get(Schema.Opportunity.Amount));
+
+    }
+    /**
      * Try registering a single field as dirty.
      *
      *  Testing:
