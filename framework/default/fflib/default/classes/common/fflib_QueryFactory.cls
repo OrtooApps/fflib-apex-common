@@ -65,6 +65,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	private String conditionExpression {
 		get {
 			if ( conditionCriteria != null && String.isNotBlank( conditionExpression ) ) {
+				// currently an impossible scenario, assuming that setCondition is always used to set the conditions up.
 				throw new fflib_Application.DeveloperException( 'Both criteria and expression were set on the query factory : ' + conditionExpression + ' + ' + conditionCriteria );
 			}
 			else {
@@ -311,6 +312,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	**/
 	public fflib_QueryFactory setCondition(String conditionExpression){
 		this.conditionExpression = conditionExpression;
+		this.conditionCriteria = null;
 		return this;
 	}
 
@@ -319,6 +321,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	**/
 	public fflib_QueryFactory setCondition(ISearchCriteria criteria){
 		this.conditionCriteria = criteria;
+		this.conditionExpression = null;
 		return this;
 	}
 
