@@ -25,6 +25,7 @@ public inherited sharing class ortoo_DateLiterals
 	 *
 	 * The existance allows for the calendar to be re-set in Unit Tests.
 	 */
+	@testVisible
 	public static Date today
 	{
 		get
@@ -35,7 +36,7 @@ public inherited sharing class ortoo_DateLiterals
 			}
 			return Date.today();
 		}
-		set;
+		private set;
 	}
 
 	/**
@@ -44,6 +45,7 @@ public inherited sharing class ortoo_DateLiterals
 	 *
 	 * The existance allows for the clock to be re-set in Unit Tests.
 	 */
+	@testVisible
 	public static DateTime now
 	{
 		get
@@ -54,7 +56,7 @@ public inherited sharing class ortoo_DateLiterals
 			}
 			return DateTime.now();
 		}
-		set;
+		private set;
 	}
 
 	/**
