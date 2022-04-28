@@ -62,7 +62,21 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	public Schema.SObjectType table {get; private set;}
 	@TestVisible
 	private Set<String> fields;
-	private String conditionExpression;
+	private String conditionExpression {
+		get {
+			if ( conditionCriteria != null && String.isNotBlank( conditionExpression ) ) {
+				throw new fflib_Application.DeveloperException( 'Both criteria and expression were set on the query factory : ' + conditionExpression + ' + ' + conditionCriteria );
+			}
+			else {
+				if ( conditionCriteria != null ) {
+					return conditionCriteria.toSOQL();
+				}
+			}
+			return conditionExpression;
+		}
+		set;
+	}
+	private ISearchCriteria conditionCriteria;
 	private Integer limitCount;
 	private Integer offsetCount;
 	private List<Ordering> order;
@@ -299,6 +313,15 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 		this.conditionExpression = conditionExpression;
 		return this;
 	}
+
+	/**
+	 * @param conditionExpression Sets the WHERE clause to the string provided by the given ISearchCriteria
+	**/
+	public fflib_QueryFactory setCondition(ISearchCriteria criteria){
+		this.conditionCriteria = criteria;
+		return this;
+	}
+
 	/**
 	 * @returns the current value of the WHERE clause, if any, as set by {@link #setCondition}
 	**/

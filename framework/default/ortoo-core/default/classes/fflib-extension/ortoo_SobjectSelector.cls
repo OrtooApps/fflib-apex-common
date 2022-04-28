@@ -52,7 +52,7 @@ public abstract inherited sharing class ortoo_SobjectSelector extends fflib_Sobj
 
 		if ( countOfRecords > 0 )
 		{
-			fflib_QueryFactory queryFactory = newQueryFactory().setCondition( criteria.toSOQL() );
+			fflib_QueryFactory queryFactory = newQueryFactory().setCondition( criteria );
 
 			queryFactory.selectFields( searchConfiguration.getRequiredFields() );
 			queryFactory.setOffset( window.offset );

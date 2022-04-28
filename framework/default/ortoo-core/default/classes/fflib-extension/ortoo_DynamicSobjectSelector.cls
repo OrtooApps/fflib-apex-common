@@ -175,6 +175,6 @@ public inherited sharing class ortoo_DynamicSobjectSelector extends ortoo_Sobjec
 	@testVisible
 	private String generateSoqlByCriteria( ortoo_Criteria criteria )
 	{
-		return newQueryFactory().selectFields( fieldList ).setCondition( criteria.toSOQL() ).toSOQL();
+		return newQueryFactory().selectFields( fieldList ).setCondition( criteria ).toSOQL();
 	}
 }
