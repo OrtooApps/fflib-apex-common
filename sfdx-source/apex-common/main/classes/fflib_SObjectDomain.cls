@@ -39,7 +39,7 @@
  *
  **/
 public virtual with sharing class fflib_SObjectDomain
-		extends fflib_SObjects
+		extends fflib_SObjects2
 	implements fflib_ISObjectDomain
 {
 	/**

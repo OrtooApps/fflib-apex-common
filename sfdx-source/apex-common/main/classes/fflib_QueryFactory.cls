@@ -61,8 +61,23 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	**/
 	public Schema.SObjectType table {get; private set;}
 	@TestVisible
-	private Set<String> fields; 
-	private String conditionExpression;
+	private Set<String> fields;
+	private String conditionExpression {
+		get {
+			if ( conditionCriteria != null && String.isNotBlank( conditionExpression ) ) {
+				// currently an impossible scenario, assuming that setCondition is always used to set the conditions up.
+				throw new fflib_Application.DeveloperException( 'Both criteria and expression were set on the query factory : ' + conditionExpression + ' + ' + conditionCriteria );
+			}
+			else {
+				if ( conditionCriteria != null ) {
+					return conditionCriteria.toSOQL();
+				}
+			}
+			return conditionExpression;
+		}
+		set;
+	}
+	private ISearchCriteria conditionCriteria;
 	private Integer limitCount;
 	private Integer offsetCount;
 	private List<Ordering> order;
@@ -325,8 +340,19 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	**/
 	public fflib_QueryFactory setCondition(String conditionExpression){
 		this.conditionExpression = conditionExpression;
+		this.conditionCriteria = null;
 		return this;
 	}
+
+	/**
+	 * @param conditionExpression Sets the WHERE clause to the string provided by the given ISearchCriteria
+	**/
+	public fflib_QueryFactory setCondition(ISearchCriteria criteria){
+		this.conditionCriteria = criteria;
+		this.conditionExpression = null;
+		return this;
+	}
+
 	/**
 	 * @returns the current value of the WHERE clause, if any, as set by {@link #setCondition}
 	**/
@@ -688,7 +714,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 			}	
 		}
 		result += ' FROM ' + (relationship != null ? relationship.getRelationshipName() : table.getDescribe().getName());
-		if(conditionExpression != null)
+		if( String.isNotBlank( conditionExpression ) )
 			result += ' WHERE '+conditionExpression;
 
 		if(order.size() > 0){
@@ -701,7 +727,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 		if(limitCount != null)
 			result += ' LIMIT '+limitCount;
 
-		if(offsetCount != null)
+		if(offsetCount != null && offsetCount > 0)
 			result += ' OFFSET '+offsetCount;
 
 		return result;

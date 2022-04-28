@@ -52,7 +52,7 @@ public abstract with sharing class fflib_SObjectSelector
     /**
      * Enforce FLS Security
      **/
-    private Boolean m_enforceFLS = false;
+    protected Boolean m_enforceFLS = false;
 
     /**
      * Enforce CRUD Security
