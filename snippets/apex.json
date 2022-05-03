@@ -1,0 +1,605 @@
+{
+	//
+	// This file provides useful shortcuts for writing code when using the Ortoo Framework
+	//
+	// Copy the contents on this file into the apex.json file that is found in VSCode under Preferences -> User Snippets -> Apex
+	//
+	// Be aware of any existing snippets in your file that you may wish to keep
+	//
+	"Test class definition": {
+		"prefix": "@isTestClass",
+		"body": [
+			"@isTest",
+			"private without sharing class $1Test",
+			"{",
+			"	$0",
+			"}"
+		]
+	},
+	"Test method definition": {
+		"prefix": "@isTest",
+		"body":[
+			"@isTest",
+			"private static void ${1:method}_when${2:when}_${3:will}() // NOPMD: Test method name format",
+			"{",
+			"	$0",
+			"	Test.startTest();",
+            "	",
+	        "	Test.stopTest();",
+			" ",
+			"	System.assertEquals( expected, got, '${1:method}, when ${4:when}, will ${5:will}' );",
+			"}"
+		]
+	},
+	"Test exception message method definition": {
+		"prefix": "@isTestExceptionMessage",
+		"body":[
+			"@isTest",
+			"private static void ${1:method}_when${2:when}_throwsAnException() // NOPMD: Test method name format",
+			"{",
+			"	Test.startTest();",
+			"		String exceptionMessage;",
+			"		try",
+			"		{",
+            "			$0",
+			"		}",
+			"		catch ( Exception e )",
+			"		{",
+			"			exceptionMessage = e.getMessage();",
+			"		}",
+	        "	Test.stopTest();",
+			" ",
+			"	ortoo_Asserts.assertContains( '', exceptionMessage, '${1:method}, when ${3:when}, will throw an exception' );",
+			"}"
+		]
+	},
+	"Test exception for null method definition": {
+		"prefix": "@isTestExceptionForNull",
+		"body":[
+			"@isTest",
+			"private static void ${1:method}_whenPassedANull${2:when}_throwsAnException() // NOPMD: Test method name format",
+			"{",
+			"	Test.startTest();",
+			"		String exceptionMessage;",
+			"		try",
+			"		{",
+            "			$0.${1:method}( null );",
+			"		}",
+			"		catch ( Contract.RequiresException e )",
+			"		{",
+			"			exceptionMessage = e.getMessage();",
+			"		}",
+	        "	Test.stopTest();",
+			" ",
+			"	ortoo_Asserts.assertContains( '${1:method} called with a null ${3:parameterName}', exceptionMessage, '${1:method}, when passed a null ${3:parameterName}, will throw an exception' );",
+			"}"
+		]
+	},
+	"Test exception object method definition": {
+		"prefix": "@isTestExceptionObject",
+		"body":[
+			"@isTest",
+			"private static void ${1:method}_when${2:when}_throwsAnException() // NOPMD: Test method name format",
+			"{",
+			"	Test.startTest();",
+			"		ortoo_Exception thrownException;",
+			"		try",
+			"		{",
+            "			$0",
+			"		}",
+			"		catch ( Exception e )",
+			"		{",
+			"			thrownException = e;",
+			"		}",
+	        "	Test.stopTest();",
+			"	",
+			"	ortoo_Asserts.assertContains( '', thrownException.getMessage(), '${1:method}, when ${3:when}, will throw an exception' );",
+			"	",
+			"	ortoo_Exception.Contexts contexts = thrownException.getContexts();",
+			"	ortoo_Exception.Context context;",
+			"	context = contexts.next();",
+			"	System.assertEquals( 'expected', context.getName(), '${1:method}, when ${3:when}, will throw an exception with a context named xxxxx' );",
+			"	System.assertEquals( 'expected', context.getValue(), '${1:method}, when ${3:when}, will throw an exception with a context named xxxxx set to yyyyy' );",
+			"}"
+		]
+	},
+	"Test selectById": {
+		"prefix": "@isTestSelectById",
+		"body":[
+			"@isTest",
+			"private static void ${1:method}_whenGivenIds_retrievesThoseRecords() // NOPMD: Test method name format",
+			"{",
+			"	List<F${2:SObject Fabricator Class name}> records = new List<F${2:SObject Fabricator Class name}>{",
+			"		new F${2:SObject Fabricator Class name}().${4:Identifying Property}( 'record1' ),",
+			"		new F${2:SObject Fabricator Class name}().${4:Identifying Property}( 'record2' ),",
+			"		new F${2:SObject Fabricator Class name}().${4:Identifying Property}( 'record3' )",
+			"	};",
+			"	ortoo_FabricatedSObjectRegister.persist();",
+			"",
+			"	${2:SObject Fabricator Class name}Selector selector = new ${2:SObject Fabricator Class name}Selector();",
+			"",
+			"	Test.startTest();",
+			"		List<${3:SObject API Name}> got = selector.${1:method}( new Set<Id>{ records[0].persistedId, records[2].persistedId } );",
+			"	Test.stopTest();",
+			"",
+			"	System.assertEquals( 2, got.size(), '${1:method}, when given ids, will retrieve those records' );",
+			"	System.assertEquals( 'record1', got[0].${5:Identifying Field}, '${1:method}, when given ids, will retrieve those records' );",
+			"	System.assertEquals( 'record3', got[1].${5:Identifying Field}, '${1:method}, when given ids, will retrieve those records' );",
+			"}"
+		]
+	},
+	"Test select does not issue Soql": {
+		"prefix": "@isTestSelectDoesNotIssueSoql",
+		"body":[
+			"@isTest",
+			"private static void ${1:method}_whenGivenAnEmptySetOfIds_doesNotIssueSoql() // NOPMD: Test method name format",
+			"{",
+			"	${2:selector}Selector selector = new ${2:selector}Selector();",
+			"",
+			"	Test.startTest();",
+			"		List<Sobject> got = selector.${1:method}( new Set<Id>() );",
+			"		Integer queryCount = Limits.getQueries();",
+			"	Test.stopTest();",
+			"",
+			"	System.assertEquals( 0, queryCount, '${1:method}, when given an empty set of Ids, will not issue SOQL' );",
+			"	System.assertEquals( 0, got.size(), '${1:method}, when given an empty set of Ids, will return an empty list' );",
+			"}"
+		]
+	},
+	"Final Static": {
+		"prefix": "finalStatic",
+		"body":[
+			"public final static ${1:Data Type} ${2:VARIABLE_NAME} = ${3:Value};$0"
+		]
+	},
+	"New Instance": {
+		"prefix": "newInstance",
+		"body":[
+			"(${1:Class})Application.${2:TYPE}.newInstance(${3})$0"
+		]
+	},
+	"New Instance of Unit of Work (with variable)": {
+		"prefix": "newInstanceUnitOfWork",
+		"body":[
+			"ortoo_SObjectUnitOfWork uow = (ortoo_SObjectUnitOfWork)Application.UNIT_OF_WORK.newInstance( UnitOfWorkConfigurations.DEFAULT_ORDER );"
+		]
+	},
+	"New Instance of Dynamic Unit of Work (with variable)": {
+		"prefix": "newInstanceDynamicUnitOfWork",
+		"body":[
+			"ortoo_SObjectUnitOfWork uow = (ortoo_SObjectUnitOfWork)Application.DYNAMIC_UNIT_OF_WORK.newInstance();"
+		]
+	},
+	"New Instance of Selector (with variable)": {
+		"prefix": "newInstanceSelector",
+		"body":[
+			"${1:SObject Name}Selector selector = (${1:SObject Name}Selector)Application.SELECTOR.newInstance( ${2:SObject API Name}.sobjectType );"
+		]
+	},
+	"New Instance of Domain by Ids (with variable)": {
+		"prefix": "newInstanceDomain",
+		"body":[
+			"${1:SObject Plural Name} domain = (${1:SObject Plural Name})Application.DOMAIN.newInstance( ids );"
+		]
+	},
+	"Define Exception": {
+		"prefix": "ExceptionDefinition",
+		"body":[
+			"public inherited sharing class $1Exception extends Exceptions.$2Exception {}"
+		]
+	},
+	"Parameter Null Check": {
+		"prefix": "contractRequiresNotNull",
+		"body":[
+			"Contract.requires( ${1:parameterName} != null, '${2:method} called with a null ${1:parameterName}' );$0"
+		]
+	},
+	"Parameter Blank Check": {
+		"prefix": "contractRequiresNotBlank",
+		"body":[
+			"Contract.requires( String.isNotBlank( ${1:parameterName} ), '${2:method} called with a blank ${1:parameterName}' );$0"
+		]
+	},
+	"Parameter Empty Check": {
+		"prefix": "contractRequiresNotEmpty",
+		"body":[
+			"Contract.requires( String.isNotEmpty( ${1:parameterName} ), '${2:method} called with an empty ${1:parameterName}' );$0"
+		]
+	},
+	"Requires": {
+		"prefix": "contractRequires",
+		"body":[
+			"Contract.requires( ${1:condition}, '${2:method} ${3:failureDescription}' );$0"
+		]
+	},
+	"Return Null Check": {
+		"prefix": "contractEnsuresNotNull",
+		"body":[
+			"Contract.ensures( ${1:returnVariableName} != null, '${2:method} returned with a null ${1:returnVariableName}' );$0"
+		]
+	},
+	"Ensures": {
+		"prefix": "contractEnsures",
+		"body":[
+			"Contract.ensures( ${1:condition}, '${2:method} ${3:failureDescription}' );$0"
+		]
+	},
+	"Lazy Load": {
+		"prefix": "lazyLoad",
+		"body": [
+			"private ${1:Class Name} ${2:Property Name}",
+			"{",
+			"	get",
+			"	{",
+			"		if ( ${2:Property Name} == null )",
+			"		{",
+			"			${2:Property Name} = $0;",
+			"		}",
+			"		return ${2:Property Name};",
+			"	}",
+			"	set;",
+			"}"
+		]
+	},
+	"Selector": {
+		"prefix": "selectorClass",
+		"body":[
+			"/**",
+			" * Selector for ${2:SObject API Name}",
+			" *",
+			" * @group Selector",
+			" **/",
+			"public inherited sharing class ${1:SObject Name}Selector extends ortoo_SObjectSelector",
+			"{",
+			"	/**",
+			"	* Returns the default list of fields that this selector will return",
+			"	*",
+			"	* @return	List<Schema.SObjectField>	The default fields",
+			"	**/",
+			"	public List<Schema.SObjectField> getSObjectFieldList()",
+			"	{",
+			"		return new List<Schema.SObjectField>",
+			"		{",
+			"			${2:SObject API Name}.Name,",
+			"			${2:SObject API Name}.${3:Default Fields}",
+			"		};",
+			"	}",
+			"",
+			"	/**",
+			"	* Returns the SObject type that this Selector returns",
+			"	*",
+			"	* @return	List<Schema.SObjectType>	The type of SObject this returns",
+			"	**/",
+			"	public Schema.SObjectType getSObjectType()",
+			"	{",
+			"		return ${2:SObject API Name}.sObjectType;",
+			"	}",
+			"",
+			"	/**",
+			"	* Returns the ${1:SObject Name} records with the given Ids",
+			"	*",
+			"	* @return	List<${2:SObject API Name}>	The records with the given Id",
+			"	**/",
+			"	public List<${2:SObject API Name}> selectById( Set<Id> ids )",
+			"	{",
+			"		Contract.requires( ids != null, 'selectById called with a null ids' );",
+			"",
+			"		if ( ids.isEmpty() )",
+			"		{",
+			"			return new List<${2:SObject API Name}>();",
+			"		}",
+			"",
+			"		return (List<${2:SObject API Name}>)",
+			"			Database.query(",
+			"				newQueryFactory()",
+			"					.setCondition( new ${1:SObject Name}Criteria().withIds( ids ) )",
+			"					.toSoql()",
+			"		);",
+			"	}",
+			"}"
+		]
+	},
+
+	"Selector Test": {
+		"prefix": "selectorTest",
+		"body":[
+			"@isTest",
+			"private without sharing class ${1:SObject Name}SelectorTest",
+			"{",
+			"	@isTest",
+			"	private static void selectById_whenGivenIds_retrievesThoseRecords() // NOPMD: Test method name format",
+			"	{",
+			"		List<F${1:SObject Name}> records = new List<F${1:SObject Name}>{",
+			"			new F${1:SObject Name}().${3:Identifying Property}( 'record1' ),",
+			"			new F${1:SObject Name}().${3:Identifying Property}( 'record2' ),",
+			"			new F${1:SObject Name}().${3:Identifying Property}( 'record3' )",
+			"		};",
+			"		ortoo_FabricatedSObjectRegister.persist();",
+			"",
+			"		${1:SObject Name}Selector selector = new ${1:SObject Name}Selector();",
+			"	",
+			"		Test.startTest();",
+			"			List<${2:SObject API Name}> got = selector.selectById( new Set<Id>{ records[0].persistedId, records[2].persistedId } );",
+			"		Test.stopTest();",
+			"",
+			"		System.assertEquals( 2, got.size(), 'selectById, when given ids, will retrieve those records' );",
+			"		System.assertEquals( 'record1', got[0].${4:Identifying Field}, 'selectById, when given ids, will retrieve those records' );",
+			"		System.assertEquals( 'record3', got[1].${4:Identifying Field}, 'selectById, when given ids, will retrieve those records' );",
+			"	}",
+			"",
+			"	@isTest",
+			"	private static void selectById_whenGivenAnEmptySetOfIds_doesNotIssueSoql() // NOPMD: Test method name format",
+			"	{",
+			"		${1:SObject Name}Selector selector = new ${1:SObject Name}Selector();",
+			"	",
+			"		Test.startTest();",
+			"			List<${2:SObject API Name}> got = selector.selectById( new Set<Id>() );",
+			"			Integer queryCount = Limits.getQueries();",
+			"		Test.stopTest();",
+			"	",
+			"		System.assertEquals( 0, queryCount, 'selectById, when given an empty set of Ids, will not issue SOQL' );",
+			"		System.assertEquals( 0, got.size(), 'selectById, when given an empty set of Ids, will return an empty list' );",
+			"	}",
+			"",
+			"	@isTest",
+			"	private static void selectById_whenPassedANullIds_throwsAnException() // NOPMD: Test method name format",
+			"	{",
+			"		Test.startTest();",
+			"			String exceptionMessage;",
+			"			try",
+			"			{",
+			"				new ${1:SObject Name}Selector().selectById( null );",
+			"			}",
+			"			catch ( Contract.RequiresException e )",
+			"			{",
+			"				exceptionMessage = e.getMessage();",
+			"			}",
+			"		Test.stopTest();",
+			"",
+			"		ortoo_Asserts.assertContains( 'selectById called with a null ids', exceptionMessage, 'selectById, when passed a null ids, will throw an exception' );",
+			"	}",
+			"}"
+		]
+	},
+
+	"Criteria Class": {
+		"prefix": "criteriaClass",
+		"body": [
+			"/**",
+			" * Defines the Criteria that can be used to select or filter ${1:SObject Name} records",
+			" *",
+			" * @group	Criteria",
+			" */",
+			"public inherited sharing class ${1:SObject Name}Criteria extends ortoo_Criteria"
+			"{",
+			"	/**",
+			"	 * Configures the criteria to match records with one of the given Ids",
+			"	 *",
+			"	 * @param	Set<Id>			The Ids to match against",
+			"	 * @return	${1:SObject Name}Criteria	Itself, allowing for a fluent interface",
+			"	 */",
+			"	public ${1:SObject Name}Criteria withIds( Set<Id> ids )",
+			"	{",
+			"		Contract.requires( ids != null, 'withIds called with a null ids' );",
+			"		inSet( ${2:SObject API Name}.Id, ids );",
+			"		return this;",
+			"	}",
+			"}"
+		]
+	},
+
+	"Criteria Test": {
+		"prefix": "criteriaTest",
+		"body": [
+			"@isTest",
+			"private without sharing class ${1:SObject Name}CriteriaTest",
+			"{",
+			"	@isTest",
+			"	private static void withIds_whenCalledWithIds_addsThemToCriteriaAgainstTheId() // NOPMD: Test method name format",
+			"	{",
+			"		List<Id> ids = new List<Id>{",
+			"			TestIdUtils.generateId( ${2:SObject API Name}.sobjectType ),",
+			"			TestIdUtils.generateId( ${2:SObject API Name}.sobjectType )",
+			"		};",
+			"",
+			"		Set<Id> idSet = SetUtils.convertToSetOfIds( ids );",
+			"",
+			"		Test.startTest();",
+			"			${1:SObject Name}Criteria criteria = new ${1:SObject Name}Criteria().withIds( idSet );",
+			"		Test.stopTest();",
+			"",
+			"		String got = criteria.toSOQL();",
+			"		String expected = 'Id IN (\\'' + ids[0] + '\\',\\''+ ids[1] +'\\')';",
+			"",
+			"		System.assertEquals( expected, got, 'withIds, when called with ids, will add them to the criteria against the Id' );",
+			"	}",
+			"}"
+		]
+	},
+
+	"Fabricated SObject": {
+		"prefix": "fabricatedSobject",
+		"body": [
+			"@isTest",
+			"public inherited sharing class F${1:SObject Name} extends sfab_FabricatedSObject",
+			"{",
+			"	public static String defaultName = 'Default';",
+			"",
+			"	public F${1:SObject Name}()",
+			"	{",
+			"		super( ${2:SObject API Name}.class );",
+			"		// Default other required fields here - define a method for each one",
+			"		name( defaultName );",
+			"	}",
+			"",
+			"	public F${2:SObject API Name} name( String name )",
+			"	{",
+			"		set( ${2:SObject API Name}.Name, name );",
+			"		return this;",
+			"	}",
+			"}"
+		]
+	},
+
+	"Domain Class": {
+		"prefix" : "domainClass",
+		"body": [
+			"/**",
+			" * Represents a list of ${2:SObject API Name} records, allowing for their manipulation",
+			" *",
+			" * @group	Domain",
+			" */",
+			"public inherited sharing class ${1:SObject Plural Name} extends ortoo_SobjectDomain",
+			"{",
+			"	public ${1:SObject Plural Name}( List<${2:SObject API Name}> sObjectList )",
+			"	{",
+			"		super( sObjectList );",
+			"	}",
+			"",
+			"	public class Constructor implements fflib_SObjectDomain.IConstructable",
+			"	{",
+			"		public fflib_SObjectDomain construct( List<SObject> sObjectList )",
+			"		{",
+			"			return new ${1:SObject Plural Name}( sObjectList );",
+			"		}",
+			"	}",
+			"",
+			"	@testVisible",
+			"	private List<${2:SObject API Name}> ${3:SObject Name}Records",
+			"	{",
+			"		get {",
+			"			return (List<${2:SObject API Name}>)records;",
+			"		}",
+			"	}",
+			"	${4}",
+			"}"
+		]
+	},
+
+	"Domain Test": {
+		"prefix" : "domainTest",
+		"body": [
+			"@isTest",
+			"private without sharing class ${1:SObject Plural Name}Test",
+			"{",
+			"	@isTest",
+			"	private static void newInstance_whenGiven${1:SObject Plural Name}_setsThe${2:SObject Name}RecordsMember() // NOPMD: Test method name format",
+			"	{",
+			"		List<${3:SObject API Name}> records = new List<${3:SObject API Name}>",
+			"		{",
+			"			new ${3:SObject API Name}( ${5:Defining Property} => ${6:Property Value} ),",
+			"			new ${3:SObject API Name}( ${5:Defining Property} => ${6:Property Value} )",
+			"		};",
+			"",
+			"		Test.startTest();",
+			"			${1:SObject Plural Name} domain = (${1:SObject Plural Name})Application.DOMAIN.newInstance( records );",
+			"		Test.stopTest();",
+			"",
+			"		System.assertEquals( ${1:SObject Plural Name}, domain.${4:SObject Name}Records, 'newInstance, when given ${1:SObject Plural Name}, will set the ${4:SObject Name}Records member variable' );",
+			"	}",
+			"}"
+		]
+	},
+
+	"Service Static Class": {
+		"prefix" : "serviceStaticClass",
+		"body": [
+			"/**",
+			" * Provides capabilities related to...",
+			" *",
+			" * @group	Service",
+			" */",
+			"public with sharing class ${1:Service Name}Service",
+			"{",
+			"	$0",
+			"	private I${1:Service Name}Service service",
+			"	{",
+			"		get",
+			"		{",
+			"			if ( service == null )",
+			"			{",
+			"				service = (I${1:Service Name}Service)Application.SERVICE.newInstance( I${1:Service Name}Service.class );",
+			"			}",
+			"			return service;",
+			"		}",
+			"		set;",
+			"	}",
+			"}"
+		]
+	},
+
+	"Service Static Method": {
+		"prefix" : "serviceStaticMethod",
+		"body": [
+			"/**",
+			" * Method Description...",
+			" *",
+			" * @param	Type	Description",
+			" * @return	Type	Description",
+			" */",
+			"public static ${1:Return Type} ${2:Method Name}( ${3:Parameter Definitions} )",
+			"{",
+			"	return service.${2:Method Name}( $0${3:Parameter Definitions} );",
+			"}"
+		]
+	},
+
+	"Service Implementation Class": {
+		"prefix" : "serviceImplementationClass",
+		"body": [
+			"/**",
+			" * Provides capabilities related to...",
+			" *",
+			" * @group	ServiceImplementation",
+			" */",
+			"public inherited sharing class ${1:Service Name}Service implements I${1:Service Name}Service",
+			"{",
+			"	$0",
+			"}"
+		]
+	},
+
+	"Service Implementation Method": {
+		"prefix" : "serviceImplementationMethod",
+		"body": [
+			"/**",
+			" * Method Description...",
+			" *",
+			" * @param	Type	Description",
+			" * @return	Type	Description",
+			" */",
+			"public ${1:Return Type} ${2:Method Name}( ${3:Parameter Definitions} )",
+			"{",
+			"	// Requires contracts go here",
+			"",
+			"	${1:Return Type} ${4:Return Variable} = new ${1:Return Type}();",
+			"	try",
+			"	{",
+			"		$0",
+			"	}",
+			"	catch ( Exception e )",
+			"	{",
+			"		ServiceUtils.logAndRethrow( e );",
+			"	}",
+			"	return ${4:Return Variable};",
+			"}"
+		]
+	},
+
+	"Unit Of Work Configurations Class": {
+		"prefix": "unitOfWorkConfigurationsClass",
+		"body": [
+			"/**",
+			" * Defines the Sobject Orders for each of the various Unit of Works that can be constructed.",
+			" *",
+			" * @group	Configuration",
+			" */",
+			"public inherited sharing class UnitOfWorkConfigurations"
+			"{",
+			"	public static final List<SobjectType> DEFAULT_ORDER = new List<SobjectType>{",
+			"		$0.sobjectType,",
+			"	};",
+			"}"
+		]
+	}
+}
