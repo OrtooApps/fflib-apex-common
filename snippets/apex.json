@@ -527,7 +527,7 @@
 			" *",
 			" * @group	Service",
 			" */",
-			"public with sharing class ${1:Service Name}Service",
+			"public inherited sharing class ${1:Service Name}Service",
 			"{",
 			"	$0",
 			"	private I${1:Service Name}Service service",
@@ -570,7 +570,7 @@
 			" *",
 			" * @group	ServiceImplementation",
 			" */",
-			"public inherited sharing class ${1:Service Name}Service implements I${1:Service Name}Service",
+			"public with sharing class ${1:Service Name}Service implements I${1:Service Name}Service",
 			"{",
 			"	$0",
 			"}"
