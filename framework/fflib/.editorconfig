@@ -1,6 +1,0 @@
-root = true
-
-# Exists only to define tab spacing in github pull request rendering
-[*]
-indent_style = tab
-indent_size = 4
