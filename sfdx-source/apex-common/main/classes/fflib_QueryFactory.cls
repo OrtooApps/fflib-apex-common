@@ -77,7 +77,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 		}
 		set;
 	}
-	private ISearchCriteria conditionCriteria;
+	private fflib_ISoqlable conditionCriteria;
 	private Integer limitCount;
 	private Integer offsetCount;
 	private List<Ordering> order;
@@ -347,7 +347,7 @@ public class fflib_QueryFactory { //No explicit sharing declaration - inherit fr
 	/**
 	 * @param conditionExpression Sets the WHERE clause to the string provided by the given ISearchCriteria
 	**/
-	public fflib_QueryFactory setCondition(ISearchCriteria criteria){
+	public fflib_QueryFactory setCondition(fflib_ISoqlable criteria){
 		this.conditionCriteria = criteria;
 		this.conditionExpression = null;
 		return this;
