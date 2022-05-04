@@ -133,20 +133,6 @@ public virtual class fflib_SObjects2
 	}
 
 	/**
-	 * Adds an error message to the records in the domain
-	 *
-	 * @param message The error message to add to each record
-	 */
-	@TestVisible
-	protected virtual void addError(String message)
-	{
-		for (SObject record : getRecords())
-		{
-			record.addError(error(message, record));
-		}
-	}
-
-	/**
 	 * Adds an error message to the a field records in the domain
 	 *
 	 * @param sObjectField The field where the error should be reported
