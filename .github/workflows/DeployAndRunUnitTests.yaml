@@ -63,7 +63,7 @@ jobs:
       # Push code to org
 
       - name: Deploy framework to Org
-        run: sfdx force:source:deploy -p "subfolders/fflib/sfdx-source,framework" --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+        run: sfdx force:source:push -u "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
 
       # Run Apex Unit Tests
 

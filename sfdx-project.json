@@ -1,7 +1,7 @@
 {
   "packageDirectories": [
     {
-      "path": "subfolders/fflib/sfdx-source",
+      "path": "subtrees/fflib/sfdx-source",
       "default": false
     },
     {
