@@ -1,0 +1,84 @@
+name: Deploy and Run all Unit Tests
+on:
+  push:
+    branches:
+      - '**/*'
+      - main
+  pull_request:
+    types: [ opened ]
+    branches:
+      - '**/*'
+      - main
+jobs:
+  create-org-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEVHUB_ORG_ALIAS: OrtooISV
+      ORG_ALIAS_PREFIX: 'FFLIB'
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Salesforce SFDX CLI Action
+        uses: sfdx-actions/setup-sfdx@v1
+
+      # Update ./config/project-scratch-def.json
+
+      - name: Update project-scratch-def.json orgName
+        uses: jossef/action-set-json-field@6e6d7e639f24b3955ef682815317b5613ac6ca12
+        with:
+          file: ./config/project-scratch-def.json
+          field: orgName
+          value: "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+
+      - name: Update project-scratch-def.json description
+        uses: jossef/action-set-json-field@6e6d7e639f24b3955ef682815317b5613ac6ca12
+        with:
+          file: ./config/project-scratch-def.json
+          field: description
+          value: "${{ github.repository }} , Org Alias ${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}. Created by ${{ github.actor }}"
+
+      - name: Show project-scratch-def.json
+        run: 'cat ./config/project-scratch-def.json'
+
+      # sfdx-project.json file should be ok as is
+
+      - name: Show sfdx-project.json
+        run: 'cat ./sfdx-project.json'
+
+      # Dev Hub needed to create scratch org
+
+      - name: Create DevHub Auth File
+        run: echo "${{ secrets.AUTH_SECRET_ISV }}" > devhub_auth_file.txt
+
+      - name: Authorise Dev Hub Org
+        run: sfdx auth:sfdxurl:store -f devhub_auth_file.txt -d -a ${{ env.DEVHUB_ORG_ALIAS }}
+
+      # Create Scratch Org
+
+      - name: Run script CreateScratchOrgWithNamespaceOnlyHeadless.sh
+        run: ./scripts/std_batch/CreateScratchOrgWithNamespaceOnlyHeadless.sh "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+        shell: sh
+
+      # Push code to org
+
+      - name: Deploy FFLIB to Org
+        run: sfdx force:source:deploy -p sfdx-source --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+
+      # Run Apex Unit Tests
+
+      - name: Run All Unit Tests
+        run: ./scripts/std_batch/RunApexUnitTests.sh "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+        shell: bash
+
+      # Get Apex Code Coverage Numbers
+
+      - name: Get Apex Code Coverage
+        run: ./scripts/std_batch/GetApexCodeCoverage.sh "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
+        shell: sh
+
+      # Delete Scratch Org
+
+      - name: Delete Scratch Org
+        if: ${{ always() }}
+        run: sfdx force:org:delete --noprompt --targetusername "${{env.ORG_ALIAS_PREFIX}}${{github.run_number}}"
