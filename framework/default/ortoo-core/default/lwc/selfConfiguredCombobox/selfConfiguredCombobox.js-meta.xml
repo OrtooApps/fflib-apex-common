@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>Intended to be subclassed, is a Combobox that is able to determine its own options.</description>
+    <masterLabel>Self Configured Combobox</masterLabel>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

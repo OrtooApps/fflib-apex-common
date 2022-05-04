@@ -1,0 +1,68 @@
+<template>
+
+    <lightning-layout vertical-align="start">
+
+        <lightning-layout-item>
+
+            <p>
+
+                <span data-ortoo-elem-id={informationMessageId}>{labels.totalRecords}: {numberOfRecords} • {pageDescription} • {labels.pageSize}</span>
+
+                <lightning-combobox
+                    label={labels.pageSize}
+                    variant="label-hidden"
+                    data-ortoo-elem-id={pageSizeId}
+                    class="slds-p-left_x-small slds-p-right_x-small page-selector"
+                    value={recordsPerPage}
+                    options={pageSizeOptions}
+                    onchange={handleChangePageSize}
+                ></lightning-combobox>
+            </p>
+
+        </lightning-layout-item>
+
+        <lightning-layout-item>
+
+            <lightning-button-group>
+
+                <lightning-button
+                    data-ortoo-elem-id={firstButtonId}
+                    label={labels.first}
+                    icon-name="utility:chevronleft"
+                    onclick={handleFirstClick}
+                    disabled={disableFirstButton}
+                ></lightning-button>
+
+                <lightning-button
+                    data-ortoo-elem-id={previousButtonId}
+                    label={labels.previous}
+                    icon-name="utility:chevronleft"
+                    onclick={handlePreviousClick}
+                    disabled={disablePreviousButton}
+                ></lightning-button>
+
+                <lightning-button
+                    data-ortoo-elem-id={nextButtonId}
+                    label={labels.next}
+                    icon-name="utility:chevronright"
+                    icon-position="right"
+                    onclick={handleNextClick}
+                    disabled={disableNextButton}
+                ></lightning-button>
+
+                <lightning-button
+                    data-ortoo-elem-id={lastButtonId}
+                    label={labels.last}
+                    icon-name="utility:chevronright"
+                    icon-position="right"
+                    onclick={handleLastClick}
+                    disabled={disableLastButton}
+                ></lightning-button>
+
+            </lightning-button-group>
+
+        </lightning-layout-item>
+
+    </lightning-layout>
+
+</template>
