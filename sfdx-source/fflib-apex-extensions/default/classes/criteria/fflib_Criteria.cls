@@ -864,10 +864,9 @@ public virtual with sharing class fflib_Criteria
 		return result + ')';
 	}
 
-	public interface Evaluator
+	public interface Evaluator extends fflib_ISoqlable
 	{
 		Boolean evaluate(Object obj);
-		String toSOQL();
 	}
 
 	/**

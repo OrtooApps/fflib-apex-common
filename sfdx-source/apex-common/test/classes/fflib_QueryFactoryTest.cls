@@ -72,56 +72,61 @@ private class fflib_QueryFactoryTest {
 	}
 
 	@isTest
-	static void iSearchCriteriaCondition(){
+	static void iSoqlableCondition(){
 
 		String whereClause = 'name = \'test\'';
 
-		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
-		searchCriteriaController
-			.when( 'toSoql' )
-			.returns( whereClause );
+		fflib_ApexMocks mocks = new fflib_ApexMocks();
+		fflib_ISoqlable mockSoqlable = (fflib_ISoqlable)mocks.mock( fflib_ISoqlable.class );
+
+		mocks.startStubbing();
+		mocks.when( mockSoqlable.toSOQL() ).thenReturn( whereClause );
+		mocks.stopStubbing();
 
 		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
 		qf.selectField('name');
-		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+		qf.setCondition( mockSoqlable );
 
-		System.assertEquals( whereClause, qf.getCondition(), 'setCondition, when given an ISearchCriteria, will set the condition based on the criteria' );
+		System.assertEquals( whereClause, qf.getCondition(), 'setCondition, when given an fflib_ISoqlable, will set the condition based on the criteria' );
 
 		String query = qf.toSOQL();
 		System.assert( query.endsWith('WHERE name = \'test\''),'Query should have ended with a filter on name, got: '+query);
+
+		((fflib_ISoqlable)mocks.verify( mockSoqlable, mocks.atLeast(1))).toSoql();
 	}
 
 	@isTest
-	static void iSearchCriteriaCondition_notEvaluatedOnSet(){
+	static void iSoqlableCondition_notEvaluatedOnSet(){
 
-		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
-		searchCriteriaController
-			.expectsNoCalls();
+		fflib_ApexMocks mocks = new fflib_ApexMocks();
+		fflib_ISoqlable mockSoqlable = (fflib_ISoqlable)mocks.mock( fflib_ISoqlable.class );
 
 		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
 		qf.selectField('name');
-		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+		qf.setCondition( mockSoqlable );
 
-		searchCriteriaController.verify();
+		((fflib_ISoqlable)mocks.verify( mockSoqlable, mocks.never())).toSoql();
 	}
 
 	@isTest
-	static void iSearchCriteriaCondition_isEvaluatedOnGet(){
+	static void iSoqlableCondition_isEvaluatedOnGet(){
 
 		String whereClause = 'name = \'test\'';
 
-		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
-		searchCriteriaController
-			.when( 'toSoql' )
-			.returns( whereClause );
+		fflib_ApexMocks mocks = new fflib_ApexMocks();
+		fflib_ISoqlable mockSoqlable = (fflib_ISoqlable)mocks.mock( fflib_ISoqlable.class );
+
+		mocks.startStubbing();
+		mocks.when( mockSoqlable.toSOQL() ).thenReturn( whereClause );
+		mocks.stopStubbing();
 
 		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
 		qf.selectField('name');
-		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+		qf.setCondition( mockSoqlable );
 
 		qf.getCondition();
 
-		searchCriteriaController.verify();
+		((fflib_ISoqlable)mocks.verify( mockSoqlable, mocks.times(1))).toSoql();
 	}
 
 	@isTest
@@ -130,17 +135,19 @@ private class fflib_QueryFactoryTest {
 		String stringWhereClause = 'name = \'string\'';
 		String criteriaWhereClause = 'name = \'criteria\'';
 
-		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
-		searchCriteriaController
-			.when( 'toSoql' )
-			.returns( criteriaWhereClause );
+		fflib_ApexMocks mocks = new fflib_ApexMocks();
+		fflib_ISoqlable mockSoqlable = (fflib_ISoqlable)mocks.mock( fflib_ISoqlable.class );
+
+		mocks.startStubbing();
+		mocks.when( mockSoqlable.toSOQL() ).thenReturn( criteriaWhereClause );
+		mocks.stopStubbing();
 
 		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
 		qf.selectField('name');
 		qf.setCondition( stringWhereClause );
-		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+		qf.setCondition( mockSoqlable );
 
-		System.assertEquals( criteriaWhereClause, qf.getCondition(), 'setCondition, when given a string then a ISearchCriteria, will set the condition based on the last thing - the criteria' );
+		System.assertEquals( criteriaWhereClause, qf.getCondition(), 'setCondition, when given a string then a fflib_ISoqlable, will set the condition based on the last thing - the criteria' );
 	}
 
 	@isTest
@@ -149,17 +156,19 @@ private class fflib_QueryFactoryTest {
 		String stringWhereClause = 'name = \'string\'';
 		String criteriaWhereClause = 'name = \'criteria\'';
 
-		Amoss_Instance searchCriteriaController = new Amoss_Instance( ISearchCriteria.class );
-		searchCriteriaController
-			.when( 'toSoql' )
-			.returns( criteriaWhereClause );
+		fflib_ApexMocks mocks = new fflib_ApexMocks();
+		fflib_ISoqlable mockSoqlable = (fflib_ISoqlable)mocks.mock( fflib_ISoqlable.class );
+
+		mocks.startStubbing();
+		mocks.when( mockSoqlable.toSOQL() ).thenReturn( criteriaWhereClause );
+		mocks.stopStubbing();
 
 		fflib_QueryFactory qf = new fflib_QueryFactory(Contact.SObjectType);
 		qf.selectField('name');
-		qf.setCondition( (ISearchCriteria)searchCriteriaController.getDouble() );
+		qf.setCondition( mockSoqlable );
 		qf.setCondition( stringWhereClause );
 
-		System.assertEquals( stringWhereClause, qf.getCondition(), 'setCondition, when given a ISearchCriteria then string, will set the condition based on the last thing - the string' );
+		System.assertEquals( stringWhereClause, qf.getCondition(), 'setCondition, when given a fflib_ISoqlable then string, will set the condition based on the last thing - the string' );
 	}
 
 	@isTest
