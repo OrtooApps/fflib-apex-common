@@ -32,30 +32,6 @@
 private class fflib_SObjects2Test
 {
 	@IsTest
-	static void itShouldAddErrorMessage()
-	{
-		SObjectType accountSObjectType = Schema.Account.SObjectType;
-		final Id idA = fflib_IDGenerator.generate(accountSObjectType);
-		final Id idB = fflib_IDGenerator.generate(accountSObjectType);
-
-		DomainAccounts domain = new DomainAccounts(
-				new List<SObject>
-				{
-						new Account(Id = idA),
-						new Account(Id = idB)
-				}
-		);
-
-		domain.addError('Oops');
-		domain.addError(Schema.Account.Name,'Oops');
-
-		System.assertEquals(
-				4,
-				fflib_SObjects.Errors.getAll().size()
-		);
-	}
-
-	@IsTest
 	static void itShouldClearTheField()
 	{
 		Account record = new Account(ShippingCountry = 'Holland');
@@ -285,25 +261,6 @@ private class fflib_SObjects2Test
 		DomainAccounts domain = generateDomain();
 
 		System.assert(domain.selectPopulatedRecords().size() == 3);
-	}
-
-	@IsTest
-	static void itShouldReturnFieldValues()
-	{
-		DomainAccounts domain = generateDomain();
-
-		System.assert(
-				domain.getStringFieldValues(Schema.Account.ShippingCountry)
-						.containsAll(
-						new Set<Object>
-						{
-								'USA',
-								'Ireland',
-								'UK',
-								''
-						}
-				)
-		);
 	}
 
 	@IsTest
