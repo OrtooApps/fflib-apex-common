@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
-    <cacheControl>Private</cacheControl>
-    <contentType>text/plain</contentType>
-	<description>Credits for all Open Source libraries and similar that were used in the building of this application.</description>
-</StaticResource>
