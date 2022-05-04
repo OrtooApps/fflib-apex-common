@@ -1,3 +1,0 @@
-#!/bin/bash
-echo This may take a while...
-sfdx force:apex:test:run -r human --codecoverage | grep -v ' Pass   '

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>52.0</apiVersion>
-    <description>Provides a modal dialog box that will request confirmation or cancellation.  Both events can have a 'message' provided to them by the consumer, allowing the dialog to state what has been confirmed or cancelled.</description>
-    <masterLabel>Confirmation Dialog</masterLabel>
-    <isExposed>false</isExposed>
-</LightningComponentBundle>
