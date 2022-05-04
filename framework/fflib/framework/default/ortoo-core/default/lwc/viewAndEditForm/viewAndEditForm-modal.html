@@ -1,0 +1,59 @@
+<template>
+
+    <c-modal
+        visible={visible}
+        oncancel={handleCancelModalClick}
+        ortoo-elem-id-prefix={modalId}
+        hide-footer={hideModalFooter}
+    >
+
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
+
+        <lightning-button-group if:false={inEditMode} slot="header-buttons">
+
+            <slot name="additional-view-buttons"></slot>
+
+            <lightning-button
+                data-ortoo-elem-id={editId}
+                class="slds-float_right"
+                variant="default"
+                label={editLabel}
+                onclick={handleEditClick}
+            ></lightning-button>
+
+        </lightning-button-group>
+
+        <div slot="contents">
+
+			<slot name="info"></slot>
+
+            <template if:false={inEditMode}>
+                <slot name="view-form"></slot>
+            </template>
+
+            <template if:true={inEditMode}>
+                <slot name="edit-form"></slot>
+            </template>
+        </div>
+
+        <div slot="footer" if:true={inEditMode}>
+
+			<c-save-buttons
+				data-ortoo-elem-id={saveButtonsId}
+				cancel-label={cancelLabel}
+				save-label={saveLabel}
+                onsave={handleSaveClick}
+                oncancel={handleCancelClick}
+            >
+                <span slot="additional-buttons">
+                    <slot name="additional-edit-buttons"></slot>
+                </span>
+            </c-save-buttons>
+
+        </div>
+
+    </c-modal>
+
+</template>

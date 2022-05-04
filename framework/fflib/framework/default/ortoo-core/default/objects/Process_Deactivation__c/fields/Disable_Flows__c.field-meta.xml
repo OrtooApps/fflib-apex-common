@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disable_Flows__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Disable all flows.  Assumes that flows look at this property before performing any actions.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Disable all flows.  Assumes that flows look at this property before performing any actions.</inlineHelpText>
+    <label>Disable Flows</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

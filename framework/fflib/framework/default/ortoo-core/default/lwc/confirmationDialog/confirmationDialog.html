@@ -1,0 +1,38 @@
+<template>
+    <c-modal
+        visible={visible}
+        oncancel={handleCancel}
+        data-ortoo-elem-id={modalId}
+    >
+
+        <div slot="title">
+            <slot name="title"></slot>
+        </div>
+
+        <div slot="contents">
+            <slot name="message"></slot>
+        </div>
+
+        <div slot="footer">
+
+            <lightning-button
+                data-ortoo-elem-id={cancelId}
+                class="slds-p-around_xxx-small"
+                variant="neutral"
+                label={cancelLabel}
+                title={cancelLabel}
+                onclick={handleCancel}
+            ></lightning-button>
+
+            <lightning-button
+                data-ortoo-elem-id={confirmId}
+                class="slds-p-around_xxx-small"
+                variant="brand"
+                label={confirmLabel}
+                title={confirmLabel}
+                onclick={handleConfirm}
+            ></lightning-button>
+
+        </div>
+    </c-modal>
+</template>

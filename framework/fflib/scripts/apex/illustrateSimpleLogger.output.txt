@@ -1,0 +1,153 @@
+04:39:01.130 (1130102616)|EXECUTION_STARTED
+04:39:01.130 (1130119517)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex
+04:39:01.130 (1131094497)|USER_DEBUG|[8]|DEBUG|Simple log messages
+04:39:01.130 (1131143797)|USER_DEBUG|[9]|DEBUG|
+04:39:01.130 (1941858446)|USER_DEBUG|[184]|INFO|This is an info message
+04:39:01.130 (1942810027)|USER_DEBUG|[184]|WARN|This is a warning message
+04:39:01.130 (1943548865)|USER_DEBUG|[184]|ERROR|This is an error message
+04:39:01.130 (1943588614)|USER_DEBUG|[14]|DEBUG|
+04:39:01.130 (1943605004)|USER_DEBUG|[15]|DEBUG|Log messages with a related SObject
+04:39:01.130 (1943615817)|USER_DEBUG|[16]|DEBUG|
+04:39:01.130 (1944431805)|USER_DEBUG|[184]|INFO|On 0032D00000WOOuwQAH: This is an info message
+04:39:01.130 (1945217503)|USER_DEBUG|[184]|WARN|On 0032D00000WOOuwQAH: This is a warning message
+04:39:01.130 (1945992545)|USER_DEBUG|[184]|ERROR|On 0032D00000WOOuwQAH: This is an error message
+04:39:01.130 (1946027662)|USER_DEBUG|[21]|DEBUG|
+04:39:01.130 (1946043671)|USER_DEBUG|[22]|DEBUG|Log of DML Exception with an Id
+04:39:01.130 (1946054323)|USER_DEBUG|[23]|DEBUG|
+04:39:01.130 (1960347522)|EXCEPTION_THROWN|[26]|System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuwQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+04:39:01.130 (1974251517)|USER_DEBUG|[184]|ERROR|System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuwQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+
+Row details:
+0 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuwQAH - invalid cross reference id
+
+Stack Trace:
+AnonymousBlock: line 26, column 1
+04:39:01.130 (1974304471)|USER_DEBUG|[33]|DEBUG|
+04:39:01.130 (1974319139)|USER_DEBUG|[34]|DEBUG|Log of DML Exceptionm, handled with Exception with an Id
+04:39:01.130 (1974329312)|USER_DEBUG|[35]|DEBUG|
+04:39:01.130 (1986673238)|EXCEPTION_THROWN|[38]|System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuwQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+04:39:01.130 (1988620794)|USER_DEBUG|[184]|ERROR|System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuwQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+
+Row details:
+0 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuwQAH - invalid cross reference id
+1 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuxQAH - invalid cross reference id
+2 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuyQAH - invalid cross reference id
+
+Stack Trace:
+AnonymousBlock: line 38, column 1
+04:39:01.130 (1988665722)|USER_DEBUG|[49]|DEBUG|
+04:39:01.130 (1988685295)|USER_DEBUG|[50]|DEBUG|Log of DML Exception without an Id
+04:39:01.130 (1988695577)|USER_DEBUG|[51]|DEBUG|
+04:39:01.130 (2015631061)|CODE_UNIT_STARTED|[EXTERNAL]|DuplicateDetector
+04:39:01.130 (2070367888)|CODE_UNIT_FINISHED|DuplicateDetector
+04:39:01.130 (2072487811)|EXCEPTION_THROWN|[54]|System.DmlException: Insert failed. First exception on row 0; first error: REQUIRED_FIELD_MISSING, Required fields are missing: [LastName]: [LastName]
+04:39:01.130 (2075225183)|USER_DEBUG|[184]|ERROR|System.DmlException: Insert failed. First exception on row 0; first error: REQUIRED_FIELD_MISSING, Required fields are missing: [LastName]: [LastName]
+
+Row details:
+0 - REQUIRED_FIELD_MISSING: Required fields are missing: [LastName]
+1 - REQUIRED_FIELD_MISSING: Required fields are missing: [LastName]
+2 - REQUIRED_FIELD_MISSING: Required fields are missing: [LastName]
+
+Stack Trace:
+AnonymousBlock: line 54, column 1
+04:39:01.130 (2075273315)|USER_DEBUG|[65]|DEBUG|
+04:39:01.130 (2075290167)|USER_DEBUG|[66]|DEBUG|Log of DML Exception as Exception without an Id
+04:39:01.130 (2075300459)|USER_DEBUG|[67]|DEBUG|
+04:39:01.130 (2077385052)|CODE_UNIT_STARTED|[EXTERNAL]|DuplicateDetector
+04:39:01.130 (2094112824)|CODE_UNIT_FINISHED|DuplicateDetector
+04:39:01.130 (2095659348)|EXCEPTION_THROWN|[70]|System.DmlException: Insert failed. First exception on row 0; first error: REQUIRED_FIELD_MISSING, Required fields are missing: [LastName]: [LastName]
+04:39:01.130 (2098181779)|USER_DEBUG|[184]|ERROR|System.DmlException: Insert failed. First exception on row 0; first error: REQUIRED_FIELD_MISSING, Required fields are missing: [LastName]: [LastName]
+
+Row details:
+0 - REQUIRED_FIELD_MISSING: Required fields are missing: [LastName]
+
+Stack Trace:
+AnonymousBlock: line 70, column 1
+04:39:01.130 (2098233105)|USER_DEBUG|[77]|DEBUG|
+04:39:01.130 (2098251043)|USER_DEBUG|[78]|DEBUG|Log of System Exception without an Id
+04:39:01.130 (2098261706)|USER_DEBUG|[79]|DEBUG|
+04:39:01.130 (2099651235)|USER_DEBUG|[184]|ERROR|System.ListException: List index out of bounds: 1
+
+Stack Trace:
+AnonymousBlock: line 82, column 1
+04:39:01.130 (2099685902)|USER_DEBUG|[89]|DEBUG|
+04:39:01.130 (2099700888)|USER_DEBUG|[90]|DEBUG|Log of System Exception with an Id
+04:39:01.130 (2099711076)|USER_DEBUG|[91]|DEBUG|
+04:39:01.130 (2100758938)|USER_DEBUG|[184]|ERROR|System.ListException: List index out of bounds: 1
+Against Id: 0032D00000WOOuwQAH
+
+Stack Trace:
+AnonymousBlock: line 94, column 1
+04:39:01.130 (2100794476)|USER_DEBUG|[101]|DEBUG|
+04:39:01.130 (2100810023)|USER_DEBUG|[102]|DEBUG|Log of Ortoo Exception
+04:39:01.130 (2100820945)|USER_DEBUG|[103]|DEBUG|
+04:39:02.159 (2159616790)|EXCEPTION_THROWN|[165]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+04:39:02.159 (2159659000)|EXCEPTION_THROWN|[107]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+04:39:02.159 (2162012382)|USER_DEBUG|[184]|ERROR|ortoo_qra.Exceptions.DeveloperException (DEV-12345): This is a developer exception
+
+Context:
+id = 0032D00000WOOuwQAH @ OrtooExceptionThrower.throwException on Line: 167, Column 1
+otherThing = thingvalue @ OrtooExceptionThrower.throwException on Line: 168, Column 1
+
+Message Detail:
+LastName => "The last name went wrong" on Contact:{LastName=thingthatwentwrong}
+
+
+Stack Trace:
+Class.OrtooExceptionThrower.throwException: line 165, column 1
+AnonymousBlock: line 107, column 1
+AnonymousBlock: line 107, column 1
+04:39:02.159 (2162077140)|USER_DEBUG|[114]|DEBUG|
+04:39:02.159 (2162105301)|USER_DEBUG|[115]|DEBUG|Log of Ortoo Exception as Exception
+04:39:02.159 (2162125754)|USER_DEBUG|[116]|DEBUG|
+04:39:02.159 (2163391287)|EXCEPTION_THROWN|[165]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+04:39:02.159 (2163417763)|EXCEPTION_THROWN|[120]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+04:39:02.159 (2165576653)|USER_DEBUG|[184]|ERROR|ortoo_qra.Exceptions.DeveloperException (DEV-12345): This is a developer exception
+
+Context:
+id = 0032D00000WOOuwQAH @ OrtooExceptionThrower.throwException on Line: 167, Column 1
+otherThing = thingvalue @ OrtooExceptionThrower.throwException on Line: 168, Column 1
+
+Message Detail:
+LastName => "The last name went wrong" on Contact:{LastName=thingthatwentwrong}
+
+
+Stack Trace:
+Class.OrtooExceptionThrower.throwException: line 165, column 1
+AnonymousBlock: line 120, column 1
+AnonymousBlock: line 120, column 1
+04:39:02.159 (2165634652)|USER_DEBUG|[128]|DEBUG|
+04:39:02.159 (2165662056)|USER_DEBUG|[129]|DEBUG|Log of Ortoo Exception with causedBy
+04:39:02.159 (2165682137)|USER_DEBUG|[130]|DEBUG|
+04:39:02.159 (2181088613)|EXCEPTION_THROWN|[148]|System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuwQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+04:39:02.159 (2184099195)|EXCEPTION_THROWN|[176]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+04:39:02.159 (2184147183)|EXCEPTION_THROWN|[134]|ortoo_qra.Exceptions.DeveloperException: This is a developer exception
+04:39:02.159 (2187980535)|USER_DEBUG|[184]|ERROR|ortoo_qra.Exceptions.DeveloperException (DEV-12345): This is a developer exception
+
+Context:
+id = 0032D00000WOOuwQAH @ OrtooExceptionThrower.throwExceptionWithCausedBy on Line: 178, Column 1
+otherThing = thingvalue @ OrtooExceptionThrower.throwExceptionWithCausedBy on Line: 179, Column 1
+
+Message Detail:
+LastName => "The last name went wrong" on Contact:{LastName=thingthatwentwrong}
+
+
+Stack Trace:
+Class.OrtooExceptionThrower.throwExceptionWithCausedBy: line 176, column 1
+AnonymousBlock: line 134, column 1
+AnonymousBlock: line 134, column 1
+
+Caused By:
+System.DmlException: Update failed. First exception on row 0 with id 0032D00000WOOuwQAH; first error: INVALID_CROSS_REFERENCE_KEY, invalid cross reference id: []
+
+Row details:
+0 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuwQAH - invalid cross reference id
+1 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuxQAH - invalid cross reference id
+2 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuyQAH - invalid cross reference id
+3 - INVALID_CROSS_REFERENCE_KEY:  Id = 0032D00000WOOuzQAH - invalid cross reference id
+
+Stack Trace:
+Class.OrtooExceptionThrower.__sfdc_dmlExceptionThrown: line 148, column 1
+Class.OrtooExceptionThrower.throwExceptionWithCausedBy: line 176, column 1
+AnonymousBlock: line 134, column 1
+AnonymousBlock: line 134, column 1

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+   <description>Allows the user's processes to access the Org Level Platform cache.  Is limited since this may allow the user's process to access data that their permissions would not otherwise allow.</description>
+   <label>Processes Can Access Cache</label>
+</CustomPermission>

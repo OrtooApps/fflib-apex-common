@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Implementation__c</fullName>
+    <description>The Apex Class that is the concrete implementation for this type of thing, for the given Object Type.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>The Apex Class that is the concrete implementation for this type of thing, for the given Object Type.</inlineHelpText>
+    <label>Implementation</label>
+    <length>255</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
