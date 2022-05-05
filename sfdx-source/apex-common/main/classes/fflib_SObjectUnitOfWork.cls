@@ -250,6 +250,15 @@ public virtual class fflib_SObjectUnitOfWork
         registerNew(record, null, null);
     }
 
+	// TODO: test
+	// TODO: document
+	public virtual void registerNew( SObject record, List<SobjectField> fields )
+	{
+		SObject newRecord = record.getSobjectType().newSObject();
+		copyFields( record, newRecord, fields );
+		registerNew( newRecord );
+	}
+
     /**
      * Register a list of newly created SObject instances to be inserted when commitWork is called
      *
@@ -262,6 +271,16 @@ public virtual class fflib_SObjectUnitOfWork
             registerNew(record, null, null);
         }
     }
+
+	// TODO: test
+	// TODO: document
+	public virtual void registerNew( List<SObject> records, List<SobjectField> fields )
+	{
+        for (SObject record : records)
+        {
+            registerNew(record, fields);
+        }
+	}
 
     /**
      * Register a newly created SObject instance to be inserted when commitWork is called,
@@ -395,9 +414,7 @@ public virtual class fflib_SObjectUnitOfWork
             // Update the registered record's fields
             SObject registeredRecord = m_dirtyMapByType.get(sObjectType).get(record.Id);
 
-            for (SObjectField dirtyField : dirtyFields) {
-                registeredRecord.put(dirtyField, record.get(dirtyField));
-            }
+			copyFields( record, registeredRecord, dirtyFields );
 
             m_dirtyMapByType.get(sObjectType).put(record.Id, registeredRecord);
         }
@@ -448,6 +465,20 @@ public virtual class fflib_SObjectUnitOfWork
         }
     }
 
+	// TODO: test
+	// TODO: document
+	public virtual void registerUpsert( SObject record, List<SobjectField> fields )
+	{
+		if (record.Id == null)
+        {
+            registerNew(record, fields);
+        }
+        else
+        {
+            registerDirty(record, fields);
+        }
+	}
+
     /**
      * Register a list of mix of new and existing records to be inserted updated during the commitWork method
      *
@@ -460,6 +491,16 @@ public virtual class fflib_SObjectUnitOfWork
             this.registerUpsert(record);
         }
     }
+
+	// TODO: test
+	// TODO: document
+	public virtual void registerUpsert( List<SObject> records, List<SobjectField> fields )
+	{
+        for (SObject record : records)
+        {
+            this.registerUpsert( record, fields );
+        }
+	}
 
     /**
      * Register an existing record to be deleted during the commitWork method
@@ -780,6 +821,14 @@ public virtual class fflib_SObjectUnitOfWork
 							new List<String> { sObjectType }
 					)
 			);
+		}
+	}
+
+	private void copyFields( Sobject fromRecord, Sobject toRecord, List<SobjectField> fields )
+	{
+		for ( SObjectField thisField : fields )
+		{
+			toRecord.put( thisField, fromRecord.get( thisField ) );
 		}
 	}
 
