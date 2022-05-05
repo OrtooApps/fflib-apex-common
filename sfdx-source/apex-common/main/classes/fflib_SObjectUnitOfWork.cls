@@ -250,15 +250,6 @@ public virtual class fflib_SObjectUnitOfWork
         registerNew(record, null, null);
     }
 
-	// TODO: test
-	// TODO: document
-	public virtual void registerNew( SObject record, List<SobjectField> fields )
-	{
-		SObject newRecord = record.getSobjectType().newSObject();
-		copyFields( record, newRecord, fields );
-		registerNew( newRecord );
-	}
-
     /**
      * Register a list of newly created SObject instances to be inserted when commitWork is called
      *
@@ -271,16 +262,6 @@ public virtual class fflib_SObjectUnitOfWork
             registerNew(record, null, null);
         }
     }
-
-	// TODO: test
-	// TODO: document
-	public virtual void registerNew( List<SObject> records, List<SobjectField> fields )
-	{
-        for (SObject record : records)
-        {
-            registerNew(record, fields);
-        }
-	}
 
     /**
      * Register a newly created SObject instance to be inserted when commitWork is called,
@@ -466,16 +447,16 @@ public virtual class fflib_SObjectUnitOfWork
     }
 
 	// TODO: test
-	// TODO: document
-	public virtual void registerUpsert( SObject record, List<SobjectField> fields )
+	// TODO: document - particularly - if it's an insert it ignores the dirty list!
+	public virtual void registerUpsert( SObject record, List<SobjectField> dirtyFields )
 	{
-		if (record.Id == null)
+		if ( record.Id == null )
         {
-            registerNew(record, fields);
+            registerNew( record, null, null );
         }
         else
         {
-            registerDirty(record, fields);
+            registerDirty( record, dirtyFields );
         }
 	}
 
@@ -494,11 +475,11 @@ public virtual class fflib_SObjectUnitOfWork
 
 	// TODO: test
 	// TODO: document
-	public virtual void registerUpsert( List<SObject> records, List<SobjectField> fields )
+	public virtual void registerUpsert( List<SObject> records, List<SobjectField> dirtyFields )
 	{
-        for (SObject record : records)
+        for ( SObject record : records )
         {
-            this.registerUpsert( record, fields );
+            this.registerUpsert( record, dirtyFields );
         }
 	}
 
