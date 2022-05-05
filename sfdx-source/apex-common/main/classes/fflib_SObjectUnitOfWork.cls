@@ -446,8 +446,14 @@ public virtual class fflib_SObjectUnitOfWork
         }
     }
 
-	// TODO: test
-	// TODO: document - particularly - if it's an insert it ignores the dirty list!
+	/**
+     * Register a new or existing record to be inserted/updated during the commitWork method, with a specific list of dirty fields to update / commit
+     *
+	 * NOTE: If the record requires an insert, the dirtyFields list is ignored and ALL field values are included on the insert
+	 *
+     * @param record A new or existing record
+	 * @param dirtyFields A list of modified fields
+     **/
 	public virtual void registerUpsert( SObject record, List<SobjectField> dirtyFields )
 	{
 		if ( record.Id == null )
@@ -473,8 +479,14 @@ public virtual class fflib_SObjectUnitOfWork
         }
     }
 
-	// TODO: test
-	// TODO: document
+	/**
+     * Register a list of mix of new and existing records to be inserted updated during the commitWork method, with a specific list of dirty fields to update / commit
+     *
+	 * NOTE: If a record requires an insert, the dirtyFields list is ignored and ALL field values are included on the insert
+	 *
+     * @param records A list of mix of new and existing records
+	 * @param dirtyFields A list of modified fields
+     **/
 	public virtual void registerUpsert( List<SObject> records, List<SobjectField> dirtyFields )
 	{
         for ( SObject record : records )
