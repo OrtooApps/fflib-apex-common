@@ -349,8 +349,10 @@ public virtual class fflib_SObjectUnitOfWork
     }
 
     /**
-     * Registers the entire records as dirty or just only the dirty fields if the record was already registered
+     * Registers the stated fields on the records as dirty
      *
+	 * Note: you should avoid mixing SObject types when registering dirty fields
+	 *
      * @param records SObjects to register as dirty
      * @param dirtyFields A list of modified fields
      */
@@ -363,7 +365,7 @@ public virtual class fflib_SObjectUnitOfWork
     }
 
 	/**
-	 * Registers the entire record as dirty or just only the dirty fields if the record was already registered
+	 * Registers the stated fields on the record as dirty
 	 *
 	 * @param record SObject to register as dirty
 	 * @param dirtyFields A list of modified fields
@@ -395,9 +397,7 @@ public virtual class fflib_SObjectUnitOfWork
             // Update the registered record's fields
             SObject registeredRecord = m_dirtyMapByType.get(sObjectType).get(record.Id);
 
-            for (SObjectField dirtyField : dirtyFields) {
-                registeredRecord.put(dirtyField, record.get(dirtyField));
-            }
+			copyFields( record, registeredRecord, dirtyFields );
 
             m_dirtyMapByType.get(sObjectType).put(record.Id, registeredRecord);
         }
@@ -448,6 +448,26 @@ public virtual class fflib_SObjectUnitOfWork
         }
     }
 
+	/**
+     * Register a new or existing record to be inserted/updated during the commitWork method, with a specific list of dirty fields to update / commit
+     *
+	 * NOTE: If the record requires an insert, the dirtyFields list is ignored and ALL field values are included on the insert
+	 *
+     * @param record A new or existing record
+	 * @param dirtyFields A list of modified fields
+     **/
+	public virtual void registerUpsert( SObject record, List<SobjectField> dirtyFields )
+	{
+		if ( record.Id == null )
+        {
+            registerNew( record, null, null );
+        }
+        else
+        {
+            registerDirty( record, dirtyFields );
+        }
+	}
+
     /**
      * Register a list of mix of new and existing records to be inserted updated during the commitWork method
      *
@@ -460,6 +480,22 @@ public virtual class fflib_SObjectUnitOfWork
             this.registerUpsert(record);
         }
     }
+
+	/**
+     * Register a list of mix of new and existing records to be inserted updated during the commitWork method, with a specific list of dirty fields to update / commit
+     *
+	 * NOTE: If a record requires an insert, the dirtyFields list is ignored and ALL field values are included on the insert
+	 *
+     * @param records A list of mix of new and existing records
+	 * @param dirtyFields A list of modified fields
+     **/
+	public virtual void registerUpsert( List<SObject> records, List<SobjectField> dirtyFields )
+	{
+        for ( SObject record : records )
+        {
+            this.registerUpsert( record, dirtyFields );
+        }
+	}
 
     /**
      * Register an existing record to be deleted during the commitWork method
@@ -780,6 +816,14 @@ public virtual class fflib_SObjectUnitOfWork
 							new List<String> { sObjectType }
 					)
 			);
+		}
+	}
+
+	private void copyFields( Sobject fromRecord, Sobject toRecord, List<SobjectField> fields )
+	{
+		for ( SObjectField thisField : fields )
+		{
+			toRecord.put( thisField, fromRecord.get( thisField ) );
 		}
 	}
 

@@ -658,6 +658,124 @@ private with sharing class fflib_SObjectUnitOfWorkTest
         System.assertEquals(1, mockDML.recordsForInsert.size());
     }
 
+	@isTest
+	private static void testRegisterUpsertForInsertWithDirtyFields() {
+
+        Opportunity newOpportunity = new Opportunity( Name = 'New Opportunity', StageName = 'Closed', CloseDate = System.today() );
+
+        Test.startTest();
+			MockDML mockDML = new MockDML();
+			fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(MY_SOBJECTS, mockDML);
+			uow.registerUpsert( newOpportunity, new List<SobjectField>{ Opportunity.Name, Opportunity.StageName } );
+			uow.commitWork();
+        Test.stopTest();
+
+        System.assertEquals( 0, mockDML.recordsForUpdate.size() );
+        System.assertEquals( 1, mockDML.recordsForInsert.size() );
+
+        System.assert(
+                !new fflib_MatcherDefinitions.SObjectsWith(
+                        new List<Map<SObjectField, Object>>{
+                                new Map<SObjectField, Object>
+                                {
+                                     Opportunity.Id => newOpportunity.Id,
+                                     Opportunity.Name => newOpportunity.Name,
+                                     Opportunity.StageName => newOpportunity.CloseDate
+                                }
+                        }
+                )
+                .matches( mockDML.recordsForInsert ),
+                'registerUpsert with dirty fields will ignore the dirty fields when sending them for insert'
+        );
+	}
+
+	@isTest
+	private static void testRegisterUpsertForUpdateWithDirtyFields() {
+
+        Opportunity updatedOpportunity = new Opportunity(
+                Id = fflib_IDGenerator.generate(Schema.Opportunity.SObjectType),
+                Name = 'Existing Opportunity',
+                StageName = 'Closed',
+                CloseDate = System.today());
+
+        Test.startTest();
+			MockDML mockDML = new MockDML();
+			fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(MY_SOBJECTS, mockDML);
+			uow.registerUpsert( updatedOpportunity, new List<SobjectField>{ Opportunity.Name, Opportunity.StageName } );
+			uow.commitWork();
+        Test.stopTest();
+
+        System.assertEquals( 1, mockDML.recordsForUpdate.size() );
+        System.assertEquals( 0, mockDML.recordsForInsert.size() );
+
+        System.assert(
+                !new fflib_MatcherDefinitions.SObjectsWith(
+                        new List<Map<SObjectField, Object>>{
+                                new Map<SObjectField, Object>
+                                {
+                                     Opportunity.Id => updatedOpportunity.Id,
+                                     Opportunity.Name => updatedOpportunity.Name,
+                                     Opportunity.StageName => ''
+                                }
+                        }
+                )
+                .matches( mockDML.recordsForUpdate ),
+                'registerUpsert with dirty fields will send the dirty fields when sending the record them for update'
+        );
+	}
+
+	@isTest
+	private static void testRegisterUpsertWithMultipleRecordsAndDirtyFields() {
+
+        Opportunity updatedOpportunity = new Opportunity(
+                Id = fflib_IDGenerator.generate(Schema.Opportunity.SObjectType),
+                Name = 'Existing Opportunity',
+                StageName = 'Closed',
+                CloseDate = System.today());
+
+        Opportunity newOpportunity = new Opportunity( Name = 'New Opportunity', StageName = 'Closed', CloseDate = System.today() );
+
+        Test.startTest();
+			MockDML mockDML = new MockDML();
+			fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(MY_SOBJECTS, mockDML);
+			uow.registerUpsert( new List<Opportunity>{ updatedOpportunity, newOpportunity }, new List<SobjectField>{ Opportunity.Name, Opportunity.StageName } );
+			uow.commitWork();
+        Test.stopTest();
+
+        System.assertEquals(1, mockDML.recordsForUpdate.size());
+        System.assertEquals(1, mockDML.recordsForInsert.size());
+
+        System.assert(
+                !new fflib_MatcherDefinitions.SObjectsWith(
+                        new List<Map<SObjectField, Object>>{
+                                new Map<SObjectField, Object>
+                                {
+                                     Opportunity.Id => newOpportunity.Id,
+                                     Opportunity.Name => newOpportunity.Name,
+                                     Opportunity.StageName => newOpportunity.CloseDate
+                                }
+                        }
+                )
+                .matches( mockDML.recordsForInsert ),
+                'registerUpsert with dirty fields will ignore the dirty fields when sending them for insert'
+        );
+
+        System.assert(
+                !new fflib_MatcherDefinitions.SObjectsWith(
+                        new List<Map<SObjectField, Object>>{
+                                new Map<SObjectField, Object>
+                                {
+                                     Opportunity.Id => updatedOpportunity.Id,
+                                     Opportunity.Name => updatedOpportunity.Name,
+                                     Opportunity.StageName => ''
+                                }
+                        }
+                )
+                .matches( mockDML.recordsForUpdate ),
+                'registerUpsert with dirty fields will send the dirty fields when sending the record them for update'
+        );
+	}
+
     /**
      * Assert that actual events exactly match expected events (size, order and name)
      * and types match expected types
