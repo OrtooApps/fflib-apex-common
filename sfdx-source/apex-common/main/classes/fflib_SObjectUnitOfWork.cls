@@ -349,8 +349,10 @@ public virtual class fflib_SObjectUnitOfWork
     }
 
     /**
-     * Registers the entire records as dirty or just only the dirty fields if the record was already registered
+     * Registers the stated fields on the records as dirty
      *
+	 * Note: you should avoid mixing SObject types when registering dirty fields
+	 *
      * @param records SObjects to register as dirty
      * @param dirtyFields A list of modified fields
      */
@@ -363,7 +365,7 @@ public virtual class fflib_SObjectUnitOfWork
     }
 
 	/**
-	 * Registers the entire record as dirty or just only the dirty fields if the record was already registered
+	 * Registers the stated fields on the record as dirty
 	 *
 	 * @param record SObject to register as dirty
 	 * @param dirtyFields A list of modified fields

@@ -94,7 +94,9 @@ public interface fflib_ISObjectUnitOfWork
      * If the records are previously registered as dirty, the dirty fields on the records in this call will overwrite
      * the values of the previously registered dirty records
      *
-     * @param records A list of existing records
+	 * Note: you should avoid mixing SObject types when registering dirty fields
+	 *
+	 * @param records A list of existing records
      * @param dirtyFields The fields to update if record is already registered
      **/
     void registerDirty(List<SObject> records, List<SObjectField> dirtyFields);
